@@ -25,7 +25,7 @@ class ShowProfileActivity: AppCompatActivity() {
             "Based in Italy",
             "mariorossi@gmail.com",
             "+393001992031",
-            "Miami")
+            "Via RossiMario 13, Italy")
         // load from shared resources */
         loadContent()
 
@@ -66,7 +66,8 @@ class ShowProfileActivity: AppCompatActivity() {
         editor.putString(PHONE_KEY, phone)
         editor.putString(LOCATION_KEY, location)
 
-        editor.commit()
+        // save to file
+        editor.apply()
     }
 
 }
