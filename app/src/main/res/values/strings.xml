@@ -5,7 +5,7 @@
     <string name="email">mario@rossi.com</string>
     <string name="phone_number">0123456789</string>
     <string name="location">Italy - Via Mario Rossi 23</string>
-    <string name="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam volutpat, dolor id sodales ornare, dolor lectus lacinia est, id cursus orci nisi eu odio.</string>
+    <string name="bio">«What doesn\'t kill you makes you stronger»</string>
     <string name="accounting_balance">Accounting_balance</string>
     <string name="available_balance">Available balance</string>
     <string name="profile_image">Profile image</string>
