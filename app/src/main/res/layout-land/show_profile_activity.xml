@@ -44,16 +44,16 @@
         <TextView
             android:id="@+id/nickname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
             android:text="@string/nickname"
             android:textSize="34sp" />
 
         <TextView
             android:id="@+id/bio"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
+            android:layout_height="43dp"
             android:text="@string/bio"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
