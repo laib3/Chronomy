@@ -6,51 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".ShowProfileActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:background="#555555"
-        android:contentDescription="@string/profile_image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.077"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        tools:src="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="123dp"
         android:text="@string/full_name"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.341" />
+        app:layout_constraintVertical_bias="0.302" />
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="362dp"
-        android:layout_height="70dp"
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/bio"
+        android:text="@string/location"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.532" />
+        app:layout_constraintVertical_bias="0.846" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="42dp"
+        android:background="#555555"
+        android:contentDescription="@string/profile_image"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/textView2"
@@ -61,10 +60,10 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.425" />
+        app:layout_constraintVertical_bias="0.416" />
 
     <TextView
         android:id="@+id/textView5"
@@ -76,10 +75,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.44"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786" />
+        app:layout_constraintVertical_bias="0.768" />
 
     <TextView
         android:id="@+id/textView8"
@@ -90,23 +89,24 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.396"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.825" />
+        app:layout_constraintVertical_bias="0.807" />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:layout_width="362dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
-        android:text="@string/location"
+        android:layout_marginEnd="16dp"
+        android:text="@string/bio"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.706"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.863" />
+        app:layout_constraintVertical_bias="0.621" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
