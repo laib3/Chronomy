@@ -1,7 +1,11 @@
 package it.polito.showprofileactivity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.TextView
 
 class ShowProfileActivity: AppCompatActivity() {
@@ -70,4 +74,16 @@ class ShowProfileActivity: AppCompatActivity() {
         editor.apply()
     }
 
+    //inflate main_menu into activity
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu);
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val i = Intent(this, EditProfileActivity::class.java)
+        startActivity(i)
+        return super.onOptionsItemSelected(item)
+    }
 }

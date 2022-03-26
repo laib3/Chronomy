@@ -10,6 +10,8 @@
 
 > Offerors and requesters are not exclusive categories. The role depend on the usage of the app.
 
+
+
 > POSTS is the generic word to refer to offers and requests
 
 ### Stories
