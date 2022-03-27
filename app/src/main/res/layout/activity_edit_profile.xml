@@ -99,7 +99,8 @@
                     android:id="@+id/editName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="textCapSentences"/>
 
                 <TextView
                     android:id="@+id/surname"
@@ -115,7 +116,8 @@
                     android:id="@+id/editSurname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="textCapSentences"/>
 
                 <TextView
                     android:id="@+id/nickname"
@@ -131,7 +133,8 @@
                     android:id="@+id/editNickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="text"/>
 
             </LinearLayout>
 
@@ -167,7 +170,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="102dp"
                     android:maxLength="200"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="textCapSentences"/>
             </LinearLayout>
 
             <TextView
@@ -202,7 +206,8 @@
                     android:id="@+id/editEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="textEmailAddress"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -233,7 +238,8 @@
                     android:id="@+id/editPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="phone"/>
 
                 <TextView
                     android:id="@+id/location"
@@ -243,13 +249,15 @@
                     android:text="Location"
                     android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:inputType="textCapSentences"/>
 
                 <EditText
                     android:id="@+id/editLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:inputType="text"/>
 
 
             </LinearLayout>
