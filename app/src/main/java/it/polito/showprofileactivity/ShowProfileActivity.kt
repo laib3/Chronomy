@@ -1,8 +1,11 @@
 package it.polito.showprofileactivity
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -10,6 +13,23 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+
+class Skill (var title:String){
+    public var description: String = ""
+    constructor(title:String, desc:String): this(title) {
+        this.description = desc
+    }
+}
+
+class SkillCard(c: Context): CardView(c){
+    init {
+        LayoutInflater.from(c).inflate(R.layout.skill_card, this, true)
+        val cardTitle = findViewById<TextView>(R.id.cardTitle)
+        cardTitle.text = "titolo"
+        val desc = findViewById<TextView>(R.id.cardDescription)
+        desc.text = "descrizione"
+    }
+}
 
 class ShowProfileActivity: AppCompatActivity() {
 
@@ -21,6 +41,7 @@ class ShowProfileActivity: AppCompatActivity() {
     private val EMAIL_KEY:String = "email"
     private val PHONE_KEY:String = "phone"
     private val LOCATION_KEY:String = "loc"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,31 +57,21 @@ class ShowProfileActivity: AppCompatActivity() {
         // load from shared resources */
         loadContent()
 
-        val titles:MutableList<String> = mutableListOf<String>()
-        titles.add("titolo1")
-        titles.add("titolo2")
-        titles.add("titolo3")
-        titles.add("titolo4")
-        titles.add("titolo5")
+        val skills:MutableList<Skill> = mutableListOf<Skill>()
+        skills.add(Skill("Giardinaggio", "Potare le piante"))
+        skills.add(Skill("Cucina", "Lavare i piatti"))
+        skills.add(Skill("ChildCare", "Badare ai bambini"))
+        skills.add(Skill("Guida"))
 
-        val skills = findViewById<LinearLayout>(R.id.skills)
+        val skillsLayout = findViewById<LinearLayout>(R.id.skills)
 
-        titles
-            .map {
-            title ->
-                val textView = TextView(this)
-                textView.text = title
-                textView
+        skills
+            .map{ skill ->
+                val s = SkillCard(this)
+                s
             }
-            .map{ tv ->
-                val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 200)
-                val c = CardView(this)
-                c.layoutParams = layoutParams
-                c.addView(tv)
-                c
-            }
-            .forEach {c ->
-                skills.addView(c)
+            .forEach {s ->
+                skillsLayout.addView(s)
             }
 
     }
