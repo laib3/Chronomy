@@ -18,6 +18,9 @@ class EditProfileActivity : AppCompatActivity() {
         //reference the ImageButton and attach to it the camera_floating_context_menu
         val imageButton = findViewById<ImageButton>(R.id.imageButton)
         registerForContextMenu(imageButton)
+
+        //get all the skills and map them into cards
+        val skills_array: Array<String> = resources.getStringArray(R.array.skills_array)
     }
 
     //tell that the layout we want for this context menu is in camera_floating_context_menu.xml
