@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.LinearLayout
+import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 
 class ShowProfileActivity: AppCompatActivity() {
 
@@ -32,6 +35,33 @@ class ShowProfileActivity: AppCompatActivity() {
             "Via RossiMario 13, Italy")
         // load from shared resources */
         loadContent()
+
+        val titles:MutableList<String> = mutableListOf<String>()
+        titles.add("titolo1")
+        titles.add("titolo2")
+        titles.add("titolo3")
+        titles.add("titolo4")
+        titles.add("titolo5")
+
+        val skills = findViewById<LinearLayout>(R.id.skills)
+
+        titles
+            .map {
+            title ->
+                val textView = TextView(this)
+                textView.text = title
+                textView
+            }
+            .map{ tv ->
+                val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 200)
+                val c = CardView(this)
+                c.layoutParams = layoutParams
+                c.addView(tv)
+                c
+            }
+            .forEach {c ->
+                skills.addView(c)
+            }
 
     }
 

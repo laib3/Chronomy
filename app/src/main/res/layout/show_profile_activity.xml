@@ -88,63 +88,11 @@
                     android:textSize="20sp" />
             </LinearLayout>
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
+                android:id="@+id/skills"
                 android:layout_width="match_parent"
-                android:layout_height="156dp"
-                app:cardBackgroundColor="#cccccc"
-                app:cardCornerRadius="5dp"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="5pt">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/cardTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Title"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/cardDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Description... bla bla bla" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                app:cardBackgroundColor="#cccccc"
-                app:cardCornerRadius="5dp"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="5pt">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/cardTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Title"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/cardDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Description... bla bla bla" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
 
         </LinearLayout>
     </ScrollView>
