@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 
 class EditProfileActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,24 @@ class EditProfileActivity : AppCompatActivity() {
 
         //get all the skills and map them into cards
         val skills_array: Array<String> = resources.getStringArray(R.array.skills_array)
+        //TODO: place a loop to map the skills
+
+        val card = findViewById<CardView>(R.id.skill1)
+        card.setOnClickListener{
+            //inflate the dialog with custom view
+            val mDialogView = layoutInflater.inflate(R.layout.skill_edit_modal, null)
+            //AlertDialogBuilder + show
+            val mBuilder= AlertDialog.Builder(this)
+                .setView(mDialogView)
+                .setTitle("Edit Skill")
+            val mAlertDialog = mBuilder.show()
+            //dismiss button
+            val close_button = mDialogView.findViewById<Button>(R.id.close_button)
+            close_button.setOnClickListener{
+                mAlertDialog.dismiss()
+            }
+
+        }
     }
 
     //tell that the layout we want for this context menu is in camera_floating_context_menu.xml

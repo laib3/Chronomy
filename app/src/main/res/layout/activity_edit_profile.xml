@@ -301,6 +301,7 @@
                         >
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/skill1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
