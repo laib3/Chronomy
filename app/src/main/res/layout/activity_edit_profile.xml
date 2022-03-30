@@ -119,6 +119,15 @@
                     android:textSize="20sp"
                     android:inputType="textCapSentences"/>
 
+                <TextView
+                    android:id="@+id/nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nickname"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/editNickname"
                     android:layout_width="match_parent"
@@ -292,7 +301,7 @@
                         >
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         app:cardCornerRadius="8dp"
@@ -301,6 +310,7 @@
                         app:layout_column="1"
                         app:layout_row="0"
                         app:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true">
@@ -337,7 +347,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         app:cardCornerRadius="8dp"
@@ -346,6 +356,7 @@
                         app:layout_column="1"
                         app:layout_row="0"
                         app:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true">
@@ -403,7 +414,7 @@
                     >
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         app:cardCornerRadius="8dp"
@@ -412,6 +423,7 @@
                         app:layout_column="1"
                         app:layout_row="0"
                         app:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true">
@@ -448,7 +460,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         app:cardCornerRadius="8dp"
@@ -457,6 +469,7 @@
                         app:layout_column="1"
                         app:layout_row="0"
                         app:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true">
