@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -29,13 +27,15 @@ class EditProfileActivity : AppCompatActivity() {
         card.setOnClickListener{
             //inflate the dialog with custom view
             val mDialogView = layoutInflater.inflate(R.layout.skill_edit_modal, null)
+            val question = mDialogView.findViewById<TextView>(R.id.question)
+            question.setText("Is ${skills_array[0].toString().lowercase()} one of your skills?")
             //AlertDialogBuilder + show
             val mBuilder= AlertDialog.Builder(this)
                 .setView(mDialogView)
-                .setTitle("Edit Skill")
+                //.setTitle("Edit Skill")
             val mAlertDialog = mBuilder.show()
             //dismiss button
-            val close_button = mDialogView.findViewById<Button>(R.id.close_button)
+            val close_button = mDialogView.findViewById<ImageView>(R.id.close_button)
             close_button.setOnClickListener{
                 mAlertDialog.dismiss()
             }

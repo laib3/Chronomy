@@ -167,10 +167,17 @@
                 <EditText
                     android:id="@+id/editBio"
                     android:layout_width="match_parent"
-                    android:layout_height="102dp"
                     android:maxLength="200"
                     android:textSize="20sp"
-                    android:inputType="textCapSentences"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="3"
+                    android:gravity="top|start"
+                    android:maxLines="5"
+                    android:scrollbars="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/desciption"/>
             </LinearLayout>
 
             <TextView
