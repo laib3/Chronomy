@@ -9,8 +9,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var imageButton: ImageButton
+    lateinit var radioGroup: RadioGroup
+    lateinit var radioButton: RadioButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,15 +20,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         //reference the ImageButton and attach to it the camera_floating_context_menu
         imageButton = findViewById<ImageButton>(R.id.imageButton)
-
-        imageButton.setOnClickListener {
-            //passing context and anchor view
-            val popupMenu = PopupMenu(this, it)
-            popupMenu.setOnMenuItemClickListener { item -> onItemSelected(item) }
-            //passing the layout to be shown
-            popupMenu.inflate(R.menu.camera_floating_context_menu)
-            popupMenu.show()
-        }
+        registerForContextMenu(imageButton)
+        imageButton.setOnClickListener { onClick(imageButton) }
 
 
         //get all the skills and map them into cards
@@ -49,11 +44,32 @@ class EditProfileActivity : AppCompatActivity() {
             close_button.setOnClickListener {
                 mAlertDialog.dismiss()
             }
+            /*val save_button = mDialogView.findViewById<ImageView>(R.id.save_button)
+            save_button.setOnClickListener{
+                val radioId = radioGroup.checkedRadioButtonId;
+                Toast.makeText(this, "Selected $radioId", Toast.LENGTH_LONG).show()
+            }*/
         }
     }
 
+    override fun onClick(v: View?) {
+        openContextMenu(v)
+    }
+
+    //tell that the layout we want for this context menu is in camera_floating_context_menu.xml
+    //NB: v is the View that was clicked
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menu?.setHeaderTitle("Change your picture")
+        menuInflater.inflate(R.menu.camera_floating_context_menu, menu)
+    }
+
     //functions to manage the selection in the popup menu
-    fun onItemSelected(item: MenuItem): Boolean {
+    override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.option_1 -> {
                 Toast.makeText(this, "Opening the gallery", Toast.LENGTH_LONG).show()
@@ -66,4 +82,5 @@ class EditProfileActivity : AppCompatActivity() {
             else -> return super.onContextItemSelected(item)
         }
     }
+
 }
