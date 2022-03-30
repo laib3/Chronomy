@@ -13,21 +13,25 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 
 class Skill (var title:String){
+
     public var description: String = ""
+    public var active: Boolean = false
+
     constructor(title:String, desc:String): this(title) {
         this.description = desc
     }
 }
 
-class SkillCard(c: Context): CardView(c){
+class SkillCard(c: Context, s:Skill): CardView(c){
     init {
         LayoutInflater.from(c).inflate(R.layout.skill_card, this, true)
         val cardTitle = findViewById<TextView>(R.id.cardTitle)
-        cardTitle.text = "titolo"
+        cardTitle.text = s.title
         val desc = findViewById<TextView>(R.id.cardDescription)
-        desc.text = "descrizione"
+        desc.text = s.description
     }
 }
 
@@ -64,15 +68,8 @@ class ShowProfileActivity: AppCompatActivity() {
         skills.add(Skill("Guida"))
 
         val skillsLayout = findViewById<LinearLayout>(R.id.skills)
-
-        skills
-            .map{ skill ->
-                val s = SkillCard(this)
-                s
-            }
-            .forEach {s ->
-                skillsLayout.addView(s)
-            }
+        // map skills to skill cards and add them to the layout
+        skills.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
 
     }
 
