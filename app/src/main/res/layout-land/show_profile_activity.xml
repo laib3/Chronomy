@@ -7,7 +7,7 @@
     tools:context=".ShowProfileActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/profilePicture"
         android:layout_width="192dp"
         android:layout_height="192dp"
         android:background="#555555"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

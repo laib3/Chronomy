@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
@@ -52,20 +53,24 @@ class ShowProfileActivity: AppCompatActivity() {
         setContentView(R.layout.show_profile_activity)
 
         // save content to shared resources
-        saveContent("Mario Rossi",
+        /*saveContent("Mario Rossi",
             "mrossi",
             "Based in Italy",
             "mariorossi@gmail.com",
             "+393001992031",
             "Via RossiMario 13, Italy")
+            */
         // load from shared resources */
-        loadContent()
+        // loadContent()
 
         val skills:MutableList<Skill> = mutableListOf<Skill>()
         skills.add(Skill("Giardinaggio", "Potare le piante"))
         skills.add(Skill("Cucina", "Lavare i piatti"))
         skills.add(Skill("ChildCare", "Badare ai bambini"))
         skills.add(Skill("Guida"))
+
+        val iv = findViewById<ImageView>(R.id.profilePicture)
+        iv.clipToOutline = true
 
         val skillsLayout = findViewById<LinearLayout>(R.id.skills)
         // map skills to skill cards and add them to the layout
