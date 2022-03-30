@@ -76,25 +76,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="10pt">
+            android:paddingTop="5pt"
+            android:paddingStart="10pt"
+            android:paddingEnd="10pt"
+            android:paddingBottom="5pt">
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/bio"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:paddingStart="10pt"
+                android:text="@string/bio" />
 
             <TableLayout
                 android:id="@+id/basicInfos"
                 android:layout_width="match_parent"
+                android:padding="5pt"
                 android:layout_height="match_parent">
 
                 <TableRow
                     android:id="@+id/phoneRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="10pt"
-                    android:paddingEnd="10pt">
+                    >
 
                     <ImageView
                         android:id="@+id/phoneIcon"
@@ -117,14 +121,13 @@
                     android:id="@+id/emailRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="10pt"
-                    android:paddingEnd="10pt">
+                    >
 
                     <ImageView
                         android:id="@+id/emailIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3pt"
+                        android:layout_margin="5pt"
                         android:contentDescription="email"
                         app:srcCompat="@drawable/ic_baseline_email_24" />
 
@@ -140,8 +143,7 @@
                     android:id="@+id/locationRow"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="10pt"
-                    android:paddingEnd="10pt">
+                    >
 
                     <ImageView
                         android:id="@+id/locationIcon"

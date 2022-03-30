@@ -2,7 +2,6 @@ package it.polito.showprofileactivity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +10,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.RecyclerView
 
 class Skill (var title:String){
 
@@ -53,15 +50,14 @@ class ShowProfileActivity: AppCompatActivity() {
         setContentView(R.layout.show_profile_activity)
 
         // save content to shared resources
-        /*saveContent("Mario Rossi",
+        saveContent("Mario Rossi",
             "mrossi",
-            "Based in Italy",
+            "Based in Italy, I love animals, simpatico, solare, in cerca di amicizie.",
             "mariorossi@gmail.com",
             "+393001992031",
             "Via RossiMario 13, Italy")
-            */
         // load from shared resources */
-        // loadContent()
+        loadContent()
 
         val skills:MutableList<Skill> = mutableListOf<Skill>()
         skills.add(Skill("Giardinaggio", "Potare le piante"))
@@ -87,8 +83,8 @@ class ShowProfileActivity: AppCompatActivity() {
         val phoneNumberText:String = sharedPreferences.getString(PHONE_KEY, "phone") ?: "phone"
         val locationText:String = sharedPreferences.getString(LOCATION_KEY, "location") ?: "location"
 
-        val tvFullName = findViewById<TextView>(R.id.fullName)
-        val tvNickName = findViewById<TextView>(R.id.nickname)
+        val tvFullName = findViewById<TextView>(R.id.name)
+        val tvNickName = findViewById<TextView>(R.id.nickName)
         val tvBio = findViewById<TextView>(R.id.bio)
         val tvEmail = findViewById<TextView>(R.id.email)
         val tvPhoneNumber = findViewById<TextView>(R.id.phoneNumber)
@@ -96,7 +92,7 @@ class ShowProfileActivity: AppCompatActivity() {
 
         tvFullName.text = fullNameText
         tvNickName.text = "@${nickNameText}"
-        tvBio.text = bioText
+        tvBio.text = "«${bioText}»"
         tvEmail.text = emailText
         tvPhoneNumber.text = phoneNumberText
         tvLocation.text = locationText
