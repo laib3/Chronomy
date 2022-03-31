@@ -1,13 +1,36 @@
 package it.polito.showprofileactivity
 
+import android.content.Context
 import android.os.Bundle
 import android.view.ContextMenu
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+
+class Skill (var title:String){
+
+    public var description: String = ""
+    public var active: Boolean = false
+
+    constructor(title:String, desc:String): this(title) {
+        this.description = desc
+    }
+}
+
+class EditSkillCard(c: Context, s:Skill): CardView(c){
+    init {
+        LayoutInflater.from(c).inflate(R.layout.skill_edit_card, this, true)
+        val cardTitle = findViewById<TextView>(R.id.skill_name)
+        cardTitle.text = s.title
+        val skillIcon = findViewById<ImageView>(R.id.skill_icon)
+        //TODO must be variable
+        skillIcon.setImageResource(R.drawable.gardening)
+    }
+}
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var imageButton: ImageButton
@@ -25,6 +48,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         //get all the skills and map them into cards
         val skills_array: Array<String> = resources.getStringArray(R.array.skills_array)
         //TODO: place a loop to map the skills
+
+        val selectedSkills = findViewById<GridLayout>(R.id.selectedSkills)
+        skills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
 
         val card = findViewById<CardView>(R.id.skill1)
         card.setOnClickListener {
