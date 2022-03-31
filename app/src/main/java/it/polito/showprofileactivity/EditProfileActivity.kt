@@ -12,7 +12,6 @@ import androidx.cardview.widget.CardView
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var imageButton: ImageButton
     lateinit var radioGroup: RadioGroup
-    lateinit var radioButton: RadioButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +21,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         imageButton = findViewById<ImageButton>(R.id.imageButton)
         registerForContextMenu(imageButton)
         imageButton.setOnClickListener { onClick(imageButton) }
-
 
         //get all the skills and map them into cards
         val skills_array: Array<String> = resources.getStringArray(R.array.skills_array)
@@ -44,11 +42,15 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
             close_button.setOnClickListener {
                 mAlertDialog.dismiss()
             }
-            /*val save_button = mDialogView.findViewById<ImageView>(R.id.save_button)
+            val save_button = mDialogView.findViewById<Button>(R.id.save_button)
             save_button.setOnClickListener{
+                radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
                 val radioId = radioGroup.checkedRadioButtonId;
-                Toast.makeText(this, "Selected $radioId", Toast.LENGTH_LONG).show()
-            }*/
+                val radioButton = mDialogView.findViewById<RadioButton>(radioId)
+                //TODO: actual save
+                Toast.makeText(this, "Selected ${radioButton.text}", Toast.LENGTH_LONG).show()
+                mAlertDialog.dismiss()
+            }
         }
     }
 
