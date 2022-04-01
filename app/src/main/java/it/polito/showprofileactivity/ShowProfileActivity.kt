@@ -1,9 +1,13 @@
 package it.polito.showprofileactivity
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,17 +15,12 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 
-class Skill (var title:String){
 
-    public var description: String = ""
-    public var active: Boolean = false
-
-    constructor(title:String, desc:String): this(title) {
-        this.description = desc
-    }
-}
 
 class SkillCard(c: Context, s:Skill): CardView(c){
     init {
@@ -35,19 +34,41 @@ class SkillCard(c: Context, s:Skill): CardView(c){
 
 class ShowProfileActivity: AppCompatActivity() {
 
+    /*
+    lateinit var tvFullName: TextView
+    lateinit var tvNickName: TextView
+    lateinit var tvBio: TextView
+    lateinit var tvEmail: TextView
+    lateinit var tvPhoneNumber: TextView
+    lateinit var tvLocation: TextView
+    */
+
     private val SHPR_NAME:String = "sharedPreferences"
 
-    private val NICKNAME_KEY:String = "nn"
-    private val FULLNAME_KEY:String = "fn"
-    private val BIO_KEY:String = "bio"
-    private val EMAIL_KEY:String = "email"
-    private val PHONE_KEY:String = "phone"
-    private val LOCATION_KEY:String = "loc"
+    private val NICKNAME_KEY:String = "group02.lab1.nickname"
+    private val FULLNAME_KEY:String = "group02.lab1.fullname"
+    private val BIO_KEY:String = "group02.lab1.bio"
+    private val EMAIL_KEY:String = "group02.lab1.email"
+    private val PHONE_KEY:String = "group02.lab1.phone"
+    private val LOCATION_KEY:String = "group02.lab1.location"
 
+    private lateinit var startForResult : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_profile_activity)
+
+
+
+        /*
+        tvFullName = findViewById(R.id.name)
+        tvNickName = findViewById(R.id.nickName)
+        tvBio = findViewById(R.id.bio)
+        tvEmail = findViewById(R.id.email)
+        tvPhoneNumber = findViewById(R.id.phoneNumber)
+        tvLocation = findViewById(R.id.location)
+        */
 
         // save content to shared resources
         saveContent("Mario Rossi",
@@ -72,6 +93,15 @@ class ShowProfileActivity: AppCompatActivity() {
         // map skills to skill cards and add them to the layout
         skills.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
 
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                // Handle the Intent
+
+            }
+        }
+
+
     }
 
     fun loadContent(){
@@ -91,8 +121,8 @@ class ShowProfileActivity: AppCompatActivity() {
         val tvLocation = findViewById<TextView>(R.id.location)
 
         tvFullName.text = fullNameText
-        tvNickName.text = "@${nickNameText}"
-        tvBio.text = "«${bioText}»"
+        tvBio.text = bioText
+        tvNickName.text = nickNameText
         tvEmail.text = emailText
         tvPhoneNumber.text = phoneNumberText
         tvLocation.text = locationText
@@ -113,6 +143,26 @@ class ShowProfileActivity: AppCompatActivity() {
         editor.apply()
     }
 
+    private fun editProfile() {
+        Log.e("edit", "edit profile")
+        val i = Intent(this, EditProfileActivity::class.java)
+        val tvFullName = findViewById<TextView>(R.id.name)
+        val tvNickName = findViewById<TextView>(R.id.nickName)
+        val tvBio = findViewById<TextView>(R.id.bio)
+        val tvEmail = findViewById<TextView>(R.id.email)
+        val tvPhoneNumber = findViewById<TextView>(R.id.phoneNumber)
+        val tvLocation = findViewById<TextView>(R.id.location)
+
+        i.putExtra(getString(R.string.key_full_name), tvFullName.text)
+        i.putExtra(getString(R.string.key_nickname), tvNickName.text)
+        i.putExtra(getString(R.string.key_bio), tvBio.text)
+        i.putExtra(getString(R.string.key_email),tvEmail.text )
+        i.putExtra(getString(R.string.key_phone_number),tvPhoneNumber.text )
+        i.putExtra(getString(R.string.key_location), tvLocation.text )
+
+        startForResult.launch(i)
+    }
+
     //inflate main_menu into activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -120,9 +170,9 @@ class ShowProfileActivity: AppCompatActivity() {
         return true
     }
 
+    // pencil context menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val i = Intent(this, EditProfileActivity::class.java)
-        startActivity(i)
+        editProfile()
         return super.onOptionsItemSelected(item)
     }
 }

@@ -1,25 +1,17 @@
 package it.polito.showprofileactivity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-
-class Skill (var title:String){
-
-    public var description: String = ""
-    public var active: Boolean = false
-
-    constructor(title:String, desc:String): this(title) {
-        this.description = desc
-    }
-}
 
 class EditSkillCard(c: Context, s:Skill): CardView(c){
     init {
@@ -40,7 +32,18 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        //reference the ImageButton and attach to it the camera_floating_context_menu
+        // receive data from showProfileActivity
+        val nickName:String = intent.getStringExtra(getString(R.string.key_nickname)) ?: ""
+        val full_name:String = intent.getStringExtra(getString(R.string.key_full_name)) ?: ""
+        val email:String = intent.getStringExtra(getString(R.string.key_email)) ?: ""
+        val phone:String = intent.getStringExtra(getString(R.string.key_phone_number)) ?: ""
+        val bio:String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
+        val location:String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
+
+        val tvEditName = findViewById<EditText>(R.id.editName)
+        tvEditName.setText(full_name)
+
+            //reference the ImageButton and attach to it the camera_floating_context_menu
         imageButton = findViewById<ImageButton>(R.id.imageButton)
         registerForContextMenu(imageButton)
         imageButton.setOnClickListener { onClick(imageButton) }
@@ -50,7 +53,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         //TODO: place a loop to map the skills
 
         val selectedSkills = findViewById<GridLayout>(R.id.selectedSkills)
-        skills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
+        //sskills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
 
         val card = findViewById<CardView>(R.id.skill1)
         card.setOnClickListener {
