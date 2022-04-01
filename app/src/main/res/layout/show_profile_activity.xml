@@ -82,6 +82,17 @@
             android:paddingBottom="5pt">
 
             <TextView
+                android:id="@+id/UserInformationsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="10pt"
+                android:text="User Informations"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/bio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,6 +173,17 @@
                 </TableRow>
 
             </TableLayout>
+
+            <TextView
+                android:id="@+id/skillsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="10pt"
+                android:text="Skills"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/skills"
