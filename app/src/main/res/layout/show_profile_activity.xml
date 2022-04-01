@@ -24,6 +24,7 @@
             android:id="@+id/profilePicture"
             android:layout_width="128dp"
             android:layout_height="128dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/circle"
             android:clipToOutline="true"
             android:contentDescription="@string/profile_image"
@@ -32,7 +33,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread"
+            app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@mipmap/ic_launcher"
             tools:src="@tools:sample/avatars" />
 
