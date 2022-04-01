@@ -6,87 +6,195 @@
     android:layout_height="match_parent"
     tools:context=".ShowProfileActivity">
 
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_width="192dp"
-        android:layout_height="192dp"
-        android:background="#555555"
-        android:contentDescription="@string/profile_image"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pictureAndName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        tools:src="@tools:sample/avatars" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="297dp"
-        android:layout_height="168dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/profilePicture"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/fullName"
-            android:layout_width="297dp"
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:background="@drawable/circle"
+            android:clipToOutline="true"
+            android:contentDescription="@string/profile_image"
+            app:layout_constraintBottom_toTopOf="@+id/nameAndNickname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread"
+            app:srcCompat="@mipmap/ic_launcher"
+            tools:src="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:id="@+id/nameAndNickname"
+            android:layout_width="259dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:text="@string/full_name"
-            android:textSize="48sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePicture">
 
-        <TextView
-            android:id="@+id/nickname"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:text="@string/nickname"
-            android:textSize="34sp" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/full_name"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/bioLayout"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:text="@string/bio"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/nickName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/nickname" />
+        </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="283dp"
-        android:layout_height="96dp"
-        android:orientation="vertical"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/pictureAndName"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/email"
+        <LinearLayout
+            android:id="@+id/infosAndSkills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/location"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/UserInformationsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="8dp"
+                android:text="User Informations"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/phoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/phone_number"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@string/bio" />
 
-    </LinearLayout>
+            <TableLayout
+                android:id="@+id/basicInfos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <TableRow
+                    android:id="@+id/phoneRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/phoneIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="phone"
+                        app:srcCompat="@drawable/ic_baseline_local_phone_24" />
+
+                    <TextView
+                        android:id="@+id/phoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/phone_number" />
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/emailRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/emailIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="email"
+                        app:srcCompat="@drawable/ic_baseline_email_24" />
+
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/email" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/locationRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/locationIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="location"
+                        app:srcCompat="@drawable/ic_baseline_location_on_24" />
+
+                    <TextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/location" />
+                </TableRow>
+
+            </TableLayout>
+
+            <TextView
+                android:id="@+id/skillsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="8dp"
+                android:text="Skills"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/skills"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
