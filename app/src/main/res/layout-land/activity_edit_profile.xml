@@ -78,7 +78,7 @@
             tools:layout_editor_absoluteX="0dp">
 
             <LinearLayout
-                android:id="@+id/basicInfos"
+                android:id="@+id/infosAndSkills"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
@@ -158,7 +158,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/bio"
+                    android:id="@+id/bioLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Bio"
