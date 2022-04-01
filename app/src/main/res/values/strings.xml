@@ -9,5 +9,6 @@
     <string name="accounting_balance">Accounting_balance</string>
     <string name="available_balance">Available balance</string>
     <string name="profile_image">Profile image</string>
+    <string name="phone_hint">+39 1234567890</string>
 
 </resources>
