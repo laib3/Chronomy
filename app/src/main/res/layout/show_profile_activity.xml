@@ -8,13 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/pictureAndName"
-        android:layout_width="409dp"
-        android:layout_height="247dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
 
         <ImageView
             android:id="@+id/profilePicture"
@@ -62,22 +63,22 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="409dp"
-        android:layout_height="483dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/pictureAndName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pictureAndName">
+        app:layout_constraintTop_toBottomOf="@+id/pictureAndName"
+        app:layout_constraintVertical_weight="2">
 
         <LinearLayout
             android:id="@+id/infosAndSkills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="5pt"
             android:paddingStart="10pt"
+            android:paddingTop="5pt"
             android:paddingEnd="10pt"
             android:paddingBottom="5pt">
 
@@ -102,14 +103,13 @@
             <TableLayout
                 android:id="@+id/basicInfos"
                 android:layout_width="match_parent"
-                android:padding="5pt"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="5pt">
 
                 <TableRow
                     android:id="@+id/phoneRow"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/phoneIcon"
@@ -131,8 +131,7 @@
                 <TableRow
                     android:id="@+id/emailRow"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/emailIcon"
@@ -153,8 +152,7 @@
                 <TableRow
                     android:id="@+id/locationRow"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/locationIcon"
