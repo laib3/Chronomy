@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="key_full_name">group02.lab1.fullname</string>
+    <string name="key_name">group02.lab1.name</string>
+    <string name="key_surname">group02.lab1.surname</string>
     <string name="key_nickname">group02.lab1.nickname</string>
     <string name="key_email">group02.lab1.email</string>
     <string name="key_phone_number">group02.lab1.phone</string>
