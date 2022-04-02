@@ -20,15 +20,7 @@ import androidx.cardview.widget.CardView
 
 
 
-class SkillCard(c: Context, s:Skill): CardView(c){
-    init {
-        LayoutInflater.from(c).inflate(R.layout.skill_card, this, true)
-        val cardTitle = findViewById<TextView>(R.id.skillTitle)
-        cardTitle.text = s.title
-        val desc = findViewById<TextView>(R.id.skillDescription)
-        desc.text = s.description
-    }
-}
+
 
 class ShowProfileActivity: AppCompatActivity() {
 
@@ -79,17 +71,24 @@ class ShowProfileActivity: AppCompatActivity() {
         loadContent()
 
         val skills:MutableList<Skill> = mutableListOf<Skill>()
-        skills.add(Skill("Gardening", "I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"))
-        skills.add(Skill("Home Repair", "I can fix your home appliance"))
-        skills.add(Skill("Child Care", "Babysit your kids"))
-        skills.add(Skill("Transportation", ""))
+        // TO BE CHANGED LATER: initialize list of skills void and not active, if not loaded from memory (second time)
+        // can use maybe a function called createSkills if loaded skills are empty
+        skills.add(Skill("Gardening", "gardening", true ,"I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"))
+        skills.add(Skill("Home Repair", "home_repair", true, "I can fix your home appliance"))
+        skills.add(Skill("Child Care", "child_care", true,"Babysit your kids"))
+        skills.add(Skill("Transportation", "transportation", true,  ""))
+        skills.add(Skill("Tutoring", "tutoring"))
+        skills.add(Skill("Wellness", "wellness"))
+        skills.add(Skill("Delivery", "delivery"))
+        skills.add(Skill("Companionship", "companionship"))
+        skills.add(Skill("Other", "other"))
 
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
 
         val skillsLayout = findViewById<LinearLayout>(R.id.skills)
         // map skills to skill cards and add them to the layout
-        skills.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
+        skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {

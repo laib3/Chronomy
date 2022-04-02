@@ -56,6 +56,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         //sskills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
 
         val card = findViewById<CardView>(R.id.skill1)
+        //val card = findViewById<CardView>(R.id.skillCard)
         card.setOnClickListener {
             //inflate the dialog with custom view
             val mDialogView = layoutInflater.inflate(R.layout.skill_edit_modal, null)
