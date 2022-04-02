@@ -1,8 +1,6 @@
 package it.polito.showprofileactivity
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -25,9 +23,9 @@ import androidx.cardview.widget.CardView
 class SkillCard(c: Context, s:Skill): CardView(c){
     init {
         LayoutInflater.from(c).inflate(R.layout.skill_card, this, true)
-        val cardTitle = findViewById<TextView>(R.id.cardTitle)
+        val cardTitle = findViewById<TextView>(R.id.skillTitle)
         cardTitle.text = s.title
-        val desc = findViewById<TextView>(R.id.cardDescription)
+        val desc = findViewById<TextView>(R.id.skillDescription)
         desc.text = s.description
     }
 }
@@ -81,10 +79,10 @@ class ShowProfileActivity: AppCompatActivity() {
         loadContent()
 
         val skills:MutableList<Skill> = mutableListOf<Skill>()
-        skills.add(Skill("Giardinaggio", "Potare le piante"))
-        skills.add(Skill("Cucina", "Lavare i piatti"))
-        skills.add(Skill("ChildCare", "Badare ai bambini"))
-        skills.add(Skill("Guida"))
+        skills.add(Skill("Gardening", "I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"))
+        skills.add(Skill("Home Repair", "I can fix your home appliance"))
+        skills.add(Skill("Child Care", "Babysit your kids"))
+        skills.add(Skill("Transportation", ""))
 
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
