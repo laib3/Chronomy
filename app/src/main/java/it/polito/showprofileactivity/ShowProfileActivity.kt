@@ -44,6 +44,13 @@ class ShowProfileActivity: AppCompatActivity() {
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
+    fun createSkills () : List<Skill>{
+        // return a list of skills that contains all the titles present in skill.xml file
+        // src of a skill is the name with spaces replaced with underscore and lowercase
+        val skills:MutableList<Skill> = mutableListOf<Skill>()
+        resources.getStringArray(R.array.skills_array).forEach{ s -> skills.add(Skill(s, s.lowercase().replace(" ", "_"))) }
+        return skills
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -70,24 +77,44 @@ class ShowProfileActivity: AppCompatActivity() {
         // load from shared resources */
         loadContent()
 
-        val skills:MutableList<Skill> = mutableListOf<Skill>()
+        //val skills:MutableList<Skill> = mutableListOf<Skill>()
         // TO BE CHANGED LATER: initialize list of skills void and not active, if not loaded from memory (second time)
         // can use maybe a function called createSkills if loaded skills are empty
-        skills.add(Skill("Gardening", "gardening", true ,"I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"))
-        skills.add(Skill("Home Repair", "home_repair", true, "I can fix your home appliance"))
-        skills.add(Skill("Child Care", "child_care", true,"Babysit your kids"))
-        skills.add(Skill("Transportation", "transportation", true,  ""))
-        skills.add(Skill("Tutoring", "tutoring"))
-        skills.add(Skill("Wellness", "wellness"))
-        skills.add(Skill("Delivery", "delivery"))
-        skills.add(Skill("Companionship", "companionship"))
-        skills.add(Skill("Other", "other"))
+        //skills.add(Skill("Gardening", "gardening", true ,"I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"))
+        //skills.add(Skill("Home Repair", "home_repair", true, "I can fix your home appliance"))
+        //skills.add(Skill("Child Care", "child_care", true,"Babysit your kids"))
+        //skills.add(Skill("Transportation", "transportation", true,  ""))
+        //skills.add(Skill("Tutoring", "tutoring"))
+        //skills.add(Skill("Wellness", "wellness"))
+        //skills.add(Skill("Delivery", "delivery"))
+        //skills.add(Skill("Companionship", "companionship"))
+        //skills.add(Skill("Other", "other"))
+
+        val skills = createSkills()
+
+        // just static adding for testing TODO: REMOVE
+        skills.find { s -> s.title == "Gardening" }.apply {
+            this?.active = true
+            this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
+        }
+        skills.find { s -> s.title == "Home Repair" }.apply {
+            this?.active = true
+            this?.description ="I can fix your home appliance"
+        }
+        skills.find { s -> s.title == "Child Care" }.apply {
+            this?.active = true
+            this?.description ="Babysit your kids"
+        }
+        skills.find { s -> s.title == "Transportation" }.apply {
+            this?.active = true
+        }
+        // TODO: REMOVE
 
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
 
         val skillsLayout = findViewById<LinearLayout>(R.id.skills)
-        // map skills to skill cards and add them to the layout
+        // map active skills to skill cards and add them to the layout
         skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->

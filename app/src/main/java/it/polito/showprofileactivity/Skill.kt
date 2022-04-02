@@ -33,3 +33,4 @@ class Skill (var title:String, var src:String){
         this. active = active
     }
 }
+
