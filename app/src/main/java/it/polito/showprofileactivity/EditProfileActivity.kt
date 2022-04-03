@@ -27,7 +27,6 @@ class EditSkillCard(c: Context, s: Skill) : CardView(c) {
         skillIcon.setImageResource(skill_icon_id)
     }
 }
-
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var imageButton: ImageButton
     lateinit var radioGroup: RadioGroup
@@ -62,8 +61,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         imageButton.setOnClickListener { onClick(imageButton) }
 
         //get all the skills and map them into cards
-        val skills_array: List<Skill> = resources.getStringArray(R.array.skills_array).map { it -> Skill(it) }
-
+        val skills_array: List<Skill> = resources.getStringArray(R.array.skills_array).map { it -> Skill(it, it.lowercase().replace(" ", "_")) }
         val selectedSkills = findViewById<GridLayout>(R.id.selectedSkills)
         skills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
 
