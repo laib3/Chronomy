@@ -25,21 +25,25 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_marginTop="100dp"
-        android:background="#555555"
         android:contentDescription="@string/profile_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_gallery"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:background="@drawable/circle"
+        android:clipToOutline="true"
+        />
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="63dp"
-        android:layout_height="54dp"
+        android:layout_width="56dp"
+        android:layout_height="51dp"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
+        android:background="@drawable/circle"
+        android:clipToOutline="true"
         android:cropToPadding="false"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
@@ -136,6 +140,7 @@
                 app:layout_constraintStart_toStartOf="@+id/editSurname"
                 app:layout_constraintTop_toBottomOf="@+id/editSurname" />
 
+
             <EditText
                 android:id="@+id/editNickname"
                 android:layout_width="0dp"
@@ -143,9 +148,9 @@
                 android:inputType="text"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/nickname"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/nickname"
                 app:layout_constraintTop_toBottomOf="@+id/nickname" />
-
 
             <TextView
                 android:id="@+id/bio"

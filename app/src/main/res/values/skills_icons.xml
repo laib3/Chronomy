@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="skills_icons">
+        <item name="Gardening">gardening</item>
+        <item name="Tutoring">tutoring</item>
+        <item name="Child Care">child_care</item>
+        <item name="Odd jobs">odd_jobs</item>
+        <item name="Home repairs">home_repair</item>
+        <item name="Wellness">wellness</item>
+        <item name="Delivery">delivery</item>
+        <item name="Transportations">transportation</item>
+        <item name="Companionship">companionship</item>
+        <item name="Other">other</item>
+    </string-array>
+</resources>
