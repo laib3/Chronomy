@@ -1,10 +1,10 @@
 package it.polito.showprofileactivity
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import android.content.Context as Context
 
 class SkillCard(c: Context, s:Skill): CardView(c){
     init {
@@ -30,7 +30,7 @@ class Skill (var title:String, var src:String){
     constructor(title:String, src:String, active:Boolean, desc:String): this(title, src) {
         this.description = desc
         this.src = src
-        this. active = active
+        this.active = active
     }
 }
 

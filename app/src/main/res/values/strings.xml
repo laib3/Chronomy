@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShowProfileActivity</string>
+    <string name="app_name">Chronomy</string>
     <string name="full_name">Mario Rossi</string>
     <string name="nickname">SuperMario</string>
     <string name="email">mario@rossi.com</string>
