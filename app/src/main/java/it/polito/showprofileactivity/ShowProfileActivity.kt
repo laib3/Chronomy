@@ -24,14 +24,14 @@ import androidx.cardview.widget.CardView
 
 class ShowProfileActivity: AppCompatActivity() {
 
-    /*
+
     lateinit var tvFullName: TextView
     lateinit var tvNickName: TextView
     lateinit var tvBio: TextView
     lateinit var tvEmail: TextView
     lateinit var tvPhoneNumber: TextView
     lateinit var tvLocation: TextView
-    */
+
 
     private val SHPR_NAME:String = "sharedPreferences"
 
@@ -58,14 +58,14 @@ class ShowProfileActivity: AppCompatActivity() {
 
 
 
-        /*
+
         tvFullName = findViewById(R.id.name)
         tvNickName = findViewById(R.id.nickName)
         tvBio = findViewById(R.id.bio)
         tvEmail = findViewById(R.id.email)
         tvPhoneNumber = findViewById(R.id.phoneNumber)
         tvLocation = findViewById(R.id.location)
-        */
+
 
         // save content to shared resources
         saveContent("Mario Rossi",
@@ -119,9 +119,14 @@ class ShowProfileActivity: AppCompatActivity() {
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
+                val i = result.data
                 // Handle the Intent
-
+                tvFullName.text = i?.getStringExtra(getString(R.string.key_full_name)) ?: ""
+                tvNickName.text = i?.getStringExtra(getString(R.string.key_nickname)) ?: ""
+                tvBio.text = i?.getStringExtra(getString(R.string.key_bio)) ?: ""
+                tvEmail.text = i?.getStringExtra(getString(R.string.key_email)) ?: ""
+                tvPhoneNumber.text = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
+                tvLocation.text = i?.getStringExtra(getString(R.string.key_location)) ?: ""
             }
         }
 
