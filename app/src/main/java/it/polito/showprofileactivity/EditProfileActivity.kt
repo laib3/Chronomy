@@ -11,23 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
-class EditSkillCard(c: Context, s: Skill) : CardView(c) {
-    init {
-        LayoutInflater.from(c).inflate(R.layout.skill_edit_card, this, true)
-        val cardTitle = findViewById<TextView>(R.id.skill_name)
-        val skillIcon = findViewById<ImageView>(R.id.skill_icon)
-        cardTitle.text = s.title
-
-        val skills_array: Array<String> = resources.getStringArray(R.array.skills_array)
-        val index = skills_array.indexOf(s.title)
-        val icon = resources.getStringArray(R.array.skills_icons)[index]
-        val skill_icon_id: Int = resources.getIdentifier(icon, "array", BuildConfig.APPLICATION_ID)
-
-        //FIXME: questa funzione vuole un ID, devo cercare di prendere l'id della stringa che voglio
-        skillIcon.setImageResource(skill_icon_id)
-    }
-}
-class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
+class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
     lateinit var radioGroup: RadioGroup
 
@@ -39,10 +23,14 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var etEditPhone: EditText
     lateinit var etEditLocation: EditText
 
+    lateinit var selectedSkills :LinearLayout
+    lateinit var notSelectedSkills : LinearLayout
+
+    lateinit var skills : List<Skill>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
-
 
        etEditName = findViewById(R.id.editName)
        etEditSurname = findViewById(R.id.editSurname)
@@ -60,38 +48,37 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         registerForContextMenu(imageButton)
         imageButton.setOnClickListener { onClick(imageButton) }
 
-        //get all the skills and map them into cards
-        val skills_array: List<Skill> = resources.getStringArray(R.array.skills_array).map { it -> Skill(it, it.lowercase().replace(" ", "_")) }
-        val selectedSkills = findViewById<GridLayout>(R.id.selectedSkills)
-        skills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
+        skills = createSkills(this)
 
-        val card = findViewById<CardView>(R.id.skill1)
-        //val card = findViewById<CardView>(R.id.skillCard)
-        card.setOnClickListener {
-            //inflate the dialog with custom view
-            val mDialogView = layoutInflater.inflate(R.layout.skill_edit_modal, null)
-            val question = mDialogView.findViewById<TextView>(R.id.question)
-            question.setText("Is ${skills_array[0].toString().lowercase()} one of your skills?")
-            //AlertDialogBuilder + show
-            val mBuilder = AlertDialog.Builder(this)
-                .setView(mDialogView)
-            //.setTitle("Edit Skill")
-            val mAlertDialog = mBuilder.show()
-            //dismiss button
-            val close_button = mDialogView.findViewById<ImageView>(R.id.close_button)
-            close_button.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-            val save_button = mDialogView.findViewById<Button>(R.id.save_button)
-            save_button.setOnClickListener {
-                radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
-                val radioId = radioGroup.checkedRadioButtonId;
-                val radioButton = mDialogView.findViewById<RadioButton>(radioId)
-                //TODO: actual save
-                Toast.makeText(this, "Selected ${radioButton.text}", Toast.LENGTH_LONG).show()
-                mAlertDialog.dismiss()
-            }
+        // just static adding for testing TODO: REMOVE
+        skills.find { s -> s.title == "Gardening" }.apply {
+            this?.active = true
+            this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
         }
+        skills.find { s -> s.title == "Home Repair" }.apply {
+            this?.active = true
+            this?.description ="I can fix your home appliance"
+        }
+        skills.find { s -> s.title == "Child Care" }.apply {
+            this?.active = true
+            this?.description ="Babysit your kids"
+        }
+        skills.find { s -> s.title == "Transportation" }.apply {
+            this?.active = true
+            this?.description ="I can bring pizza to your house and have a chat with you!"
+        }
+        // TODO: REMOVE
+
+        refreshSkills()
+
+    }
+
+    public fun refreshSkills(){
+        //get all the skills and map them into cards
+        selectedSkills = findViewById<LinearLayout>(R.id.selectedSkills)
+        notSelectedSkills = findViewById<LinearLayout>(R.id.notSelectedSkills)
+        skills.filter{ s -> s.active}.forEach {s -> selectedSkills.addView(SkillCard(this, s)) }
+        skills.filter{ s -> !s.active}.forEach {s -> notSelectedSkills.addView(SkillCard(this, s)) }
     }
 
     override fun onClick(v: View?) {
