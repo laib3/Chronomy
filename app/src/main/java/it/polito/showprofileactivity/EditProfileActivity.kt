@@ -69,16 +69,66 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         }
         // TODO: REMOVE
 
+        //get all the skills and map them into cards
         refreshSkills()
 
     }
 
-    public fun refreshSkills(){
-        //get all the skills and map them into cards
+    private fun refreshSkills(){
         selectedSkills = findViewById<LinearLayout>(R.id.selectedSkills)
         notSelectedSkills = findViewById<LinearLayout>(R.id.notSelectedSkills)
-        skills.filter{ s -> s.active}.forEach {s -> selectedSkills.addView(SkillCard(this, s)) }
-        skills.filter{ s -> !s.active}.forEach {s -> notSelectedSkills.addView(SkillCard(this, s)) }
+        selectedSkills.removeAllViews()
+        notSelectedSkills.removeAllViews()
+        skills.filter{ s -> s.active}.forEach {s -> populate(selectedSkills, s)}
+        skills.filter{ s -> !s.active}.forEach  {s -> populate(notSelectedSkills, s)}
+
+    }
+
+    private fun populate (l:LinearLayout, s:Skill){
+        val card = SkillCard(this, s)
+        card.setOnClickListener {
+            //inflate the dialog with custom view
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.skill_edit_modal, null)
+
+            val title = mDialogView.findViewById<TextView>(R.id.modalTitle)
+            title.text = "Edit ${s.title}"
+            val question = mDialogView.findViewById<TextView>(R.id.question)
+            question.text = "Is ${s.title.toString().lowercase()} one of your skills?"
+
+            val radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
+            val radioButtonYES = radioGroup.findViewById<RadioButton>(R.id.radioButtonYES)
+            val radioButtonNO = radioGroup.findViewById<RadioButton>(R.id.radioButtonNO)
+            radioButtonYES.isChecked = s.active
+            radioButtonNO.isChecked = !s.active
+
+            val description = mDialogView.findViewById<EditText>(R.id.editDescription)
+            description.setText(s.description)
+
+            //AlertDialogBuilder + show
+            val mBuilder = android.app.AlertDialog.Builder(this)
+                .setView(mDialogView)
+            //.setTitle("Edit Skill")
+            val mAlertDialog = mBuilder.show()
+            //dismiss button
+            val closeButton = mDialogView.findViewById<ImageView>(R.id.close_button)
+            closeButton.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+            val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
+            saveButton.setOnClickListener {
+                val radioId = radioGroup.checkedRadioButtonId;
+                val radioButton = mDialogView.findViewById<RadioButton>(radioId)
+                //TODO: actual save
+                s.active = radioButtonYES.isChecked
+                s.description = description.text.toString()
+                val desc = card.findViewById<TextView>(R.id.skillDescription)
+                desc.text = s.description
+                refreshSkills()
+                Toast.makeText(this, "Selected ${radioButton.text}", Toast.LENGTH_LONG).show()
+                mAlertDialog.dismiss()
+            }
+        }
+        l.addView(card)
     }
 
     override fun onClick(v: View?) {

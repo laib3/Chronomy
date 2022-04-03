@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
+        app:srcCompat="@drawable/profile_pic_1"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
@@ -324,112 +324,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Skills" />
 
-            <GridLayout
+            <LinearLayout
                 android:id="@+id/selectedSkills"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
                 app:layout_constraintEnd_toEndOf="@+id/selected"
                 app:layout_constraintStart_toStartOf="@+id/selected"
-                app:layout_constraintTop_toBottomOf="@+id/selected">
+                app:layout_constraintTop_toBottomOf="@+id/selected"
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/skill1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:layout_column="1"
-                    app:layout_gravity="fill"
-                    app:layout_row="0"
-                    app:layout_rowWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="61dp"
-                            android:layout_height="63dp"
-                            android:src="@drawable/gardening"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="4dp"
-                                android:text="Gardening"
-                                android:textColor="#000000"
-                                android:textSize="18sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:layout_column="1"
-                    app:layout_gravity="fill"
-                    app:layout_row="0"
-                    app:layout_rowWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="61dp"
-                            android:layout_height="63dp"
-                            android:src="@drawable/child_care"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="4dp"
-                                android:text="Child Care"
-                                android:textColor="#000000"
-                                android:textSize="18sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-            </GridLayout>
-
+            </LinearLayout>
             <TextView
                 android:id="@+id/notSelected"
                 android:layout_width="0dp"
@@ -443,108 +347,18 @@
                 app:layout_constraintStart_toStartOf="@+id/selectedSkills"
                 app:layout_constraintTop_toBottomOf="@+id/selectedSkills" />
 
-            <GridLayout
+            <LinearLayout
                 android:id="@+id/notSelectedSkills"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
                 app:layout_constraintEnd_toEndOf="@+id/notSelected"
                 app:layout_constraintStart_toStartOf="@+id/notSelected"
-                app:layout_constraintTop_toBottomOf="@+id/notSelected">
+                app:layout_constraintTop_toBottomOf="@+id/notSelected"
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:layout_column="1"
-                    app:layout_gravity="fill"
-                    app:layout_row="0"
-                    app:layout_rowWeight="1">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+            </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="61dp"
-                            android:layout_height="63dp"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="4dp"
-                                android:text="Gardening"
-                                android:textColor="#000000"
-                                android:textSize="18sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp"
-                    app:layout_column="1"
-                    app:layout_gravity="fill"
-                    app:layout_row="0"
-                    app:layout_rowWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="61dp"
-                            android:layout_height="63dp"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="4dp"
-                                android:text="Child Care"
-                                android:textColor="#000000"
-                                android:textSize="18sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-            </GridLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,14 +12,14 @@ class SkillCard(c: Context, s:Skill): CardView(c){
     init {
         LayoutInflater.from(c).inflate(R.layout.skill_card, this, true)
         val cardTitle = findViewById<TextView>(R.id.skillTitle)
-        cardTitle.text = s.title+s.active.toString()
+        cardTitle.text = s.title
         val desc = findViewById<TextView>(R.id.skillDescription)
         desc.text = s.description
         val icon = findViewById<ImageView>(R.id.skillIcon)
         icon.contentDescription = s.title + " icon"
         icon.setImageResource(resources.getIdentifier(s.src, "drawable", "it.polito.showprofileactivity" ))
 
-        this.setOnClickListener {
+        /*this.setOnClickListener {
             //inflate the dialog with custom view
             val mDialogView = LayoutInflater.from(c).inflate(R.layout.skill_edit_modal, null)
 
@@ -59,7 +59,7 @@ class SkillCard(c: Context, s:Skill): CardView(c){
                 mAlertDialog.dismiss()
             }
         }
-
+*/
     }
 }
 
