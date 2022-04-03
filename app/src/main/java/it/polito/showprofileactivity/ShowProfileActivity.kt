@@ -36,7 +36,6 @@ class ShowProfileActivity: AppCompatActivity() {
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
-    // extension function: convert a list of skills to a JSON string
     private fun skillsToJSON():String {
         return skills.map{s -> s.toJSON()}.joinToString(separator = "},{", prefix ="[{", postfix = "}]")
     }
