@@ -32,5 +32,9 @@ class Skill (var title:String, var src:String){
         this.src = src
         this.active = active
     }
+
+    public fun toJSON():String{
+        return """"title":$title, "description":$description", "active":"$active", "src":"$src""""
+    }
 }
 
