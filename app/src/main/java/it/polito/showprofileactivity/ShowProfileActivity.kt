@@ -45,7 +45,7 @@ class ShowProfileActivity: AppCompatActivity() {
         // src of a skill is the name with spaces replaced with underscore and lowercase
         skills = mutableListOf()
         resources.getStringArray(R.array.skills_array).forEach{ s -> (skills as MutableList<Skill>).add(Skill(s, s.lowercase().replace(" ", "_"))) }
-        // TODO: REMOVE
+        // TODO: remove
         // just static adding for testing
         skills.find { s -> s.title == "Gardening" }.apply {
             this?.active = true
@@ -157,8 +157,7 @@ class ShowProfileActivity: AppCompatActivity() {
         val tvLocation = findViewById<TextView>(R.id.location)
         val skillsLayout = findViewById<LinearLayout>(R.id.skills)
 
-        // TODO use placeholder
-        tvFullName.text = "$name $surname"
+        tvFullName.text = String.format(getString(R.string.fullname_placeholder), name, surname)
         tvBio.text = bio
         tvNickName.text = nickname
         tvEmail.text = email
@@ -180,8 +179,8 @@ class ShowProfileActivity: AppCompatActivity() {
         i.putExtra(getString(R.string.key_email), email)
         i.putExtra(getString(R.string.key_phone_number), phone)
         i.putExtra(getString(R.string.key_location), location)
+        i.putExtra(getString(R.string.key_skills), skillsToJSON())
 
-        // TODO pass skills
         startForResult.launch(i)
     }
 
