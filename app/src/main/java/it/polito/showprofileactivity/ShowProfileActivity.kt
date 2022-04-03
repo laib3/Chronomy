@@ -43,7 +43,6 @@ class ShowProfileActivity: AppCompatActivity() {
     private val LOCATION_KEY:String = "group02.lab1.location"
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
-
     fun createSkills () : List<Skill>{
         // return a list of skills that contains all the titles present in skill.xml file
         // src of a skill is the name with spaces replaced with underscore and lowercase
@@ -51,6 +50,7 @@ class ShowProfileActivity: AppCompatActivity() {
         resources.getStringArray(R.array.skills_array).forEach{ s -> skills.add(Skill(s, s.lowercase().replace(" ", "_"))) }
         return skills
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
