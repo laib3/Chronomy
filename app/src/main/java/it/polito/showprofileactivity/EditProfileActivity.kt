@@ -1,6 +1,8 @@
 package it.polito.showprofileactivity
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -11,23 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
-class EditSkillCard(c: Context, s: Skill) : CardView(c) {
-    init {
-        LayoutInflater.from(c).inflate(R.layout.skill_edit_card, this, true)
-        val cardTitle = findViewById<TextView>(R.id.skill_name)
-        val skillIcon = findViewById<ImageView>(R.id.skill_icon)
-        cardTitle.text = s.title
-
-        val skills_array: Array<String> = resources.getStringArray(R.array.skills_array)
-        val index = skills_array.indexOf(s.title)
-        val icon = resources.getStringArray(R.array.skills_icons)[index]
-        val skill_icon_id: Int = resources.getIdentifier(icon, "array", BuildConfig.APPLICATION_ID)
-
-        //FIXME: questa funzione vuole un ID, devo cercare di prendere l'id della stringa che voglio
-        skillIcon.setImageResource(skill_icon_id)
-    }
-}
-class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
+class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
     lateinit var radioGroup: RadioGroup
 
@@ -39,10 +25,14 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var etEditPhone: EditText
     lateinit var etEditLocation: EditText
 
+    lateinit var selectedSkills :LinearLayout
+    lateinit var notSelectedSkills : LinearLayout
+
+    lateinit var skills : List<Skill>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
-
 
        etEditName = findViewById(R.id.editName)
        etEditSurname = findViewById(R.id.editSurname)
@@ -52,7 +42,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
        etEditPhone = findViewById(R.id.editPhoneNumber)
        etEditLocation = findViewById(R.id.editLocation)
 
-        //place data received from intent into the correct EditText
+        //place data received from INTENT into the correct EditText
         placeData()
 
         //reference the ImageButton and attach to it the camera_floating_context_menu
@@ -60,38 +50,87 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         registerForContextMenu(imageButton)
         imageButton.setOnClickListener { onClick(imageButton) }
 
-        //get all the skills and map them into cards
-        val skills_array: List<Skill> = resources.getStringArray(R.array.skills_array).map { it -> Skill(it, it.lowercase().replace(" ", "_")) }
-        val selectedSkills = findViewById<GridLayout>(R.id.selectedSkills)
-        skills_array.forEach{ s->selectedSkills.addView(EditSkillCard(this, s))}
+        skills = createSkills(this)
 
-        val card = findViewById<CardView>(R.id.skill1)
-        //val card = findViewById<CardView>(R.id.skillCard)
+        // just static adding for testing TODO: REMOVE
+        skills.find { s -> s.title == "Gardening" }.apply {
+            this?.active = true
+            this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
+        }
+        skills.find { s -> s.title == "Home Repair" }.apply {
+            this?.active = true
+            this?.description ="I can fix your home appliance"
+        }
+        skills.find { s -> s.title == "Child Care" }.apply {
+            this?.active = true
+            this?.description ="Babysit your kids"
+        }
+        skills.find { s -> s.title == "Transportation" }.apply {
+            this?.active = true
+            this?.description ="I can bring pizza to your house and have a chat with you!"
+        }
+        // TODO: REMOVE
+
+        //get all the skills and map them into cards
+        refreshSkills()
+
+    }
+
+    private fun refreshSkills(){
+        selectedSkills = findViewById<LinearLayout>(R.id.selectedSkills)
+        notSelectedSkills = findViewById<LinearLayout>(R.id.notSelectedSkills)
+        selectedSkills.removeAllViews()
+        notSelectedSkills.removeAllViews()
+        skills.filter{ s -> s.active}.forEach {s -> populate(selectedSkills, s)}
+        skills.filter{ s -> !s.active}.forEach  {s -> populate(notSelectedSkills, s)}
+
+    }
+
+    private fun populate (l:LinearLayout, s:Skill){
+        val card = SkillCard(this, s)
         card.setOnClickListener {
             //inflate the dialog with custom view
-            val mDialogView = layoutInflater.inflate(R.layout.skill_edit_modal, null)
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.skill_edit_modal, null)
+
+            val title = mDialogView.findViewById<TextView>(R.id.modalTitle)
+            title.text = "Edit ${s.title}"
             val question = mDialogView.findViewById<TextView>(R.id.question)
-            question.setText("Is ${skills_array[0].toString().lowercase()} one of your skills?")
+            question.text = "Is ${s.title.toString().lowercase()} one of your skills?"
+
+            val radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
+            val radioButtonYES = radioGroup.findViewById<RadioButton>(R.id.radioButtonYES)
+            val radioButtonNO = radioGroup.findViewById<RadioButton>(R.id.radioButtonNO)
+            radioButtonYES.isChecked = s.active
+            radioButtonNO.isChecked = !s.active
+
+            val description = mDialogView.findViewById<EditText>(R.id.editDescription)
+            description.setText(s.description)
+
             //AlertDialogBuilder + show
-            val mBuilder = AlertDialog.Builder(this)
+            val mBuilder = android.app.AlertDialog.Builder(this)
                 .setView(mDialogView)
             //.setTitle("Edit Skill")
             val mAlertDialog = mBuilder.show()
             //dismiss button
-            val close_button = mDialogView.findViewById<ImageView>(R.id.close_button)
-            close_button.setOnClickListener {
+            val closeButton = mDialogView.findViewById<ImageView>(R.id.close_button)
+            closeButton.setOnClickListener {
                 mAlertDialog.dismiss()
             }
-            val save_button = mDialogView.findViewById<Button>(R.id.save_button)
-            save_button.setOnClickListener {
-                radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
+            val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
+            saveButton.setOnClickListener {
                 val radioId = radioGroup.checkedRadioButtonId;
                 val radioButton = mDialogView.findViewById<RadioButton>(radioId)
                 //TODO: actual save
+                s.active = radioButtonYES.isChecked
+                s.description = description.text.toString()
+                val desc = card.findViewById<TextView>(R.id.skillDescription)
+                desc.text = s.description
+                refreshSkills()
                 Toast.makeText(this, "Selected ${radioButton.text}", Toast.LENGTH_LONG).show()
                 mAlertDialog.dismiss()
             }
         }
+        l.addView(card)
     }
 
     override fun onClick(v: View?) {
@@ -138,5 +177,21 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         etEditPhone.setText(phone)
         etEditBio.setText(bio)
         etEditLocation.setText(location)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val i = Intent()
+
+        i.putExtra(getString(R.string.key_name), etEditName.text)
+        i.putExtra(getString(R.string.key_surname), etEditSurname.text)
+        i.putExtra(getString(R.string.key_nickname), etEditNickname.text)
+        i.putExtra(getString(R.string.key_bio), etEditBio.text)
+        i.putExtra(getString(R.string.key_email),etEditEmail.text )
+        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text )
+        i.putExtra(getString(R.string.key_location), etEditLocation.text )
+
+        setResult(Activity.RESULT_OK, i)
+        finish()
     }
 }
