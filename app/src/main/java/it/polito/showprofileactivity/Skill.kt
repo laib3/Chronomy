@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.widget.*
 import androidx.cardview.widget.CardView
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.Calendar.getInstance
 import android.content.Context as Context
 
@@ -85,7 +87,37 @@ class Skill (var title:String, var src:String){
 fun createSkills (c:Context) : List<Skill>{
     // return a list of skills that contains all the titles present in skill.xml file
     // src of a skill is the name with spaces replaced with underscore and lowercase
-    val skills:MutableList<Skill> = mutableListOf<Skill>()
-    c.resources.getStringArray(R.array.skills_array).forEach{ s -> skills.add(Skill(s, s.lowercase().replace(" ", "_"))) }
+    val skills: MutableList<Skill> = mutableListOf()
+    c.resources.getStringArray(R.array.skills_array).forEach{ s -> (skills as MutableList<Skill>).add(Skill(s, s.lowercase().replace(" ", "_"))) }
+    // TODO: remove
+    // just static adding for testing
+    skills.find { s -> s.title == "Gardening" }.apply {
+        this?.active = true
+        this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
+    }
+    skills.find { s -> s.title == "Home Repair" }.apply {
+        this?.active = true
+        this?.description ="I can fix your home appliance"
+    }
+    skills.find { s -> s.title == "Child Care" }.apply {
+        this?.active = true
+        this?.description ="Babysit your kids"
+    }
+    skills.find { s -> s.title == "Transportation" }.apply {
+        this?.active = true
+    }
     return skills
+}
+
+fun jsonToSkills(jsonArray: JSONArray): List<Skill>{
+    val jobjects:MutableList<JSONObject> = mutableListOf()
+    for(i in 0 until jsonArray.length()){
+        val jo = jsonArray.getJSONObject(i)
+        jobjects.add(jo)
+    }
+    return jobjects.map{ jo -> Skill(jo.getString("title"), jo.getString("src"), jo.getBoolean("active"), jo.getString("description")) }
+}
+
+fun skillsToJsonString(skills: List<Skill>):String {
+    return skills.map{s -> s.toJSON()}.joinToString(separator = "},{", prefix ="[{", postfix = "}]")
 }
