@@ -1,12 +1,10 @@
 package it.polito.showprofileactivity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -36,35 +34,6 @@ class ShowProfileActivity: AppCompatActivity() {
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
-    private fun skillsToJSON():String {
-        return skills.map{s -> s.toJSON()}.joinToString(separator = "},{", prefix ="[{", postfix = "}]")
-    }
-
-    fun createSkills () : List<Skill>{
-        // return a list of skills that contains all the titles present in skill.xml file
-        // src of a skill is the name with spaces replaced with underscore and lowercase
-        skills = mutableListOf()
-        resources.getStringArray(R.array.skills_array).forEach{ s -> (skills as MutableList<Skill>).add(Skill(s, s.lowercase().replace(" ", "_"))) }
-        // TODO: remove
-        // just static adding for testing
-        skills.find { s -> s.title == "Gardening" }.apply {
-            this?.active = true
-            this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
-        }
-        skills.find { s -> s.title == "Home Repair" }.apply {
-            this?.active = true
-            this?.description ="I can fix your home appliance"
-        }
-        skills.find { s -> s.title == "Child Care" }.apply {
-            this?.active = true
-            this?.description ="Babysit your kids"
-        }
-        skills.find { s -> s.title == "Transportation" }.apply {
-            this?.active = true
-        }
-        return skills
-    }
-
     // TODO remove
     // only for testing purposes
     private fun createProfile() {
@@ -84,7 +53,7 @@ class ShowProfileActivity: AppCompatActivity() {
 
         // TODO remove
         createProfile()
-        skills = createSkills()
+        skills = createSkills(this)
 
         // TODO remove (the content should be only loaded from shared memory)
         saveContent()
@@ -98,15 +67,20 @@ class ShowProfileActivity: AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val i = result.data
                 // Handle the Intent
-                name = (i?.getStringExtra(getString(R.string.key_name)) ?: "")
-                surname = (i?.getStringExtra(getString(R.string.key_surname)) ?: "")
-                nickname = (i?.getStringExtra(getString(R.string.key_nickname)) ?: "")
-                bio = (i?.getStringExtra(getString(R.string.key_bio)) ?: "")
-                email = (i?.getStringExtra(getString(R.string.key_email)) ?: "")
-                phone = (i?.getStringExtra(getString(R.string.key_phone_number)) ?: "")
-                location = (i?.getStringExtra(getString(R.string.key_location)) ?: "")
+                name = i?.getStringExtra(getString(R.string.key_name)) ?: ""
+                surname = i?.getStringExtra(getString(R.string.key_surname)) ?: ""
+                nickname = i?.getStringExtra(getString(R.string.key_nickname)) ?: ""
+                bio = i?.getStringExtra(getString(R.string.key_bio)) ?: ""
+                email = i?.getStringExtra(getString(R.string.key_email)) ?: ""
+                phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
+                location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
+
+                //TODO: PROBLEM HERE
+                val skills_: String = i?.getStringExtra(getString(R.string.key_skills)) ?: ""
+                skills = jsonToSkills(JSONArray(skills_))
+
                 saveContent()
-                loadContent()
+                //loadContent()
                 updateView()
             }
         }
@@ -117,7 +91,8 @@ class ShowProfileActivity: AppCompatActivity() {
         val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         // put a profile string in the shared preferences
-        val jsonSkills:String = skillsToJSON()
+        val jsonSkills:String = skillsToJsonString(skills)
+
         val profileString:String = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "skills":$jsonSkills }""".trimIndent()
         editor.putString(PROFILE, profileString)
         // save
@@ -137,14 +112,7 @@ class ShowProfileActivity: AppCompatActivity() {
         email = jobj.getString("email")
         phone = jobj.getString("phone")
         location = jobj.getString("location")
-
-        val array: JSONArray = jobj.getJSONArray("skills")
-        val jobjects:MutableList<JSONObject> = mutableListOf()
-        for(i in 0..array.length()-1){
-            val jo = array.getJSONObject(i)
-            jobjects.add(jo)
-        }
-        skills = jobjects.map{ jo -> Skill(jo.getString("title"), jo.getString("src"), jo.getBoolean("active"), jo.getString("description")) }
+        skills = jsonToSkills(jobj.getJSONArray("skills"))
     }
 
     // update views from local variables
@@ -163,6 +131,8 @@ class ShowProfileActivity: AppCompatActivity() {
         tvEmail.text = email
         tvPhoneNumber.text = phone
         tvLocation.text = location
+        // clean layout
+        skillsLayout.removeAllViews()
         // map active skills to skill cards and add them to the layout
         skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
     }
@@ -179,7 +149,7 @@ class ShowProfileActivity: AppCompatActivity() {
         i.putExtra(getString(R.string.key_email), email)
         i.putExtra(getString(R.string.key_phone_number), phone)
         i.putExtra(getString(R.string.key_location), location)
-        i.putExtra(getString(R.string.key_skills), skillsToJSON())
+        i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
 
         startForResult.launch(i)
     }

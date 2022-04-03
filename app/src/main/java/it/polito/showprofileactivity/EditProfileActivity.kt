@@ -1,7 +1,6 @@
 package it.polito.showprofileactivity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
@@ -9,9 +8,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import org.json.JSONArray
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
@@ -50,26 +48,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         registerForContextMenu(imageButton)
         imageButton.setOnClickListener { onClick(imageButton) }
 
-        skills = createSkills(this)
-
-        // just static adding for testing TODO: REMOVE
-        skills.find { s -> s.title == "Gardening" }.apply {
-            this?.active = true
-            this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
-        }
-        skills.find { s -> s.title == "Home Repair" }.apply {
-            this?.active = true
-            this?.description ="I can fix your home appliance"
-        }
-        skills.find { s -> s.title == "Child Care" }.apply {
-            this?.active = true
-            this?.description ="Babysit your kids"
-        }
-        skills.find { s -> s.title == "Transportation" }.apply {
-            this?.active = true
-            this?.description ="I can bring pizza to your house and have a chat with you!"
-        }
-        // TODO: REMOVE
+        //skills = createSkills(this)
 
         //get all the skills and map them into cards
         refreshSkills()
@@ -169,6 +148,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         val phone: String = intent.getStringExtra(getString(R.string.key_phone_number)) ?: ""
         val bio: String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
         val location: String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
+        val skills_: String = intent.getStringExtra(getString(R.string.key_skills)) ?: ""
 
         etEditName.setText(name)
         etEditSurname.setText(surname)
@@ -177,21 +157,22 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         etEditPhone.setText(phone)
         etEditBio.setText(bio)
         etEditLocation.setText(location)
+        skills = jsonToSkills(JSONArray(skills_))
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         val i = Intent()
-
-        i.putExtra(getString(R.string.key_name), etEditName.text)
-        i.putExtra(getString(R.string.key_surname), etEditSurname.text)
-        i.putExtra(getString(R.string.key_nickname), etEditNickname.text)
-        i.putExtra(getString(R.string.key_bio), etEditBio.text)
-        i.putExtra(getString(R.string.key_email),etEditEmail.text )
-        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text )
-        i.putExtra(getString(R.string.key_location), etEditLocation.text )
-
+        i.putExtra(getString(R.string.key_name), etEditName.text.toString())
+        i.putExtra(getString(R.string.key_surname), etEditSurname.text.toString())
+        i.putExtra(getString(R.string.key_nickname), etEditNickname.text.toString())
+        i.putExtra(getString(R.string.key_bio), etEditBio.text.toString())
+        i.putExtra(getString(R.string.key_email),etEditEmail.text.toString())
+        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text.toString())
+        i.putExtra(getString(R.string.key_location), etEditLocation.text.toString())
+        i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
         setResult(Activity.RESULT_OK, i)
-        finish()
+        super.onBackPressed()
     }
+
+
 }
