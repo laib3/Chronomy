@@ -76,11 +76,11 @@ class ShowProfileActivity: AppCompatActivity() {
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
 
                 //TODO: PROBLEM HERE
-                //val skills_: String = intent.getStringExtra(getString(R.string.key_skills)) ?: ""
-                //skills = jsonToSkills(JSONArray(skills_))
+                val skills_: String = i?.getStringExtra(getString(R.string.key_skills)) ?: ""
+                skills = jsonToSkills(JSONArray(skills_))
 
                 saveContent()
-                loadContent()
+                //loadContent()
                 updateView()
             }
         }
@@ -131,6 +131,8 @@ class ShowProfileActivity: AppCompatActivity() {
         tvEmail.text = email
         tvPhoneNumber.text = phone
         tvLocation.text = location
+        // clean layout
+        skillsLayout.removeAllViews()
         // map active skills to skill cards and add them to the layout
         skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
     }
