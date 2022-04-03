@@ -1,6 +1,8 @@
 package it.polito.showprofileactivity
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -40,7 +42,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
        etEditPhone = findViewById(R.id.editPhoneNumber)
        etEditLocation = findViewById(R.id.editLocation)
 
-        //place data received from intent into the correct EditText
+        //place data received from INTENT into the correct EditText
         placeData()
 
         //reference the ImageButton and attach to it the camera_floating_context_menu
@@ -175,5 +177,21 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         etEditPhone.setText(phone)
         etEditBio.setText(bio)
         etEditLocation.setText(location)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val i = Intent()
+
+        i.putExtra(getString(R.string.key_name), etEditName.text)
+        i.putExtra(getString(R.string.key_surname), etEditSurname.text)
+        i.putExtra(getString(R.string.key_nickname), etEditNickname.text)
+        i.putExtra(getString(R.string.key_bio), etEditBio.text)
+        i.putExtra(getString(R.string.key_email),etEditEmail.text )
+        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text )
+        i.putExtra(getString(R.string.key_location), etEditLocation.text )
+
+        setResult(Activity.RESULT_OK, i)
+        finish()
     }
 }
