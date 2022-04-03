@@ -180,18 +180,15 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         val i = Intent()
-
-        i.putExtra(getString(R.string.key_name), etEditName.text)
-        i.putExtra(getString(R.string.key_surname), etEditSurname.text)
-        i.putExtra(getString(R.string.key_nickname), etEditNickname.text)
-        i.putExtra(getString(R.string.key_bio), etEditBio.text)
-        i.putExtra(getString(R.string.key_email),etEditEmail.text )
-        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text )
-        i.putExtra(getString(R.string.key_location), etEditLocation.text )
-
+        i.putExtra(getString(R.string.key_name), etEditName.text.toString())
+        i.putExtra(getString(R.string.key_surname), etEditSurname.text.toString())
+        i.putExtra(getString(R.string.key_nickname), etEditNickname.text.toString())
+        i.putExtra(getString(R.string.key_bio), etEditBio.text.toString())
+        i.putExtra(getString(R.string.key_email),etEditEmail.text.toString())
+        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text.toString())
+        i.putExtra(getString(R.string.key_location), etEditLocation.text.toString())
         setResult(Activity.RESULT_OK, i)
-        finish()
+        super.onBackPressed()
     }
 }

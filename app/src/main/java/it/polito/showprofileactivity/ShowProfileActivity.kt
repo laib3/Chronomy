@@ -98,13 +98,13 @@ class ShowProfileActivity: AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val i = result.data
                 // Handle the Intent
-                name = (i?.getStringExtra(getString(R.string.key_name)) ?: "")
-                surname = (i?.getStringExtra(getString(R.string.key_surname)) ?: "")
-                nickname = (i?.getStringExtra(getString(R.string.key_nickname)) ?: "")
-                bio = (i?.getStringExtra(getString(R.string.key_bio)) ?: "")
-                email = (i?.getStringExtra(getString(R.string.key_email)) ?: "")
-                phone = (i?.getStringExtra(getString(R.string.key_phone_number)) ?: "")
-                location = (i?.getStringExtra(getString(R.string.key_location)) ?: "")
+                name = i?.getStringExtra(getString(R.string.key_name)) ?: ""
+                surname = i?.getStringExtra(getString(R.string.key_surname)) ?: ""
+                nickname = i?.getStringExtra(getString(R.string.key_nickname)) ?: ""
+                bio = i?.getStringExtra(getString(R.string.key_bio)) ?: ""
+                email = i?.getStringExtra(getString(R.string.key_email)) ?: ""
+                phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
+                location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
                 saveContent()
                 loadContent()
                 updateView()
@@ -140,7 +140,7 @@ class ShowProfileActivity: AppCompatActivity() {
 
         val array: JSONArray = jobj.getJSONArray("skills")
         val jobjects:MutableList<JSONObject> = mutableListOf()
-        for(i in 0..array.length()-1){
+        for(i in 0 until array.length()){
             val jo = array.getJSONObject(i)
             jobjects.add(jo)
         }
