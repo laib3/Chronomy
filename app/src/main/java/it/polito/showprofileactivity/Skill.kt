@@ -34,7 +34,7 @@ class Skill (var title:String, var src:String){
     }
 
     public fun toJSON():String{
-        return """"title":$title, "description":$description", "active":"$active", "src":"$src""""
+        return """"title":"$title", "description":"$description", "active":$active, "src":"$src""""
     }
 }
 

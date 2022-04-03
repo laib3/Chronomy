@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -35,24 +36,18 @@ class ShowProfileActivity: AppCompatActivity() {
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
-    // TODO remove
+    // extension function: convert a list of skills to a JSON string
+    private fun skillsToJSON():String {
+        return skills.map{s -> s.toJSON()}.joinToString(separator = "},{", prefix ="[{", postfix = "}]")
+    }
 
     fun createSkills () : List<Skill>{
         // return a list of skills that contains all the titles present in skill.xml file
         // src of a skill is the name with spaces replaced with underscore and lowercase
-        val skills:MutableList<Skill> = mutableListOf<Skill>()
-        resources.getStringArray(R.array.skills_array).forEach{ s -> skills.add(Skill(s, s.lowercase().replace(" ", "_"))) }
-        return skills
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.show_profile_activity)
-
-        val skills = createSkills()
-
-        // just static adding for testing TODO: REMOVE
+        skills = mutableListOf()
+        resources.getStringArray(R.array.skills_array).forEach{ s -> (skills as MutableList<Skill>).add(Skill(s, s.lowercase().replace(" ", "_"))) }
+        // TODO: REMOVE
+        // just static adding for testing
         skills.find { s -> s.title == "Gardening" }.apply {
             this?.active = true
             this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
@@ -68,33 +63,37 @@ class ShowProfileActivity: AppCompatActivity() {
         skills.find { s -> s.title == "Transportation" }.apply {
             this?.active = true
         }
-        // TODO: REMOVE
+        return skills
+    }
 
-        var tvFullName = findViewById<TextView>(R.id.name)
-        var tvNickName = findViewById<TextView>(R.id.nickName)
-        var tvBio = findViewById<TextView>(R.id.bio)
-        var tvEmail = findViewById<TextView>(R.id.email)
-        var tvPhoneNumber = findViewById<TextView>(R.id.phoneNumber)
-        var tvLocation = findViewById<TextView>(R.id.location)
+    // TODO remove
+    // only for testing purposes
+    private fun createProfile() {
+        name = "Mario"
+        surname = "Rossi"
+        nickname = "supermario"
+        bio = "Based in Italy. I love basketball, food and people. Simpatico, solare, in cerca di amicizie"
+        email = "mariorossi@ymail.com"
+        phone = "+39 3332030800"
+        location = "Turin, Italy"
+    }
 
-        // save content to shared resources
-        saveContent("Mario",
-            "Rossi",
-            "rossino",
-            "Based in Italy, I love animals, simpatico, solare, in cerca di amicizie.",
-            "mariorossi@gmail.com",
-            "+393001992031",
-            "Via RossiMario 13, Italy",
-            skills)
-        // load from shared resources */
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.show_profile_activity)
+
+        // TODO remove
+        createProfile()
+        skills = createSkills()
+
+        // TODO remove (the content should be only loaded from shared memory)
+        saveContent()
         loadContent()
+        updateView()
 
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
-
-        val skillsLayout = findViewById<LinearLayout>(R.id.skills)
-        // map active skills to skill cards and add them to the layout
-        skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -107,66 +106,87 @@ class ShowProfileActivity: AppCompatActivity() {
                 email = (i?.getStringExtra(getString(R.string.key_email)) ?: "")
                 phone = (i?.getStringExtra(getString(R.string.key_phone_number)) ?: "")
                 location = (i?.getStringExtra(getString(R.string.key_location)) ?: "")
-                // TODO save content
-                saveContent(name, surname, nickname, bio, email, phone, location, skills)
-                // TODO load content
+                saveContent()
+                loadContent()
+                updateView()
             }
         }
-
-
     }
 
-    // content must be loaded from a single JSON
+    // save content to shared memory
+    fun saveContent(){
+        val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        // put a profile string in the shared preferences
+        val jsonSkills:String = skillsToJSON()
+        val profileString:String = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "skills":$jsonSkills }""".trimIndent()
+        editor.putString(PROFILE, profileString)
+        // save
+        editor.apply()
+    }
+
+    // load content and update local variables
     fun loadContent(){
         val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
         val profile:String = sharedPreferences.getString(PROFILE, "profile") ?: "profile"
         val jobj = JSONObject(profile)
 
+        name = jobj.getString("name")
+        surname = jobj.getString("surname")
+        nickname = jobj.getString("nickname")
+        bio = jobj.getString("bio")
+        email = jobj.getString("email")
+        phone = jobj.getString("phone")
+        location = jobj.getString("location")
+
+        val array: JSONArray = jobj.getJSONArray("skills")
+        val jobjects:MutableList<JSONObject> = mutableListOf()
+        for(i in 0..array.length()-1){
+            val jo = array.getJSONObject(i)
+            jobjects.add(jo)
+        }
+        skills = jobjects.map{ jo -> Skill(jo.getString("title"), jo.getString("src"), jo.getBoolean("active"), jo.getString("description")) }
+    }
+
+    // update views from local variables
+    private fun updateView() {
         val tvFullName = findViewById<TextView>(R.id.name)
         val tvNickName = findViewById<TextView>(R.id.nickName)
         val tvBio = findViewById<TextView>(R.id.bio)
         val tvEmail = findViewById<TextView>(R.id.email)
         val tvPhoneNumber = findViewById<TextView>(R.id.phoneNumber)
         val tvLocation = findViewById<TextView>(R.id.location)
+        val skillsLayout = findViewById<LinearLayout>(R.id.skills)
 
-        tvFullName.text = jobj.getString("name") + " " + jobj.getString("surname")
-        tvBio.text = jobj.getString("bio")
-        tvNickName.text = jobj.getString("nickName")
-        tvEmail.text = jobj.getString("email")
-        tvPhoneNumber.text = jobj.getString("phone")
-        tvLocation.text = jobj.getString("location")
+        // TODO use placeholder
+        tvFullName.text = "$name $surname"
+        tvBio.text = bio
+        tvNickName.text = nickname
+        tvEmail.text = email
+        tvPhoneNumber.text = phone
+        tvLocation.text = location
+        // map active skills to skill cards and add them to the layout
+        skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
     }
 
-    fun saveContent(name:String, surname:String, nickName:String, bio:String, email:String, phone:String, location:String, skills:List<Skill>){
-        val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        // put a profile string in the shared preferences
-        editor.putString(PROFILE, """{ "name": "$name", "surname":"$surname", "nickname":"$nickName", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location" }""".trimMargin())
-        // save
-        editor.apply()
-    }
-
+    // run editProfileActivity
     private fun editProfile() {
         Log.e("edit", "edit profile")
         val i = Intent(this, EditProfileActivity::class.java)
-        val tvFullName = findViewById<TextView>(R.id.name)
-        val tvNickName = findViewById<TextView>(R.id.nickName)
-        val tvBio = findViewById<TextView>(R.id.bio)
-        val tvEmail = findViewById<TextView>(R.id.email)
-        val tvPhoneNumber = findViewById<TextView>(R.id.phoneNumber)
-        val tvLocation = findViewById<TextView>(R.id.location)
 
-        i.putExtra(getString(R.string.key_full_name), tvFullName.text)
-        i.putExtra(getString(R.string.key_nickname), tvNickName.text)
-        i.putExtra(getString(R.string.key_bio), tvBio.text)
-        i.putExtra(getString(R.string.key_email),tvEmail.text )
-        i.putExtra(getString(R.string.key_phone_number),tvPhoneNumber.text )
-        i.putExtra(getString(R.string.key_location), tvLocation.text )
+        i.putExtra(getString(R.string.key_name), name)
+        i.putExtra(getString(R.string.key_surname), surname)
+        i.putExtra(getString(R.string.key_nickname), nickname)
+        i.putExtra(getString(R.string.key_bio), bio)
+        i.putExtra(getString(R.string.key_email), email)
+        i.putExtra(getString(R.string.key_phone_number), phone)
+        i.putExtra(getString(R.string.key_location), location)
 
+        // TODO pass skills
         startForResult.launch(i)
     }
 
-    //inflate main_menu into activity
+    // inflate main_menu into activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu);
@@ -179,3 +199,4 @@ class ShowProfileActivity: AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+
