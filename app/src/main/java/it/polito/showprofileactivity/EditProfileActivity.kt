@@ -34,7 +34,6 @@ import java.util.*
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
-    lateinit var radioGroup: RadioGroup
 
     lateinit var etEditName: EditText
     lateinit var etEditSurname: EditText
@@ -66,6 +65,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
        etEditEmail = findViewById(R.id.editEmail)
        etEditPhone = findViewById(R.id.editPhoneNumber)
        etEditLocation = findViewById(R.id.editLocation)
+
+        ivEditProfilePic = findViewById(R.id.profilePicture)
 
         //place data received from INTENT into the correct EditText
         placeData()
@@ -132,7 +133,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
                 val desc = card.findViewById<TextView>(R.id.skillDescription)
                 desc.text = s.description
                 refreshSkills()
-                Toast.makeText(this, "Selected ${radioButton.text}", Toast.LENGTH_LONG).show()
                 mAlertDialog.dismiss()
             }
         }
@@ -216,10 +216,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageView : ImageView = findViewById(R.id.profilePicture)
-
             val bitmap = data?.extras?.get("data") as Bitmap
-            imageView.setImageBitmap(bitmap)
+            ivEditProfilePic.setImageBitmap(bitmap)
         }
     }
 }
