@@ -119,5 +119,8 @@ fun jsonToSkills(jsonArray: JSONArray): List<Skill>{
 }
 
 fun skillsToJsonString(skills: List<Skill>):String {
-    return skills.map{s -> s.toJSON()}.joinToString(separator = "},{", prefix ="[{", postfix = "}]")
+    if (skills.isEmpty())
+        return "[]"
+    else
+        return skills.map{s -> s.toJSON()}.joinToString(separator = "},{", prefix ="[{", postfix = "}]")
 }
