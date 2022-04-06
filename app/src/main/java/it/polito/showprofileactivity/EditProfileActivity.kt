@@ -20,6 +20,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONArray
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -74,26 +76,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         registerForContextMenu(imageButton)
         imageButton.setOnClickListener { onClick(imageButton) }
 
-        skills = createSkills(this)
-
-        // just static adding for testing TODO: REMOVE
-        skills.find { s -> s.title == "Gardening" }.apply {
-            this?.active = true
-            this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
-        }
-        skills.find { s -> s.title == "Home Repair" }.apply {
-            this?.active = true
-            this?.description ="I can fix your home appliance"
-        }
-        skills.find { s -> s.title == "Child Care" }.apply {
-            this?.active = true
-            this?.description ="Babysit your kids"
-        }
-        skills.find { s -> s.title == "Transportation" }.apply {
-            this?.active = true
-            this?.description ="I can bring pizza to your house and have a chat with you!"
-        }
-        // TODO: REMOVE
+        //skills = createSkills(this)
 
         //get all the skills and map them into cards
         refreshSkills()
@@ -194,6 +177,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         val phone: String = intent.getStringExtra(getString(R.string.key_phone_number)) ?: ""
         val bio: String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
         val location: String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
+        val skills_: String = intent.getStringExtra(getString(R.string.key_skills)) ?: ""
 
         etEditName.setText(name)
         etEditSurname.setText(surname)
@@ -202,22 +186,21 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         etEditPhone.setText(phone)
         etEditBio.setText(bio)
         etEditLocation.setText(location)
+        skills = jsonToSkills(JSONArray(skills_))
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         val i = Intent()
-
-        i.putExtra(getString(R.string.key_name), etEditName.text)
-        i.putExtra(getString(R.string.key_surname), etEditSurname.text)
-        i.putExtra(getString(R.string.key_nickname), etEditNickname.text)
-        i.putExtra(getString(R.string.key_bio), etEditBio.text)
-        i.putExtra(getString(R.string.key_email),etEditEmail.text )
-        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text )
-        i.putExtra(getString(R.string.key_location), etEditLocation.text )
-
+        i.putExtra(getString(R.string.key_name), etEditName.text.toString())
+        i.putExtra(getString(R.string.key_surname), etEditSurname.text.toString())
+        i.putExtra(getString(R.string.key_nickname), etEditNickname.text.toString())
+        i.putExtra(getString(R.string.key_bio), etEditBio.text.toString())
+        i.putExtra(getString(R.string.key_email),etEditEmail.text.toString())
+        i.putExtra(getString(R.string.key_phone_number),etEditPhone.text.toString())
+        i.putExtra(getString(R.string.key_location), etEditLocation.text.toString())
+        i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
         setResult(Activity.RESULT_OK, i)
-        finish()
+        super.onBackPressed()
     }
 
     // taking profile pic from camera
@@ -231,50 +214,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         }
     }
 
-    /*@Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ITALY).format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }*/
-
-    /*private fun setPic() {
-        // Get the dimensions of the View
-        val targetW = 512
-        val targetH = 512
-
-        val bmOptions = BitmapFactory.Options().apply {
-            // Get the dimensions of the bitmap
-            inJustDecodeBounds = true
-
-
-            BitmapFactory.decodeFile(currentPhotoPath, this)
-
-            val photoW: Int = outWidth
-            val photoH: Int = outHeight
-
-            // Determine how much to scale down the image
-            val scaleFactor: Int =
-                1.coerceAtLeast((photoW / targetW).coerceAtMost(photoH / targetH))
-
-            // Decode the image file into a Bitmap sized to fill the View
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
-        }
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
-            ivEditProfilePic.setImageBitmap(bitmap)
-        }
-    }*/
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -284,9 +223,4 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             imageView.setImageBitmap(bitmap)
         }
     }
-
-    /*private val getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK) setPic()
-    }*/
-
 }
