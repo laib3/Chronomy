@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">Chronomy</string>
-    <string name="full_name">Mario Rossi</string>
-    <string name="nickname">SuperMario</string>
-    <string name="email">mario@rossi.com</string>
-    <string name="phone_number">0123456789</string>
-    <string name="location">Italy - Via Mario Rossi 23</string>
-    <string name="bio">«What doesn\'t kill you makes you stronger»</string>
-    <string name="accounting_balance">Accounting_balance</string>
-    <string name="available_balance">Available balance</string>
-    <string name="profile_image">Profile image</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="nickname">nickname</string>
+    <string name="email">e@mail.com</string>
+    <string name="phone_number">+000 1234567890</string>
+    <string name="location">Location</string>
+    <string name="bio">bio</string>
+    <string name="balance">balance</string>
+    <string name="profile_image">profile picture</string>
     <string name="phone_hint">+39 1234567890</string>
+    <string name="empty_skills">[]</string>
     <string name="fullname_placeholder">%1$s %2$s</string>
 </resources>
