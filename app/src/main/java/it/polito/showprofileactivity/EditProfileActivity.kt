@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.ContextMenu
@@ -13,7 +14,10 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONArray
+import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.concurrent.thread
+
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
@@ -34,6 +38,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     private lateinit var ivEditProfilePic: ImageView
     private val REQUEST_IMAGE_CAPTURE = 1
     private var REQUEST_IMAGE_FROM_GALLERY = 2
+    private var imageUri: Uri? = null
+
     lateinit var currentPhotoPath: String
 
     var bitmap : Bitmap? = null
@@ -79,7 +85,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         super.onSaveInstanceState(outState)
         outState.putParcelable("bitmap", bitmap)
     }
-
 
     private fun refreshSkills(){
         selectedSkills = findViewById<LinearLayout>(R.id.selectedSkills)
@@ -153,6 +158,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.option_1 -> {
+                chooseFromGallery()
                 Toast.makeText(this, "Opening the gallery", Toast.LENGTH_LONG).show()
                 return true
             }
@@ -188,6 +194,15 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
 
     override fun onBackPressed() {
         val i = Intent()
+
+        //Convert to byte array
+        val stream = ByteArrayOutputStream()
+        thread{
+           bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        }
+
+        val byteArray = stream.toByteArray()
+
         i.putExtra(getString(R.string.key_name), etEditName.text.toString())
         i.putExtra(getString(R.string.key_surname), etEditSurname.text.toString())
         i.putExtra(getString(R.string.key_nickname), etEditNickname.text.toString())
@@ -196,7 +211,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         i.putExtra(getString(R.string.key_phone_number),etEditPhone.text.toString())
         i.putExtra(getString(R.string.key_location), etEditLocation.text.toString())
         i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
+        i.putExtra(getString(R.string.key_bitmap), byteArray)
         setResult(Activity.RESULT_OK, i)
+
         super.onBackPressed()
     }
 
@@ -211,11 +228,21 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         }
     }
 
+    private fun chooseFromGallery(){
+        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        startActivityForResult(gallery, REQUEST_IMAGE_FROM_GALLERY)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             bitmap = data?.extras?.get("data") as Bitmap
             ivEditProfilePic.setImageBitmap(bitmap)
+        }
+
+        if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_FROM_GALLERY) {
+            imageUri = data?.data
+            ivEditProfilePic.setImageURI(imageUri)
         }
     }
 }
