@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.ContextMenu
 import android.view.LayoutInflater
@@ -13,8 +14,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import org.json.JSONArray
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -217,14 +222,26 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         super.onBackPressed()
     }
 
-    // taking profile pic from camera
+    // taking profile pic from camera or gallery
     private fun takePhoto(){
+        //old
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        var photoFile: File?= null
         try {
+            photoFile= createImageFile()
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
             // display error state to the user
             Toast.makeText(this, "It was impossible to open the camera", Toast.LENGTH_LONG).show()
+        }
+        if(photoFile!= null){
+            val photoUri = FileProvider.getUriForFile(
+                this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                photoFile
+            )
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
     }
 
@@ -233,11 +250,30 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         startActivityForResult(gallery, REQUEST_IMAGE_FROM_GALLERY)
     }
 
+    //save picture into local data
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
+
+
+        // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = image.absolutePath
+        return image
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            bitmap = data?.extras?.get("data") as Bitmap
-            ivEditProfilePic.setImageBitmap(bitmap)
+            ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
+            /*bitmap = data?.extras?.get("data") as Bitmap
+            ivEditProfilePic.setImageBitmap(bitmap)*/
         }
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_FROM_GALLERY) {
