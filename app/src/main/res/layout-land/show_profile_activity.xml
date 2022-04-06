@@ -180,14 +180,6 @@
                             android:gravity="center_vertical"
                             android:text="@string/phone_number" />
 
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/emailRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="4dp">
-
                         <ImageView
                             android:id="@+id/emailIcon"
                             android:layout_width="wrap_content"
@@ -202,13 +194,6 @@
                             android:layout_marginStart="4dp"
                             android:gravity="center_vertical"
                             android:text="@string/email" />
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/locationRow"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="4dp">
 
                         <ImageView
                             android:id="@+id/locationIcon"
@@ -224,6 +209,7 @@
                             android:layout_marginStart="4dp"
                             android:gravity="center_vertical"
                             android:text="@string/location" />
+
                     </TableRow>
 
                 </TableLayout>
