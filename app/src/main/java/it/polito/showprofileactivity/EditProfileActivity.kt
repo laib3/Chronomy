@@ -1,20 +1,11 @@
 package it.polito.showprofileactivity
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.icu.text.SimpleDateFormat
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.provider.OpenableColumns
-import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -22,14 +13,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONArray
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider
-import java.io.File
-import java.io.IOException
 import java.util.*
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
@@ -52,6 +35,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     private val REQUEST_IMAGE_CAPTURE = 1
     private var REQUEST_IMAGE_FROM_GALLERY = 2
     lateinit var currentPhotoPath: String
+
+    var bitmap : Bitmap? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +66,20 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         //get all the skills and map them into cards
         refreshSkills()
 
+        if (savedInstanceState != null) {
+            bitmap = savedInstanceState.getParcelable("bitmap")
+            if(bitmap != null){
+                ivEditProfilePic.setImageBitmap(bitmap);
+            }
+        }
+
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable("bitmap", bitmap)
+    }
+
 
     private fun refreshSkills(){
         selectedSkills = findViewById<LinearLayout>(R.id.selectedSkills)
@@ -216,7 +214,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val bitmap = data?.extras?.get("data") as Bitmap
+            bitmap = data?.extras?.get("data") as Bitmap
             ivEditProfilePic.setImageBitmap(bitmap)
         }
     }
