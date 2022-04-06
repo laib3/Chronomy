@@ -1,8 +1,20 @@
 package it.polito.showprofileactivity
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -10,6 +22,16 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONArray
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.IOException
+import java.util.*
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
@@ -27,6 +49,12 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var notSelectedSkills : LinearLayout
 
     lateinit var skills : List<Skill>
+
+    private lateinit var ivEditProfilePic: ImageView
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private var REQUEST_IMAGE_FROM_GALLERY = 2
+    lateinit var currentPhotoPath: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,6 +161,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             }
             R.id.option_2 -> {
                 Toast.makeText(this, "Opening the camera", Toast.LENGTH_LONG).show()
+                takePhoto()
                 return true
             }
             else -> return super.onContextItemSelected(item)
@@ -174,5 +203,24 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         super.onBackPressed()
     }
 
+    // taking profile pic from camera
+    private fun takePhoto(){
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+            Toast.makeText(this, "It was impossible to open the camera", Toast.LENGTH_LONG).show()
+        }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageView : ImageView = findViewById(R.id.profilePicture)
+
+            val bitmap = data?.extras?.get("data") as Bitmap
+            imageView.setImageBitmap(bitmap)
+        }
+    }
 }

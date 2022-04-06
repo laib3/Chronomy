@@ -21,20 +21,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/profilePicture"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_marginTop="100dp"
+        android:background="@drawable/circle"
+        android:clipToOutline="true"
         android:contentDescription="@string/profile_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/profile_pic_1"
-        tools:srcCompat="@tools:sample/avatars"
-        android:background="@drawable/circle"
-        android:clipToOutline="true"
-        />
+        tools:srcCompat="@tools:sample/avatars" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -46,8 +45,8 @@
         android:clipToOutline="true"
         android:cropToPadding="false"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
+        app:layout_constraintEnd_toEndOf="@+id/profilePicture"
         app:srcCompat="@drawable/ic_change_pic" />
 
     <ScrollView
@@ -57,7 +56,7 @@
         android:fillViewport="true"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
