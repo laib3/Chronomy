@@ -285,8 +285,4 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         }
     }
 
-    /*private val getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK) setPic()
-    }*/
-
 }

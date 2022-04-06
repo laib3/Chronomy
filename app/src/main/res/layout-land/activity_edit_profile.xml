@@ -17,13 +17,13 @@
         android:textColor="#000000"
         android:textSize="40sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintBottom_toTopOf="@+id/profilePicture"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/profilePicture"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:background="@drawable/circle"
@@ -47,8 +47,8 @@
         android:clipToOutline="true"
         android:cropToPadding="false"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
+        app:layout_constraintEnd_toEndOf="@+id/profilePicture"
         app:srcCompat="@drawable/ic_change_pic" />
 
     <ScrollView
