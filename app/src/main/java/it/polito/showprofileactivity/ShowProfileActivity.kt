@@ -59,12 +59,12 @@ class ShowProfileActivity: AppCompatActivity() {
     private fun getFromInternalStorage(){
         val fileName:String = "outputFile.txt"
         var text:String = ""
-        val tvOutputFileText = findViewById<TextView>(R.id.outputFileText)
+        //val tvOutputFileText = findViewById<TextView>(R.id.outputFileText)
         this.openFileInput(fileName).bufferedReader().useLines { lines ->
              text = lines.fold("") { old, new ->
                 "$old$new"
             }
-            tvOutputFileText.text = text
+            //tvOutputFileText.text = text
         }
     }
 
@@ -98,7 +98,6 @@ class ShowProfileActivity: AppCompatActivity() {
                 phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
 
-                //TODO: PROBLEM HERE
                 val skills_: String = i?.getStringExtra(getString(R.string.key_skills)) ?: ""
                 skills = jsonToSkills(JSONArray(skills_))
 
