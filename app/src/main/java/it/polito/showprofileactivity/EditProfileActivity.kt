@@ -1,17 +1,35 @@
 package it.polito.showprofileactivity
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.IOException
+import java.util.*
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var imageButton: ImageButton
@@ -29,6 +47,12 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
     lateinit var notSelectedSkills : LinearLayout
 
     lateinit var skills : List<Skill>
+
+    private lateinit var ivEditProfilePic: ImageView
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private var REQUEST_IMAGE_FROM_GALLERY = 2
+    lateinit var currentPhotoPath: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +178,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
             }
             R.id.option_2 -> {
                 Toast.makeText(this, "Opening the camera", Toast.LENGTH_LONG).show()
+                takePhoto()
                 return true
             }
             else -> return super.onContextItemSelected(item)
@@ -194,4 +219,74 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
         setResult(Activity.RESULT_OK, i)
         finish()
     }
+
+    // taking profile pic from camera
+    private fun takePhoto(){
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+            Toast.makeText(this, "It was impossible to open the camera", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    /*@Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ITALY).format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }*/
+
+    /*private fun setPic() {
+        // Get the dimensions of the View
+        val targetW = 512
+        val targetH = 512
+
+        val bmOptions = BitmapFactory.Options().apply {
+            // Get the dimensions of the bitmap
+            inJustDecodeBounds = true
+
+
+            BitmapFactory.decodeFile(currentPhotoPath, this)
+
+            val photoW: Int = outWidth
+            val photoH: Int = outHeight
+
+            // Determine how much to scale down the image
+            val scaleFactor: Int =
+                1.coerceAtLeast((photoW / targetW).coerceAtMost(photoH / targetH))
+
+            // Decode the image file into a Bitmap sized to fill the View
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+        }
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
+            ivEditProfilePic.setImageBitmap(bitmap)
+        }
+    }*/
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageView : ImageView = findViewById(R.id.profilePicture)
+
+            val bitmap = data?.extras?.get("data") as Bitmap
+            imageView.setImageBitmap(bitmap)
+        }
+    }
+
+    /*private val getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK) setPic()
+    }*/
+
 }
