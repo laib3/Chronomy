@@ -120,6 +120,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         val bio: String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
         val location: String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
         val skills_: String = intent.getStringExtra(getString(R.string.key_skills)) ?: ""
+        currentPhotoPath = intent.getStringExtra(getString(R.string.key_currentPhotoPath))
 
         etEditName.setText(name)
         etEditSurname.setText(surname)
@@ -129,6 +130,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         etEditBio.setText(bio)
         etEditLocation.setText(location)
         skills = jsonToSkills(JSONArray(skills_))
+        if(currentPhotoPath != null)
+            ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
     }
 
     private fun refreshSkills() {

@@ -150,9 +150,8 @@ class ShowProfileActivity: AppCompatActivity() {
         i.putExtra(getString(R.string.key_email), email)
         i.putExtra(getString(R.string.key_phone_number), phone)
         i.putExtra(getString(R.string.key_location), location)
-        val s = skillsToJsonString(skills)
         i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
-        // TODO pass picture to intent
+        i.putExtra(getString(R.string.key_currentPhotoPath), currentPhotoPath)
 
         Log.e("edit", "edit profile")
         startForResult.launch(i)
