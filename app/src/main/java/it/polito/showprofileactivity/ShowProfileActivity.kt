@@ -2,6 +2,7 @@ package it.polito.showprofileactivity
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +32,7 @@ class ShowProfileActivity: AppCompatActivity() {
     lateinit var phone:String
     lateinit var location:String
     lateinit var skills:List<Skill>
+    var currentPhotoPath:String? = null
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
@@ -58,6 +60,7 @@ class ShowProfileActivity: AppCompatActivity() {
                 email = i?.getStringExtra(getString(R.string.key_email)) ?: ""
                 phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
+                currentPhotoPath = i?.getStringExtra(getString(R.string.key_currentPhotoPath))
                 skills = jsonToSkills(JSONArray(i?.getStringExtra(getString(R.string.key_skills)) ?: ""))
 
                 // save content to shared preferences
@@ -74,7 +77,12 @@ class ShowProfileActivity: AppCompatActivity() {
         // put a profile string in the shared preferences
         val jsonSkills:String = skillsToJsonString(skills)
 
-        val profileString:String = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "skills":$jsonSkills }""".trimIndent()
+        val profileString: String
+
+        if(currentPhotoPath == null)
+            profileString = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo": null,  "skills":$jsonSkills }""".trimIndent()
+        else
+            profileString = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo":"$currentPhotoPath", "skills":$jsonSkills }""".trimIndent()
         editor.putString(profile, profileString)
         // save
         editor.apply()
@@ -97,6 +105,7 @@ class ShowProfileActivity: AppCompatActivity() {
         email = jobj?.getString("email") ?: getString(R.string.email)
         phone = jobj?.getString("phone") ?: getString(R.string.phone_number)
         location = jobj?.getString("location") ?: getString(R.string.location)
+        currentPhotoPath = jobj?.getString("photo") // warning: it may be null
 
         // if skills are found in memory load them from memory, otherwise create them from scratch
         skills = if(jobj == null)
@@ -114,6 +123,7 @@ class ShowProfileActivity: AppCompatActivity() {
         val tvPhoneNumber = findViewById<TextView>(R.id.phoneNumber)
         val tvLocation = findViewById<TextView>(R.id.location)
         val skillsLayout = findViewById<LinearLayout>(R.id.skills)
+        val ivProfilePicture = findViewById<ImageView>(R.id.profilePicture)
 
         tvFullName.text = String.format(getString(R.string.fullname_placeholder), name, surname)
         tvBio.text = bio
@@ -125,6 +135,8 @@ class ShowProfileActivity: AppCompatActivity() {
         skillsLayout.removeAllViews()
         // map active skills to skill cards and add them to the layout
         skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
+        if(currentPhotoPath != null)
+            ivProfilePicture.setImageURI(Uri.parse(currentPhotoPath))
     }
 
     // run editProfileActivity
@@ -140,6 +152,7 @@ class ShowProfileActivity: AppCompatActivity() {
         i.putExtra(getString(R.string.key_location), location)
         val s = skillsToJsonString(skills)
         i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
+        // TODO pass picture to intent
 
         Log.e("edit", "edit profile")
         startForResult.launch(i)
