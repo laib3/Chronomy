@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,19 +20,19 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import org.json.JSONArray
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+// import android.icu.text.SimpleDateFormat
+import java.lang.Integer.getInteger
+import java.util.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.lang.Integer.getInteger
-import java.util.*
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var imageButton: ImageButton //opens the context menu to choose between camera or gallery
@@ -65,13 +64,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     private var imageUri: Uri? = null
     //path of the current profile picture
     private var currentPhotoPath: String? = null
-
-
-    private lateinit var ivEditProfilePic: ImageView
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private var REQUEST_IMAGE_FROM_GALLERY = 2
-    lateinit var currentPhotoPath: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
