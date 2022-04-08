@@ -1,7 +1,6 @@
 package it.polito.showprofileactivity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,13 +16,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 
 
 class ShowProfileActivity: AppCompatActivity() {
 
-    private val SHPR_NAME:String = "sharedPreferences"
-    private val PROFILE:String = "profile"
+    private val sharedPrefName:String = "sharedPreferences"
+    private val profile:String = "profile"
 
     lateinit var name:String
     lateinit var surname:String
@@ -36,56 +34,19 @@ class ShowProfileActivity: AppCompatActivity() {
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
-    // TODO remove
-    // only for testing purposes
-    private fun createProfile() {
-        name = "Mario"
-        surname = "Rossi"
-        nickname = "supermario"
-        bio = "Based in Italy. I love basketball, food and people. Simpatico, solare, in cerca di amicizie"
-        email = "mariorossi@ymail.com"
-        phone = "+39 3332030800"
-        location = "Turin, Italy"
-    }
-
-    private fun saveToInternalStorage(){
-        val s:String = "ciao"
-        val fileName = "outputFile.txt"
-        this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
-            it.write(s.toByteArray())
-        }
-    }
-
-    private fun getFromInternalStorage(){
-        val fileName:String = "outputFile.txt"
-        var text:String = ""
-        //val tvOutputFileText = findViewById<TextView>(R.id.outputFileText)
-        this.openFileInput(fileName).bufferedReader().useLines { lines ->
-             text = lines.fold("") { old, new ->
-                "$old$new"
-            }
-            //tvOutputFileText.text = text
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_profile_activity)
 
-        // saveToInternalStorage()
-        // getFromInternalStorage()
-
-        // skills = createSkills(this)
-
-        // TODO remove (the content should be only loaded from shared memory)
-        // saveContent()
+        // load content from shared preferences
         loadContent()
         updateView()
 
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
 
+        // use registerForActivityResult in place of startActivityForResult because the latter is deprecated
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val i = result.data
@@ -97,34 +58,32 @@ class ShowProfileActivity: AppCompatActivity() {
                 email = i?.getStringExtra(getString(R.string.key_email)) ?: ""
                 phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
+                skills = jsonToSkills(JSONArray(i?.getStringExtra(getString(R.string.key_skills)) ?: ""))
 
-                val skills_: String = i?.getStringExtra(getString(R.string.key_skills)) ?: ""
-                skills = jsonToSkills(JSONArray(skills_))
-
+                // save content to shared preferences
                 saveContent()
-                //loadContent()
                 updateView()
             }
         }
     }
 
     // save content to shared memory
-    fun saveContent(){
-        val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
+    private fun saveContent(){
+        val sharedPreferences = getSharedPreferences(sharedPrefName, MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         // put a profile string in the shared preferences
         val jsonSkills:String = skillsToJsonString(skills)
 
         val profileString:String = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "skills":$jsonSkills }""".trimIndent()
-        editor.putString(PROFILE, profileString)
+        editor.putString(profile, profileString)
         // save
         editor.apply()
     }
 
     // load content and update local variables
-    fun loadContent(){
-        val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
-        val profile:String? = sharedPreferences.getString(PROFILE, null)
+    private fun loadContent(){
+        val sharedPreferences = getSharedPreferences(sharedPrefName, MODE_PRIVATE)
+        val profile:String? = sharedPreferences.getString(profile, null)
         val jobj:JSONObject?
         if(profile == null){
             jobj = null
