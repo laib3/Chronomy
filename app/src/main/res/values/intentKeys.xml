@@ -9,4 +9,5 @@
     <string name="key_location">group02.lab1.location</string>
     <string name="key_bio">group02.lab1.bio</string>
     <string name="key_skills">group02.lab1.skills</string>
+    <string name="key_currentPhotoPath">group02.lab1.currentPhotoPath</string>
 </resources>
