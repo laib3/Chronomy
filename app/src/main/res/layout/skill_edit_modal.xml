@@ -58,6 +58,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
+    <TextView
+        android:id="@+id/description_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/skill_description_helper"
+        app:layout_constraintBaseline_toBaselineOf="@+id/desciption"
+        app:layout_constraintStart_toEndOf="@+id/desciption" />
+
     <EditText
         android:id="@+id/editDescription"
         android:layout_width="match_parent"
@@ -66,6 +75,7 @@
         android:layout_marginEnd="20dp"
         android:gravity="top|start"
         android:inputType="textMultiLine|textCapSentences"
+        android:maxLength="@integer/maxInputLength"
         android:maxLines="5"
         android:minLines="3"
         android:scrollbars="vertical"

@@ -25,12 +25,12 @@ import org.json.JSONArray
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
+import java.lang.Integer.getInteger
 import java.util.*
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
@@ -67,6 +67,10 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
        etEditEmail = findViewById(R.id.editEmail)
        etEditPhone = findViewById(R.id.editPhoneNumber)
        etEditLocation = findViewById(R.id.editLocation)
+
+        /* display the maximum input length in the helper - pick it from constraints.xml */
+        val tvHelper = findViewById<TextView>(R.id.helper)
+        tvHelper.text = String.format(getString(R.string.bio_helper), this.resources.getInteger(R.integer.maxInputLength))
 
         //place data received from INTENT into the correct EditText
         placeData()
@@ -112,6 +116,11 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener{
 
             val description = mDialogView.findViewById<EditText>(R.id.editDescription)
             description.setText(s.description)
+
+            // set description hint max char lenght
+            mDialogView.findViewById<TextView>(R.id.description_hint).text =
+                String.format(getString(R.string.skill_description_helper),
+                this.resources.getInteger(R.integer.maxInputLength))
 
             //AlertDialogBuilder + show
             val mBuilder = android.app.AlertDialog.Builder(this)

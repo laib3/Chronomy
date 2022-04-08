@@ -10,5 +10,7 @@
     <string name="available_balance">Available balance</string>
     <string name="profile_image">Profile image</string>
     <string name="phone_hint">+39 1234567890</string>
+    <string name="bio_helper">Insert a presentation of yourself (max %1$d char)</string>
+    <string name="skill_description_helper">(max %1$d char)</string>
     <string name="fullname_placeholder">%1$s %2$s</string>
 </resources>
