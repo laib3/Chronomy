@@ -10,6 +10,10 @@
         android:id="@+id/pictureAndName"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/scrollViewInfosAndSkills"
         app:layout_constraintHorizontal_weight="1"
@@ -30,8 +34,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@mipmap/ic_launcher"
-            tools:src="@tools:sample/avatars" />
+            app:srcCompat="@drawable/profile_pic_1"
+            tools:src="@drawable/profile_pic_1" />
 
         <LinearLayout
             android:id="@+id/nameAndNickname"
@@ -49,8 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:text="@string/name"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -60,6 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:text="@string/nickname" />
         </LinearLayout>
 
@@ -69,6 +75,10 @@
         android:id="@+id/scrollViewInfosAndSkills"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
