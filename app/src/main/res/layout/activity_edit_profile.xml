@@ -41,7 +41,7 @@
         android:layout_height="51dp"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
-        android:background="@drawable/circle"
+        android:background="@drawable/rectangle_bg"
         android:clipToOutline="true"
         android:cropToPadding="false"
         android:scaleType="fitXY"
