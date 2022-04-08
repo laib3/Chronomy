@@ -41,6 +41,8 @@ class ShowProfileActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_profile_activity)
 
+        supportActionBar?.title = "Profile"
+
         // load content from shared preferences
         loadContent()
         updateView()

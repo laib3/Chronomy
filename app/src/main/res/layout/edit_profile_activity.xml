@@ -6,57 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".EditProfileActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Edit Profile"
-        android:textColor="#000000"
-        android:textSize="40sp"
-        android:textStyle="bold"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pictureLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/circle"
-        android:clipToOutline="true"
-        android:contentDescription="@string/profile_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile_pic_1"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintVertical_weight="1">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="56dp"
-        android:layout_height="51dp"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:background="@drawable/rectangle_bg"
-        android:clipToOutline="true"
-        android:cropToPadding="false"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
-        app:layout_constraintEnd_toEndOf="@+id/profilePicture"
-        app:srcCompat="@drawable/ic_change_pic" />
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:background="@drawable/circle"
+            android:clipToOutline="true"
+            android:contentDescription="@string/profile_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/profile_pic_1"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="56dp"
+            android:layout_height="51dp"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:background="@drawable/rectangle_bg"
+            android:clipToOutline="true"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
+            app:layout_constraintEnd_toEndOf="@+id/profilePicture"
+            app:srcCompat="@drawable/ic_change_pic" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="260dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="411dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pictureLayout"
+        app:layout_constraintVertical_weight="2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -97,8 +94,8 @@
                 android:id="@+id/editName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/maxInputLength"
                 android:inputType="textCapSentences"
+                android:maxLength="@integer/maxInputLength"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/name"
                 app:layout_constraintStart_toStartOf="@+id/name"
@@ -122,8 +119,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:textSize="20sp"
                 android:maxLength="@integer/maxInputLength"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/surname"
                 app:layout_constraintStart_toStartOf="@+id/surname"
                 app:layout_constraintTop_toBottomOf="@+id/surname" />
@@ -147,8 +144,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:textSize="20sp"
                 android:maxLength="@integer/maxInputLength"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/nickname"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/nickname"
@@ -229,8 +226,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:textSize="20sp"
                 android:maxLength="@integer/maxInputLength"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/email"
                 app:layout_constraintStart_toStartOf="@+id/email"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
@@ -266,8 +263,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:textSize="20sp"
                 android:maxLength="@integer/maxPhoneNumberLength"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/editEmail"
                 app:layout_constraintStart_toStartOf="@+id/phoneNumber"
                 app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
@@ -291,8 +288,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:textSize="20sp"
                 android:maxLength="@integer/maxInputLength"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/location"
                 app:layout_constraintStart_toStartOf="@+id/location"
                 app:layout_constraintTop_toBottomOf="@+id/location" />
@@ -329,12 +326,13 @@
                 android:id="@+id/selectedSkills"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="@+id/selected"
                 app:layout_constraintStart_toStartOf="@+id/selected"
-                app:layout_constraintTop_toBottomOf="@+id/selected"
-                android:orientation="vertical">
+                app:layout_constraintTop_toBottomOf="@+id/selected">
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/notSelected"
                 android:layout_width="0dp"
@@ -352,10 +350,10 @@
                 android:id="@+id/notSelectedSkills"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="@+id/notSelected"
                 app:layout_constraintStart_toStartOf="@+id/notSelected"
-                app:layout_constraintTop_toBottomOf="@+id/notSelected"
-                android:orientation="vertical">
+                app:layout_constraintTop_toBottomOf="@+id/notSelected">
 
 
             </LinearLayout>

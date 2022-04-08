@@ -1,14 +1,9 @@
 package it.polito.showprofileactivity
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -26,13 +21,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 // import android.icu.text.SimpleDateFormat
-import java.lang.Integer.getInteger
 import java.util.*
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
 
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var imageButton: ImageButton //opens the context menu to choose between camera or gallery
@@ -67,7 +56,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_profile)
+        setContentView(R.layout.edit_profile_activity)
+
+        supportActionBar?.title = "Edit Profile"
 
         etEditName = findViewById(R.id.editName)
         etEditSurname = findViewById(R.id.editSurname)
