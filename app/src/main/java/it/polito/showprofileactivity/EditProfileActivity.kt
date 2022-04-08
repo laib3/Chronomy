@@ -77,6 +77,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         etEditPhone = findViewById(R.id.editPhoneNumber)
         etEditLocation = findViewById(R.id.editLocation)
         ivEditProfilePic = findViewById(R.id.profilePicture)
+        ivEditProfilePic.clipToOutline = true
 
         selectedSkills = findViewById(R.id.selectedSkills)
         notSelectedSkills = findViewById(R.id.notSelectedSkills)

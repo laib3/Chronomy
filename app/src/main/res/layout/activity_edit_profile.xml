@@ -267,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:textSize="20sp"
-                android:maxLength="@integer/maxInputLength"
+                android:maxLength="@integer/maxPhoneNumberLength"
                 app:layout_constraintEnd_toEndOf="@+id/editEmail"
                 app:layout_constraintStart_toStartOf="@+id/phoneNumber"
                 app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
