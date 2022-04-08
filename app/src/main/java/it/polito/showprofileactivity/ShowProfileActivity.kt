@@ -1,6 +1,7 @@
 package it.polito.showprofileactivity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.File
 
 
 class ShowProfileActivity: AppCompatActivity() {
@@ -46,17 +48,38 @@ class ShowProfileActivity: AppCompatActivity() {
         location = "Turin, Italy"
     }
 
+    private fun saveToInternalStorage(){
+        val s:String = "ciao"
+        val fileName = "outputFile.txt"
+        this.openFileOutput(fileName, Context.MODE_PRIVATE).use {
+            it.write(s.toByteArray())
+        }
+    }
+
+    private fun getFromInternalStorage(){
+        val fileName:String = "outputFile.txt"
+        var text:String = ""
+        //val tvOutputFileText = findViewById<TextView>(R.id.outputFileText)
+        this.openFileInput(fileName).bufferedReader().useLines { lines ->
+             text = lines.fold("") { old, new ->
+                "$old$new"
+            }
+            //tvOutputFileText.text = text
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_profile_activity)
 
-        // TODO remove
-        createProfile()
-        skills = createSkills(this)
+        // saveToInternalStorage()
+        // getFromInternalStorage()
+
+        // skills = createSkills(this)
 
         // TODO remove (the content should be only loaded from shared memory)
-        saveContent()
+        // saveContent()
         loadContent()
         updateView()
 
@@ -75,7 +98,6 @@ class ShowProfileActivity: AppCompatActivity() {
                 phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
 
-                //TODO: PROBLEM HERE
                 val skills_: String = i?.getStringExtra(getString(R.string.key_skills)) ?: ""
                 skills = jsonToSkills(JSONArray(skills_))
 
@@ -102,17 +124,26 @@ class ShowProfileActivity: AppCompatActivity() {
     // load content and update local variables
     fun loadContent(){
         val sharedPreferences = getSharedPreferences(SHPR_NAME, MODE_PRIVATE)
-        val profile:String = sharedPreferences.getString(PROFILE, "profile") ?: "profile"
-        val jobj = JSONObject(profile)
+        val profile:String? = sharedPreferences.getString(PROFILE, null)
+        val jobj:JSONObject?
+        if(profile == null){
+            jobj = null
+        } else {
+            jobj = JSONObject(profile)
+        }
+        name = jobj?.getString("name") ?: getString(R.string.name)
+        surname = jobj?.getString("surname") ?: getString(R.string.surname)
+        nickname = jobj?.getString("nickname") ?: getString(R.string.nickname)
+        bio = jobj?.getString("bio") ?: getString(R.string.bio)
+        email = jobj?.getString("email") ?: getString(R.string.email)
+        phone = jobj?.getString("phone") ?: getString(R.string.phone_number)
+        location = jobj?.getString("location") ?: getString(R.string.location)
 
-        name = jobj.getString("name")
-        surname = jobj.getString("surname")
-        nickname = jobj.getString("nickname")
-        bio = jobj.getString("bio")
-        email = jobj.getString("email")
-        phone = jobj.getString("phone")
-        location = jobj.getString("location")
-        skills = jsonToSkills(jobj.getJSONArray("skills"))
+        // if skills are found in memory load them from memory, otherwise create them from scratch
+        skills = if(jobj == null)
+            createSkills(this)
+        else
+            jsonToSkills(jobj.getJSONArray("skills"))
     }
 
     // update views from local variables
@@ -139,7 +170,6 @@ class ShowProfileActivity: AppCompatActivity() {
 
     // run editProfileActivity
     private fun editProfile() {
-        Log.e("edit", "edit profile")
         val i = Intent(this, EditProfileActivity::class.java)
 
         i.putExtra(getString(R.string.key_name), name)
@@ -149,8 +179,10 @@ class ShowProfileActivity: AppCompatActivity() {
         i.putExtra(getString(R.string.key_email), email)
         i.putExtra(getString(R.string.key_phone_number), phone)
         i.putExtra(getString(R.string.key_location), location)
+        val s = skillsToJsonString(skills)
         i.putExtra(getString(R.string.key_skills), skillsToJsonString(skills))
 
+        Log.e("edit", "edit profile")
         startForResult.launch(i)
     }
 
