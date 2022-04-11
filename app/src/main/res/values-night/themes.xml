@@ -10,9 +10,11 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!-- Customize your theme here. -->
         <item name="android:textColorPrimary">@color/white</item>
+        <!-- we need this in order to change the action bar background color in dark mode -->
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
     </style>
 
     <style name="HintText">
