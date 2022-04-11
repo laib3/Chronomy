@@ -132,7 +132,7 @@ class ShowProfileActivity: AppCompatActivity() {
         // clean layout
         skillsLayout.removeAllViews()
         // map active skills to skill cards and add them to the layout
-        skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
+        skills.filter{ s -> s.active}.forEach { s -> skillsLayout.addView(SkillCard(this, s)) }
         if(currentPhotoPath != "")
             ivProfilePicture.setImageURI(Uri.parse(currentPhotoPath))
     }

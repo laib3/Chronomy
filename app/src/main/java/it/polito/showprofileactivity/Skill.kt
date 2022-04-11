@@ -11,6 +11,7 @@ import android.content.Context as Context
 class SkillCard(c: Context, s:Skill): CardView(c){
     init {
         LayoutInflater.from(c).inflate(R.layout.skill_card, this, true)
+        this.setBackgroundDrawable(null)
         val cardTitle = findViewById<TextView>(R.id.skillTitle)
         cardTitle.text = s.title
         val desc = findViewById<TextView>(R.id.skillDescription)
