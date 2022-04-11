@@ -103,7 +103,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="Balance"
@@ -155,15 +154,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="User Information"
                 android:textAlignment="viewStart"
                 android:textColor="@color/not_so_black"
+                android:textColorHint="@color/not_so_black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColorHint="@color/not_so_black" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/bio"
@@ -294,7 +292,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="Skills"

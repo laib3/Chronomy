@@ -112,7 +112,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         val phone: String = intent.getStringExtra(getString(R.string.key_phone_number)) ?: ""
         val bio: String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
         val location: String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
-        val skills_: String = intent.getStringExtra(getString(R.string.key_skills)) ?: ""
         currentPhotoPath = intent.getStringExtra(getString(R.string.key_currentPhotoPath))
 
         etEditName.setText(name)
@@ -122,7 +121,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         etEditPhone.setText(phone)
         etEditBio.setText(bio)
         etEditLocation.setText(location)
-        skills = jsonToSkills(JSONArray(skills_))
+        skills = jsonToSkills(JSONArray( intent.getStringExtra(getString(R.string.key_skills)) ?: ""))
         if(currentPhotoPath != null)
             ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
     }
@@ -160,7 +159,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
             description.setText(s.description)
 
             //Creation and showing the modal
-            // set description hint max char lenght
+            // set description hint max char length
             mDialogView.findViewById<TextView>(R.id.description_hint).text =
                 String.format(getString(R.string.skill_description_helper),
                 this.resources.getInteger(R.integer.maxInputLength))
