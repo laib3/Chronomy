@@ -23,4 +23,6 @@
     <string name="phone_label">phone</string>
     <string name="email_label">email</string>
     <string name="location_label">location</string>
+    <string name="bio_placeholder">«%1$s»</string>
+    <string name="nickname_placeholder">\@%1$s</string>
 </resources>

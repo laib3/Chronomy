@@ -47,6 +47,7 @@ class ShowProfileActivity: AppCompatActivity() {
         loadContent()
         updateView()
 
+        // rounded profile picture
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
 
@@ -123,8 +124,8 @@ class ShowProfileActivity: AppCompatActivity() {
         val ivProfilePicture = findViewById<ImageView>(R.id.profilePicture)
 
         tvFullName.text = String.format(getString(R.string.fullname_placeholder), name, surname)
-        tvBio.text = bio
-        tvNickName.text = nickname
+        tvBio.text = String.format(getString(R.string.bio_placeholder), bio)
+        tvNickName.text = String.format(getString(R.string.nickname_placeholder), nickname)
         tvEmail.text = email
         tvPhoneNumber.text = phone
         tvLocation.text = location
