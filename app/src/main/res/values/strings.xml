@@ -15,4 +15,6 @@
     <string name="empty_skills">[]</string>
     <string name="fullname_placeholder">%1$s %2$s</string>
     <string name="edit_menu_title">Edit Profile</string>
+    <string name="edit_skill_dialog_text">Edit %1$s</string>
+    <string name="edit_skill_dialog_question">Is %1$s one of your skills?</string>
 </resources>

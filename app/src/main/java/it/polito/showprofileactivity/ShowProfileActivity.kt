@@ -24,15 +24,15 @@ class ShowProfileActivity: AppCompatActivity() {
     private val sharedPrefName:String = "sharedPreferences"
     private val profile:String = "profile"
 
-    lateinit var name:String
-    lateinit var surname:String
-    lateinit var nickname:String
-    lateinit var bio:String
-    lateinit var email:String
-    lateinit var phone:String
-    lateinit var location:String
-    lateinit var skills:List<Skill>
-    var currentPhotoPath:String? = null
+    private lateinit var name:String
+    private lateinit var surname:String
+    private lateinit var nickname:String
+    private lateinit var bio:String
+    private lateinit var email:String
+    private lateinit var phone:String
+    private lateinit var location:String
+    private lateinit var skills:List<Skill>
+    private var currentPhotoPath:String? = null
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
@@ -79,12 +79,10 @@ class ShowProfileActivity: AppCompatActivity() {
         // put a profile string in the shared preferences
         val jsonSkills:String = skillsToJsonString(skills)
 
-        val profileString: String
-
-        if(currentPhotoPath == null)
-            profileString = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo": null,  "skills":$jsonSkills }""".trimIndent()
+        val profileString: String = if(currentPhotoPath == null)
+            """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo": null,  "skills":$jsonSkills }""".trimIndent()
         else
-            profileString = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo":"$currentPhotoPath", "skills":$jsonSkills }""".trimIndent()
+            """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo":"$currentPhotoPath", "skills":$jsonSkills }""".trimIndent()
         editor.putString(profile, profileString)
         // save
         editor.apply()
@@ -94,11 +92,10 @@ class ShowProfileActivity: AppCompatActivity() {
     private fun loadContent(){
         val sharedPreferences = getSharedPreferences(sharedPrefName, MODE_PRIVATE)
         val profile:String? = sharedPreferences.getString(profile, null)
-        val jobj:JSONObject?
-        if(profile == null){
-            jobj = null
+        val jobj:JSONObject? = if(profile == null){
+            null
         } else {
-            jobj = JSONObject(profile)
+            JSONObject(profile)
         }
         name = jobj?.getString("name") ?: getString(R.string.name)
         surname = jobj?.getString("surname") ?: getString(R.string.surname)

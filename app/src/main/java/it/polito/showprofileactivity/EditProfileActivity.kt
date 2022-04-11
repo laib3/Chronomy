@@ -23,6 +23,10 @@ import java.text.SimpleDateFormat
 // import android.icu.text.SimpleDateFormat
 import java.util.*
 
+//intent return values
+private const val REQUEST_IMAGE_CAPTURE = 1
+private const val REQUEST_IMAGE_FROM_GALLERY = 2
+
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var imageButton: ImageButton //opens the context menu to choose between camera or gallery
 
@@ -45,9 +49,6 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     //where the profile picture is shown
     private lateinit var ivEditProfilePic: ImageView
 
-    //intent return values
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private var REQUEST_IMAGE_FROM_GALLERY = 2
 
     //URI for the current profile picture
     private var imageUri: Uri? = null
@@ -143,9 +144,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.skill_edit_modal, null)
 
             val title = mDialogView.findViewById<TextView>(R.id.modalTitle)
-            title.text = "Edit ${s.title}"
+            title.text = String.format(getString(R.string.edit_skill_dialog_text), s.title)
             val question = mDialogView.findViewById<TextView>(R.id.question)
-            question.text = "Is ${s.title.lowercase()} one of your skills?"
+            question.text = String.format(getString(R.string.edit_skill_dialog_question), s.title.lowercase())
 
             //set the radio state starting from skill.active
             val radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
