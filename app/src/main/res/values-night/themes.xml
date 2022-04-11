@@ -19,4 +19,8 @@
         <item name="android:background">@color/dark_slate_blue</item>
     </style>
 
+    <style name="SkillCard">
+        <item name="android:background">@color/light_yellow</item>
+    </style>
+
 </resources>

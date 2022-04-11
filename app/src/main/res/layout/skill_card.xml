@@ -13,10 +13,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
-        app:cardBackgroundColor="@color/not_so_dark_slate_blue"
         app:cardCornerRadius="5pt">
 
         <LinearLayout
+            style="@style/SkillCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
