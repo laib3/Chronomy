@@ -32,7 +32,7 @@ class ShowProfileActivity: AppCompatActivity() {
     private lateinit var phone:String
     private lateinit var location:String
     private lateinit var skills:List<Skill>
-    private var currentPhotoPath:String? = null
+    private var currentPhotoPath:String = ""
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
@@ -62,7 +62,7 @@ class ShowProfileActivity: AppCompatActivity() {
                 email = i?.getStringExtra(getString(R.string.key_email)) ?: ""
                 phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
-                currentPhotoPath = i?.getStringExtra(getString(R.string.key_currentPhotoPath))
+                currentPhotoPath = i?.getStringExtra(getString(R.string.key_currentPhotoPath)) ?: ""
                 skills = jsonToSkills(JSONArray(i?.getStringExtra(getString(R.string.key_skills)) ?: ""))
 
                 // save content to shared preferences
@@ -79,9 +79,7 @@ class ShowProfileActivity: AppCompatActivity() {
         // put a profile string in the shared preferences
         val jsonSkills:String = skillsToJsonString(skills)
 
-        val profileString: String = if(currentPhotoPath == null)
-            """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo": null,  "skills":$jsonSkills }""".trimIndent()
-        else
+        val profileString: String =
             """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo":"$currentPhotoPath", "skills":$jsonSkills }""".trimIndent()
         editor.putString(profile, profileString)
         // save
@@ -104,7 +102,7 @@ class ShowProfileActivity: AppCompatActivity() {
         email = jsonObject?.getString("email") ?: getString(R.string.email)
         phone = jsonObject?.getString("phone") ?: getString(R.string.phone_number)
         location = jsonObject?.getString("location") ?: getString(R.string.location)
-        currentPhotoPath = jsonObject?.getString("photo") // warning: it may be null
+        currentPhotoPath = jsonObject?.getString("photo") ?: "" // warning: it may be null
 
         // if skills are found in memory load them from memory, otherwise create them from scratch
         skills = if(jsonObject == null)
@@ -134,7 +132,7 @@ class ShowProfileActivity: AppCompatActivity() {
         skillsLayout.removeAllViews()
         // map active skills to skill cards and add them to the layout
         skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
-        if(currentPhotoPath != null)
+        if(currentPhotoPath != "")
             ivProfilePicture.setImageURI(Uri.parse(currentPhotoPath))
     }
 

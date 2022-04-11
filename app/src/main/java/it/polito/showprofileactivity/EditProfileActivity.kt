@@ -53,7 +53,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     //URI for the current profile picture
     private var imageUri: Uri? = null
     //path of the current profile picture
-    private var currentPhotoPath: String? = null
+    private var currentPhotoPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,8 +91,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         //load saved instance
         if (savedInstanceState != null) {
-            currentPhotoPath = savedInstanceState.getString("state_currentPhotoPath")
-            if(currentPhotoPath != null) {
+            currentPhotoPath = savedInstanceState.getString("state_currentPhotoPath") ?: ""
+            if(currentPhotoPath != "") {
                 ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
             }
         }
@@ -112,7 +112,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         val phone: String = intent.getStringExtra(getString(R.string.key_phone_number)) ?: ""
         val bio: String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
         val location: String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
-        currentPhotoPath = intent.getStringExtra(getString(R.string.key_currentPhotoPath))
+        currentPhotoPath = intent.getStringExtra(getString(R.string.key_currentPhotoPath)) ?: ""
 
         etEditName.setText(name)
         etEditSurname.setText(surname)
@@ -122,7 +122,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         etEditBio.setText(bio)
         etEditLocation.setText(location)
         skills = jsonToSkills(JSONArray( intent.getStringExtra(getString(R.string.key_skills)) ?: ""))
-        if(currentPhotoPath != null)
+        if(currentPhotoPath != "")
             ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
     }
 

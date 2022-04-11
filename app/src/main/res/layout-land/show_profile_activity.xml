@@ -203,8 +203,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
@@ -238,7 +236,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
@@ -247,8 +244,7 @@
                     android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/emailIcon"
                     app:layout_constraintStart_toEndOf="@+id/emailIcon"
-                    app:layout_constraintTop_toTopOf="@+id/emailIcon"
-                    app:layout_constraintVertical_bias="0.333" />
+                    app:layout_constraintTop_toTopOf="@+id/emailIcon" />
 
                 <ImageView
                     android:id="@+id/locationIcon"
@@ -272,8 +268,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
