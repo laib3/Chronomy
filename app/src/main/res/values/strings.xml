@@ -35,4 +35,5 @@
     <string name="selected_label">Selected</string>
     <string name="not_selected_label">Not Selected</string>
     <string name="optional_label">(optional)</string>
+    <string name="description_label">Description</string>
 </resources>

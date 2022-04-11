@@ -51,7 +51,7 @@ fun createSkills (c:Context) : List<Skill>{
     // we populate skills just to display something, but we will remove this part in future
     skills.find { s -> s.title == "Gardening" }.apply {
         this?.active = true
-        this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
+        this?.description ="I can mow the lawn, trim bushes, rake and pick up leaves in the garden."
     }
     skills.find { s -> s.title == "Home Repair" }.apply {
         this?.active = true
