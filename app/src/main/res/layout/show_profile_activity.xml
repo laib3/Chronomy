@@ -50,27 +50,26 @@
 
             <TextView
                 android:id="@+id/name"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="@string/name"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/Theme.ShowProfileActivity" />
 
             <TextView
                 android:id="@+id/nickName"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="@string/nickname"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black" />
+                android:text="@string/nickname" />
 
         </LinearLayout>
 
@@ -100,6 +99,7 @@
 
             <TextView
                 android:id="@+id/balanceTitle"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -107,8 +107,6 @@
                 android:paddingEnd="4dp"
                 android:text="@string/balance_label"
                 android:textAlignment="viewStart"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -132,6 +130,7 @@
 
                 <TextView
                     android:id="@+id/balance"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -139,7 +138,6 @@
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/balance"
-                    android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/balanceIcon"
                     app:layout_constraintStart_toEndOf="@+id/balanceIcon"
@@ -150,6 +148,7 @@
 
             <TextView
                 android:id="@+id/UserInformationTitle"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -158,13 +157,12 @@
                 android:paddingEnd="4dp"
                 android:text="@string/userinfo_label"
                 android:textAlignment="viewStart"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/bio"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -172,7 +170,6 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="@string/bio"
-                android:textColor="@color/not_so_black"
                 android:textColorHint="@color/not_so_black" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -200,6 +197,7 @@
 
                 <TextView
                     android:id="@+id/phoneNumber"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -207,8 +205,8 @@
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/phone_number"
-                    android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
+                    android:theme="@style/Theme.ShowProfileActivity"
                     app:layout_constraintBottom_toBottomOf="@+id/phoneIcon"
                     app:layout_constraintStart_toEndOf="@+id/phoneIcon"
                     app:layout_constraintTop_toTopOf="@+id/phoneIcon" />
@@ -233,6 +231,7 @@
 
                 <TextView
                     android:id="@+id/email"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -240,8 +239,6 @@
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/email"
-                    android:textColor="@color/not_so_black"
-                    android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/emailIcon"
                     app:layout_constraintStart_toEndOf="@+id/emailIcon"
                     app:layout_constraintTop_toTopOf="@+id/emailIcon" />
@@ -265,6 +262,7 @@
 
                 <TextView
                     android:id="@+id/location"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -272,8 +270,6 @@
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/location"
-                    android:textColor="@color/not_so_black"
-                    android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
                     app:layout_constraintStart_toEndOf="@+id/locationIcon"
                     app:layout_constraintTop_toTopOf="@+id/locationIcon" />
@@ -282,6 +278,7 @@
 
             <TextView
                 android:id="@+id/skillsTitle"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -290,8 +287,6 @@
                 android:paddingEnd="4dp"
                 android:text="@string/skills_label"
                 android:textAlignment="viewStart"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
