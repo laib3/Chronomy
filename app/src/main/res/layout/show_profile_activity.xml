@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollViewInfosAndSkills"
+        app:layout_constraintBottom_toTopOf="@+id/scrollViewInfoAndSkills"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,34 +50,33 @@
 
             <TextView
                 android:id="@+id/name"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="@string/name"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/Theme.ShowProfileActivity" />
 
             <TextView
                 android:id="@+id/nickName"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="@string/nickname"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black" />
+                android:text="@string/nickname" />
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/scrollViewInfosAndSkills"
+        android:id="@+id/scrollViewInfoAndSkills"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -93,23 +92,21 @@
         app:layout_constraintVertical_weight="2">
 
         <LinearLayout
-            android:id="@+id/infosAndSkills"
+            android:id="@+id/infoAndSkills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/balanceTitle"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Balance"
+                android:text="@string/balance_label"
                 android:textAlignment="viewStart"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -123,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:contentDescription="balance"
+                    android:contentDescription="@string/balance_label"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -133,6 +130,7 @@
 
                 <TextView
                     android:id="@+id/balance"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -140,7 +138,6 @@
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/balance"
-                    android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/balanceIcon"
                     app:layout_constraintStart_toEndOf="@+id/balanceIcon"
@@ -151,22 +148,21 @@
 
             <TextView
                 android:id="@+id/UserInformationTitle"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="User Information"
+                android:text="@string/userinfo_label"
                 android:textAlignment="viewStart"
-                android:textColor="@color/not_so_black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColorHint="@color/not_so_black" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/bio"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -174,11 +170,10 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="@string/bio"
-                android:textColor="@color/not_so_black"
                 android:textColorHint="@color/not_so_black" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/userInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -189,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="4dp"
-                    android:contentDescription="phone"
+                    android:contentDescription="@string/phone_label"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     app:layout_constraintBottom_toTopOf="@+id/emailIcon"
@@ -202,17 +197,16 @@
 
                 <TextView
                     android:id="@+id/phoneNumber"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/phone_number"
-                    android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
+                    android:theme="@style/Theme.ShowProfileActivity"
                     app:layout_constraintBottom_toBottomOf="@+id/phoneIcon"
                     app:layout_constraintStart_toEndOf="@+id/phoneIcon"
                     app:layout_constraintTop_toTopOf="@+id/phoneIcon" />
@@ -224,7 +218,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
-                    android:contentDescription="email"
+                    android:contentDescription="@string/email_label"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     app:layout_constraintBottom_toTopOf="@+id/locationIcon"
@@ -237,20 +231,17 @@
 
                 <TextView
                     android:id="@+id/email"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/email"
-                    android:textColor="@color/not_so_black"
-                    android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/emailIcon"
                     app:layout_constraintStart_toEndOf="@+id/emailIcon"
-                    app:layout_constraintTop_toTopOf="@+id/emailIcon"
-                    app:layout_constraintVertical_bias="0.75" />
+                    app:layout_constraintTop_toTopOf="@+id/emailIcon" />
 
                 <ImageView
                     android:id="@+id/locationIcon"
@@ -258,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:contentDescription="location"
+                    android:contentDescription="@string/location_label"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -271,17 +262,14 @@
 
                 <TextView
                     android:id="@+id/location"
+                    style="@style/Theme.ShowProfileActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/location"
-                    android:textColor="@color/not_so_black"
-                    android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
                     app:layout_constraintStart_toEndOf="@+id/locationIcon"
                     app:layout_constraintTop_toTopOf="@+id/locationIcon" />
@@ -290,17 +278,15 @@
 
             <TextView
                 android:id="@+id/skillsTitle"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Skills"
+                android:text="@string/skills_label"
                 android:textAlignment="viewStart"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

@@ -24,15 +24,15 @@ class ShowProfileActivity: AppCompatActivity() {
     private val sharedPrefName:String = "sharedPreferences"
     private val profile:String = "profile"
 
-    lateinit var name:String
-    lateinit var surname:String
-    lateinit var nickname:String
-    lateinit var bio:String
-    lateinit var email:String
-    lateinit var phone:String
-    lateinit var location:String
-    lateinit var skills:List<Skill>
-    var currentPhotoPath:String? = null
+    private lateinit var name:String
+    private lateinit var surname:String
+    private lateinit var nickname:String
+    private lateinit var bio:String
+    private lateinit var email:String
+    private lateinit var phone:String
+    private lateinit var location:String
+    private lateinit var skills:List<Skill>
+    private var currentPhotoPath:String = ""
 
     private lateinit var startForResult : ActivityResultLauncher<Intent>
 
@@ -47,6 +47,7 @@ class ShowProfileActivity: AppCompatActivity() {
         loadContent()
         updateView()
 
+        // rounded profile picture
         val iv = findViewById<ImageView>(R.id.profilePicture)
         iv.clipToOutline = true
 
@@ -62,7 +63,7 @@ class ShowProfileActivity: AppCompatActivity() {
                 email = i?.getStringExtra(getString(R.string.key_email)) ?: ""
                 phone = i?.getStringExtra(getString(R.string.key_phone_number)) ?: ""
                 location = i?.getStringExtra(getString(R.string.key_location)) ?: ""
-                currentPhotoPath = i?.getStringExtra(getString(R.string.key_currentPhotoPath))
+                currentPhotoPath = i?.getStringExtra(getString(R.string.key_currentPhotoPath)) ?: ""
                 skills = jsonToSkills(JSONArray(i?.getStringExtra(getString(R.string.key_skills)) ?: ""))
 
                 // save content to shared preferences
@@ -79,12 +80,8 @@ class ShowProfileActivity: AppCompatActivity() {
         // put a profile string in the shared preferences
         val jsonSkills:String = skillsToJsonString(skills)
 
-        val profileString: String
-
-        if(currentPhotoPath == null)
-            profileString = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo": null,  "skills":$jsonSkills }""".trimIndent()
-        else
-            profileString = """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo":"$currentPhotoPath", "skills":$jsonSkills }""".trimIndent()
+        val profileString: String =
+            """{ "name": "$name", "surname":"$surname", "nickname":"$nickname", "bio":"$bio", "email":"$email", "phone":"$phone", "location":"$location", "photo":"$currentPhotoPath", "skills":$jsonSkills }""".trimIndent()
         editor.putString(profile, profileString)
         // save
         editor.apply()
@@ -94,26 +91,25 @@ class ShowProfileActivity: AppCompatActivity() {
     private fun loadContent(){
         val sharedPreferences = getSharedPreferences(sharedPrefName, MODE_PRIVATE)
         val profile:String? = sharedPreferences.getString(profile, null)
-        val jobj:JSONObject?
-        if(profile == null){
-            jobj = null
+        val jsonObject:JSONObject? = if(profile == null){
+            null
         } else {
-            jobj = JSONObject(profile)
+            JSONObject(profile)
         }
-        name = jobj?.getString("name") ?: getString(R.string.name)
-        surname = jobj?.getString("surname") ?: getString(R.string.surname)
-        nickname = jobj?.getString("nickname") ?: getString(R.string.nickname)
-        bio = jobj?.getString("bio") ?: getString(R.string.bio)
-        email = jobj?.getString("email") ?: getString(R.string.email)
-        phone = jobj?.getString("phone") ?: getString(R.string.phone_number)
-        location = jobj?.getString("location") ?: getString(R.string.location)
-        currentPhotoPath = jobj?.getString("photo") // warning: it may be null
+        name = jsonObject?.getString("name") ?: getString(R.string.name)
+        surname = jsonObject?.getString("surname") ?: getString(R.string.surname)
+        nickname = jsonObject?.getString("nickname") ?: getString(R.string.nickname)
+        bio = jsonObject?.getString("bio") ?: getString(R.string.bio)
+        email = jsonObject?.getString("email") ?: getString(R.string.email)
+        phone = jsonObject?.getString("phone") ?: getString(R.string.phone_number)
+        location = jsonObject?.getString("location") ?: getString(R.string.location)
+        currentPhotoPath = jsonObject?.getString("photo") ?: "" // warning: it may be null
 
         // if skills are found in memory load them from memory, otherwise create them from scratch
-        skills = if(jobj == null)
+        skills = if(jsonObject == null)
             createSkills(this)
         else
-            jsonToSkills(jobj.getJSONArray("skills"))
+            jsonToSkills(jsonObject.getJSONArray("skills"))
     }
 
     // update views from local variables
@@ -128,16 +124,16 @@ class ShowProfileActivity: AppCompatActivity() {
         val ivProfilePicture = findViewById<ImageView>(R.id.profilePicture)
 
         tvFullName.text = String.format(getString(R.string.fullname_placeholder), name, surname)
-        tvBio.text = bio
-        tvNickName.text = nickname
+        tvBio.text = String.format(getString(R.string.bio_placeholder), bio)
+        tvNickName.text = String.format(getString(R.string.nickname_placeholder), nickname)
         tvEmail.text = email
         tvPhoneNumber.text = phone
         tvLocation.text = location
         // clean layout
         skillsLayout.removeAllViews()
         // map active skills to skill cards and add them to the layout
-        skills.filter{ s -> s.active}.forEach {s -> skillsLayout.addView(SkillCard(this, s)) }
-        if(currentPhotoPath != null)
+        skills.filter{ s -> s.active}.forEach { s -> skillsLayout.addView(SkillCard(this, s)) }
+        if(currentPhotoPath != "")
             ivProfilePicture.setImageURI(Uri.parse(currentPhotoPath))
     }
 
@@ -162,7 +158,7 @@ class ShowProfileActivity: AppCompatActivity() {
     // inflate main_menu into activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu)
         return true
     }
 

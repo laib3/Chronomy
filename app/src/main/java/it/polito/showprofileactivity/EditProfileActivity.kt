@@ -23,6 +23,10 @@ import java.text.SimpleDateFormat
 // import android.icu.text.SimpleDateFormat
 import java.util.*
 
+//intent return values
+private const val REQUEST_IMAGE_CAPTURE = 1
+private const val REQUEST_IMAGE_FROM_GALLERY = 2
+
 class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var imageButton: ImageButton //opens the context menu to choose between camera or gallery
 
@@ -45,14 +49,11 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
     //where the profile picture is shown
     private lateinit var ivEditProfilePic: ImageView
 
-    //intent return values
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private var REQUEST_IMAGE_FROM_GALLERY = 2
 
     //URI for the current profile picture
     private var imageUri: Uri? = null
     //path of the current profile picture
-    private var currentPhotoPath: String? = null
+    private var currentPhotoPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,8 +91,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         //load saved instance
         if (savedInstanceState != null) {
-            currentPhotoPath = savedInstanceState.getString("state_currentPhotoPath")
-            if(currentPhotoPath != null) {
+            currentPhotoPath = savedInstanceState.getString("state_currentPhotoPath") ?: ""
+            if(currentPhotoPath != "") {
                 ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
             }
         }
@@ -111,8 +112,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         val phone: String = intent.getStringExtra(getString(R.string.key_phone_number)) ?: ""
         val bio: String = intent.getStringExtra(getString(R.string.key_bio)) ?: ""
         val location: String = intent.getStringExtra(getString(R.string.key_location)) ?: ""
-        val skills_: String = intent.getStringExtra(getString(R.string.key_skills)) ?: ""
-        currentPhotoPath = intent.getStringExtra(getString(R.string.key_currentPhotoPath))
+        currentPhotoPath = intent.getStringExtra(getString(R.string.key_currentPhotoPath)) ?: ""
 
         etEditName.setText(name)
         etEditSurname.setText(surname)
@@ -121,8 +121,8 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         etEditPhone.setText(phone)
         etEditBio.setText(bio)
         etEditLocation.setText(location)
-        skills = jsonToSkills(JSONArray(skills_))
-        if(currentPhotoPath != null)
+        skills = jsonToSkills(JSONArray( intent.getStringExtra(getString(R.string.key_skills)) ?: ""))
+        if(currentPhotoPath != "")
             ivEditProfilePic.setImageURI(Uri.parse(currentPhotoPath))
     }
 
@@ -143,9 +143,9 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.skill_edit_modal, null)
 
             val title = mDialogView.findViewById<TextView>(R.id.modalTitle)
-            title.text = "Edit ${s.title}"
+            title.text = String.format(getString(R.string.edit_skill_dialog_text), s.title)
             val question = mDialogView.findViewById<TextView>(R.id.question)
-            question.text = "Is ${s.title.lowercase()} one of your skills?"
+            question.text = String.format(getString(R.string.edit_skill_dialog_question), s.title.lowercase())
 
             //set the radio state starting from skill.active
             val radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
@@ -159,7 +159,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
             description.setText(s.description)
 
             //Creation and showing the modal
-            // set description hint max char lenght
+            // set description hint max char length
             mDialogView.findViewById<TextView>(R.id.description_hint).text =
                 String.format(getString(R.string.skill_description_helper),
                 this.resources.getInteger(R.integer.maxInputLength))

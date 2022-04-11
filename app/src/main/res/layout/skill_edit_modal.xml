@@ -9,14 +9,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout5"
+        style="@style/Theme.ShowProfileActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/SkillCardEdit"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -25,10 +26,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="64dp"
                 android:gravity="center_vertical"
-                android:paddingStart="20dp"
+                android:paddingStart="16dp"
                 android:text="Edit Skill"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp"
+                android:textColor="@android:color/primary_text_dark"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,12 +48,12 @@
 
     <TextView
         android:id="@+id/desciption"
+        style="@style/Theme.ShowProfileActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:text="Description"
-        android:textColor="#000000"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,28 +70,30 @@
 
     <EditText
         android:id="@+id/editDescription"
+        style="@style/Theme.ShowProfileActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="top|start"
+        android:hint="@string/description_label"
         android:inputType="textMultiLine|textCapSentences"
         android:maxLength="@integer/maxInputLength"
         android:maxLines="5"
         android:minLines="3"
         android:scrollbars="vertical"
-        android:textSize="20sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desciption" />
 
     <TextView
         android:id="@+id/question"
+        style="@style/Theme.ShowProfileActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Is ___ one of your skills?"
-        android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="@+id/desciption"
         app:layout_constraintTop_toBottomOf="@+id/editDescription" />
@@ -111,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="55dp"
+            style="@style/Theme.ShowProfileActivity"
             android:text="Yes" />
 
         <RadioButton
