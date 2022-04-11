@@ -15,6 +15,10 @@
         <item name="android:textColorPrimary">@color/not_so_black</item>
     </style>
 
+    <style name="HintText">
+       <item name="android:textColorPrimary">@color/grey</item>
+    </style>
+
     <style name="SkillCardEdit">
         <item name="android:background">@color/dark_slate_blue</item>
     </style>

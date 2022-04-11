@@ -40,11 +40,13 @@
             android:adjustViewBounds="true"
             android:background="@drawable/rectangle_bg"
             android:clipToOutline="true"
+            android:contentDescription="@string/profile_image"
             android:cropToPadding="false"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@+id/profilePicture"
             app:layout_constraintEnd_toEndOf="@+id/profilePicture"
-            app:srcCompat="@drawable/ic_change_pic" />
+            app:srcCompat="@drawable/ic_change_pic"
+            tools:ignore="DuplicateSpeakableTextCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -74,11 +76,11 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Identity"
-                android:textColor="@color/not_so_black"
+                android:text="@string/identity_label"
                 android:textColorHint="@color/not_so_black"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,9 +95,8 @@
                 android:layout_marginEnd="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Name"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/name_label"
+                style="@style/Theme.ShowProfileActivity"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -104,18 +105,21 @@
 
             <EditText
                 android:id="@+id/editName"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints="name"
+                android:hint="@string/name_label"
                 android:inputType="textCapSentences"
                 android:maxLength="@integer/maxInputLength"
+                android:minHeight="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/name"
                 app:layout_constraintStart_toStartOf="@+id/name"
-                app:layout_constraintTop_toBottomOf="@+id/name" />
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <TextView
                 android:id="@+id/surname"
@@ -124,29 +128,31 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Surname"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/surname_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="@+id/editName"
                 app:layout_constraintStart_toStartOf="@+id/editName"
                 app:layout_constraintTop_toBottomOf="@+id/editName" />
 
             <EditText
                 android:id="@+id/editSurname"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints="surname"
+                android:hint="@string/surname_label"
                 android:inputType="textCapSentences"
                 android:maxLength="@integer/maxInputLength"
+                android:minHeight="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/surname"
                 app:layout_constraintStart_toStartOf="@+id/surname"
-                app:layout_constraintTop_toBottomOf="@+id/surname" />
+                app:layout_constraintTop_toBottomOf="@+id/surname"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <TextView
                 android:id="@+id/nickname"
@@ -155,11 +161,10 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Nickname"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/nickname_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="@+id/editSurname"
                 app:layout_constraintStart_toStartOf="@+id/editSurname"
                 app:layout_constraintTop_toBottomOf="@+id/editSurname" />
@@ -167,19 +172,22 @@
 
             <EditText
                 android:id="@+id/editNickname"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints="nickname"
+                android:hint="@string/nickname_label"
                 android:inputType="text"
                 android:maxLength="@integer/maxInputLength"
+                android:minHeight="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/nickname"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/nickname"
-                app:layout_constraintTop_toBottomOf="@+id/nickname" />
+                app:layout_constraintTop_toBottomOf="@+id/nickname"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <TextView
                 android:id="@+id/bio"
@@ -188,11 +196,10 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Bio"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/bio_label"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editNickname" />
@@ -207,17 +214,20 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:text="@string/bio_helper"
-                android:textColor="#716D6D"
                 android:textSize="14sp"
+                style="@style/HintText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bio" />
 
             <EditText
                 android:id="@+id/editBio"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:gravity="top|start"
+                android:hint="@string/bio_label"
                 android:inputType="textMultiLine|textCapSentences"
                 android:maxLength="@integer/maxInputLength"
                 android:maxLines="5"
@@ -225,12 +235,11 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:scrollbars="vertical"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/helper"
                 app:layout_constraintStart_toStartOf="@+id/helper"
                 app:layout_constraintTop_toBottomOf="@+id/helper"
-                android:textColor="@color/not_so_black" />
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <TextView
                 android:id="@+id/contacts"
@@ -239,11 +248,10 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Contacts"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/contacts_label"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editBio" />
@@ -257,29 +265,30 @@
                 android:layout_marginEnd="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Email"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/email_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/contacts" />
 
             <EditText
                 android:id="@+id/editEmail"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hint="@string/email_label"
                 android:inputType="textEmailAddress"
                 android:maxLength="@integer/maxInputLength"
+                android:minHeight="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/email"
                 app:layout_constraintStart_toStartOf="@+id/email"
-                app:layout_constraintTop_toBottomOf="@+id/email" />
+                app:layout_constraintTop_toBottomOf="@+id/email"
+                android:autofillHints="" />
 
             <TextView
                 android:id="@+id/phoneNumber"
@@ -288,11 +297,10 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Phone Number"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/phone_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintStart_toStartOf="@+id/editEmail"
                 app:layout_constraintTop_toBottomOf="@+id/editEmail" />
 
@@ -304,9 +312,9 @@
                 android:layout_marginEnd="8dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="(optional)"
-                android:textColor="#716D6D"
+                android:text="@string/optional_label"
                 android:textSize="14sp"
+                style="@style/HintText"
                 app:layout_constraintBottom_toBottomOf="@+id/phoneNumber"
                 app:layout_constraintEnd_toEndOf="@+id/editEmail"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -314,14 +322,16 @@
 
             <EditText
                 android:id="@+id/editPhoneNumber"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:hint="@string/phone_label"
                 android:inputType="phone"
                 android:maxLength="@integer/maxPhoneNumberLength"
+                android:minHeight="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/editEmail"
                 app:layout_constraintStart_toStartOf="@+id/phoneNumber"
@@ -329,35 +339,37 @@
 
             <TextView
                 android:id="@+id/location"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:inputType="textCapSentences"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Location"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/location_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/editPhoneNumber"
                 app:layout_constraintStart_toStartOf="@+id/editPhoneNumber"
-                app:layout_constraintTop_toBottomOf="@+id/editPhoneNumber" />
+                app:layout_constraintTop_toBottomOf="@+id/editPhoneNumber"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <EditText
                 android:id="@+id/editLocation"
+                style="@style/Theme.ShowProfileActivity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:hint="@string/location_label"
                 android:inputType="text"
                 android:maxLength="@integer/maxInputLength"
+                android:minHeight="48dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/location"
                 app:layout_constraintStart_toStartOf="@+id/location"
-                app:layout_constraintTop_toBottomOf="@+id/location" />
+                app:layout_constraintTop_toBottomOf="@+id/location"
+                android:autofillHints="" />
 
             <TextView
                 android:id="@+id/Skills"
@@ -366,11 +378,10 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Skills"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/skills_label"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editLocation" />
@@ -384,11 +395,10 @@
                 android:layout_marginEnd="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Selected"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/selected_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Skills" />
@@ -411,11 +421,10 @@
                 android:layout_marginTop="16dp"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Not Selected"
-                android:textColor="@color/not_so_black"
-                android:textColorHint="@color/not_so_black"
+                android:text="@string/not_selected_label"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                style="@style/Theme.ShowProfileActivity"
                 app:layout_constraintEnd_toEndOf="@+id/selectedSkills"
                 app:layout_constraintStart_toStartOf="@+id/selectedSkills"
                 app:layout_constraintTop_toBottomOf="@+id/selectedSkills" />

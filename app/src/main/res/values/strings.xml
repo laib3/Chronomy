@@ -19,10 +19,20 @@
     <string name="edit_skill_dialog_question">Is %1$s one of your skills?</string>
     <string name="balance_label">Balance</string>
     <string name="userinfo_label">User Information</string>
-    <string name="skills_label">Skills</string>
-    <string name="phone_label">phone</string>
-    <string name="email_label">email</string>
-    <string name="location_label">location</string>
     <string name="bio_placeholder">«%1$s»</string>
     <string name="nickname_placeholder">\@%1$s</string>
+    <!-- labels -->
+    <string name="bio_label">Bio</string>
+    <string name="nickname_label">Nickname</string>
+    <string name="identity_label">Identity</string>
+    <string name="name_label">Name</string>
+    <string name="surname_label">Surname</string>
+    <string name="contacts_label">Contacts</string>
+    <string name="skills_label">Skills</string>
+    <string name="phone_label">Phone Number</string>
+    <string name="email_label">Email</string>
+    <string name="location_label">Location</string>
+    <string name="selected_label">Selected</string>
+    <string name="not_selected_label">Not Selected</string>
+    <string name="optional_label">(optional)</string>
 </resources>
