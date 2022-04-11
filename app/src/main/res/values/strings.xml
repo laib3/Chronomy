@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Chronomy</string>
-    <string name="name">Name</string>
-    <string name="surname">Surname</string>
-    <string name="nickname">nickname</string>
-    <string name="email">e@mail.com</string>
+    <string name="name">Mario</string>
+    <string name="surname">Rossi</string>
+    <string name="nickname">superMario</string>
+    <string name="email">mario.rossi@email.com</string>
     <string name="phone_number">+000 1234567890</string>
-    <string name="location">Location</string>
-    <string name="bio">bio</string>
-    <string name="balance">5 CTU</string>
+    <string name="location">Turin, Italy.</string>
+    <string name="bio">Simpatico, solare, in cerca di amicizie.</string>
+    <string name="balance">5 TCU</string>
     <string name="profile_image">profile picture</string>
-    <string name="phone_hint">+39 1234567890</string>
+    <string name="phone_hint">+000 1234567890</string>
     <string name="bio_helper">Insert a presentation of yourself (max %1$d char)</string>
     <string name="skill_description_helper">(max %1$d char)</string>
     <string name="empty_skills">[]</string>
@@ -17,4 +17,10 @@
     <string name="edit_menu_title">Edit Profile</string>
     <string name="edit_skill_dialog_text">Edit %1$s</string>
     <string name="edit_skill_dialog_question">Is %1$s one of your skills?</string>
+    <string name="balance_label">Balance</string>
+    <string name="userinfo_label">User Information</string>
+    <string name="skills_label">Skills</string>
+    <string name="phone_label">phone</string>
+    <string name="email_label">email</string>
+    <string name="location_label">location</string>
 </resources>

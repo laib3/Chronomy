@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scrollViewInfosAndSkills"
+        app:layout_constraintEnd_toStartOf="@+id/scrollViewInfoAndSkills"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-        android:id="@+id/scrollViewInfosAndSkills"
+        android:id="@+id/scrollViewInfoAndSkills"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -95,7 +95,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/infosAndSkills"
+            android:id="@+id/infoAndSkills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -105,10 +105,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Balance"
+                android:text="@string/balance_label"
                 android:textAlignment="viewStart"
                 android:textColor="@color/not_so_black"
                 android:textColorHint="@color/not_so_black"
@@ -125,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:contentDescription="balance"
+                    android:contentDescription="@string/balance_label"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -155,10 +154,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="User Information"
+                android:text="@string/userinfo_label"
                 android:textAlignment="viewStart"
                 android:textColor="@color/not_so_black"
                 android:textColorHint="@color/not_so_black"
@@ -178,7 +176,7 @@
                 android:textColorHint="@color/not_so_black" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/userInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -188,47 +186,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="4dp"
-                    android:contentDescription="phone"
+                    android:layout_marginBottom="4dp"
+                    android:contentDescription="@string/phone_label"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    app:layout_constraintBottom_toTopOf="@+id/emailIcon"
                     app:layout_constraintEnd_toStartOf="@+id/phoneNumber"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_local_phone_24" />
-
-                <ImageView
-                    android:id="@+id/locationIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:contentDescription="location"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/phoneIcon"
-                    app:layout_constraintTop_toBottomOf="@+id/phoneIcon"
-                    app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/ic_baseline_location_on_24" />
-
-                <ImageView
-                    android:id="@+id/emailIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="4dp"
-                    android:contentDescription="email"
-                    app:layout_constraintBottom_toBottomOf="@+id/phoneNumber"
-                    app:layout_constraintEnd_toStartOf="@+id/email"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/phoneNumber"
-                    app:layout_constraintTop_toTopOf="@+id/phoneNumber"
-                    app:layout_constraintVertical_bias="0.461"
-                    app:srcCompat="@drawable/ic_baseline_email_24" />
 
                 <TextView
                     android:id="@+id/phoneNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
@@ -236,15 +212,33 @@
                     android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/phoneIcon"
-                    app:layout_constraintEnd_toStartOf="@+id/emailIcon"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/phoneIcon"
                     app:layout_constraintTop_toTopOf="@+id/phoneIcon" />
+
+                <ImageView
+                    android:id="@+id/emailIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:contentDescription="@string/email_label"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    app:layout_constraintBottom_toTopOf="@+id/locationIcon"
+                    app:layout_constraintEnd_toStartOf="@+id/email"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/phoneIcon"
+                    app:srcCompat="@drawable/ic_baseline_email_24" />
 
                 <TextView
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
@@ -252,21 +246,41 @@
                     android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
                     app:layout_constraintBottom_toBottomOf="@+id/emailIcon"
+                    app:layout_constraintStart_toEndOf="@+id/emailIcon"
                     app:layout_constraintTop_toTopOf="@+id/emailIcon"
-                    tools:layout_editor_absoluteX="246dp" />
+                    app:layout_constraintVertical_bias="0.333" />
+
+                <ImageView
+                    android:id="@+id/locationIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:contentDescription="@string/location_label"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/location"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailIcon"
+                    app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
                 <TextView
                     android:id="@+id/location"
-                    android:layout_width="65dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
                     android:text="@string/location"
                     android:textColor="@color/not_so_black"
                     android:textColorHint="@color/not_so_black"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
                     app:layout_constraintStart_toEndOf="@+id/locationIcon"
                     app:layout_constraintTop_toTopOf="@+id/locationIcon" />
 
@@ -278,10 +292,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="Skills"
+                android:text="@string/skills_label"
                 android:textAlignment="viewStart"
                 android:textColor="@color/not_so_black"
                 android:textColorHint="@color/not_so_black"

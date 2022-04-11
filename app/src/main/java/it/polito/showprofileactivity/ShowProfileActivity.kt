@@ -92,25 +92,25 @@ class ShowProfileActivity: AppCompatActivity() {
     private fun loadContent(){
         val sharedPreferences = getSharedPreferences(sharedPrefName, MODE_PRIVATE)
         val profile:String? = sharedPreferences.getString(profile, null)
-        val jobj:JSONObject? = if(profile == null){
+        val jsonObject:JSONObject? = if(profile == null){
             null
         } else {
             JSONObject(profile)
         }
-        name = jobj?.getString("name") ?: getString(R.string.name)
-        surname = jobj?.getString("surname") ?: getString(R.string.surname)
-        nickname = jobj?.getString("nickname") ?: getString(R.string.nickname)
-        bio = jobj?.getString("bio") ?: getString(R.string.bio)
-        email = jobj?.getString("email") ?: getString(R.string.email)
-        phone = jobj?.getString("phone") ?: getString(R.string.phone_number)
-        location = jobj?.getString("location") ?: getString(R.string.location)
-        currentPhotoPath = jobj?.getString("photo") // warning: it may be null
+        name = jsonObject?.getString("name") ?: getString(R.string.name)
+        surname = jsonObject?.getString("surname") ?: getString(R.string.surname)
+        nickname = jsonObject?.getString("nickname") ?: getString(R.string.nickname)
+        bio = jsonObject?.getString("bio") ?: getString(R.string.bio)
+        email = jsonObject?.getString("email") ?: getString(R.string.email)
+        phone = jsonObject?.getString("phone") ?: getString(R.string.phone_number)
+        location = jsonObject?.getString("location") ?: getString(R.string.location)
+        currentPhotoPath = jsonObject?.getString("photo") // warning: it may be null
 
         // if skills are found in memory load them from memory, otherwise create them from scratch
-        skills = if(jobj == null)
+        skills = if(jsonObject == null)
             createSkills(this)
         else
-            jsonToSkills(jobj.getJSONArray("skills"))
+            jsonToSkills(jsonObject.getJSONArray("skills"))
     }
 
     // update views from local variables
