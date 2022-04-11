@@ -14,4 +14,5 @@
     <string name="skill_description_helper">(max %1$d char)</string>
     <string name="empty_skills">[]</string>
     <string name="fullname_placeholder">%1$s %2$s</string>
+    <string name="edit_menu_title">Edit Profile</string>
 </resources>

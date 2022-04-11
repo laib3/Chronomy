@@ -162,7 +162,7 @@ class ShowProfileActivity: AppCompatActivity() {
     // inflate main_menu into activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
