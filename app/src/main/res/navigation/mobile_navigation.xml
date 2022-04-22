@@ -9,32 +9,25 @@
         android:id="@+id/nav_list"
         android:name="it.polito.mainactivity.ui.timeslot_list.TimeSlotListFragment"
         android:label="@string/menu_timeslot_list"
-        tools:layout="@layout/fragment_timeslot_list" >
-        <action
-            android:id="@+id/action_nav_list_to_nav_details"
-            app:destination="@id/nav_details" />
-        <action
-            android:id="@+id/action_nav_list_to_nav_edit"
-            app:destination="@id/nav_edit" />
-    </fragment>
+        tools:layout="@layout/fragment_timeslot_list" />
 
     <fragment
         android:id="@+id/nav_details"
         android:name="it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsFragment"
         android:label="@string/menu_timeslot_details"
-        tools:layout="@layout/fragment_timeslot_details" >
-        <action
-            android:id="@+id/action_nav_details_to_nav_list"
-            app:destination="@id/nav_list" />
-    </fragment>
+        tools:layout="@layout/fragment_timeslot_details" />
 
     <fragment
         android:id="@+id/nav_edit"
         android:name="it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment"
         android:label="@string/menu_timeslot_edit"
-        tools:layout="@layout/fragment_timeslot_edit" >
-        <action
-            android:id="@+id/action_nav_edit_to_nav_list"
-            app:destination="@id/nav_list" />
-    </fragment>
+        tools:layout="@layout/fragment_timeslot_edit" />
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="it.polito.mainactivity.ui.editprofile.EditProfileFragment"
+        android:label="EditProfileFragment" />
+    <fragment
+        android:id="@+id/nav_show_profile"
+        android:name="it.polito.mainactivity.ui.showprofile.ShowProfileFragment"
+        android:label="ShowProfileFragment" />
 </navigation>

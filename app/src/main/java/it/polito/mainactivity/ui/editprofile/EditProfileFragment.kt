@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.timeslot_details
+package it.polito.mainactivity.ui.editprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
+import it.polito.mainactivity.databinding.FragmentEditProfileBinding
 
-class TimeSlotDetailsFragment : Fragment() {
+class EditProfileFragment : Fragment() {
 
-    private var _binding: FragmentTimeslotDetailsBinding? = null
+    private var _binding: FragmentEditProfileBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,17 +22,16 @@ class TimeSlotDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(TimeSlotDetailsViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(this).get(EditProfileViewModel::class.java)
 
-        _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textTimeslotDetails
-        galleryViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textEditProfile
+        homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-
         return root
     }
 

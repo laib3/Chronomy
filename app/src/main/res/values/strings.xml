@@ -10,4 +10,6 @@
     <string name="menu_timeslot_list">Timeslot List</string>
     <string name="menu_timeslot_details">Timeslot Details</string>
     <string name="menu_timeslot_edit">Timeslot Edit</string>
+    <string name="menu_show_profile">Show profile</string>
+    <string name="menu_edit_profile">Edit profile</string>
 </resources>
