@@ -1,13 +1,13 @@
-package it.polito.mainactivity.ui.slideshow
+package it.polito.mainactivity.ui.timeslot_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SlideshowViewModel : ViewModel() {
+class TimeSlotListViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+        value = "Timeslot List"
     }
     val text: LiveData<String> = _text
 }

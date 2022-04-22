@@ -3,23 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_list">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="it.polito.mainactivity.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_timeslot_list" />
+        android:id="@+id/nav_list"
+        android:name="it.polito.mainactivity.ui.timeslot_list.TimeSlotListFragment"
+        android:label="@string/menu_timeslot_list"
+        tools:layout="@layout/fragment_timeslot_list" >
+        <action
+            android:id="@+id/action_nav_list_to_nav_details"
+            app:destination="@id/nav_details" />
+        <action
+            android:id="@+id/action_nav_list_to_nav_edit"
+            app:destination="@id/nav_edit" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="it.polito.mainactivity.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_timeslot_details" />
+        android:id="@+id/nav_details"
+        android:name="it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsFragment"
+        android:label="@string/menu_timeslot_details"
+        tools:layout="@layout/fragment_timeslot_details" >
+        <action
+            android:id="@+id/action_nav_details_to_nav_list"
+            app:destination="@id/nav_list" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="it.polito.mainactivity.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_timeslot_edit" />
+        android:id="@+id/nav_edit"
+        android:name="it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment"
+        android:label="@string/menu_timeslot_edit"
+        tools:layout="@layout/fragment_timeslot_edit" >
+        <action
+            android:id="@+id/action_nav_edit_to_nav_list"
+            app:destination="@id/nav_list" />
+    </fragment>
 </navigation>
