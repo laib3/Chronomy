@@ -60,66 +60,20 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/StartDateTextField"
+        android:id="@+id/AvailabilityTextField"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:enabled="false"
-        android:hint="Start Date"
+        android:hint="Availability"
         android:textColorHint="@color/purple_500"
-        app:layout_constraintEnd_toStartOf="@+id/EndDateTextField"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/DescriptionTextField"
-        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextField"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_calendar"
         app:endIconContentDescription="Choose start date"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/EndDateTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:hint="End Date"
-        android:textColorHint="@color/purple_500"
-        app:layout_constraintEnd_toEndOf="@+id/DescriptionTextField"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/StartDateTextField"
-        app:layout_constraintTop_toTopOf="@+id/StartDateTextField"
-        app:endIconMode="custom"
         app:endIconDrawable="@drawable/ic_calendar"
-        app:endIconContentDescription="Choose end date">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/DurationTextField"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:enabled="false"
-        android:hint="Duration"
-        android:textColorHint="@color/purple_500"
-        app:layout_constraintEnd_toEndOf="@+id/EndDateTextField"
-        app:layout_constraintStart_toStartOf="@+id/StartDateTextField"
-        app:layout_constraintTop_toBottomOf="@+id/EndDateTextField"
         app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_clock"
-        app:endIconContentDescription="Choose duration of timeslot">
+        app:layout_constraintEnd_toEndOf="@+id/DescriptionTextField"
+        app:layout_constraintStart_toStartOf="@+id/DescriptionTextField"
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionTextField">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -132,16 +86,15 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:enabled="false"
         android:hint="Location"
         android:textColorHint="@color/purple_500"
-        app:layout_constraintEnd_toEndOf="@+id/DurationTextField"
-        app:layout_constraintStart_toStartOf="@+id/DurationTextField"
-        app:layout_constraintTop_toBottomOf="@+id/DurationTextField"
-        app:endIconMode="custom"
+        app:endIconContentDescription="Choose the location"
         app:endIconDrawable="@drawable/ic_location"
-        app:endIconContentDescription="Choose the location">
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="@+id/AvailabilityTextField"
+        app:layout_constraintStart_toStartOf="@+id/AvailabilityTextField"
+        app:layout_constraintTop_toBottomOf="@+id/AvailabilityTextField">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -161,8 +114,8 @@
         app:endIconContentDescription="Choose the location"
         app:endIconDrawable="@drawable/ic_category"
         app:endIconMode="custom"
-        app:layout_constraintEnd_toEndOf="@+id/DurationTextField"
-        app:layout_constraintStart_toStartOf="@+id/DurationTextField"
+        app:layout_constraintEnd_toEndOf="@+id/LocationTextField"
+        app:layout_constraintStart_toStartOf="@+id/LocationTextField"
         app:layout_constraintTop_toBottomOf="@+id/LocationTextField">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -170,5 +123,5 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
-
+        -->
 </androidx.constraintlayout.widget.ConstraintLayout>
