@@ -43,7 +43,7 @@ class TimeSlotDetailsFragment : Fragment() {
 
             var dateString = ""
             for (date in it.days){
-                dateString += it.days[0].date.toString()+"/"+it.days[0].month.toString()+ " from "+it.startHour+":"+it.startMinute+" to "+it.endHour+":"+it.endMinute+"\n"
+                dateString += date.date.toString()+"/"+date.month.toString()+ " from "+it.startHour+":"+it.startMinute+" to "+it.endHour+":"+it.endMinute+"\n"
             }
             dateString = dateString.substring(0, dateString.length - 1);
             tiAvailability?.editText?.setText(dateString)
