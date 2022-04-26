@@ -7,6 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import it.polito.mainactivity.TimeSlotItem
+import it.polito.mainactivity.TimeSlotItemAdapter
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
 
 class TimeSlotListFragment : Fragment() {
@@ -17,6 +21,15 @@ class TimeSlotListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    // TODO: remove
+    private fun createTimeSlotItems(n: Int): List<TimeSlotItem> {
+        val l = mutableListOf<TimeSlotItem>()
+        for (i in 1..n) {
+            val i = TimeSlotItem("name$i", "role$i")
+            l.add(i)
+        }
+        return l
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,10 +41,20 @@ class TimeSlotListFragment : Fragment() {
         _binding = FragmentTimeslotListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textTimeslotList
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        //val textView: TextView = binding.textTimeslotList
+        val rv: RecyclerView = binding.timeslotListRv
+        rv.layoutManager = LinearLayoutManager(root.context)
+
+        val timeSlotItems = createTimeSlotItems(1000)
+        val adapter = TimeSlotItemAdapter(timeSlotItems)
+        rv.adapter = adapter
+
+        // TODO
+        /*homeViewModel.text.observe(viewLifecycleOwner) {
+            rv.text = it
         }
+        é/
+         */
         return root
     }
 
