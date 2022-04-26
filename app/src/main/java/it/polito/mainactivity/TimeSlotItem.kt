@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-data class TimeSlotItem(val name: String, val role: String)
+data class TimeSlotItem(val title: String, val location: String, val availability: String, val category:String)
 
 class TimeSlotItemAdapter(val data: List<TimeSlotItem>): RecyclerView.Adapter<TimeSlotItemAdapter.TimeSlotItemViewHolder>() {
     class TimeSlotItemViewHolder(v: View): RecyclerView.ViewHolder(v) {
-        val name: TextView = v.findViewById(R.id.name)
-        val role: TextView = v.findViewById(R.id.role)
+        val title: TextView = v.findViewById(R.id.item_title)
+        val location: TextView = v.findViewById(R.id.item_location)
+        val availability: TextView = v.findViewById(R.id.item_availability)
+        val category: TextView = v.findViewById(R.id.item_category)
 
     }
 
@@ -23,8 +25,10 @@ class TimeSlotItemAdapter(val data: List<TimeSlotItem>): RecyclerView.Adapter<Ti
     }
 
     override fun onBindViewHolder(holder: TimeSlotItemViewHolder, position: Int) {
-        holder.name.text = data[position].name
-        holder.role.text = data[position].role
+        holder.title.text = data[position].title
+        holder.location.text = data[position].location
+        holder.availability.text = data[position].availability
+        holder.category.text = data[position].category
     }
 
     override fun getItemCount(): Int = data.size
