@@ -5,19 +5,24 @@
       <map>
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/drawable/circle.xml" value="0.1" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/drawable/ic_menu_details.xml" value="0.228" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/drawable/ic_pencil.xml" value="0.161" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout-land/activity_edit_profile.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout-land/fragment_timeslot_details.xml" value="0.2" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout-land/show_profile_activity.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/activity_edit_profile.xml" value="0.2685745734727573" />
-        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/app_bar_main.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/content_main.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_details.xml" value="0.264" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/nav_header_main.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/show_profile_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/skill_card.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/skill_edit_card.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/skill_edit_modal.xml" value="0.264" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/activity_main_drawer.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/main.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/timeslot_details_menu.xml" value="0.203125" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/xml/file_paths.xml" value="0.15260416666666668" />
       </map>
     </option>
