@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.home
+package it.polito.mainactivity.ui.timeslot_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import it.polito.mainactivity.databinding.FragmentHomeBinding
+import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
 
-class HomeFragment : Fragment() {
+class TimeSlotListFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentTimeslotListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,12 +23,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentTimeslotListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
+        val textView: TextView = binding.textTimeslotList
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
