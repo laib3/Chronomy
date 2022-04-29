@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.showprofile
+package it.polito.mainactivity.ui.userprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import it.polito.mainactivity.databinding.FragmentShowProfileBinding
+import it.polito.mainactivity.databinding.FragmentEditProfileBinding
 
-class ShowProfileFragment : Fragment() {
+class EditProfileFragment : Fragment() {
 
-    private var _binding: FragmentShowProfileBinding? = null
+    private var _binding: FragmentEditProfileBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class ShowProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(ShowProfileViewModel::class.java)
+        val userProfileViewModel =
+            ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
-        _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textShowProfile
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textEditProfile
+        userProfileViewModel.name.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

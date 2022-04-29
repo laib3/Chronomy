@@ -24,10 +24,10 @@
         tools:layout="@layout/fragment_timeslot_edit" />
     <fragment
         android:id="@+id/nav_edit_profile"
-        android:name="it.polito.mainactivity.ui.editprofile.EditProfileFragment"
+        android:name="it.polito.mainactivity.ui.userprofile.EditProfileFragment"
         android:label="EditProfileFragment" />
     <fragment
         android:id="@+id/nav_show_profile"
-        android:name="it.polito.mainactivity.ui.showprofile.ShowProfileFragment"
+        android:name="it.polito.mainactivity.ui.userprofile.ShowProfileFragment"
         android:label="ShowProfileFragment" />
 </navigation>
