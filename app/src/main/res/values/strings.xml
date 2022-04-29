@@ -12,4 +12,29 @@
     <string name="menu_timeslot_edit">Timeslot Edit</string>
     <string name="menu_show_profile">Show profile</string>
     <string name="menu_edit_profile">Edit profile</string>
+
+    <!-- fake data -->
+    <string name="user_profile_name">Name</string>
+    <string name="user_profile_surname">Surname</string>
+    <string name="user_profile_nickname">Nickname</string>
+    <string name="user_profile_bio">«Bio»</string>
+    <string name="user_profile_email">e.mail@email.it</string>
+    <string name="user_profile_phone">+39333123456789</string>
+    <string name="user_profile_balance">5 TCU</string>
+    <string name="user_profile_location">Turin, Italy</string>
+
+    <!-- placeholders -->
+    <string name="user_profile_nickname_placeholder">\@%1$s</string>
+    <string name="user_profile_balance_placeholder">%1$d TCU</string>
+    <string name="user_profile_bio_placeholder">«%1$s»</string>
+
+    <!-- labels -->
+    <string name="user_profile_balance_label">Balance</string>
+    <string name="user_profile_info_label">User information</string>
+    <string name="user_profile_skills_label">Skills</string>
+    <string name="user_profile_phone_label">Phone</string>
+    <string name="user_profile_email_label">Email</string>
+    <string name="user_profile_location_label">Location</string>
+    <string name="user_profile_picture_label">Location</string>
+
 </resources>

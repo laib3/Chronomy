@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 
 class ShowProfileFragment : Fragment() {
@@ -28,10 +29,12 @@ class ShowProfileFragment : Fragment() {
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textShowProfile
-        userProfileViewModel.name.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        val nameTextView: TextView = binding.textName
+        val surnameTextView: TextView = binding.textSurname
+        val nicknameTextView: TextView = binding.textNickname
+        userProfileViewModel.name.observe(viewLifecycleOwner) { nameTextView.text = it }
+        userProfileViewModel.surname.observe(viewLifecycleOwner){ surnameTextView.text = it }
+        userProfileViewModel.nickname.observe(viewLifecycleOwner){ nicknameTextView.text = String.format(getString(R.string.user_profile_nickname_placeholder), it) }
         return root
     }
 

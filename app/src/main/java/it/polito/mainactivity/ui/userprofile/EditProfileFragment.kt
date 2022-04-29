@@ -22,14 +22,14 @@ class EditProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val userProfileViewModel =
+        val homeViewModel =
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textEditProfile
-        userProfileViewModel.name.observe(viewLifecycleOwner) {
+        homeViewModel.name.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
