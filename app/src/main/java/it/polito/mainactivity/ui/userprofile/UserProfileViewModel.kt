@@ -13,6 +13,7 @@ class UserProfileViewModel : ViewModel() {
     private val _email = MutableLiveData<String>().apply{ value = "mario@rossi.it" }
     private val _phone = MutableLiveData<String>().apply{ value = "+39333123456" }
     private val _location = MutableLiveData<String>().apply{ value = "Italy" }
+    private val _balance = MutableLiveData<Int>().apply{ value = 5 }
 
     val name: LiveData<String> = _name
     val surname: LiveData<String> = _surname
@@ -21,4 +22,5 @@ class UserProfileViewModel : ViewModel() {
     val email: LiveData<String> = _email
     val phone: LiveData<String> = _phone
     val location: LiveData<String> = _location
+    val balance: LiveData<Int> = _balance
 }
