@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
-import org.w3c.dom.Text
 
 class ShowProfileFragment : Fragment() {
 
