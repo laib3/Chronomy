@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.polito.mainactivity.R
-import it.polito.mainactivity.TimeSlotItem
-import it.polito.mainactivity.TimeSlotItemAdapter
+import it.polito.mainactivity.Timeslot
+import it.polito.mainactivity.TimeslotAdapter
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
 import it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment
+import java.util.*
 
 class TimeSlotListFragment : Fragment() {
 
@@ -28,10 +29,10 @@ class TimeSlotListFragment : Fragment() {
     private val binding get() = _binding!!
 
     // TODO: remove
-    private fun createTimeSlotItems(n: Int): List<TimeSlotItem> {
-        val l = mutableListOf<TimeSlotItem>()
+    private fun createTimeslots(n: Int): List<Timeslot> {
+        val l = mutableListOf<Timeslot>()
         for (i in 1..n) {
-            val i = TimeSlotItem("title$i", "location$i", "availability$i", "category$i")
+            val i = Timeslot("title$i", "description$i", Date(2022, 2, 12), "09:00 AM", "10:00 PM", "Via qualcosa$i", "skill$i")
             l.add(i)
         }
         return l
@@ -53,8 +54,8 @@ class TimeSlotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
-        val timeSlotItems = createTimeSlotItems(100)
-        val adapter = TimeSlotItemAdapter(timeSlotItems)
+        val Timeslots = create_root_ide_package_.it.polito.mainactivity.Timeslots(100)
+        val adapter = TimeslotAdapter(Timeslots)
         rv.adapter = adapter
 
         // If the list of timeslots is empty, show a message
