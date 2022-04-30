@@ -54,7 +54,7 @@ class TimeSlotListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
         val timeSlotItems = createTimeSlotItems(100)
-        val adapter = TimeSlotItemAdapter(timeSlotItems)
+        val adapter = TimeSlotItemAdapter(timeSlotItems, this)
         rv.adapter = adapter
 
         // If the list of timeslots is empty, show a message
@@ -65,27 +65,13 @@ class TimeSlotListFragment : Fragment() {
             View.INVISIBLE
 
 
+        // If click on fab, go to Edit timeslot
         val fab : FloatingActionButton = binding.fab
-        var navController: NavController?
 
         var bundle = Bundle();
-        bundle.putString("key","abc"); // Put anything what you want
+        bundle.putInt("id", -1)
 
         fab.setOnClickListener { findNavController().navigate(R.id.action_nav_list_to_nav_edit, bundle)}
-
-        /*fab.setOnClickListener {
-            //navController = Navigation.findNavController(fab)
-            //navController!!.navigate(action) //a new one from scratch
-            var bundle = Bundle();
-            bundle.putString("key","abc"); // Put anything what you want
-
-            var editFragment =  TimeSlotEditFragment();
-            editFragment.setArguments(bundle);
-
-            fragmentManager.beginTransaction()
-                .replace(R.id.nav_list, editFragment)
-                .commit();
-        }*/
 
         // TODO
         /*homeViewModel.text.observe(viewLifecycleOwner) {
