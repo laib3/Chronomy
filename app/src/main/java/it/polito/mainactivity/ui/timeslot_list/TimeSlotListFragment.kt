@@ -30,12 +30,50 @@ class TimeSlotListFragment : Fragment() {
 
     // TODO: remove
     private fun createTimeslots(n: Int): List<Timeslot> {
-        val l = mutableListOf<Timeslot>()
+        /*val l = mutableListOf<Timeslot>()
         for (i in 1..n) {
             val i = Timeslot("title$i", "description$i", Date(2022, 2, 12), "09:00 AM", "10:00 PM", "Via qualcosa$i", "skill$i")
             l.add(i)
         }
-        return l
+        return l*/
+        return listOf(
+            Timeslot("Bring grocery shopping to your door",
+                "I'll be happy to receive a list of goods to buy for you and to bring it back home to you."+
+                        "I have a car so the quantity is not an issue. You can also select which supermarket you want me to go to,"+
+                        " but please don't choose those outside of the neighbourhood.",
+                Date(2022, 4, 25),
+                "09:10 AM", "10:00 PM",
+                "New Neighbourhood, Street 10, Sydney",
+                "Delivery") ,
+
+            Timeslot("Walk your dog",
+                "I'll be happy to receive a list of dogs from you and to bring it back home to you."+
+                        "I have a car so the quantity is not an issue. You can also select which supermarket you want me to go to,"+
+                        " but please don't choose those outside of the neighbourhood.",
+                Date(2022, 4, 25),
+                "09:10 AM", "10:00 PM",
+                "New City, Street 10, Anastasia",
+                "Other"),
+
+            Timeslot("Teach to your kid",
+                "I'll be happy to receive a list of goods to buy for you and to bring it back home to you."+
+                        "I have a car so the quantity is not an issue. You can also select which supermarket you want me to go to,"+
+                        " but please don't choose those outside of the neighbourhood.",
+                Date(2022, 4, 25),
+                "09:10 AM", "10:00 PM",
+                "New Neighbourhood, Street 10, Sydney",
+                "Tutoring"),
+
+            Timeslot("Bring grocery YOGA to your door",
+                "I'll be happy to receive a list of goods to buy for you and to bring it back home to you."+
+                        "I have a car so the quantity is not an issue. You can also select which supermarket you want me to go to,"+
+                        " but please don't choose those outside of the neighbourhood.",
+                Date(2022, 4, 25),
+                "09:10 AM", "10:00 PM",
+                "New Neighbourhood, Street 10, Sydney",
+                "Wellness")
+
+        )
     }
 
 
@@ -54,8 +92,8 @@ class TimeSlotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
-        val Timeslots = create_root_ide_package_.it.polito.mainactivity.Timeslots(100)
-        val adapter = TimeslotAdapter(Timeslots)
+        val timeslots = createTimeslots(100)
+        val adapter = TimeslotAdapter(timeslots, this)
         rv.adapter = adapter
 
         // If the list of timeslots is empty, show a message
@@ -66,27 +104,13 @@ class TimeSlotListFragment : Fragment() {
             View.INVISIBLE
 
 
+        // If click on fab, go to Edit timeslot
         val fab : FloatingActionButton = binding.fab
-        var navController: NavController?
 
         var bundle = Bundle();
-        bundle.putString("key","abc"); // Put anything what you want
+        bundle.putInt("id", -1)
 
         fab.setOnClickListener { findNavController().navigate(R.id.action_nav_list_to_nav_edit, bundle)}
-
-        /*fab.setOnClickListener {
-            //navController = Navigation.findNavController(fab)
-            //navController!!.navigate(action) //a new one from scratch
-            var bundle = Bundle();
-            bundle.putString("key","abc"); // Put anything what you want
-
-            var editFragment =  TimeSlotEditFragment();
-            editFragment.setArguments(bundle);
-
-            fragmentManager.beginTransaction()
-                .replace(R.id.nav_list, editFragment)
-                .commit();
-        }*/
 
         // TODO
         /*homeViewModel.text.observe(viewLifecycleOwner) {
