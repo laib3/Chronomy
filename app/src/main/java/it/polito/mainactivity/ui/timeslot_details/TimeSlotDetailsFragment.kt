@@ -1,18 +1,22 @@
 package it.polito.mainactivity.ui.timeslot_details
 
+import android.os.Build
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.*
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.text.bold
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
-import it.polito.mainactivity.Timeslot
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
+import java.text.DateFormat
+import java.time.DayOfWeek
 import java.util.*
 
 class TimeSlotDetailsFragment : Fragment() {
@@ -25,14 +29,15 @@ class TimeSlotDetailsFragment : Fragment() {
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: TextInputLayout? = null
 
-    //private var t: Timeslot? = null
 
+    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView( inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val timeSlotListViewModel =
             ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
@@ -49,20 +54,39 @@ class TimeSlotDetailsFragment : Fragment() {
             textView.text = it
         }
 
-        timeSlotListViewModel.timeslots.observe(
-            viewLifecycleOwner
-        ) {
-
+        timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
             tiTitle?.editText?.setText(it.elementAt(id).title)
             tiDescription?.editText?.setText(it.elementAt(id).description)
 
-            var dateString = ""
-            dateString += it.elementAt(id).date.toString() + " from " + it.elementAt(id).startHour + " to " + it.elementAt(id).endHour + "\n"
-            dateString = dateString.substring(0, dateString.length - 1);
+            val dateString = SpannableStringBuilder()
+
+            if(it.elementAt(id).repetition == ""){
+                dateString
+                    .bold{append(dateFormat.format(it.elementAt(id).date))}
+                    .append(" from ")
+                    .bold{append(it.elementAt(id).startHour)}
+                    .append(" to ")
+                    .bold{append(it.elementAt(id).endHour)}
+            }else{
+                var toBeAdded = it.elementAt(id).days.map{DayOfWeek.of(it).toString().lowercase()}
+
+                dateString
+                    .append("This timeslots repeats ${it.elementAt(id).repetition.lowercase()}\n\n")
+                    .append("Starting on ")
+                    .bold{append(dateFormat.format(it.elementAt(id).date))}
+                    .append(" until ")
+                    .bold{append(dateFormat.format(it.elementAt(id).endRepetitionDate))}
+                    .append("\nevery")
+                    .bold{append("${toBeAdded}\n".replace("[", " ").replace("]", " "))}
+                    .append("from ")
+                    .bold{append(it.elementAt(id).startHour)}
+                    .append(" to ")
+                    .bold{append(it.elementAt(id).endHour)}
+            }
+
             tiAvailability?.editText?.setText(dateString)
             tiLocation?.editText?.setText(it.elementAt(id).location)
             tiCategory?.editText?.setText(it.elementAt(id).category)
-
         }
         return root
     }
