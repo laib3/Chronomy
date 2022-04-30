@@ -12,4 +12,5 @@
     <string name="menu_timeslot_edit">Timeslot Edit</string>
     <string name="menu_show_profile">Show profile</string>
     <string name="menu_edit_profile">Edit profile</string>
+    <string name="empty_timeslot_list_message">The list of timeslots is empty, press the button below to add one</string>
 </resources>
