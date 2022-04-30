@@ -13,7 +13,7 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
 
-class TimeslotAdapter(val data: List<Timeslot>): RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
+class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
     class TimeslotViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val title: TextView = v.findViewById(R.id.item_title)
         val location: TextView = v.findViewById(R.id.item_location)
