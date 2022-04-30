@@ -6,19 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.polito.mainactivity.R
-import it.polito.mainactivity.Timeslot
 import it.polito.mainactivity.TimeslotAdapter
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
-import it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment
-import java.util.*
 
 class TimeSlotListFragment : Fragment() {
 
