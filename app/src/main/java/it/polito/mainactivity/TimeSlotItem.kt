@@ -37,6 +37,7 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
         //holder.availability.text = data[position].availability
         holder.category.text = data[position].category
 
+        // pass through bundle the id of the item in the list
         var bundle = Bundle();
         bundle.putInt("id", position)
 

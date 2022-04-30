@@ -55,7 +55,7 @@ class TimeSlotListViewModel : ViewModel() {
 
     val timeslots : MutableLiveData<List<Timeslot>> = _timeslots
 
-    public fun findById(id: Int) : Timeslot? {
+    fun findById(id: Int) : Timeslot? {
         return timeslots.value?.elementAtOrNull(id)
     }
 }

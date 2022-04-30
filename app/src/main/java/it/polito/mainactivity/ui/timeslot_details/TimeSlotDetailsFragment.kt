@@ -32,7 +32,11 @@ class TimeSlotDetailsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView( inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val timeSlotListViewModel =
             ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
@@ -41,7 +45,7 @@ class TimeSlotDetailsFragment : Fragment() {
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val id: Int = arguments?.getInt("id")?:-1
+        val id: Int = arguments?.getInt("id") ?: -1
 
         val textView: TextView = binding.textTimeslotDetails
         val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
@@ -49,15 +53,15 @@ class TimeSlotDetailsFragment : Fragment() {
             textView.text = it
         }
 
-        timeSlotListViewModel.timeslots.observe(
-            viewLifecycleOwner
-        ) {
+        timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
 
             tiTitle?.editText?.setText(it.elementAt(id).title)
             tiDescription?.editText?.setText(it.elementAt(id).description)
 
             var dateString = ""
-            dateString += it.elementAt(id).date.toString() + " from " + it.elementAt(id).startHour + " to " + it.elementAt(id).endHour + "\n"
+            dateString += it.elementAt(id).date.toString() + " from " + it.elementAt(id).startHour + " to " + it.elementAt(
+                id
+            ).endHour + "\n"
             dateString = dateString.substring(0, dateString.length - 1);
             tiAvailability?.editText?.setText(dateString)
             tiLocation?.editText?.setText(it.elementAt(id).location)
@@ -88,7 +92,9 @@ class TimeSlotDetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item!!,
-        requireView().findNavController())||super.onOptionsItemSelected(item)
+        return NavigationUI.onNavDestinationSelected(
+            item!!,
+            requireView().findNavController()
+        ) || super.onOptionsItemSelected(item)
     }
 }
