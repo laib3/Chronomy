@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import it.polito.mainactivity.R
 import it.polito.mainactivity.TimeSlotItem
 import it.polito.mainactivity.TimeSlotItemAdapter
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
+import it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment
 
 class TimeSlotListFragment : Fragment() {
 
@@ -57,6 +63,29 @@ class TimeSlotListFragment : Fragment() {
             View.VISIBLE
         else
             View.INVISIBLE
+
+
+        val fab : FloatingActionButton = binding.fab
+        var navController: NavController?
+
+        var bundle = Bundle();
+        bundle.putString("key","abc"); // Put anything what you want
+
+        fab.setOnClickListener { findNavController().navigate(R.id.action_nav_list_to_nav_edit, bundle)}
+
+        /*fab.setOnClickListener {
+            //navController = Navigation.findNavController(fab)
+            //navController!!.navigate(action) //a new one from scratch
+            var bundle = Bundle();
+            bundle.putString("key","abc"); // Put anything what you want
+
+            var editFragment =  TimeSlotEditFragment();
+            editFragment.setArguments(bundle);
+
+            fragmentManager.beginTransaction()
+                .replace(R.id.nav_list, editFragment)
+                .commit();
+        }*/
 
         // TODO
         /*homeViewModel.text.observe(viewLifecycleOwner) {

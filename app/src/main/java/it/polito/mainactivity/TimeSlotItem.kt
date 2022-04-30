@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 data class TimeSlotItem(val title: String, val location: String, val availability: String, val category:String)
 
+
 class TimeSlotItemAdapter(val data: List<TimeSlotItem>): RecyclerView.Adapter<TimeSlotItemAdapter.TimeSlotItemViewHolder>() {
     class TimeSlotItemViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val title: TextView = v.findViewById(R.id.item_title)
