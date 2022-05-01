@@ -8,16 +8,20 @@
 
     <!-- name -->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/textInputLayoutName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/big_distance"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutSurname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditTextName"
@@ -32,11 +36,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutNickname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -52,11 +58,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutBio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSurname">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -72,11 +80,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutNickname">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -89,15 +99,17 @@
     <!-- phone -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPhone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/big_distance"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditTextPhone"
@@ -112,11 +124,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPhone">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -132,11 +146,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/big_distance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
 
         <com.google.android.material.textfield.TextInputEditText

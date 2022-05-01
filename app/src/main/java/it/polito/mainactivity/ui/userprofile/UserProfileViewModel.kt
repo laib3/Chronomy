@@ -16,7 +16,7 @@ class UserProfileViewModel : ViewModel() {
     private val _location = MutableLiveData<String>().apply{ value = "Italy" }
     private val _balance = MutableLiveData<Int>().apply{ value = 5 }
 
-    val name: MutableLiveData<String> = _name
+    val name: LiveData<String> = _name
     val surname: LiveData<String> = _surname
     val nickname: LiveData<String> = _nickname
     val bio: LiveData<String> = _bio
@@ -25,9 +25,12 @@ class UserProfileViewModel : ViewModel() {
     val location: LiveData<String> = _location
     val balance: LiveData<Int> = _balance
 
-    fun setName(n:String){
-        Log.e("edit::", "name has changed into ${n}")
-        name.value = n
-    }
+    fun setName(s:String){ _name.value = s }
+    fun setSurname(s:String) { _surname.value = s }
+    fun setNickname(s:String) { _nickname.value = s }
+    fun setBio(s:String) { _bio.value = s }
+    fun setEmail(s:String) { _email.value = s}
+    fun setPhone(s:String) { _phone.value = s}
+    fun setLocation(s:String) { _location.value = s}
 
 }
