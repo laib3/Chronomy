@@ -15,20 +15,23 @@
         <entry key="app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3565" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.559375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/app_bar_edit.xml" value="0.33" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_details.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.3442288049029622" />
-        <entry key="app/src/main/res/layout/fragment_timeslot_list.xml" value="0.24479166666666666" />
+        <entry key="app/src/main/res/layout/fragment_timeslot_list.xml" value="0.3655316191799861" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/timeslot_item.xml" value="0.43042350907519444" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/menu/main.xml" value="0.2375" />
+        <entry key="app/src/main/res/menu/showprofile_menu.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/menu/timeslot_details_menu.xml" value="0.35104166666666664" />
       </map>
     </option>
   </component>

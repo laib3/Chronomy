@@ -1,12 +1,13 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 
@@ -25,6 +26,8 @@ class ShowProfileFragment : Fragment() {
     ): View {
         val userProfileViewModel =
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
+
+        setHasOptionsMenu(true)
 
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -46,6 +49,21 @@ class ShowProfileFragment : Fragment() {
         userProfileViewModel.location.observe(viewLifecycleOwner){ locationTextView.text = it }
         userProfileViewModel.email.observe(viewLifecycleOwner){ emailTextView.text = it }
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.showprofile_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
+                || super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume(){
+        super.onResume()
+        setHasOptionsMenu(true)
     }
 
     override fun onDestroyView() {
