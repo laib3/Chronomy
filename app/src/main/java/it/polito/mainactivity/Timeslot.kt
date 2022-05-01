@@ -1,5 +1,9 @@
 package it.polito.mainactivity
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.text.DateFormat
+import java.time.DayOfWeek
 import java.util.*
 
 data class Timeslot (val title:String,
@@ -13,8 +17,9 @@ data class Timeslot (val title:String,
     var repetition:String =""
     var days: List<Int> = listOf()
     var endRepetitionDate:Date?= null
-    var dates: List<Date> = listOf()
+    var dates: MutableList<Date> = mutableListOf()
 
+    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.ITALY)
 
     constructor(title:String,
                  description:String,
@@ -29,14 +34,33 @@ data class Timeslot (val title:String,
                     repetition = _repetition
                     days = _days
                     endRepetitionDate = _endRepetitionDate
-                    //dates = createDates()
+                    createDates()
                 }
 
-    /*private fun createDates(): List<Date> {
-        if(repetition == "") return listOf()
+    private fun createDates() {
+        if(repetition == "") return
+        //TODO: CHECK if end > start
+        // if(endRepetitionDate?.compareTo(date) < 0 ) return
         else{
+            print(dateFormat.format(date))
+            var tmp:Date = date
+            var dayNumber:Int
+            while(tmp <= endRepetitionDate){
+                dayNumber = getDay(tmp)
+                if(days.contains(dayNumber)){
+                    dates.add(tmp)
+                }
+                //we being tmp to the next day
+                tmp = Date(tmp.getTime() + 1000 * 60 * 60 * 24)
+            }
 
         }
-    }*/
+    }
 
+    private fun getDay(date: Date?): Int {
+        val cal = Calendar.getInstance()
+        cal.time = date
+        //1 for monday, 7 for sunday
+        return cal[Calendar.DAY_OF_WEEK]
+    }
 }
