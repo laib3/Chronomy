@@ -27,7 +27,9 @@
             android:id="@+id/textInputEditTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/user_profile_hint_name" />
+            android:hint="@string/user_profile_hint_name"
+            android:inputType="text"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- surname -->
@@ -49,6 +51,7 @@
             android:id="@+id/textInputEditTextSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="@string/user_profile_hint_surname" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,6 +74,7 @@
             android:id="@+id/textInputEditTextNickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="@string/user_profile_hint_nickname" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,6 +97,7 @@
             android:id="@+id/textInputEditTextBio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="@string/user_profile_hint_bio" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,6 +118,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditTextPhone"
+            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/user_profile_hint_phone" />
@@ -136,6 +142,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditTextEmail"
             android:layout_width="match_parent"
+            android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:hint="@string/user_profile_hint_email" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -159,6 +166,7 @@
             android:id="@+id/textInputEditTextLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="@string/user_profile_hint_location" />
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
