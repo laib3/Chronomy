@@ -36,8 +36,11 @@ class TimeSlotDetailsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val timeSlotListViewModel =
             ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
@@ -46,7 +49,7 @@ class TimeSlotDetailsFragment : Fragment() {
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val id: Int = arguments?.getInt("id")?:-1
+        val id: Int = arguments?.getInt("id") ?: -1
 
         val textView: TextView = binding.textTimeslotDetails
         val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
@@ -112,7 +115,9 @@ class TimeSlotDetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item!!,
-        requireView().findNavController())||super.onOptionsItemSelected(item)
+        return NavigationUI.onNavDestinationSelected(
+            item!!,
+            requireView().findNavController()
+        ) || super.onOptionsItemSelected(item)
     }
 }

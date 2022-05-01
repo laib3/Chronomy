@@ -1,17 +1,11 @@
 package it.polito.mainactivity.ui.timeslot_list
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import it.polito.mainactivity.Timeslot
 import java.util.*
 
 class TimeSlotListViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "Timeslot List"
-    }
-    val text: LiveData<String> = _text
 
     private val _timeslots = MutableLiveData<List<Timeslot>>().apply{
         value = listOf(
@@ -60,7 +54,7 @@ class TimeSlotListViewModel : ViewModel() {
 
     val timeslots : MutableLiveData<List<Timeslot>> = _timeslots
 
-    public fun findById(id: Int) : Timeslot? {
+    fun findById(id: Int) : Timeslot? {
         return timeslots.value?.elementAtOrNull(id)
     }
 }
