@@ -1,20 +1,18 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment : Fragment() {
+
+    private val userProfileViewModel:UserProfileViewModel by activityViewModels()
 
     private var _binding: FragmentEditProfileBinding? = null
 
@@ -27,8 +25,9 @@ class EditProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val userProfileViewModel =
-            ViewModelProvider(this).get(UserProfileViewModel::class.java)
+
+        // val userProfileViewModel =
+        //    ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -47,6 +46,9 @@ class EditProfileFragment : Fragment() {
         userProfileViewModel.phone.observe(viewLifecycleOwner) { etPhone.setText(it) }
         userProfileViewModel.email.observe(viewLifecycleOwner) { etEmail.setText(it) }
         userProfileViewModel.location.observe(viewLifecycleOwner) { etLocation.setText(it) }
+
+        userProfileViewModel.setName("Igor")
+
         return root
     }
 

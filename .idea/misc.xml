@@ -13,11 +13,14 @@
         <entry key="app/src/main/res/drawable/ic_menu_pencil.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_profile.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.3425" />
+        <entry key="app/src/main/res/drawable/phone.xml" value="0.3425" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.559375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_edit.xml" value="0.33" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fraglayout.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35104166666666664" />
@@ -35,7 +38,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

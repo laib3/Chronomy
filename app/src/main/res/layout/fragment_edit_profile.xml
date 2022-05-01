@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.userprofile.EditProfileFragment">
 
+    <!-- name -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutSurname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -25,6 +26,7 @@
             android:hint="@string/user_profile_hint_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- surname -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutSurname"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -44,6 +46,7 @@
             android:hint="@string/user_profile_hint_surname" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- nickname -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutNickname"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -63,6 +66,7 @@
             android:hint="@string/user_profile_hint_nickname" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- bio -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutBio"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -82,17 +86,18 @@
             android:hint="@string/user_profile_hint_bio" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- phone -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutPhone"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/big_distance"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditTextPhone"
@@ -101,6 +106,7 @@
             android:hint="@string/user_profile_hint_phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -120,7 +126,7 @@
             android:hint="@string/user_profile_hint_email" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
+    <!-- location -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutLocation"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

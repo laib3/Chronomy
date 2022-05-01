@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 
 class ShowProfileFragment : Fragment() {
 
+    private val userProfileViewModel:UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileBinding? = null
 
     // This property is only valid between onCreateView and
@@ -24,8 +26,8 @@ class ShowProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val userProfileViewModel =
-            ViewModelProvider(this).get(UserProfileViewModel::class.java)
+        // val userProfileViewModel =
+        //     ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -40,6 +42,7 @@ class ShowProfileFragment : Fragment() {
         val phoneTextView: TextView = binding.textPhone
         val locationTextView: TextView = binding.textLocation
         val emailTextView: TextView = binding.textEmail
+
         userProfileViewModel.name.observe(viewLifecycleOwner) { nameTextView.text = it }
         userProfileViewModel.surname.observe(viewLifecycleOwner){ surnameTextView.text = it }
         userProfileViewModel.nickname.observe(viewLifecycleOwner){ nicknameTextView.text = String.format(getString(R.string.user_profile_nickname_placeholder), it) }
@@ -48,6 +51,7 @@ class ShowProfileFragment : Fragment() {
         userProfileViewModel.phone.observe(viewLifecycleOwner){ phoneTextView.text = it }
         userProfileViewModel.location.observe(viewLifecycleOwner){ locationTextView.text = it }
         userProfileViewModel.email.observe(viewLifecycleOwner){ emailTextView.text = it }
+
         return root
     }
 
