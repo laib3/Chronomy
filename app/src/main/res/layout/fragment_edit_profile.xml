@@ -48,10 +48,11 @@
                 android:layout_marginStart="@dimen/small_distance"
                 app:counterEnabled="true"
                 app:counterMaxLength="@integer/maxGenericFieldLenght"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayoutName"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="@+id/textInputLayoutName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextSurname"
@@ -74,10 +75,11 @@
                 android:layout_marginStart="@dimen/small_distance"
                 app:counterEnabled="true"
                 app:counterMaxLength="@integer/maxPhoneNumberLenght"
+                app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutNickname"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textInputLayoutNickname"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSurname">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextPhone"
@@ -144,11 +146,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_distance"
                 app:counterEnabled="true"
                 app:counterMaxLength="@integer/maxLongFieldLength"
-                app:layout_constraintBottom_toTopOf="@+id/editSkillsLabel"
-                app:layout_constraintEnd_toStartOf="@+id/textInputLayoutLocation"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutLocation"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
@@ -169,13 +170,13 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/small_distance"
                 app:counterEnabled="true"
                 app:counterMaxLength="@integer/maxGenericFieldLenght"
+                app:layout_constraintBottom_toTopOf="@+id/editSkillsLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textInputLayoutEmail"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextLocation"
@@ -190,7 +191,6 @@
                 android:id="@+id/editSkillsLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_distance"
                 android:layout_marginBottom="@dimen/medium_distance"
                 android:text="@string/user_profile_skills_label"
                 android:textSize="@dimen/profile_text_size_normal"
@@ -199,7 +199,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLocation" />
 
             <LinearLayout
                 android:id="@+id/editableSkillsLayout"

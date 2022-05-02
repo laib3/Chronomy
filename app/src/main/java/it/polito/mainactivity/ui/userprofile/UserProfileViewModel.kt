@@ -27,7 +27,6 @@ class UserProfileViewModel : ViewModel() {
     val skills: MutableList<SkillViewModel> = createSkills()
 
     init {
-        // TODO add skills
         createSkills()
     }
 
@@ -41,15 +40,15 @@ class UserProfileViewModel : ViewModel() {
 
     private fun createSkills() : MutableList<SkillViewModel> {
         return mutableListOf(
-            SkillViewModel("Gardening"),
+            SkillViewModel("Gardening").also{ it -> it.setActive(true); it.setDescription("I will take care of your plants.") },
             SkillViewModel("Tutoring"),
-            SkillViewModel("Child Care").also{ it -> it.setActive(true) },
+            SkillViewModel("Child Care"),
             SkillViewModel("Odd Jobs"),
-            SkillViewModel("Home Repair").also{ it -> it.setActive(true) },
+            SkillViewModel("Home Repair"),
             SkillViewModel("Wellness").also{ it -> it.setActive(true) },
             SkillViewModel("Delivery"),
-            SkillViewModel("Transportation").also{ it -> it.setActive(true) },
-            SkillViewModel("Companionship").also{ it -> it.setActive(true) },
+            SkillViewModel("Transportation"),
+            SkillViewModel("Companionship"),
             SkillViewModel("Other")
         )
     }
