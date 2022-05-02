@@ -12,7 +12,7 @@ class UserProfileViewModel : ViewModel() {
     private val _nickname = MutableLiveData<String>().apply{ value = "superMario" }
     private val _bio = MutableLiveData<String>().apply{ value = "Simpatico, solare, in cerca di amicizie" }
     private val _email = MutableLiveData<String>().apply{ value = "mario@rossi.it" }
-    private val _phone = MutableLiveData<String>().apply{ value = "+39333123456" }
+    private val _phone = MutableLiveData<String>().apply{ value = "3331234560" }
     private val _location = MutableLiveData<String>().apply{ value = "Italy" }
     private val _balance = MutableLiveData<Int>().apply{ value = 5 }
 

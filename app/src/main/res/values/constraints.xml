@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="maxGenericFieldLenght">30</integer>
+    <integer name="maxLongFieldLength">40</integer>
+    <integer name="maxDescriptionLength">140</integer>
+    <integer name="maxBioLength">140</integer>
+    <integer name="maxPhoneNumberLenght">10</integer>
+</resources>

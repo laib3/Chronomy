@@ -18,14 +18,15 @@
 
             <!-- name -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputSkillDescription"
+                android:id="@+id/textInputLayoutName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutSurname"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/small_distance"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxGenericFieldLenght"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutNickname"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayoutSurname"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -35,62 +36,95 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_profile_hint_name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="@integer/maxGenericFieldLenght" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- surname -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutSurname"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutNickname"
+                android:layout_marginStart="@dimen/small_distance"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxGenericFieldLenght"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputSkillDescription">
+                app:layout_constraintStart_toEndOf="@+id/textInputLayoutName"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextSurname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_profile_hint_surname"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="@integer/maxGenericFieldLenght" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- surname -->
+
             <!-- nickname -->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutPhone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_distance"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxPhoneNumberLenght"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textInputLayoutNickname"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSurname">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/user_profile_hint_phone"
+                    android:inputType="number"
+                    android:maxLength="@integer/maxPhoneNumberLenght" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutNickname"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
+                android:layout_marginEnd="@dimen/small_distance"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxGenericFieldLenght"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayoutBio"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayoutPhone"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSurname">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextNickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_profile_hint_nickname"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="@integer/maxGenericFieldLenght" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- bio -->
+
+            <!-- phone -->
+
+            <!-- email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutBio"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutPhone"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxBioLength"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,81 +135,63 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_profile_hint_bio"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="@integer/maxBioLength" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- phone -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutPhone"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutEmail"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/user_profile_hint_phone"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
-                app:layout_constraintBottom_toTopOf="@+id/textInputLayoutLocation"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/small_distance"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxLongFieldLength"
+                app:layout_constraintBottom_toTopOf="@+id/editSkillsLabel"
+                app:layout_constraintEnd_toStartOf="@+id/textInputLayoutLocation"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPhone">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_profile_hint_email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:maxLength="@integer/maxLongFieldLength" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- location -->
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutLocation"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:layout_marginBottom="@dimen/small_distance"
-                app:layout_constraintBottom_toTopOf="@+id/editSkillsLabel"
+                android:layout_marginStart="@dimen/small_distance"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/maxGenericFieldLenght"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
+                app:layout_constraintStart_toEndOf="@+id/textInputLayoutEmail"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutBio">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_profile_hint_location"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLength="@integer/maxGenericFieldLenght" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/editSkillsLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big_distance"
-                android:layout_marginBottom="@dimen/big_distance"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:layout_marginBottom="@dimen/medium_distance"
                 android:text="@string/user_profile_skills_label"
                 android:textSize="@dimen/profile_text_size_normal"
                 android:textStyle="bold"
@@ -183,7 +199,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLocation" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail" />
 
             <LinearLayout
                 android:id="@+id/editableSkillsLayout"

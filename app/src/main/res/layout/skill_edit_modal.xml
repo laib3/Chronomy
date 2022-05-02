@@ -60,6 +60,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/medium_distance"
+            app:counterMaxLength="@integer/maxDescriptionLength"
+            app:counterEnabled="true"
             app:layout_constraintBottom_toTopOf="@+id/modalSaveButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -69,6 +71,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextSkillDescription"
                 android:layout_width="match_parent"
+                android:maxLength="@integer/maxDescriptionLength"
                 android:layout_height="wrap_content"
                 android:hint="@string/user_skill_hint_description"
                 android:inputType="textMultiLine" />

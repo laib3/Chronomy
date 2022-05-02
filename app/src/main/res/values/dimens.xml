@@ -25,5 +25,4 @@
 
     <!-- size of switch -->
     <dimen name="switch_size">48sp</dimen>
-
 </resources>
