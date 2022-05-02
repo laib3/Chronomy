@@ -22,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/skillCardInnerLayout"
             style="@style/SkillCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -31,7 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/medium_distance"
-                android:text="Gardening"
+                android:text="Title"
                 android:textColor="@color/not_so_black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -43,8 +44,8 @@
 
             <ImageView
                 android:id="@+id/skillIcon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/skill_icon_size"
+                android:layout_height="@dimen/skill_icon_size"
                 android:layout_marginStart="@dimen/medium_distance"
                 android:contentDescription="Gardening icon"
                 android:src="@drawable/ic_skill_gardening"
@@ -61,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/medium_distance"
                 android:layout_marginBottom="@dimen/medium_distance"
-                android:text="I can mow the lawn, trim bushes, rake and pick up leaves in the garden. I can also take care of watering the flowers and plants and putting fertilizer"
+                android:text="description"
                 android:textColor="@color/not_so_black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

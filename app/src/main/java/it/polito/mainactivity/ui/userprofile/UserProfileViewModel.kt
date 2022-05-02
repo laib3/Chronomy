@@ -4,21 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class Skill(): ViewModel(){
-    private val _title = MutableLiveData<String>().apply{ value = "" }
-    private val _description =  MutableLiveData<String>().apply{ value = "initial" }
-    private val _active = MutableLiveData<Boolean>().apply{ value = true }
-
-    val title: LiveData<String> = _title
-    val description: LiveData<String> = _description
-    val active: LiveData<Boolean> = _active
-
-    fun setDescription(d:String){
-        _description.value = d
-    }
-
-}
-
 class UserProfileViewModel : ViewModel() {
 
     // TODO load from Model
@@ -39,16 +24,11 @@ class UserProfileViewModel : ViewModel() {
     val phone: LiveData<String> = _phone
     val location: LiveData<String> = _location
     val balance: LiveData<Int> = _balance
-    val skills: MutableList<Skill> = mutableListOf()
+    val skills: MutableList<SkillViewModel> = createSkills()
 
     init {
         // TODO add skills
-        val s = Skill()
-        s.setDescription("prima prova descrizione")
-        val s2 = Skill()
-        s2.setDescription("seconda prova descrizione")
-        skills.add(s)
-        skills.add(s2)
+        createSkills()
     }
 
     fun setName(s:String){ _name.value = s }
@@ -58,5 +38,20 @@ class UserProfileViewModel : ViewModel() {
     fun setEmail(s:String) { _email.value = s }
     fun setPhone(s:String) { _phone.value = s }
     fun setLocation(s:String) { _location.value = s }
+
+    private fun createSkills() : MutableList<SkillViewModel> {
+        return mutableListOf(
+            SkillViewModel("Gardening"),
+            SkillViewModel("Tutoring"),
+            SkillViewModel("Child Care").also{ it -> it.setActive(true) },
+            SkillViewModel("Odd Jobs"),
+            SkillViewModel("Home Repair").also{ it -> it.setActive(true) },
+            SkillViewModel("Wellness").also{ it -> it.setActive(true) },
+            SkillViewModel("Delivery"),
+            SkillViewModel("Transportation").also{ it -> it.setActive(true) },
+            SkillViewModel("Companionship").also{ it -> it.setActive(true) },
+            SkillViewModel("Other")
+        )
+    }
 
 }

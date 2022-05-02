@@ -27,16 +27,14 @@ class EditProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        // val userProfileViewModel =
-        //    ViewModelProvider(this).get(UserProfileViewModel::class.java)
-
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         observeViewModel()
         addFocusChangeListeners()
         // TODO add input validation
-        // TODO add icons
+        val skills = userProfileViewModel.skills
+        skills.forEach{ s -> s.active.observe(viewLifecycleOwner){ onSkillActiveChange() } }
 
         return root
     }
@@ -64,6 +62,15 @@ class EditProfileFragment : Fragment() {
         binding.textInputEditTextPhone.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setPhone(binding.textInputEditTextPhone.text.toString()) }
         binding.textInputEditTextEmail.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setEmail(binding.textInputEditTextEmail.text.toString()) }
         binding.textInputEditTextLocation.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setLocation(binding.textInputEditTextLocation.text.toString()) }
+    }
+
+    private fun onSkillActiveChange(){
+        val skillsLayout = binding.editableSkillsLayout
+        skillsLayout.removeAllViews()
+        val skills = userProfileViewModel.skills.sortedByDescending { it.active.value }
+        skills
+            .map{ s -> SkillCardEditable(requireContext(), this, s) }
+            .forEach{ sc -> skillsLayout.addView(sc) }
     }
 
 }

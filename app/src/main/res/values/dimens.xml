@@ -13,12 +13,16 @@
     <dimen name="big_distance">16dp</dimen>
     <dimen name="huge_distance">32dp</dimen>
 
-    <!-- size of pictures in show profile -->
+    <!-- size of pictures -->
     <dimen name="profile_picture_size">128dp</dimen>
+    <dimen name="skill_icon_size">48dp</dimen>
 
     <!-- text size in show profile -->
     <dimen name="profile_text_size_small">14sp</dimen>
     <dimen name="profile_text_size_normal">20sp</dimen>
     <dimen name="profile_text_size_big">24sp</dimen>
+
+    <!-- size of switch -->
+    <dimen name="switch_size">48sp</dimen>
 
 </resources>

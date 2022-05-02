@@ -27,4 +27,14 @@
         <item name="android:background">@color/not_so_dark_slate_blue</item>
     </style>
 
+    <style name="SkillCardModal">
+        <item name="android:background">@color/dark_slate_blue</item>
+    </style>
+    <style name="ModalSaveButton">
+        <item name="android:backgroundTint">@color/dark_slate_blue</item>
+    </style>
+    <style name="SkillCardUnselected">
+        <item name="android:background">@color/light_grey</item>
+    </style>
+
 </resources>

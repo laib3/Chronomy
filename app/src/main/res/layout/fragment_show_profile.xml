@@ -92,9 +92,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/user_profile_phone_label"
-            android:paddingStart="@dimen/huge_distance"
+            android:paddingStart="@dimen/medium_distance"
             android:paddingTop="@dimen/small_distance"
-            android:paddingEnd="@dimen/huge_distance"
+            android:paddingEnd="@dimen/medium_distance"
             android:paddingBottom="@dimen/small_distance"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -104,12 +104,11 @@
                 android:id="@+id/textBalanceLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:text="@string/user_profile_balance_label"
                 android:textSize="@dimen/profile_text_size_normal"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/imageViewBalanceIcon"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,9 +116,9 @@
                 android:id="@+id/imageViewBalanceIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:contentDescription="@string/user_profile_balance_label"
                 android:src="@drawable/ic_baseline_timer_24"
-                app:layout_constraintBottom_toTopOf="@+id/textUserinfoLabel"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textBalanceLabel" />
 
@@ -140,12 +139,11 @@
                 android:id="@+id/textUserinfoLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:text="@string/user_profile_info_label"
                 android:textSize="@dimen/profile_text_size_normal"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textBio"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewBalanceIcon" />
 
@@ -153,11 +151,10 @@
                 android:id="@+id/textBio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:text="@string/user_profile_bio"
                 android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toTopOf="@+id/imageViewPhoneIcon"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textUserinfoLabel" />
 
@@ -165,9 +162,9 @@
                 android:id="@+id/imageViewPhoneIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:contentDescription="@string/user_profile_phone_label"
                 android:src="@drawable/ic_baseline_local_phone_24"
-                app:layout_constraintBottom_toTopOf="@+id/imageViewEmailIcon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textBio" />
 
@@ -180,15 +177,15 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewPhoneIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewPhoneIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewPhoneIcon" />
+                app:layout_constraintTop_toBottomOf="@+id/textBio" />
 
             <ImageView
                 android:id="@+id/imageViewEmailIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:contentDescription="@string/user_profile_email_label"
                 android:src="@drawable/ic_baseline_email_24"
-                app:layout_constraintBottom_toTopOf="@+id/imageViewLocationIcon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewPhoneIcon" />
 
@@ -207,9 +204,9 @@
                 android:id="@+id/imageViewLocationIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
                 android:contentDescription="@string/user_profile_location_label"
                 android:src="@drawable/ic_baseline_location_on_24"
-                app:layout_constraintBottom_toTopOf="@+id/skillsLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon" />
 
@@ -224,6 +221,19 @@
                 app:layout_constraintStart_toEndOf="@+id/imageViewLocationIcon"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon" />
 
+            <TextView
+                android:id="@+id/textSkillsLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_distance"
+                android:text="@string/user_profile_skills_label"
+                android:textSize="@dimen/profile_text_size_normal"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewLocationIcon" />
+
+
             <LinearLayout
                 android:id="@+id/skillsLayout"
                 android:layout_width="match_parent"
@@ -231,9 +241,8 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewLocationIcon"></LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/textSkillsLabel"></LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

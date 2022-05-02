@@ -32,14 +32,7 @@ class ShowProfileFragment : Fragment() {
         val root: View = binding.root
 
         observeViewModel()
-
-        val skillsLayout = binding.skillsLayout
-
-        val skills = userProfileViewModel.skills
-        skills.forEach{ s ->
-            val sc = SkillCard(requireContext(), this, s)
-            skillsLayout?.addView(sc)
-        }
+        addSkillCards()
 
         return root
     }
@@ -59,7 +52,7 @@ class ShowProfileFragment : Fragment() {
         _binding = null
     }
 
-    fun observeViewModel(){
+    private fun observeViewModel(){
         val nameTextView: TextView = binding.textName
         val surnameTextView: TextView = binding.textSurname
         val nicknameTextView: TextView = binding.textNickname
@@ -86,6 +79,15 @@ class ShowProfileFragment : Fragment() {
         userProfileViewModel.location.observe(viewLifecycleOwner) { locationTextView.text = it }
         userProfileViewModel.email.observe(viewLifecycleOwner) { emailTextView.text = it }
 
+    }
+
+    private fun addSkillCards(){
+        val skillsLayout = binding.skillsLayout
+        val skills = userProfileViewModel.skills
+        skills.forEach{ s ->
+            val sc = SkillCard(requireContext(), this, s)
+            skillsLayout?.addView(sc)
+        }
     }
 
 }
