@@ -25,19 +25,19 @@
             android:id="@+id/skillCardInnerLayout"
             style="@style/SkillCard"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/medium_distance">
 
             <TextView
                 android:id="@+id/skillTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
                 android:text="Title"
                 android:textColor="@color/not_so_black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/skillDescription"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/eyeSlashedIcon"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/skillIcon"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
                 android:id="@+id/skillIcon"
                 android:layout_width="@dimen/skill_icon_size"
                 android:layout_height="@dimen/skill_icon_size"
-                android:layout_marginStart="@dimen/medium_distance"
+                android:layout_marginRight="@dimen/medium_distance"
                 android:contentDescription="Gardening icon"
                 android:src="@drawable/ic_skill_gardening"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,16 +60,27 @@
                 android:id="@+id/skillDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/medium_distance"
-                android:layout_marginBottom="@dimen/medium_distance"
+                android:layout_marginStart="@dimen/medium_distance"
                 android:text="description"
                 android:textColor="@color/not_so_black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/skillTitle"
-                app:layout_constraintTop_toBottomOf="@+id/skillTitle"
-                app:layout_constraintVertical_bias="0.2" />
+                app:layout_constraintStart_toEndOf="@+id/skillIcon"
+                app:layout_constraintTop_toBottomOf="@+id/skillTitle" />
+
+            <ImageView
+                android:id="@+id/eyeSlashedIcon"
+                android:layout_width="@dimen/eye_slashed_icon_size"
+                android:layout_height="@dimen/eye_slashed_icon_size"
+                android:layout_marginRight="@dimen/small_distance"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skillTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/skillTitle"
+                app:layout_constraintTop_toTopOf="@+id/skillTitle"
+                app:srcCompat="@drawable/ic_eye_slash_fill" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

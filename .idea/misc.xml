@@ -6,6 +6,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.356" />
         <entry key="app/src/main/res/drawable/ic_baseline_view_list_24.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.274" />
+        <entry key="app/src/main/res/drawable/ic_eye_slash.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/ic_eye_slash_fill.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_camera.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_menu_details.xml" value="0.3565" />
@@ -16,6 +18,7 @@
         <entry key="app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/phone.xml" value="0.3425" />
+        <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.208" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.559375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_edit.xml" value="0.33" />
@@ -33,7 +36,7 @@
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/skill_card.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/skill_edit_modal.xml" value="0.67" />
-        <entry key="app/src/main/res/layout/skillcard.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/skillcard.xml" value="0.67" />
         <entry key="app/src/main/res/layout/skillcard_tmp.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/skillcardtmp.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/timeslot_item.xml" value="0.43042350907519444" />

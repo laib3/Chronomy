@@ -16,6 +16,7 @@
     <!-- size of pictures -->
     <dimen name="profile_picture_size">128dp</dimen>
     <dimen name="skill_icon_size">48dp</dimen>
+    <dimen name="eye_slashed_icon_size">20dp</dimen>
 
     <!-- text size in show profile -->
     <dimen name="profile_text_size_small">14sp</dimen>

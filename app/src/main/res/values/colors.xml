@@ -15,5 +15,6 @@
     <color name="light_yellow">#FFF8FFE5</color>
     <color name="light_green">#FF7DDE92</color>
     <color name="light_grey">#AAAABB</color>
+    <color name="dark_grey">#555555</color>
     <color name="keppel">#FF2EBFA5</color>
 </resources>

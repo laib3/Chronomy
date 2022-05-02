@@ -1,7 +1,9 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.content.Context
+import android.media.Image
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,8 +22,7 @@ class SkillCardEditable(val c: Context, val f: Fragment, val s: SkillViewModel):
         val tvTitle = findViewById<TextView>(R.id.skillTitle)
         val ivSkillIcon = findViewById<ImageView>(R.id.skillIcon)
 
-        s.description.observe(f.viewLifecycleOwner){ tvDescription.text = it }
-
+        /* when card is pressed display a modal */
         this.setOnClickListener {
             val modalView = LayoutInflater.from(this.context).inflate(R.layout.skill_edit_modal, null)
             val modalTitle = modalView.findViewById<TextView>(R.id.modalTitle)
@@ -44,22 +45,28 @@ class SkillCardEditable(val c: Context, val f: Fragment, val s: SkillViewModel):
             }
         }
 
+        // when description changes
         s.description.observe(f.viewLifecycleOwner){ tvDescription.text = it }
-        // on title change also picture
+        // when title changes
         s.title.observe(f.viewLifecycleOwner){
             tvTitle.text = it
             val imgRes = getImgRes(it)
             if(imgRes != null)
                 ivSkillIcon.setImageResource(imgRes)
         }
+        val eyeSlashedIcon = findViewById<ImageView>(R.id.eyeSlashedIcon)
+        val innerLayout = findViewById<ConstraintLayout>(R.id.skillCardInnerLayout)
+        // when "active" changes (also display icon)
         s.active.observe(f.viewLifecycleOwner){
             // not active cards have grey background
-            val bgColor =
-                if(it != true)
-                    resources.getColor(R.color.light_grey)
-                else
-                    resources.getColor(R.color.not_so_dark_slate_blue)
-            findViewById<ConstraintLayout>(R.id.skillCardInnerLayout).setBackgroundColor(bgColor)
+            if(it != true){
+                innerLayout.setBackgroundColor(resources.getColor(R.color.light_grey))
+                eyeSlashedIcon.visibility = View.VISIBLE
+            }
+            else {
+                innerLayout.setBackgroundColor(resources.getColor(R.color.not_so_dark_slate_blue))
+                eyeSlashedIcon.visibility = View.INVISIBLE
+            }
         }
     }
 
