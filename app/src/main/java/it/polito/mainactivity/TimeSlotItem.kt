@@ -4,23 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.AbstractListDetailFragment
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.card.MaterialCardView
+import java.text.DateFormat
+import java.util.*
 
 class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
     class TimeslotViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val title: TextView = v.findViewById(R.id.item_title)
         val location: TextView = v.findViewById(R.id.item_location)
-        val availability: TextView = v.findViewById(R.id.item_availability)
+        val date: TextView = v.findViewById(R.id.item_date)
         val category: TextView = v.findViewById(R.id.item_category)
-        val card: CardView = v.findViewById(R.id.item_card)
-        val editButton: Button = v.findViewById(R.id.item_button)
+        val card: MaterialCardView= v.findViewById(R.id.item_card)
+        val editButton: ImageButton = v.findViewById(R.id.item_button)
 
     }
 
@@ -34,9 +34,11 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
     override fun onBindViewHolder(holder: TimeslotViewHolder, position: Int) {
         holder.title.text = data[position].title
         holder.location.text = data[position].location
-        //holder.availability.text = data[position].availability
+        var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
+        holder.date.text = "${dateFormat.format(data[position].date)} from ${data[position].startHour} to ${data[position].endHour}"
         holder.category.text = data[position].category
 
+        // pass through bundle the id of the item in the list
         var bundle = Bundle();
         bundle.putInt("id", position)
 
