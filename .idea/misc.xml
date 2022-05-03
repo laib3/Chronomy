@@ -30,7 +30,7 @@
         <entry key="app/src/main/res/layout/fraglayout.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="1.25" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.5" />

@@ -29,8 +29,8 @@ class EditProfileFieldsFragment : Fragment() {
 
         observeViewModel()
         addFocusChangeListeners()
-        // TODO add input validation
         val skills = userProfileViewModel.skills
+        // TODO make it more efficient (somehow - do not remove skills and add them)
         skills.forEach{ s -> s.active.observe(viewLifecycleOwner){ onSkillActiveChange() } }
 
         return root

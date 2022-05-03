@@ -1,8 +1,13 @@
 package it.polito.mainactivity.ui.userprofile
 
+import android.graphics.Bitmap
+import android.graphics.Picture
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import it.polito.mainactivity.R
 
 class UserProfileViewModel : ViewModel() {
 
@@ -15,6 +20,7 @@ class UserProfileViewModel : ViewModel() {
     private val _phone = MutableLiveData<String>().apply{ value = "3331234560" }
     private val _location = MutableLiveData<String>().apply{ value = "Italy" }
     private val _balance = MutableLiveData<Int>().apply{ value = 5 }
+    private val _picture = MutableLiveData<Drawable>().apply{ value = null }
 
     val name: LiveData<String> = _name
     val surname: LiveData<String> = _surname
@@ -24,6 +30,7 @@ class UserProfileViewModel : ViewModel() {
     val phone: LiveData<String> = _phone
     val location: LiveData<String> = _location
     val balance: LiveData<Int> = _balance
+    val picture: LiveData<Drawable> = _picture
     val skills: MutableList<SkillViewModel> = createSkills()
 
     init {
@@ -37,6 +44,7 @@ class UserProfileViewModel : ViewModel() {
     fun setEmail(s:String) { _email.value = s }
     fun setPhone(s:String) { _phone.value = s }
     fun setLocation(s:String) { _location.value = s }
+    fun setPicture(d:Drawable) { _picture.value = d }
 
     private fun createSkills() : MutableList<SkillViewModel> {
         return mutableListOf(

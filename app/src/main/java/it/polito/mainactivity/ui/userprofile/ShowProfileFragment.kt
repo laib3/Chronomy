@@ -2,6 +2,7 @@ package it.polito.mainactivity.ui.userprofile
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -31,6 +32,8 @@ class ShowProfileFragment : Fragment() {
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.profilePicture.clipToOutline = true
+
         observeViewModel()
         addSkillCards()
 
@@ -42,6 +45,7 @@ class ShowProfileFragment : Fragment() {
         inflater.inflate(R.menu.showprofile_menu, menu)
     }
 
+    // navigate to edit profile fragment
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
                 || super.onOptionsItemSelected(item)
@@ -61,6 +65,7 @@ class ShowProfileFragment : Fragment() {
         val phoneTextView: TextView = binding.textPhone
         val locationTextView: TextView = binding.textLocation
         val emailTextView: TextView = binding.textEmail
+        val profilePicture: ImageView = binding.profilePicture
 
         userProfileViewModel.name.observe(viewLifecycleOwner) { nameTextView.text = it }
         userProfileViewModel.surname.observe(viewLifecycleOwner) { surnameTextView.text = it }
@@ -78,6 +83,8 @@ class ShowProfileFragment : Fragment() {
         userProfileViewModel.phone.observe(viewLifecycleOwner) { phoneTextView.text = it }
         userProfileViewModel.location.observe(viewLifecycleOwner) { locationTextView.text = it }
         userProfileViewModel.email.observe(viewLifecycleOwner) { emailTextView.text = it }
+        userProfileViewModel.picture.observe(viewLifecycleOwner)
+            { if(it != null) profilePicture.setImageDrawable(it) }
 
     }
 
