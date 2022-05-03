@@ -30,20 +30,18 @@
         android:label="@string/menu_timeslot_edit"
         tools:layout="@layout/fragment_timeslot_edit" />
     <fragment
-        android:id="@+id/nav_edit_profile"
-        android:name="it.polito.mainactivity.ui.userprofile.EditProfileFragment"
-        android:label="EditProfileFragment" />
-    <fragment
         android:id="@+id/nav_show_profile"
         android:name="it.polito.mainactivity.ui.userprofile.ShowProfileFragment"
         android:label="ShowProfileFragment" >
         <action
             android:id="@+id/action_nav_show_profile_to_nav_edit_profile"
-            app:destination="@id/nav_edit_profile"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_nav_show_profile_to_nav_list"
-            app:destination="@id/nav_list" />
+            app:destination="@id/nav_edit_profile" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="it.polito.mainactivity.ui.userprofile.EditProfileFragment"
+        android:label="EditProfileFragment">
+    </fragment>
+
 </navigation>
