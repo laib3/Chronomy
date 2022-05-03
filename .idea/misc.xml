@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.356" />
         <entry key="app/src/main/res/drawable/ic_baseline_view_list_24.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.274" />
@@ -19,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/white_circle_bg.xml" value="0.3565" />
         <entry key="app/src/main/res/layout-land/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.559375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
@@ -28,7 +30,7 @@
         <entry key="app/src/main/res/layout/fraglayout.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="1.25" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.5" />
