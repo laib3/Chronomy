@@ -6,252 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".ui.userprofile.ShowProfileFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/PictureAndNameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/infoAndSkillsScrollView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1"
-        tools:context=".ui.userprofile.ShowProfileFragment"
-        tools:layout_editor_absoluteX="16dp">
 
-        <ImageView
-            android:id="@+id/profilePicture"
-            android:layout_width="@dimen/profile_picture_size"
-            android:layout_height="@dimen/profile_picture_size"
-            android:layout_marginBottom="@dimen/medium_distance"
-            android:background="@drawable/white_circle_bg"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/user_profile_picture_label"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_pic_1"
-            app:layout_constraintBottom_toTopOf="@+id/textName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:ignore="ImageContrastCheck" />
-
-        <TextView
-            android:id="@+id/textName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/tiny_distance"
-            android:text="@string/user_profile_name"
-            android:textAlignment="center"
-            android:textSize="@dimen/profile_text_size_big"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textNickname"
-            app:layout_constraintEnd_toStartOf="@+id/textSurname"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
-
-        <TextView
-            android:id="@+id/textSurname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/tiny_distance"
-            android:text="@string/user_profile_surname"
-            android:textAlignment="center"
-            android:textSize="@dimen/profile_text_size_big"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textName"
-            app:layout_constraintTop_toTopOf="@+id/textName"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/textNickname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_profile_nickname"
-            android:textAlignment="center"
-            android:textSize="@dimen/profile_text_size_small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textName" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ScrollView
-        android:id="@+id/infoAndSkillsScrollView"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerShowProfilePicture"
+        android:name="it.polito.mainactivity.ui.userprofile.ShowProfilePictureFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentContainerShowProfileData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1"
+        tools:layout="@layout/fragment_show_profile_picture" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerShowProfileData"
+        android:name="it.polito.mainactivity.ui.userprofile.ShowProfileDataFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PictureAndNameLayout"
-        app:layout_constraintVertical_weight="2">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/infoAndSkillsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/user_profile_phone_label"
-            android:paddingStart="@dimen/medium_distance"
-            android:paddingTop="@dimen/small_distance"
-            android:paddingEnd="@dimen/medium_distance"
-            android:paddingBottom="@dimen/small_distance"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView">
-
-            <TextView
-                android:id="@+id/textBalanceLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_balance_label"
-                android:textSize="@dimen/profile_text_size_normal"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageViewBalanceIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_balance_label"
-                android:src="@drawable/ic_baseline_timer_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textBalanceLabel" />
-
-            <TextView
-                android:id="@+id/textBalance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/medium_distance"
-                android:paddingEnd="@dimen/medium_distance"
-                android:text="@string/user_profile_balance"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewBalanceIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewBalanceIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewBalanceIcon" />
-
-            <TextView
-                android:id="@+id/textUserinfoLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_info_label"
-                android:textSize="@dimen/profile_text_size_normal"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewBalanceIcon" />
-
-            <TextView
-                android:id="@+id/textBio"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_bio"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textUserinfoLabel" />
-
-            <ImageView
-                android:id="@+id/imageViewPhoneIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_phone_label"
-                android:src="@drawable/ic_baseline_local_phone_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textBio" />
-
-            <TextView
-                android:id="@+id/textPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/user_profile_phone"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewPhoneIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewPhoneIcon"
-                app:layout_constraintTop_toBottomOf="@+id/textBio" />
-
-            <ImageView
-                android:id="@+id/imageViewEmailIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_email_label"
-                android:src="@drawable/ic_baseline_email_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewPhoneIcon" />
-
-            <TextView
-                android:id="@+id/textEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/user_profile_email"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewEmailIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewEmailIcon"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewPhoneIcon" />
-
-            <ImageView
-                android:id="@+id/imageViewLocationIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_location_label"
-                android:src="@drawable/ic_baseline_location_on_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon" />
-
-            <TextView
-                android:id="@+id/textLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/user_profile_location"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewLocationIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewLocationIcon"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon" />
-
-            <TextView
-                android:id="@+id/textSkillsLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_skills_label"
-                android:textSize="@dimen/profile_text_size_normal"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewLocationIcon" />
-
-
-            <LinearLayout
-                android:id="@+id/skillsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textSkillsLabel"></LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerShowProfilePicture"
+        app:layout_constraintVertical_weight="2"
+        tools:layout="@layout/fragment_show_profile_data" />
 </androidx.constraintlayout.widget.ConstraintLayout>

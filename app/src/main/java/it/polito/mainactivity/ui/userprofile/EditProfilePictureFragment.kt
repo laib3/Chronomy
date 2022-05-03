@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.databinding.FragmentEditProfilePictureBinding
+import java.nio.file.Path
 
 class EditProfilePictureFragment: Fragment() {
 
@@ -29,8 +30,12 @@ class EditProfilePictureFragment: Fragment() {
             userProfileViewModel.setPicture(d)
         }
     }
-    private val takeGalleryPicture = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            uri: Uri? -> binding.profilePictureEditable.setImageURI(uri)
+    private val takeGalleryPicture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if(uri != null) {
+            val inputStream = activity?.contentResolver?.openInputStream(uri)
+            val d: Drawable = Drawable.createFromStream(inputStream, uri.toString())
+            userProfileViewModel.setPicture(d)
+        }
     }
 
     // This property is only valid between onCreateView and

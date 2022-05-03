@@ -22,18 +22,20 @@
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/white_circle_bg.xml" value="0.3565" />
         <entry key="app/src/main/res/layout-land/fragment_edit_profile.xml" value="0.33" />
-        <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.559375" />
+        <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_edit.xml" value="0.33" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fraglayout.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35104166666666664" />
-        <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_data.xml" value="0.31203703703703706" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_picture.xml" value="0.31203703703703706" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_details.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.3442288049029622" />
