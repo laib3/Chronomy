@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.card.MaterialCardView
 import java.text.DateFormat
 import java.util.*
 
@@ -19,7 +19,7 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
         val location: TextView = v.findViewById(R.id.item_location)
         val date: TextView = v.findViewById(R.id.item_date)
         val category: TextView = v.findViewById(R.id.item_category)
-        val card: CardView = v.findViewById(R.id.item_card)
+        val card: MaterialCardView= v.findViewById(R.id.item_card)
         val editButton: ImageButton = v.findViewById(R.id.item_button)
 
     }
