@@ -9,9 +9,11 @@
         <entry key="app/src/main/res/drawable/ic_menu_details.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_edit.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_gallery.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/ic_menu_list.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_menu_pencil.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_profile.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/rectangle.xml" value="0.1215" />
         <entry key="app/src/main/res/layout-land/fragment_timeslot_details.xml" value="0.27395833333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
