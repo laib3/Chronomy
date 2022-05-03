@@ -8,7 +8,7 @@ import java.util.*
 
 data class Timeslot (val title:String,
                      val description:String,
-                     val date: Date,
+                     val date: Calendar,
                      val startHour : String,
                      val endHour:String,
                      val location:String,
@@ -16,51 +16,65 @@ data class Timeslot (val title:String,
 
     var repetition:String =""
     var days: List<Int> = listOf()
-    var endRepetitionDate:Date?= null
-    var dates: MutableList<Date> = mutableListOf()
+    var endRepetitionDate:Calendar?= null
+    var dates: MutableList<Calendar> = mutableListOf()
 
-    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.ITALY)
+    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     constructor(title:String,
                  description:String,
-                 date: Date,
+                 date: Calendar,
                  startHour : String,
                  endHour:String,
                  location:String,
                  category:String,
                  _repetition: String,
                 _days: List<Int>,
-                _endRepetitionDate: Date): this(title, description, date, startHour, endHour, location, category){
+                _endRepetitionDate: Calendar): this(title, description, date, startHour, endHour, location, category){
                     repetition = _repetition
                     days = _days
-                    endRepetitionDate = _endRepetitionDate
+                    if(_endRepetitionDate.before(date)){
+                        endRepetitionDate = date
+                    }else {
+                        endRepetitionDate = _endRepetitionDate
+                    }
                     createDates()
                 }
 
     private fun createDates() {
+        var tmp = date
         if(repetition == "") return
-        //TODO: CHECK if end > start
-        // if(endRepetitionDate?.compareTo(date) < 0 ) return
-        else{
-            print(dateFormat.format(date))
-            var tmp:Date = date
-            var dayNumber:Int
-            while(tmp <= endRepetitionDate){
-                dayNumber = getDay(tmp)
-                if(days.contains(dayNumber)){
+        else if(repetition.lowercase()=="weekly"){
+            while(tmp.before(endRepetitionDate)){
+                if(days.contains(tmp.get(Calendar.DAY_OF_WEEK))){
                     dates.add(tmp)
                 }
-                //we being tmp to the next day
-                tmp = Date(tmp.getTime() + 1000 * 60 * 60 * 24)
+                //we bring tmp to the next day
+                tmp.add(Calendar.DATE,1 )
             }
-
+        }else{ //monthly
+            while(tmp.before(endRepetitionDate)){
+                dates.add(tmp)
+                //we bring tmp to the next day
+                tmp.add(Calendar.MONTH,1 )
+            }
         }
     }
 
-    private fun getDay(date: Date?): Int {
-        val cal = Calendar.getInstance()
-        cal.time = date
-        //1 for monday, 7 for sunday
-        return cal[Calendar.DAY_OF_WEEK]
+    private fun getDayName(num : Int):String{
+        when (num) {
+            Calendar.SUNDAY -> return "Sunday"
+            Calendar.MONDAY -> return "Monday"
+            Calendar.TUESDAY -> return "Tuesday"
+            Calendar.WEDNESDAY -> return "Wednesday"
+            Calendar.THURSDAY -> return "Thursday"
+            Calendar.FRIDAY -> return "Friday"
+            Calendar.SATURDAY -> return "Saturday"
+            else -> return ""
+        }
+    }
+
+    fun getDaysOfRepetition():String{
+        return days.joinToString(", ","","",-1, "...") { getDayName(it) }
     }
 }

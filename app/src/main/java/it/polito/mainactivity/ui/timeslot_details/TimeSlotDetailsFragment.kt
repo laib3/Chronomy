@@ -1,12 +1,11 @@
 package it.polito.mainactivity.ui.timeslot_details
 
-import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.*
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.text.bold
+import androidx.core.text.italic
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -15,8 +14,6 @@ import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
-import java.text.DateFormat
-import java.time.DayOfWeek
 import java.util.*
 
 class TimeSlotDetailsFragment : Fragment() {
@@ -29,11 +26,7 @@ class TimeSlotDetailsFragment : Fragment() {
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: TextInputLayout? = null
 
-
-    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -44,7 +37,7 @@ class TimeSlotDetailsFragment : Fragment() {
         val timeSlotListViewModel =
             ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
 
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -65,29 +58,43 @@ class TimeSlotDetailsFragment : Fragment() {
 
             if(it.elementAt(id).repetition == ""){
                 dateString
-                    .bold{append(dateFormat.format(it.elementAt(id).date))}
+                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).date.time))}
                     .append(" from ")
-                    .bold{append(it.elementAt(id).startHour)}
+                    .italic{append(it.elementAt(id).startHour)}
                     .append(" to ")
-                    .bold{append(it.elementAt(id).endHour)}
-            }else{
-                var toBeAdded = it.elementAt(id).days.map{DayOfWeek.of(it).toString().lowercase()}
-
+                    .italic{append(it.elementAt(id).endHour)}
+            }else if(it.elementAt(id).repetition.lowercase() == "weekly"){
                 dateString
-                    .append("This timeslots repeats ${it.elementAt(id).repetition.lowercase()}\n\n")
-                    .append("Starting on ")
-                    .bold{append(dateFormat.format(it.elementAt(id).date))}
+                    .append("This timeslots repeats ")
+                    .bold{append("weekly")}
+                    .append(".\n\nStarting on ")
+                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).date.time))}
                     .append(" until ")
-                    .bold{append(dateFormat.format(it.elementAt(id).endRepetitionDate))}
-                    .append("\nevery")
-                    .bold{append("${toBeAdded}\n".replace("[", " ").replace("]", " "))}
+                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time))}
+                    .append("\nevery ")
+                    .italic{append("${it.elementAt(id).getDaysOfRepetition()}\n")}
                     .append("from ")
-                    .bold{append(it.elementAt(id).startHour)}
+                    .italic{append(it.elementAt(id).startHour)}
                     .append(" to ")
-                    .bold{append(it.elementAt(id).endHour)}
+                    .italic{append(it.elementAt(id).endHour)}
+            }else { //monthly
+                dateString
+                    .append("This timeslots repeats ")
+                    .bold{append("monthly")}
+                    .append(".\n\nStarting on ")
+                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).date.time))}
+                    .append(" until ")
+                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time))}
+                    .append("\nevery ")
+                    .italic{append("${it.elementAt(id).date.get(Calendar.DAY_OF_MONTH)}")}
+                    .append(" of the month\n")
+                    .append("from ")
+                    .italic{append(it.elementAt(id).startHour)}
+                    .append(" to ")
+                    .italic{append(it.elementAt(id).endHour)}
             }
 
-            tiAvailability?.editText?.setText(dateString)
+            tiAvailability?.editText?.text = dateString
             tiLocation?.editText?.setText(it.elementAt(id).location)
             tiCategory?.editText?.setText(it.elementAt(id).category)
         }
@@ -97,11 +104,11 @@ class TimeSlotDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tiTitle = view?.findViewById(R.id.TitleTextField)
-        tiDescription = view?.findViewById(R.id.DescriptionTextField)
-        tiAvailability = view?.findViewById(R.id.AvailabilityTextField)
-        tiLocation = view?.findViewById(R.id.LocationTextField)
-        tiCategory = view?.findViewById(R.id.CategoryTextField)
+        tiTitle = view.findViewById(R.id.TitleTextField)
+        tiDescription = view.findViewById(R.id.DescriptionTextField)
+        tiAvailability = view.findViewById(R.id.AvailabilityTextField)
+        tiLocation = view.findViewById(R.id.LocationTextField)
+        tiCategory = view.findViewById(R.id.CategoryTextField)
     }
 
     override fun onDestroyView() {
@@ -111,12 +118,12 @@ class TimeSlotDetailsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.timeslot_details_menu, menu)
+        inflater.inflate(R.menu.timeslot_details_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return NavigationUI.onNavDestinationSelected(
-            item!!,
+            item,
             requireView().findNavController()
         ) || super.onOptionsItemSelected(item)
     }
