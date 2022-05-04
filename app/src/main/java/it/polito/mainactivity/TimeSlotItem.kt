@@ -35,7 +35,7 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
         holder.title.text = data[position].title
         holder.location.text = data[position].location
         var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
-        holder.date.text = "${dateFormat.format(data[position].date)} from ${data[position].startHour} to ${data[position].endHour}"
+        holder.date.text = "${dateFormat.format(data[position].date.getTime())} from ${data[position].startHour} to ${data[position].endHour}"
         holder.category.text = data[position].category
 
         // pass through bundle the id of the item in the list
