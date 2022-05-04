@@ -33,16 +33,17 @@ data class Timeslot (val title:String,
                 _endRepetitionDate: Calendar): this(title, description, date, startHour, endHour, location, category){
                     repetition = _repetition
                     days = _days
-                    if(_endRepetitionDate.before(date)){
-                        endRepetitionDate = date
-                    }else {
-                        endRepetitionDate = _endRepetitionDate
-                    }
+        endRepetitionDate = if(_endRepetitionDate.before(date)){
+            date
+        }else {
+            _endRepetitionDate
+        }
                     createDates()
                 }
 
     private fun createDates() {
-        var tmp = date
+        var tmp = Calendar.getInstance()
+        tmp.timeInMillis = date.timeInMillis
         if(repetition == "") return
         else if(repetition.lowercase()=="weekly"){
             while(tmp.before(endRepetitionDate)){
