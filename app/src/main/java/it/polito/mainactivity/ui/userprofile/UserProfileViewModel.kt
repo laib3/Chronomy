@@ -1,15 +1,16 @@
 package it.polito.mainactivity.ui.userprofile
 
-import android.graphics.Bitmap
-import android.graphics.Picture
+import android.app.Application
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import it.polito.mainactivity.R
+import it.polito.mainactivity.model.UserProfileModel
 
-class UserProfileViewModel : ViewModel() {
+class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
+
+    // instantiate user profile model
+    private val model: UserProfileModel = UserProfileModel(application)
 
     // TODO load from Model
     private val _name = MutableLiveData<String>().apply{ value = "Mario" }
