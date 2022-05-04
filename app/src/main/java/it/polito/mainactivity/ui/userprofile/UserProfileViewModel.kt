@@ -47,14 +47,15 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     fun setLocation(s:String) { _location.value = s }
     fun setPicture(d:Drawable) { _picture.value = d }
 
+    // TODO remove
     private fun createSkills() : MutableList<SkillViewModel> {
         return mutableListOf(
-            SkillViewModel("Gardening").also{ it -> it.setActive(true); it.setDescription("I will take care of your plants.") },
+            SkillViewModel("Gardening").also{ it.setActive(true); it.setDescription("I will take care of your plants.") },
             SkillViewModel("Tutoring"),
             SkillViewModel("Child Care"),
             SkillViewModel("Odd Jobs"),
             SkillViewModel("Home Repair"),
-            SkillViewModel("Wellness").also{ it -> it.setActive(true) },
+            SkillViewModel("Wellness").also{ it.setActive(true) },
             SkillViewModel("Delivery"),
             SkillViewModel("Transportation"),
             SkillViewModel("Companionship"),

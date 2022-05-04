@@ -1,18 +1,25 @@
 package it.polito.mainactivity.model
 
 import android.app.Application
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
-import it.polito.mainactivity.ui.userprofile.SkillViewModel
+import androidx.core.graphics.drawable.toBitmap
 import org.json.JSONObject
+import java.io.*
 
 class UserProfileModel(val application: Application) {
 
     // no database here
-    private val sharedPreferencesName : String = "userprofilesharedpreferences"
-    private val profileTag: String = "profile"
+    private val SHARED_PREFERENCES_NAME : String = "userprofilesharedpreferences"
+    private val PROFILE_TAG: String = "profile"
+    private val PICTURE_DIR_PATH: String = "images"
+    private val PROFILE_PICTURE_NAME: String = "profile.jpg"
+
 
     private var name: String = ""
     private var surname: String = ""
@@ -25,7 +32,7 @@ class UserProfileModel(val application: Application) {
     private var picture: Drawable? = null
     private var skills: MutableList<Skill> = mutableListOf()
 
-    /* returns a JSON string representing the profile */
+    // returns a JSON string representing the profile
     override fun toString() = """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
                 """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills: $skills }"""
 
@@ -34,19 +41,20 @@ class UserProfileModel(val application: Application) {
     }
 
     private fun saveContent(){
-        val sharedPreferences = application.getSharedPreferences(sharedPreferencesName, MODE_PRIVATE)
+        val sharedPreferences = application.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
     }
 
     // load content from shared preferences (or create fake content)
     private fun loadContent(){
         // sharedPreferences shouldn't be null, but just in case...
-        val sharedPreferences : SharedPreferences? = application.getSharedPreferences(sharedPreferencesName, MODE_PRIVATE)
+        val sharedPreferences : SharedPreferences? = application.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
         // retrieve profile as a JSON string
-        val profileString: String? = sharedPreferences?.getString(profileTag, null)
+        val profileString: String? = sharedPreferences?.getString(PROFILE_TAG, null)
         val jsonProfile: JSONObject? = when(profileString) {
             null -> null
             else -> JSONObject(profileString)
         }
+
         name = jsonProfile?.getString("name") ?: "name"
         surname = jsonProfile?.getString("surname") ?: "surname"
         nickname = jsonProfile?.getString("nickname") ?: "nickname"
@@ -56,9 +64,9 @@ class UserProfileModel(val application: Application) {
         location = jsonProfile?.getString("location") ?: "location"
         balance = jsonProfile?.getInt("balance") ?: 0
         skills = when(jsonProfile){
-            // null = create fake example skills
+            // if null then create fake example skills
             null -> createSkills()
-            // not null - returns a JSONArray
+            // if not null return a JSONArray
             else -> {
                 val jsonArray = jsonProfile.getJSONArray("skills")
                 val jsonSkills = mutableListOf<JSONObject>()
@@ -70,9 +78,16 @@ class UserProfileModel(val application: Application) {
                     .toMutableList()
             }
         }
+        try {
+            val file: File = File(PICTURE_DIR_PATH, PROFILE_PICTURE_NAME)
+            val b: Bitmap = BitmapFactory.decodeStream(FileInputStream(file))
+            picture = BitmapDrawable(application.applicationContext.resources, b)
+        } catch(e: FileNotFoundException){
+            picture = null
+        }
     }
 
-    // create example fake skills
+    // create fake example skills
     private fun createSkills(): MutableList<Skill>{
         return mutableListOf(
             Skill("Gardening").apply { description = "I can mow the lawn, trim bushes, rake and pick up leaves in the garden."; active = true },
@@ -86,6 +101,26 @@ class UserProfileModel(val application: Application) {
             Skill("Companionship"),
             Skill("Other")
         )
+    }
+
+    private fun savePicture(): String {
+        val imageDirectory: File = application.getDir(PICTURE_DIR_PATH, Context.MODE_PRIVATE)
+        val imagePath: File = File(imageDirectory, PROFILE_PICTURE_NAME)
+        var outputStream: FileOutputStream? = null
+        try {
+            outputStream = FileOutputStream(imagePath)
+            val QUALITY = 100
+            picture?.toBitmap()?.compress(Bitmap.CompressFormat.PNG, QUALITY, outputStream)
+        } catch(e:Exception){
+            e.printStackTrace()
+        } finally {
+            try {
+                outputStream?.close()
+            } catch(e: IOException){
+                e.printStackTrace()
+            }
+        }
+        return imageDirectory.absolutePath
     }
 
 }
