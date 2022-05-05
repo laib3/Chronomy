@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.ui.userprofile.showprofile
 
 import android.os.Bundle
 import android.view.*
@@ -8,10 +8,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class ShowProfileFragment : Fragment() {
 
-    private val userProfileViewModel:UserProfileViewModel by activityViewModels()
+    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileBinding? = null
 
     // This property is only valid between onCreateView and

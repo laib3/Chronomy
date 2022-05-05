@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -15,6 +15,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.databinding.FragmentEditProfilePictureBinding
+import it.polito.mainactivity.ui.userprofile.ProfilePictureChangeDialogFragment
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 import java.nio.file.Path
 
 class EditProfilePictureFragment: Fragment() {

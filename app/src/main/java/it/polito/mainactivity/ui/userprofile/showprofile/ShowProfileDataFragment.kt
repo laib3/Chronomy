@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.ui.userprofile.showprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,12 @@ import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
+import it.polito.mainactivity.ui.userprofile.SkillCard
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class ShowProfileDataFragment: Fragment() {
 
-    private val userProfileViewModel:UserProfileViewModel by activityViewModels()
+    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileDataBinding? = null
 
     // This property is only valid between onCreateView and

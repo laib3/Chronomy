@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
+import it.polito.mainactivity.ui.userprofile.SkillCardEditable
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class EditProfileFieldsFragment : Fragment() {
 
-    private val userProfileViewModel:UserProfileViewModel by activityViewModels()
+    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
 
     private var _binding: FragmentEditProfileFieldsBinding? = null
 
