@@ -6,18 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.userprofile.showprofile.ShowProfileFragment">
 
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerShowProfilePicture"
         android:name="it.polito.mainactivity.ui.userprofile.showprofile.ShowProfilePictureFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/fragmentContainerShowProfileData"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fragmentContainerShowProfileData"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1"
         tools:layout="@layout/fragment_show_profile_picture" />
 
     <androidx.fragment.app.FragmentContainerView
@@ -28,8 +27,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerShowProfilePicture"
-        app:layout_constraintVertical_weight="2"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerShowProfilePicture"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_show_profile_data" />
 </androidx.constraintlayout.widget.ConstraintLayout>

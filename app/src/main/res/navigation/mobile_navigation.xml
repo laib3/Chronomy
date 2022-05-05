@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_list">
+    app:startDestination="@id/nav_show_profile">
 
     <fragment
         android:id="@+id/nav_list"
@@ -39,11 +39,18 @@
         android:label="@string/menu_timeslot_edit"
         tools:layout="@layout/fragment_timeslot_edit" />
     <fragment
-        android:id="@+id/nav_edit_profile"
-        android:name="it.polito.mainactivity.ui.editprofile.EditProfileFragment"
-        android:label="EditProfileFragment" />
-    <fragment
         android:id="@+id/nav_show_profile"
-        android:name="it.polito.mainactivity.ui.showprofile.ShowProfileFragment"
-        android:label="ShowProfileFragment" />
+        android:name="it.polito.mainactivity.ui.userprofile.showprofile.ShowProfileFragment"
+        android:label="ShowProfileFragment" >
+        <action
+            android:id="@+id/action_nav_show_profile_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="it.polito.mainactivity.ui.userprofile.editprofile.EditProfileFragment"
+        android:label="EditProfileFragment">
+    </fragment>
+
 </navigation>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/profilePictureEditable"
+        android:layout_width="@dimen/profile_picture_size"
+        android:layout_height="@dimen/profile_picture_size"
+        android:background="@drawable/white_circle_bg"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profile_pic_1" />
+
+    <ImageView
+        android:id="@+id/imageAddIcon"
+        android:layout_width="@dimen/add_button_size"
+        android:layout_height="@dimen/add_button_size"
+        android:background="@drawable/white_circle_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePictureEditable"
+        app:layout_constraintEnd_toEndOf="@+id/profilePictureEditable"
+        app:layout_constraintHorizontal_bias="0.90"
+        app:layout_constraintStart_toStartOf="@+id/profilePictureEditable"
+        app:layout_constraintTop_toTopOf="@+id/profilePictureEditable"
+        app:layout_constraintVertical_bias="0.90"
+        app:srcCompat="@drawable/ic_baseline_add_circle_24" />
+</androidx.constraintlayout.widget.ConstraintLayout>

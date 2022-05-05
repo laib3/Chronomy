@@ -1,5 +1,7 @@
 package it.polito.mainactivity
 
+import android.app.Application
+import it.polito.mainactivity.model.UserProfileModel
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +15,10 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+    }
+    @Test
+    fun upmToStringTest() {
+        val upm = UserProfileModel(Application())
+        assertEquals("", upm.toString())
     }
 }
