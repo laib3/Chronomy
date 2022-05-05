@@ -4,20 +4,370 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.timeslot_edit.TimeSlotEditFragment">
+    tools:context=".ui.timeslot_details.TimeSlotDetailsFragment">
 
-    <TextView
-        android:id="@+id/text_timeslot_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="TimeSlotEdit"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:fillViewport="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="60dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/TitleTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:enabled="true"
+                android:hint="Title"
+                android:textColorHint="@color/purple_500"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputEditTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/DescriptionTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:enabled="true"
+                android:hint="Description"
+                app:endIconMode="clear_text"
+                android:textColorHint="@color/purple_500"
+                app:layout_constraintEnd_toEndOf="@+id/TitleTextField"
+                app:layout_constraintStart_toStartOf="@+id/TitleTextField"
+                app:layout_constraintTop_toBottomOf="@+id/TitleTextField">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_timeslotEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/outside_shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DescriptionTextField">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date:"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_date"
+                    app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_date"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_timeslotEdit_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date">
+
+                    <TextView
+                        android:id="@+id/tv_timeslotEdit_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:freezesText="true"
+                        android:padding="12dp"
+                        android:text="dd/mm/yyyy"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/edit_startDate"
+                        app:layout_constraintEnd_toStartOf="@id/mcv_timeslotEdit_startTime"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/edit_startDate"
+                    style=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Pick date"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_date"
+                    app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_date"
+                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_date" />
+
+                <TextView
+                    android:id="@+id/startTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start time:"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_startTime"
+                    app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_startTime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_timeslotEdit_startTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:layout_constraintEnd_toEndOf="@+id/edit_startTime"
+                    app:layout_constraintStart_toStartOf="@+id/edit_startTime"
+                    app:layout_constraintTop_toBottomOf="@+id/startTime">
+
+                    <TextView
+                        android:id="@+id/tv_timeslotEdit_startTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:freezesText="true"
+                        android:padding="12dp"
+                        android:text="hh:mm"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+                <!-- -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/edit_startTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:text="Set time"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintEnd_toStartOf="@+id/edit_endTime"
+                    app:layout_constraintStart_toEndOf="@+id/edit_startDate"
+                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_startTime" />
+
+                <TextView
+                    android:id="@+id/endTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="End time:"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_endTime"
+                    app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_endTime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mcv_timeslotEdit_endTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:layout_constraintEnd_toEndOf="@+id/edit_endTime"
+                    app:layout_constraintStart_toStartOf="@+id/edit_endTime"
+                    app:layout_constraintTop_toBottomOf="@+id/endTime">
+
+                    <TextView
+                        android:id="@+id/tv_timeslotEdit_endTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:freezesText="true"
+                        android:padding="12dp"
+                        android:text="hh:mm"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/edit_endTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:text="Set time"
+                    app:cornerRadius="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_endTime" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="129dp" />
+
+                <Button
+                    android:id="@+id/edit_repetition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:text="Add repetition"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LocationTextField"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:enabled="true"
+                android:hint="Location"
+                android:textColorHint="@color/purple_500"
+                app:endIconContentDescription="Choose the location"
+                app:endIconDrawable="@drawable/ic_location"
+                app:endIconMode="custom"
+                app:layout_constraintEnd_toEndOf="@+id/cl_timeslotEdit"
+                app:layout_constraintStart_toStartOf="@+id/cl_timeslotEdit"
+                app:layout_constraintTop_toBottomOf="@+id/cl_timeslotEdit">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/outside_shape"
+                app:layout_constraintTop_toBottomOf="@+id/LocationTextField">
+
+                <TextView
+                    android:id="@+id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/purple_500"
+                    android:text="Category:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chips_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/category"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/gardening"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gardening" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/tutoring"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tutoring" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/childcare"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Child Care" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/oddjobs"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Odd Jobs" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/homerepair"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Home Repair" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/wellness"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wellness" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/delivery"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delivery" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/transportation"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Transportation" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/companionship"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Companionship" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/other"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Other" />
+
+                </com.google.android.material.chip.ChipGroup>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
