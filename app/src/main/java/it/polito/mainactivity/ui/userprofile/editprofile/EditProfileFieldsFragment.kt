@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
-import it.polito.mainactivity.ui.userprofile.SkillCardEditable
+import it.polito.mainactivity.ui.userprofile.SkillCard
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class EditProfileFieldsFragment : Fragment() {
 
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val vm: UserProfileViewModel by activityViewModels()
 
     private var _binding: FragmentEditProfileFieldsBinding? = null
 
-    // This property is only valid between onCreateView and
+    // this property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
@@ -31,9 +31,14 @@ class EditProfileFieldsFragment : Fragment() {
 
         observeViewModel()
         addFocusChangeListeners()
-        val skills = userProfileViewModel.skills
-        // TODO make it more efficient (somehow - do not remove skills and add them)
-        skills.forEach{ s -> s.active.observe(viewLifecycleOwner){ onSkillActiveChange() } }
+
+        // if updated changes, update the whole list
+        vm.updated.observe(viewLifecycleOwner){
+            val skills = vm.skills.value
+            if(it != null){
+                vm.setSkills(skills?.map{ s -> if(it.title != s.title) s else it })
+            }
+        }
 
         return root
     }
@@ -44,32 +49,30 @@ class EditProfileFieldsFragment : Fragment() {
     }
 
     private fun observeViewModel(){
-        userProfileViewModel.name.observe(viewLifecycleOwner) { binding.textInputEditTextName.setText(it) }
-        userProfileViewModel.surname.observe(viewLifecycleOwner) { binding.textInputEditTextSurname.setText(it) }
-        userProfileViewModel.nickname.observe(viewLifecycleOwner) { binding.textInputEditTextNickname.setText(it) }
-        userProfileViewModel.bio.observe(viewLifecycleOwner) { binding.textInputEditTextBio.setText(it) }
-        userProfileViewModel.phone.observe(viewLifecycleOwner) { binding.textInputEditTextPhone.setText(it) }
-        userProfileViewModel.email.observe(viewLifecycleOwner) { binding.textInputEditTextEmail.setText(it) }
-        userProfileViewModel.location.observe(viewLifecycleOwner) { binding.textInputEditTextLocation.setText(it) }
+        vm.name.observe(viewLifecycleOwner) { binding.textInputEditTextName.setText(it) }
+        vm.surname.observe(viewLifecycleOwner) { binding.textInputEditTextSurname.setText(it) }
+        vm.nickname.observe(viewLifecycleOwner) { binding.textInputEditTextNickname.setText(it) }
+        vm.bio.observe(viewLifecycleOwner) { binding.textInputEditTextBio.setText(it) }
+        vm.phone.observe(viewLifecycleOwner) { binding.textInputEditTextPhone.setText(it) }
+        vm.email.observe(viewLifecycleOwner) { binding.textInputEditTextEmail.setText(it) }
+        vm.location.observe(viewLifecycleOwner) { binding.textInputEditTextLocation.setText(it) }
+        vm.skills.observe(viewLifecycleOwner) {
+            binding.editableSkillsLayout.removeAllViews()
+            it
+                .sortedByDescending{ it.active }
+                .map{s -> SkillCard(requireContext(), s, vm, true) }
+                .forEach{ sc : SkillCard -> binding.editableSkillsLayout.addView(sc) }
+        }
     }
 
     private fun addFocusChangeListeners(){
-        binding.textInputEditTextName.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setName(binding.textInputEditTextName.text.toString()) }
-        binding.textInputEditTextSurname.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setSurname(binding.textInputEditTextSurname.text.toString()) }
-        binding.textInputEditTextNickname.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setNickname(binding.textInputEditTextNickname.text.toString()) }
-        binding.textInputEditTextBio.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setBio(binding.textInputEditTextBio.text.toString()) }
-        binding.textInputEditTextPhone.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setPhone(binding.textInputEditTextPhone.text.toString()) }
-        binding.textInputEditTextEmail.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setEmail(binding.textInputEditTextEmail.text.toString()) }
-        binding.textInputEditTextLocation.setOnFocusChangeListener{_, focused -> if(!focused) userProfileViewModel.setLocation(binding.textInputEditTextLocation.text.toString()) }
-    }
-
-    private fun onSkillActiveChange(){
-        val skillsLayout = binding.editableSkillsLayout
-        skillsLayout.removeAllViews()
-        val skills = userProfileViewModel.skills.sortedByDescending { it.active.value }
-        skills
-            .map{ s -> SkillCardEditable(requireContext(), this, s) }
-            .forEach{ sc -> skillsLayout.addView(sc) }
+        binding.textInputEditTextName.setOnFocusChangeListener{_, focused -> if(!focused) vm.setName(binding.textInputEditTextName.text.toString()) }
+        binding.textInputEditTextSurname.setOnFocusChangeListener{_, focused -> if(!focused) vm.setSurname(binding.textInputEditTextSurname.text.toString()) }
+        binding.textInputEditTextNickname.setOnFocusChangeListener{_, focused -> if(!focused) vm.setNickname(binding.textInputEditTextNickname.text.toString()) }
+        binding.textInputEditTextBio.setOnFocusChangeListener{_, focused -> if(!focused) vm.setBio(binding.textInputEditTextBio.text.toString()) }
+        binding.textInputEditTextPhone.setOnFocusChangeListener{_, focused -> if(!focused) vm.setPhone(binding.textInputEditTextPhone.text.toString()) }
+        binding.textInputEditTextEmail.setOnFocusChangeListener{_, focused -> if(!focused) vm.setEmail(binding.textInputEditTextEmail.text.toString()) }
+        binding.textInputEditTextLocation.setOnFocusChangeListener{_, focused -> if(!focused) vm.setLocation(binding.textInputEditTextLocation.text.toString()) }
     }
 
 }

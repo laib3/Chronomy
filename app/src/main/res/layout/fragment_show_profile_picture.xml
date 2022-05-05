@@ -9,7 +9,7 @@
     app:layout_constraintBottom_toTopOf="@+id/infoAndSkillsScrollView"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_weight="1"
-    tools:context=".ui.userprofile.ShowProfileFragment"
+    tools:context=".ui.userprofile.showprofile.ShowProfileFragment"
     tools:layout_editor_absoluteX="16dp">
 
         <ImageView

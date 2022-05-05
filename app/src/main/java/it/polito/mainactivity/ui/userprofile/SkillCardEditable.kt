@@ -13,8 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import it.polito.mainactivity.R
+import it.polito.mainactivity.model.Skill
 
-class SkillCardEditable(val c: Context, val f: Fragment, val s: SkillViewModel): CardView(c){
+class SkillCardEditable(val c: Context, val f: Fragment, val s: Skill, var editable: Boolean, var hidden: Boolean): CardView(c) {
 
     init {
         LayoutInflater.from(c).inflate(R.layout.skillcard, this, true)
@@ -22,7 +23,11 @@ class SkillCardEditable(val c: Context, val f: Fragment, val s: SkillViewModel):
         val tvTitle = findViewById<TextView>(R.id.skillTitle)
         val ivSkillIcon = findViewById<ImageView>(R.id.skillIcon)
 
+    }
+}
+
         /* when card is pressed display a modal */
+        /*
         this.setOnClickListener {
             val modalView = LayoutInflater.from(this.context).inflate(R.layout.skill_edit_modal, null)
             val modalTitle = modalView.findViewById<TextView>(R.id.modalTitle)
@@ -85,5 +90,5 @@ class SkillCardEditable(val c: Context, val f: Fragment, val s: SkillViewModel):
             else -> null
         }
     }
+    */
 
-}

@@ -1,6 +1,7 @@
 package it.polito.mainactivity.ui.userprofile.showprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +9,16 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.R
-import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
+import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.ui.userprofile.SkillCard
+import it.polito.mainactivity.ui.userprofile.TextSkill
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class ShowProfileDataFragment: Fragment() {
 
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileDataBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -35,29 +34,22 @@ class ShowProfileDataFragment: Fragment() {
         val phoneTextView: TextView = binding.textPhone
         val locationTextView: TextView = binding.textLocation
         val emailTextView: TextView = binding.textEmail
+        val skillsLayout = binding.skillsLayout
 
         // observe viewModel changes
-        userProfileViewModel.balance.observe(viewLifecycleOwner) {
-            balanceTextView.text =
-                String.format(getString(R.string.user_profile_balance_placeholder), it)
-        }
-        userProfileViewModel.bio.observe(viewLifecycleOwner) {
-            bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), it)
-        }
-        userProfileViewModel.phone.observe(viewLifecycleOwner) { phoneTextView.text = it }
-        userProfileViewModel.location.observe(viewLifecycleOwner) { locationTextView.text = it }
-        userProfileViewModel.email.observe(viewLifecycleOwner) { emailTextView.text = it }
-
-        // add skills
-        val skillsLayout = binding.skillsLayout
-        val skills = userProfileViewModel.skills
-        skills.forEach{ s ->
-            val sc = SkillCard(requireContext(), this, s)
-            skillsLayout?.addView(sc)
+        vm.balance.observe(viewLifecycleOwner) { balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), it) }
+        vm.bio.observe(viewLifecycleOwner) { bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), it) }
+        vm.phone.observe(viewLifecycleOwner) { phoneTextView.text = it }
+        vm.location.observe(viewLifecycleOwner) { locationTextView.text = it }
+        vm.email.observe(viewLifecycleOwner) { emailTextView.text = it }
+        vm.skills.observe(viewLifecycleOwner){
+            skillsLayout.removeAllViews()
+            it
+                .map{ s -> SkillCard(requireContext(), s, vm, false) }
+                .forEach{ sc: SkillCard -> skillsLayout.addView(sc) }
         }
 
         return root
     }
-
 
 }

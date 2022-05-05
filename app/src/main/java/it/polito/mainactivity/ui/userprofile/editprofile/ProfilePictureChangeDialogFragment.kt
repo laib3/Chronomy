@@ -1,10 +1,8 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.DialogFragment
 

@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.userprofile.ShowProfileFragment">
+    tools:context=".ui.userprofile.showprofile.ShowProfileFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerShowProfilePicture"
-        android:name="it.polito.mainactivity.ui.userprofile.ShowProfilePictureFragment"
+        android:name="it.polito.mainactivity.ui.userprofile.showprofile.ShowProfilePictureFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,7 +21,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerShowProfileData"
-        android:name="it.polito.mainactivity.ui.userprofile.ShowProfileDataFragment"
+        android:name="it.polito.mainactivity.ui.userprofile.showprofile.ShowProfileDataFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

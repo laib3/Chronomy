@@ -46,7 +46,7 @@
                 android:id="@+id/skillIcon"
                 android:layout_width="@dimen/skill_icon_size"
                 android:layout_height="@dimen/skill_icon_size"
-                android:layout_marginRight="@dimen/medium_distance"
+                android:layout_marginEnd="@dimen/medium_distance"
                 android:contentDescription="Gardening icon"
                 android:src="@drawable/ic_skill_gardening"
                 app:layout_constraintBottom_toBottomOf="parent"

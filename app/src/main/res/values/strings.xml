@@ -25,7 +25,7 @@
 
     <!-- placeholders -->
     <string name="user_profile_nickname_placeholder">\@%1$s</string>
-    <string name="user_profile_balance_placeholder">%1$d TCU</string>
+    <string name="user_profile_balance_placeholder">%1$s TCU</string>
     <string name="user_profile_bio_placeholder">«%1$s»</string>
 
     <!-- labels -->

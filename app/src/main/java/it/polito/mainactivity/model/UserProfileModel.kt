@@ -8,18 +8,24 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.MutableLiveData
 import org.json.JSONObject
 import java.io.*
+
+enum class Field {
+    NAME, SURNAME, NICKNAME, BIO, EMAIL, PHONE, LOCATION, BALANCE
+}
 
 class UserProfileModel(val application: Application) {
 
     // no database here
-    private val SHARED_PREFERENCES_NAME : String = "userprofilesharedpreferences"
+    private val SHARED_PREFERENCES_NAME: String = "userprofilesharedpreferences"
     private val PROFILE_TAG: String = "profile"
     private val PICTURE_DIR_PATH: String = "images"
     private val PROFILE_PICTURE_NAME: String = "profile.jpg"
-
+    private val sharedPreferences = application.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
 
     private var name: String = ""
     private var surname: String = ""
@@ -32,29 +38,21 @@ class UserProfileModel(val application: Application) {
     private var picture: Drawable? = null
     private var skills: MutableList<Skill> = mutableListOf()
 
-    // returns a JSON string representing the profile
-    override fun toString() = """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
-                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills: $skills }"""
-
     init {
-        loadContent()
+        loadProfile()
     }
 
-    private fun saveContent(){
-        val sharedPreferences = application.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
-    }
-
-    // load content from shared preferences (or create fake content)
-    private fun loadContent(){
+    override fun toString() = """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
+            """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills }"""
+    // load profile from shared preferences (or create fake content)
+    private fun loadProfile(){
         // sharedPreferences shouldn't be null, but just in case...
-        val sharedPreferences : SharedPreferences? = application.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
         // retrieve profile as a JSON string
         val profileString: String? = sharedPreferences?.getString(PROFILE_TAG, null)
         val jsonProfile: JSONObject? = when(profileString) {
             null -> null
             else -> JSONObject(profileString)
         }
-
         name = jsonProfile?.getString("name") ?: "name"
         surname = jsonProfile?.getString("surname") ?: "surname"
         nickname = jsonProfile?.getString("nickname") ?: "nickname"
@@ -79,13 +77,52 @@ class UserProfileModel(val application: Application) {
             }
         }
         try {
-            val file: File = File(PICTURE_DIR_PATH, PROFILE_PICTURE_NAME)
+            val imageDirectory: File = application.getDir(PICTURE_DIR_PATH, Context.MODE_PRIVATE)
+            val file = File(imageDirectory, PROFILE_PICTURE_NAME)
             val b: Bitmap = BitmapFactory.decodeStream(FileInputStream(file))
             picture = BitmapDrawable(application.applicationContext.resources, b)
         } catch(e: FileNotFoundException){
             picture = null
         }
     }
+
+    fun setData(s: String, f: Field){
+        when(f){
+            Field.NAME -> name = s
+            Field.SURNAME -> surname = s
+            Field.BIO -> bio = s
+            Field.NICKNAME -> nickname = s
+            Field.EMAIL -> email = s
+            Field.PHONE -> phone = s
+            Field.LOCATION -> location = s
+            Field.BALANCE -> balance = s.toInt()
+        }
+        // update profile string
+        sharedPreferences.edit().putString(PROFILE_TAG, this.toString()).apply()
+    }
+    fun setSkills(s: List<Skill>) {
+        skills = s.toMutableList()
+        sharedPreferences.edit().putString(PROFILE_TAG, this.toString()).apply()
+    }
+    fun setPicture(d: Drawable){
+        picture = d
+        savePicture()
+    }
+
+    fun getData(f: Field): MutableLiveData<String>{
+        return when(f){
+            Field.NAME -> MutableLiveData(name)
+            Field.SURNAME -> MutableLiveData(surname)
+            Field.NICKNAME -> MutableLiveData(nickname)
+            Field.BIO -> MutableLiveData(bio)
+            Field.EMAIL -> MutableLiveData(email)
+            Field.PHONE -> MutableLiveData(phone)
+            Field.LOCATION -> MutableLiveData(location)
+            Field.BALANCE -> MutableLiveData(balance.toString())
+        }
+    }
+    fun getSkills(): MutableLiveData<List<Skill>> = MutableLiveData(skills)
+    fun getPicture(): MutableLiveData<Drawable> = MutableLiveData(picture)
 
     // create fake example skills
     private fun createSkills(): MutableList<Skill>{

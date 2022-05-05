@@ -41,8 +41,9 @@ class ShowProfilePictureFragment: Fragment() {
             nicknameTextView.text =
                 String.format(getString(R.string.user_profile_nickname_placeholder), it)
         }
-        userProfileViewModel.picture.observe(viewLifecycleOwner)
-        { if(it != null) profilePicture.setImageDrawable(it) }
+        userProfileViewModel.picture.observe(viewLifecycleOwner) {
+            if(it != null) profilePicture.setImageDrawable(it)
+        }
 
         return root
     }
