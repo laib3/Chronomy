@@ -9,20 +9,8 @@
             android:icon="@drawable/ic_menu_list"
             android:title="@string/menu_timeslot_list" />
         <item
-            android:id="@+id/nav_details"
-            android:icon="@drawable/ic_menu_details"
-            android:title="@string/menu_timeslot_details" />
-        <item
-            android:id="@+id/nav_edit"
-            android:icon="@drawable/ic_menu_edit"
-            android:title="@string/menu_timeslot_edit" />
-        <item
             android:id="@+id/nav_show_profile"
             android:icon="@drawable/ic_menu_profile"
             android:title="@string/menu_show_profile" />
-        <item
-            android:id="@+id/nav_edit_profile"
-            android:icon="@drawable/ic_menu_edit"
-            android:title="@string/menu_edit_profile" />
     </group>
 </menu>
