@@ -5,6 +5,12 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.356" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/drawable/rectangle.xml" value="0.198" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_list.xml" value="0.176" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/list_item.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/timeslot_item.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/activity_main_drawer.xml" value="0.27384615384615385" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/main.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_view_list_24.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.274" />
         <entry key="app/src/main/res/drawable/ic_eye_slash.xml" value="0.208" />
@@ -14,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_menu_details.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_edit.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_gallery.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/ic_menu_list.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_menu_pencil.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_profile.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3565" />
@@ -23,6 +30,8 @@
         <entry key="app/src/main/res/drawable/white_circle_bg.xml" value="0.3565" />
         <entry key="app/src/main/res/layout-land/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/rectangle.xml" value="0.1215" />
+        <entry key="app/src/main/res/layout-land/fragment_timeslot_details.xml" value="0.27395833333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_edit.xml" value="0.33" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
