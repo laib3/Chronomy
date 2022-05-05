@@ -17,7 +17,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
@@ -26,6 +28,7 @@ import it.polito.mainactivity.databinding.ActivityMainBinding.inflate
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding.inflate
 import it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsViewModel
+import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
 
 
 class TimeSlotEditFragment : Fragment() {
@@ -37,7 +40,7 @@ class TimeSlotEditFragment : Fragment() {
     private var tiTitle : TextInputLayout? = null
     private var tiDescription : TextInputLayout? = null
     private var tiAvailability : TextInputLayout? = null
-    private var tiDate : TextView? = null
+    private var tiStartDate : TextView? = null
     private var tiEndDate : TextView? = null
     private var tiStartTime : TextView? = null
     private var tiEndTime : TextView? = null
@@ -51,15 +54,25 @@ class TimeSlotEditFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        //val timeSlotDetailsViewModel =
-        //    ViewModelProvider(this).get(TimeSlotDetailsViewModel::class.java)
+        val timeSlotListViewModel =
+            ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val id: Int = arguments?.getInt("id") ?: -1
 
+        timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
+            tiTitle?.editText?.setText(it.elementAt(id).title)
+            tiDescription?.editText?.setText(it.elementAt(id).description)
+            tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
+            tiStartTime?.text = it.elementAt(id).startHour
+            tiEndTime?.text = it.elementAt(id).endHour
+            tiEndDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
+            tiLocation?.editText?.setText(it.elementAt(id).location)
+            //tiCategory?.editText?.setText(it.elementAt(id).category)
+        }
 
-        observeViewModel()
         addFocusChangeListeners()
 
         /*
@@ -96,7 +109,7 @@ class TimeSlotEditFragment : Fragment() {
         tiTitle = view?.findViewById(R.id.TitleTextField)
         tiDescription= view?.findViewById(R.id.DescriptionTextField)
         tiAvailability = view?.findViewById(R.id.AvailabilityTextField)
-        tiDate= view?.findViewById(R.id.tv_timeslotEdit_date)
+        tiStartDate= view?.findViewById(R.id.tv_timeslotEdit_date)
         tiEndDate= view?.findViewById(R.id.tv_timeslotEdit_endDate)
         tiStartTime= view?.findViewById(R.id.tv_timeslotEdit_startTime)
         tiEndTime= view?.findViewById(R.id.tv_timeslotEdit_endTime)
@@ -120,7 +133,7 @@ class TimeSlotEditFragment : Fragment() {
         val btnRepetition = view.findViewById<Button>(R.id.edit_repetition)
         btnRepetition.setOnClickListener { showRepetitionDialog() }
 
-        val btnEndDate = view.findViewById<TextView>(R.id.tv_timeslotEdit_endDate)
+        val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
 
         /*val myAutoComplete: AutoCompleteTextView
@@ -140,25 +153,7 @@ class TimeSlotEditFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
-    private fun observeViewModel(){
-        /*timeSlotDetailsViewModel.timeslot.observe(viewLifecycleOwner){
-            tiTitle?.editText?.setText(it.title)
-            tiDescription?.editText?.setText(it.description)
-
-            var dateS = it.days[0].date.toString()+"/"+it.days[0].month.toString()+"/"+it.days[0].year.toString()
-            var dateE = it.days[1].date.toString()+"/"+it.days[1].month.toString()+"/"+it.days[1].year.toString()
-
-            tiDate?.text = dateS
-            tiEndDate?.text = dateE
-            tiStartTime?.text = it.startHour+":"+it.startMinute
-            tiEndTime?.text = it.endHour+":"+it.endMinute
-            tiLocation?.editText?.setText(it.location)
-
-        }*/
-    }
-
+    
     private fun addFocusChangeListeners(){
        // binding.TextInputEditTitle.setOnFocusChangeListener{_, focused -> if(!focused) timeSlotDetailsViewModel.apply{timeslot?.apply { binding.TextInputEditTitle.text.toString(); ""; }}}
     } //miss other fields
@@ -188,8 +183,15 @@ class TimeSlotEditFragment : Fragment() {
 
     }
 
+    // START DATE
     private fun showDatePickerDialog() {
-        val dateFragment = DatePickerFragment(tiDate)
+        val dateFragment = DatePickerFragment(tiStartDate)
+        dateFragment.show(requireActivity().supportFragmentManager, "datePicker")
+    }
+
+    // END DATE
+    private fun showEndDatePickerDialog() {
+        val dateFragment = DatePickerFragment(tiEndDate)
         dateFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
@@ -227,7 +229,6 @@ class TimeSlotEditFragment : Fragment() {
     }
 
     // START TIME
-    //Showing the time picker
     private fun showStartTimePickerDialog() {
         val timeFragment = TimePickerFragment(tiStartTime)
         timeFragment.show(requireActivity().supportFragmentManager, "timePicker")
@@ -296,10 +297,5 @@ class TimeSlotEditFragment : Fragment() {
         }
     }
 
-    // END DATE
-    private fun showEndDatePickerDialog() {
-        val dateFragment = DatePickerFragment(tiEndDate)
-        dateFragment.show(requireActivity().supportFragmentManager, "datePicker")
-    }
 
 }
