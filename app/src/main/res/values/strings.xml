@@ -50,4 +50,10 @@
     <string name="user_skill_hint_description">Description</string>
 
     <string name="empty_timeslot_list_message">The list of timeslots is empty, press the button below to add one</string>
+
+    <string-array name="repetition_mw">
+        <item id="isWeekly">Weekly</item>
+        <item id="isMonthly">Monthly</item>
+    </string-array>
+
 </resources>
