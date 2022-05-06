@@ -9,6 +9,7 @@ import androidx.core.text.italic
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
@@ -42,7 +43,7 @@ class TimeSlotDetailsFragment : Fragment() {
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val id: Int = arguments?.getInt("id") ?: -1
+        val id = arguments?.getInt("id") ?: -1
 
         val textView: TextView = binding.textTimeslotDetails
         val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
@@ -121,10 +122,11 @@ class TimeSlotDetailsFragment : Fragment() {
         inflater.inflate(R.menu.timeslot_details_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(
-            item,
-            requireView().findNavController()
-        ) || super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem):Boolean {
+        var bundle = Bundle();
+        bundle.putInt("id", arguments?.getInt("id") ?: -1)
+        findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
+        return super.onOptionsItemSelected(item)
     }
+
 }
