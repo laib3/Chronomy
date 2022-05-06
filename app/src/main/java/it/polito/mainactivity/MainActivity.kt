@@ -1,7 +1,9 @@
 package it.polito.mainactivity
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -11,7 +13,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import it.polito.mainactivity.databinding.ActivityMainBinding
+import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,11 +41,28 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+
+        LayoutInflater.from(this).inflate(R.layout.nav_header_main, navView);
+        val navHeaderName : TextView = navView.findViewById(R.id.navHeaderName)
+        val navHeaderSurname: TextView = navView.findViewById(R.id.navHeaderSurname)
+        val navHeaderBalance : TextView = navView.findViewById(R.id.navHeaderBalance)
+
+        //val userProfileViewModel = UserProfileViewModel(application)
+        val userProfileViewModel=
+            ViewModelProvider(this).get(UserProfileViewModel::class.java)
+
+
+        // observe viewModel changes
+        userProfileViewModel.name.observe(this) { navHeaderName.text = it }
+        userProfileViewModel.surname.observe(this) { navHeaderSurname.text = it }
+        userProfileViewModel.balance.observe(this) {navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it) }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_list, R.id.nav_details, R.id.nav_edit, R.id.nav_show_profile
+                R.id.nav_list, R.id.nav_show_profile
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -49,6 +74,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         return true
     }*/
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
