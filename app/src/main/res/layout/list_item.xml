@@ -1,6 +1,6 @@
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textView"
+    android:id="@+id/navHeaderBalance"
     android:layout_width="match_parent"
     android:textColor="@color/black"
     android:textStyle="bold"
