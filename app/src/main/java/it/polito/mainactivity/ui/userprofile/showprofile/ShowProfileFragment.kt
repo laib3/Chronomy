@@ -36,23 +36,6 @@ class ShowProfileFragment : Fragment() {
         inflater.inflate(R.menu.showprofile_menu, menu)
     }
 
-    // navigate to edit profile fragment
-    /*
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        findNavController().navigate(
-            R.id.action_nav_show_profile_to_nav_edit_profile
-        )
-        return super.onOptionsItemSelected(item)
-    }
-    */
-    /*
-    // navigate to edit profile fragment
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
-                || super.onOptionsItemSelected(item)
-    }
-
-    */
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
         if(item.itemId === R.id.action_nav_show_profile_to_nav_edit_profile) {
             findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile, )

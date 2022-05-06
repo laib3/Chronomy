@@ -3,6 +3,7 @@ package it.polito.mainactivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -47,17 +48,21 @@ class MainActivity : AppCompatActivity() {
         val navHeaderName : TextView = navView.findViewById(R.id.navHeaderName)
         val navHeaderSurname: TextView = navView.findViewById(R.id.navHeaderSurname)
         val navHeaderBalance : TextView = navView.findViewById(R.id.navHeaderBalance)
+        val navProfilePicture: ImageView = navView.findViewById(R.id.navHeaderProfilePicture)
+
+        navProfilePicture.clipToOutline = true
 
         //val userProfileViewModel = UserProfileViewModel(application)
         val userProfileViewModel=
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
-
         // observe viewModel changes
         userProfileViewModel.name.observe(this) { navHeaderName.text = it }
         userProfileViewModel.surname.observe(this) { navHeaderSurname.text = it }
         userProfileViewModel.balance.observe(this) {navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it) }
-
+        userProfileViewModel.picture.observe(this) {
+            if(it != null) navProfilePicture.setImageDrawable(it)
+        }
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
