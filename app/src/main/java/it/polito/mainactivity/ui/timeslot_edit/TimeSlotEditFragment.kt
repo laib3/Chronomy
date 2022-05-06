@@ -1,10 +1,7 @@
 package it.polito.mainactivity.ui.timeslot_edit
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -24,10 +21,9 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
-import it.polito.mainactivity.databinding.ActivityMainBinding.inflate
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
-import it.polito.mainactivity.databinding.FragmentTimeslotListBinding.inflate
 import it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsViewModel
+import it.polito.mainactivity.ui.timeslot_list.TimeSlotListFragment
 import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
 
 
@@ -62,15 +58,24 @@ class TimeSlotEditFragment : Fragment() {
 
         val id: Int = arguments?.getInt("id") ?: -1
 
-        timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
-            tiTitle?.editText?.setText(it.elementAt(id).title)
-            tiDescription?.editText?.setText(it.elementAt(id).description)
-            tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
-            tiStartTime?.text = it.elementAt(id).startHour
-            tiEndTime?.text = it.elementAt(id).endHour
-            tiEndDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
-            tiLocation?.editText?.setText(it.elementAt(id).location)
-            //tiCategory?.editText?.setText(it.elementAt(id).category)
+        //i don't need to observe anything, it will be a new timeslot
+        if(id!= -1){
+            timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
+                tiTitle?.editText?.setText(it.elementAt(id).title)
+                tiDescription?.editText?.setText(it.elementAt(id).description)
+                tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
+                tiStartTime?.text = it.elementAt(id).startHour
+                tiEndTime?.text = it.elementAt(id).endHour
+                tiEndDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
+                tiLocation?.editText?.setText(it.elementAt(id).location)
+                //tiCategory?.editText?.setText(it.elementAt(id).category)
+            }
+        }else {
+            /*val actionBar: ActionBar? = requireActivity().actionBar
+            actionBar?.title = "New Timeslot"*/
+           // activity?.title = "New Timeslot"
+            //requireActivity().actionBar?.title="New Timeslot"
+            
         }
 
         addFocusChangeListeners()

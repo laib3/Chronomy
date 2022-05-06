@@ -45,11 +45,11 @@ class TimeSlotDetailsFragment : Fragment() {
 
         val id = arguments?.getInt("id") ?: -1
 
-        val textView: TextView = binding.textTimeslotDetails
-        val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
-        timeSlotDetailsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        //val textView: TextView = binding.textTimeslotDetails
+        //val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
+        //timeSlotDetailsViewModel.text.observe(viewLifecycleOwner) {
+          //  textView.text = it
+        //}
 
         timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
             tiTitle?.editText?.setText(it.elementAt(id).title)
