@@ -45,11 +45,11 @@ class TimeSlotDetailsFragment : Fragment() {
 
         val id = arguments?.getInt("id") ?: -1
 
-        val textView: TextView = binding.textTimeslotDetails
-        val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
-        timeSlotDetailsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        //val textView: TextView = binding.textTimeslotDetails
+        //val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
+        //timeSlotDetailsViewModel.text.observe(viewLifecycleOwner) {
+          //  textView.text = it
+        //}
 
         timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
             tiTitle?.editText?.setText(it.elementAt(id).title)
@@ -123,10 +123,12 @@ class TimeSlotDetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
-        var bundle = Bundle();
-        bundle.putInt("id", arguments?.getInt("id") ?: -1)
-        findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
+        if(item.itemId === R.id.nav_edit) {
+            var bundle = Bundle();
+            bundle.putInt("id", arguments?.getInt("id") ?: -1)
+            findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
-
 }

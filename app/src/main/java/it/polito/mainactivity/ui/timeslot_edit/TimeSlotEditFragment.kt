@@ -1,10 +1,7 @@
 package it.polito.mainactivity.ui.timeslot_edit
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.TimePickerDialog
+import android.app.*
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -27,6 +24,7 @@ import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsViewModel
+import it.polito.mainactivity.ui.timeslot_list.TimeSlotListFragment
 import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
 import java.util.*
 
@@ -70,23 +68,32 @@ class TimeSlotEditFragment : Fragment() {
 
         val id: Int = arguments?.getInt("id") ?: -1
 
-        timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
-            tiTitle?.editText?.setText(it.elementAt(id).title)
-            tiDescription?.editText?.setText(it.elementAt(id).description)
-            tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
-            tiStartTime?.text = it.elementAt(id).startHour
-            tiEndTime?.text = it.elementAt(id).endHour
-            tiEndDate?.text =
-                it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
-            tiLocation?.editText?.setText(it.elementAt(id).location)
-            tiRepetition = it.elementAt(id).repetition
+        //i don't need to observe anything, it will be a new timeslot
+        if(id!= -1){
+            timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
+                tiTitle?.editText?.setText(it.elementAt(id).title)
+                tiDescription?.editText?.setText(it.elementAt(id).description)
+                tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
+                tiStartTime?.text = it.elementAt(id).startHour
+                tiEndTime?.text = it.elementAt(id).endHour
+                tiEndDate?.text =
+                    it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
+                tiLocation?.editText?.setText(it.elementAt(id).location)
+                tiRepetition = it.elementAt(id).repetition
 
-            val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
-            val index = categories.indexOf(it.elementAt(id).category)
-            var chip : Chip = tiCategory?.getChildAt(index) as Chip
-            tiCategory?.check(chip.id)
+                val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
+                val index = categories.indexOf(it.elementAt(id).category)
+                var chip : Chip = tiCategory?.getChildAt(index) as Chip
+                tiCategory?.check(chip.id)
 
-            days = it.elementAt(id).days
+                days = it.elementAt(id).days
+            }
+        }else {
+            /*val actionBar: ActionBar? = requireActivity().actionBar
+            actionBar?.title = "New Timeslot"*/
+           // activity?.title = "New Timeslot"
+            //requireActivity().actionBar?.title="New Timeslot"
+            
         }
 
         addFocusChangeListeners()
@@ -122,12 +129,6 @@ class TimeSlotEditFragment : Fragment() {
 
         val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
-
-
-        tiDays?.setOnCheckedChangeListener { chipGroup, checkedId ->
-            val titleOrNull = chipGroup.findViewById<Chip>(checkedId)?.text
-            Toast.makeText(chipGroup.context, titleOrNull ?: "No Choice", Toast.LENGTH_LONG).show()
-        }
 
     }
 
