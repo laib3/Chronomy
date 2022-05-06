@@ -122,14 +122,6 @@ class TimeSlotDetailsFragment : Fragment() {
         inflater.inflate(R.menu.timeslot_details_menu, menu)
     }
 
-    /*
-    override fun onOptionsItemSelected(item: MenuItem):Boolean {
-        var bundle = Bundle();
-        bundle.putInt("id", arguments?.getInt("id") ?: -1)
-        findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
-        return super.onOptionsItemSelected(item)
-    }
-    */
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
         if(item.itemId === R.id.nav_edit) {
             var bundle = Bundle();
