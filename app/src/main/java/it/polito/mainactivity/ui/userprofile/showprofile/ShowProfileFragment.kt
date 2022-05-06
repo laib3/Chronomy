@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
@@ -37,8 +38,10 @@ class ShowProfileFragment : Fragment() {
 
     // navigate to edit profile fragment
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
-                || super.onOptionsItemSelected(item)
+        findNavController().navigate(
+            R.id.action_nav_show_profile_to_nav_edit_profile
+        )
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
