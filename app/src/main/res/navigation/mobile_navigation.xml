@@ -31,13 +31,21 @@
             android:name="id"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_nav_details_to_nav_edit"
+            app:destination="@id/nav_edit" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_edit"
         android:name="it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment"
         android:label="@string/menu_timeslot_edit"
-        tools:layout="@layout/fragment_timeslot_edit" />
+        tools:layout="@layout/fragment_timeslot_edit" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
     <fragment
         android:id="@+id/nav_show_profile"
         android:name="it.polito.mainactivity.ui.userprofile.showprofile.ShowProfileFragment"
