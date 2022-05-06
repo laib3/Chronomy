@@ -43,6 +43,13 @@ class ShowProfileFragment : Fragment() {
         )
         return super.onOptionsItemSelected(item)
     }
+    /*
+    // navigate to edit profile fragment
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item, requireView().findNavController())
+                || super.onOptionsItemSelected(item)
+    }
+    */
 
     override fun onDestroyView() {
         super.onDestroyView()

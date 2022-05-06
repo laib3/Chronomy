@@ -16,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import it.polito.mainactivity.databinding.ActivityMainBinding
+import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -46,7 +48,10 @@ class MainActivity : AppCompatActivity() {
         val navHeaderSurname: TextView = navView.findViewById(R.id.navHeaderSurname)
         val navHeaderBalance : TextView = navView.findViewById(R.id.navHeaderBalance)
 
-        val userProfileViewModel = UserProfileViewModel(application)
+        //val userProfileViewModel = UserProfileViewModel(application)
+        val userProfileViewModel=
+            ViewModelProvider(this).get(UserProfileViewModel::class.java)
+
 
         // observe viewModel changes
         userProfileViewModel.name.observe(this) { navHeaderName.text = it }
@@ -57,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_list, R.id.nav_details, R.id.nav_edit, R.id.nav_show_profile
+                R.id.nav_list, R.id.nav_show_profile
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
