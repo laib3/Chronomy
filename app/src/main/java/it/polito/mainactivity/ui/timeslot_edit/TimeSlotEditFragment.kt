@@ -23,12 +23,12 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
-import it.polito.mainactivity.databinding.ActivityMainBinding.inflate
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
-import it.polito.mainactivity.databinding.FragmentTimeslotListBinding.inflate
 import it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsViewModel
 import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
+import java.util.*
 
 
 class TimeSlotEditFragment : Fragment() {
@@ -37,23 +37,31 @@ class TimeSlotEditFragment : Fragment() {
 
     private var _binding: FragmentTimeslotEditBinding? = null
 
-    private var tiTitle : TextInputLayout? = null
-    private var tiDescription : TextInputLayout? = null
-    private var tiAvailability : TextInputLayout? = null
-    private var tiStartDate : TextView? = null
-    private var tiEndDate : TextView? = null
-    private var tiStartTime : TextView? = null
-    private var tiEndTime : TextView? = null
-    private var tiLocation : TextInputLayout? = null
-    private var tiCategory : ChipGroup? = null
-    private var typeRepetition : EditText? = null
+    private var tiTitle: TextInputLayout? = null
+    private var tiDescription: TextInputLayout? = null
+    private var tiAvailability: TextInputLayout? = null
+    private var tiStartDate: TextView? = null
+    private var tiEndDate: TextView? = null
+    private var tiStartTime: TextView? = null
+    private var tiEndTime: TextView? = null
+    private var tiLocation: TextInputLayout? = null
+    private var tiCategory: ChipGroup? = null
+    private var tiRepetition: String? = null
+    private var tiDays: ChipGroup? = null
 
-    private var mAlertDialog : AlertDialog?=null
+    private var mAlertDialog: AlertDialog? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    var days: List<Int>? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val timeSlotListViewModel =
             ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
 
@@ -68,37 +76,20 @@ class TimeSlotEditFragment : Fragment() {
             tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
             tiStartTime?.text = it.elementAt(id).startHour
             tiEndTime?.text = it.elementAt(id).endHour
-            tiEndDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
+            tiEndDate?.text =
+                it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
             tiLocation?.editText?.setText(it.elementAt(id).location)
-            //tiCategory?.editText?.setText(it.elementAt(id).category)
+            tiRepetition = it.elementAt(id).repetition
+
+            val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
+            val index = categories.indexOf(it.elementAt(id).category)
+            var chip : Chip = tiCategory?.getChildAt(index) as Chip
+            tiCategory?.check(chip.id)
+
+            days = it.elementAt(id).days
         }
 
         addFocusChangeListeners()
-
-        /*
-        val repetitions = resources.getStringArray(R.array.repetition_mw)
-        val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.list_item, repetitions)
-        //binding.setAdapter(arrayAdapter)
-
-        //val items = listOf("Material", "Design", "Components", "Android")
-        //val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-
-        var autoCompleteTextView = mAlertDialog?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
-        //val textField = view?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
-       // (textField?.text as? AutoCompleteTextView)?.setAdapter(adapter)
-
-        autoCompleteTextView?.setAdapter(arrayAdapter)
-
-       /* val typeRepetition = resources.getStringArray(R.array.repetition_mw)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.modal_repetition, typeRepetition)
-        arrayAdapter.
-        _binding.autoCompleteTextView.setAdapter(arrayAdapter)*/
-
-        /*val textView: TextView = binding.textTimeslotDetails
-        timeSlotDetailsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }*/
-        */
 
         return root
     }
@@ -107,14 +98,15 @@ class TimeSlotEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tiTitle = view?.findViewById(R.id.TitleTextField)
-        tiDescription= view?.findViewById(R.id.DescriptionTextField)
+        tiDescription = view?.findViewById(R.id.DescriptionTextField)
         tiAvailability = view?.findViewById(R.id.AvailabilityTextField)
-        tiStartDate= view?.findViewById(R.id.tv_timeslotEdit_date)
-        tiEndDate= view?.findViewById(R.id.tv_timeslotEdit_endDate)
-        tiStartTime= view?.findViewById(R.id.tv_timeslotEdit_startTime)
-        tiEndTime= view?.findViewById(R.id.tv_timeslotEdit_endTime)
+        tiStartDate = view?.findViewById(R.id.tv_timeslotEdit_date)
+        tiEndDate = view?.findViewById(R.id.tv_timeslotEdit_endDate)
+        tiStartTime = view?.findViewById(R.id.tv_timeslotEdit_startTime)
+        tiEndTime = view?.findViewById(R.id.tv_timeslotEdit_endTime)
         tiLocation = view?.findViewById(R.id.LocationTextField)
         tiCategory = view?.findViewById(R.id.chips_group)
+        tiDays = view?.findViewById(R.id.days)
 
         val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
         btnDate.setOnClickListener { showDatePickerDialog() }
@@ -125,37 +117,27 @@ class TimeSlotEditFragment : Fragment() {
         val btnEndTime = view.findViewById<MaterialButton>(R.id.edit_endTime)
         btnEndTime.setOnClickListener { showEndTimePickerDialog() }
 
-        tiCategory?.setOnCheckedChangeListener { chipGroup, checkedId ->
-            val titleOrNull = chipGroup.findViewById<Chip>(checkedId)?.text
-            Toast.makeText(chipGroup.context, titleOrNull ?: "No Choice", Toast.LENGTH_LONG).show()
-        }
-
         val btnRepetition = view.findViewById<Button>(R.id.edit_repetition)
         btnRepetition.setOnClickListener { showRepetitionDialog() }
 
         val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
 
-        /*val myAutoComplete: AutoCompleteTextView
-        val typeRepetition = resources.getStringArray(R.array.repetition_mw)
 
+        tiDays?.setOnCheckedChangeListener { chipGroup, checkedId ->
+            val titleOrNull = chipGroup.findViewById<Chip>(checkedId)?.text
+            Toast.makeText(chipGroup.context, titleOrNull ?: "No Choice", Toast.LENGTH_LONG).show()
+        }
 
-        val view: View = inflater.inflate(R.layout.modal_repetition, container, false)
-        myAutoComplete = view.findViewById<View>(R.id.autoCompleteTextView) as AutoCompleteTextView
-
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter(requireContext(), R.layout.modal_repetition, typeRepetition)
-
-        myAutoComplete.setAdapter(adapter)*/
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    
-    private fun addFocusChangeListeners(){
-       // binding.TextInputEditTitle.setOnFocusChangeListener{_, focused -> if(!focused) timeSlotDetailsViewModel.apply{timeslot?.apply { binding.TextInputEditTitle.text.toString(); ""; }}}
+
+    private fun addFocusChangeListeners() {
+        // binding.TextInputEditTitle.setOnFocusChangeListener{_, focused -> if(!focused) timeSlotDetailsViewModel.apply{timeslot?.apply { binding.TextInputEditTitle.text.toString(); ""; }}}
     } //miss other fields
 
     // Extending DialogFragment for a date picker
@@ -242,34 +224,24 @@ class TimeSlotEditFragment : Fragment() {
 
     // REPETITION
     private fun showRepetitionDialog() {
-        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.modal_repetition, null)
+        val mDialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.modal_repetition, null)
+
+        tiDays = mDialogView.findViewById(R.id.days)
+
         val repetitions = resources.getStringArray(R.array.repetition_mw)
         val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.list_item, repetitions)
-        var autoCompleteTextView = mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
+        var autoCompleteTextView =
+            mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         autoCompleteTextView?.setAdapter(arrayAdapter)
 
-        /*val title = mDialogView.findViewById<TextView>(R.id.modalTitle)
-        title.text = String.format(getString(R.string.edit_skill_dialog_text), s.title)
-        val question = mDialogView.findViewById<TextView>(R.id.question)
-        question.text = String.format(getString(R.string.edit_skill_dialog_question), s.title.lowercase())
+        if (tiRepetition != "") {
+            days?.forEach {
+                val chip = tiDays?.getChildAt(it-1) as Chip
+                tiDays?.check(chip.id)
+            }
+        }
 
-        //set the radio state starting from skill.active
-        val radioGroup = mDialogView.findViewById<RadioGroup>(R.id.radioGroup)
-        val radioButtonYES = radioGroup.findViewById<RadioButton>(R.id.radioButtonYES)
-        val radioButtonNO = radioGroup.findViewById<RadioButton>(R.id.radioButtonNO)
-        radioButtonYES.isChecked = s.active
-        radioButtonNO.isChecked = !s.active
-
-        //populate the description
-        val description = mDialogView.findViewById<EditText>(R.id.editDescription)
-        description.setText(s.description)
-
-        //Creation and showing the modal
-        // set description hint max char length
-        mDialogView.findViewById<TextView>(R.id.description_hint).text =
-            String.format(getString(R.string.skill_description_helper),
-                this.resources.getInteger(R.integer.maxInputLength))
-*/
         //AlertDialogBuilder + show
         val mBuilder = android.app.AlertDialog.Builder(requireContext())
             .setView(mDialogView)
@@ -296,6 +268,5 @@ class TimeSlotEditFragment : Fragment() {
             mAlertDialog?.dismiss() //close dialog
         }
     }
-
 
 }

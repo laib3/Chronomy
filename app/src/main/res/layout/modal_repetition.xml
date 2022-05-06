@@ -105,8 +105,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/typerepetition">
-        <!--android:visibility="{@isWeekly : View.VISIBLE ? View.GONE }" -->
-
+        <!--android:visibility="@{isWeekly ? View.VISIBLE : View.GONE" -->
 
         <TextView
             android:id="@+id/repeat_on"
@@ -131,7 +130,13 @@
             app:layout_constraintTop_toBottomOf="@+id/repeat_on"
             app:singleLine="true"
             app:singleSelection="false">
-            <!--app:checkedChip="@+id/M1"-->
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/S0"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/M1"
@@ -175,12 +180,6 @@
                 android:layout_height="wrap_content"
                 android:text="S" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/S0"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="S" />
 
         </com.google.android.material.chip.ChipGroup>
 

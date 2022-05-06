@@ -292,7 +292,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/category"
-                    app:singleSelection="true">
+                    app:singleSelection="true"
+                    app:checkedChip="@id/category"
+                    >
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/gardening"
