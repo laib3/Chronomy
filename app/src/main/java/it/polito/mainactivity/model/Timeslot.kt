@@ -16,7 +16,7 @@ data class Timeslot (val title:String,
                     ){
 
     private var dates: MutableList<Calendar> = mutableListOf()
-    private var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
+    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     init {
         endRepetitionDate = if(endRepetitionDate?.before(date) ?: true){
