@@ -12,14 +12,15 @@ import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
@@ -120,6 +121,28 @@ class TimeslotEditFragment : Fragment() {
         val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
 
+        val id: Int = arguments?.getInt("id") ?: -1
+        if(id == -1){
+            val saveBtnLayout = view.findViewById<LinearLayout>(R.id.buttonSaveLayout)
+            //set the properties for button
+            val btnSaveTimeslot = AppCompatButton(requireContext())
+                .apply{
+                    background = this.context.resources.getDrawable(R.drawable.rectangle_save_button)
+                    setTextColor(this.context.resources.getColor(R.color.white))
+                    setPadding(32,0,32,0)
+                    text = "Save timeslot"
+                    textSize = 20f
+                }
+
+            btnSaveTimeslot.layoutParams =
+                GridLayoutManager.LayoutParams(
+                    GridLayoutManager.LayoutParams.WRAP_CONTENT,
+                    GridLayoutManager.LayoutParams.WRAP_CONTENT,
+                    ).apply {
+                    setMargins(0, 32, 0, 0)
+                    }
+            saveBtnLayout.addView(btnSaveTimeslot)
+        }
     }
 
     override fun onDestroyView() {
@@ -133,10 +156,8 @@ class TimeslotEditFragment : Fragment() {
     } //miss other fields
 
     // Extending DialogFragment for a date picker
-    class DatePickerFragment(tiDate: TextView?) : DialogFragment(),
+    class DatePickerFragment(private val tiDate: TextView?) : DialogFragment(),
         DatePickerDialog.OnDateSetListener {
-
-        private val tiDate = tiDate
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -181,9 +202,7 @@ class TimeslotEditFragment : Fragment() {
     }
 
     // Extending DialogFragment for a time picker
-    class TimePickerFragment(tiTime: TextView?) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
-
-        private val tiTime = tiTime
+    class TimePickerFragment(private val tiTime: TextView?) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -235,12 +254,11 @@ class TimeslotEditFragment : Fragment() {
         val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
 
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
-        var autoCompleteTextView =
+        val autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         autoCompleteTextView?.setAdapter(arrayAdapter)
         autoCompleteTextView?.onItemClickListener =
-            OnItemClickListener { parent, arg1, position, arg3 ->
-                val item = parent.getItemAtPosition(position)
+            OnItemClickListener { _, _, position, _ ->
                 if(position == 0){ //weekly
                     repeatOn?.visibility = View.VISIBLE
                     tiDays?.visibility= View.VISIBLE
@@ -265,13 +283,13 @@ class TimeslotEditFragment : Fragment() {
                     tiDays?.check(chip.id)
                 }
                 tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
-                tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate?.time)
+                tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
                 tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
             }
         }
 
         //AlertDialogBuilder + show
-        val mBuilder = android.app.AlertDialog.Builder(requireContext())
+        val mBuilder = AlertDialog.Builder(requireContext())
             .setView(mDialogView)
 
         mAlertDialog = mBuilder.show()
