@@ -9,57 +9,66 @@ data class Timeslot (val title:String,
                      val startHour : String,
                      val endHour:String,
                      val location:String,
-                     val category:String ){
+                     val category:String,
+                     val repetition: String?,
+                     val days: List<Int>,
+                     var endRepetitionDate: Calendar?
+                    ){
 
-    override fun toString() = """{"title": "$title", "description": "$description", "date": "${dateToString()}",""" +
-            """"startHour": "$startHour", "endHour": "$endHour", "location": "$location", "category": "$category"}"""
+    private var dates: MutableList<Calendar> = mutableListOf()
+    private var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
-    private fun dateToString(): String = dateFormat.format(date.time)
-
-    var repetition:String =""
-    var days: List<Int> = listOf()
-    var endRepetitionDate: Calendar?= null
-    var dates: MutableList<Calendar> = mutableListOf()
-    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
-
-    constructor(title:String,
-                description:String,
-                date: Calendar,
-                startHour : String,
-                endHour:String,
-                location:String,
-                category:String,
-                _repetition: String,
-                _days: List<Int>,
-                _endRepetitionDate: Calendar): this(title, description, date, startHour, endHour, location, category){
-        repetition = _repetition
-        days = _days
-        endRepetitionDate = if(_endRepetitionDate.before(date)){
+    init {
+        endRepetitionDate = if(endRepetitionDate?.before(date) ?: true){
             date
-        }else {
-            _endRepetitionDate
+        } else {
+            endRepetitionDate
         }
         dateFormat.timeZone = date.timeZone
         createDates()
     }
 
+    override fun toString() =
+        """
+        {
+        "title": "$title", 
+        "description": "$description",
+        "date": 
+            {"year": ${date.get(Calendar.YEAR)}, 
+            "month": ${date.get(Calendar.MONTH)}, 
+            "day": ${date.get(Calendar.DAY_OF_MONTH)}},
+        "startHour": "$startHour", 
+        "endHour": "$endHour", 
+        "location": "$location", 
+        "category": "$category"
+        "repetition": ${if(repetition != null) "$repetition" else null},
+        "days": ${if(days != null) days else null},
+        "endRepetitionDate": 
+            {"year": ${endRepetitionDate?.get(Calendar.YEAR)},
+            "month": ${endRepetitionDate?.get(Calendar.MONTH)},
+            "day": ${endRepetitionDate?.get(Calendar.DAY_OF_MONTH)}
+            }
+        }
+        """.trimIndent()
+
     private fun createDates() {
         var tmp = Calendar.getInstance()
         tmp.timeInMillis = date.timeInMillis
-        if(repetition == "") return
+        if(repetition == null)
+            return
         else if(repetition.lowercase()=="weekly"){
             while(tmp.before(endRepetitionDate)){
                 if(days.contains(tmp.get(Calendar.DAY_OF_WEEK))){
                     dates.add(tmp)
                 }
                 //we bring tmp to the next day
-                tmp.add(Calendar.DATE,1 )
+                tmp.add(Calendar.DATE, 1)
             }
         }else{ //monthly
             while(tmp.before(endRepetitionDate)){
                 dates.add(tmp)
                 //we bring tmp to the next day
-                tmp.add(Calendar.MONTH,1 )
+                tmp.add(Calendar.MONTH, 1)
             }
         }
     }
@@ -77,7 +86,7 @@ data class Timeslot (val title:String,
         }
     }
 
-    fun getDaysOfRepetition():String{
-        return days.joinToString(", ","","",-1, "...") { getDayName(it) }
+    fun getDaysOfRepetition(): String?{
+        return days?.joinToString(", ","","",-1, "...") { getDayName(it) }
     }
 }

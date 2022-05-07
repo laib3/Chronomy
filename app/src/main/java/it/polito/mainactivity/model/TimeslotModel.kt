@@ -29,8 +29,7 @@ class TimeslotModel(val application: Application) {
             null -> createTimeslots()
             else -> {
                 val jsonArray = jsonTimeslots.getJSONArray("timeslots")
-                val jsonTimeslots = mutableListOf<JSONObject>()
-
+                val jsonTimeslots = Utils.JSONArrayToList(jsonArray)
                 listOf()
             }
         }
@@ -43,21 +42,30 @@ class TimeslotModel(val application: Application) {
                 GregorianCalendar(2022, 4, 25),
                 "09:10 AM", "10:00 PM",
                 "New Neighbourhood, Street 10, Sydney",
-                "Delivery") ,
+                "Delivery",
+                null,
+                listOf(),
+                null),
 
             Timeslot("Walk your dog",
                 "Donec eu dui nec nisl egestas tristique suscipit non mauris. Nullam nec magna neque. Quisque a quam sodales quam dapibus euismod non et diam. Nulla molestie ex orci, vitae suscipit velit viverra non. Phasellus diam massa, sollicitudin ac interdum commodo.",
                 GregorianCalendar(2022, 4, 25),
                 "09:10 AM", "10:00 PM",
                 "New City, Street 10, Anastasia",
-                "Other"),
+                "Other",
+                null,
+                listOf(),
+                null),
 
             Timeslot("Teach to your kid",
                 "Praesent euismod est ac dictum gravida. Praesent nulla metus, ultrices eu tempor ac, pretium viverra nisi. Morbi odio urna, ornare sit amet dictum in, commodo vel mauris. Vivamus et massa quis lorem iaculis laoreet. Vestibulum eros diam, condimentum ac libero eget, lobortis fringilla orci.",
                 GregorianCalendar(2022, 4, 25),
                 "09:10 AM", "10:00 PM",
                 "New Neighbourhood, Street 10, Sydney",
-                "Tutoring"),
+                "Tutoring",
+                null,
+                listOf(),
+                null),
 
             Timeslot("Bring grocery YOGA to your door",
                 "Phasellus fermentum sagittis leo finibus fringilla. Proin est magna, varius ut arcu lobortis, imperdiet facilisis ex. Mauris varius at metus nec faucibus. Fusce et dapibus ipsum. In hac habitasse platea dictumst. Duis arcu nulla, imperdiet quis placerat eget.",
