@@ -10,19 +10,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
+
+//TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
 
 class TimeslotEditFragment : Fragment() {
 
@@ -37,10 +41,10 @@ class TimeslotEditFragment : Fragment() {
     private var tiEndTime: TextView? = null
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: ChipGroup? = null
-    private var tiRepetition: String? = null
     private var tiDays: ChipGroup? = null
-
     private var mAlertDialog: AlertDialog? = null
+
+    private val timeSlotListViewModel:TimeslotViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -53,9 +57,6 @@ class TimeslotEditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val timeSlotListViewModel =
-            ViewModelProvider(this).get(TimeslotViewModel::class.java)
-
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -69,14 +70,11 @@ class TimeslotEditFragment : Fragment() {
                 tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
                 tiStartTime?.text = it.elementAt(id).startHour
                 tiEndTime?.text = it.elementAt(id).endHour
-                tiEndDate?.text =
-                    it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
                 tiLocation?.editText?.setText(it.elementAt(id).location)
-                tiRepetition = it.elementAt(id).repetition
 
                 val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
                 val index = categories.indexOf(it.elementAt(id).category)
-                var chip : Chip = tiCategory?.getChildAt(index) as Chip
+                val chip : Chip = tiCategory?.getChildAt(index) as Chip
                 tiCategory?.check(chip.id)
 
                 days = it.elementAt(id).days
@@ -97,16 +95,15 @@ class TimeslotEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tiTitle = view?.findViewById(R.id.TitleTextField)
-        tiDescription = view?.findViewById(R.id.DescriptionTextField)
-        tiAvailability = view?.findViewById(R.id.AvailabilityTextField)
-        tiStartDate = view?.findViewById(R.id.tv_timeslotEdit_date)
-        tiEndDate = view?.findViewById(R.id.tv_timeslotEdit_endDate)
-        tiStartTime = view?.findViewById(R.id.tv_timeslotEdit_startTime)
-        tiEndTime = view?.findViewById(R.id.tv_timeslotEdit_endTime)
-        tiLocation = view?.findViewById(R.id.LocationTextField)
-        tiCategory = view?.findViewById(R.id.chips_group)
-        tiDays = view?.findViewById(R.id.days)
+        tiTitle = view.findViewById(R.id.TitleTextField)
+        tiDescription = view.findViewById(R.id.DescriptionTextField)
+        tiAvailability = view.findViewById(R.id.AvailabilityTextField)
+        tiStartDate = view.findViewById(R.id.tv_timeslotEdit_date)
+        tiStartTime = view.findViewById(R.id.tv_timeslotEdit_startTime)
+        tiEndTime = view.findViewById(R.id.tv_timeslotEdit_endTime)
+        tiLocation = view.findViewById(R.id.LocationTextField)
+        tiCategory = view.findViewById(R.id.chips_group)
+        tiDays = view.findViewById(R.id.days)
 
         val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
         btnDate.setOnClickListener { showDatePickerDialog() }
@@ -130,6 +127,7 @@ class TimeslotEditFragment : Fragment() {
         _binding = null
     }
 
+    //TODO CHECK
     private fun addFocusChangeListeners() {
         // binding.TextInputEditTitle.setOnFocusChangeListener{_, focused -> if(!focused) timeSlotDetailsViewModel.apply{timeslot?.apply { binding.TextInputEditTitle.text.toString(); ""; }}}
     } //miss other fields
@@ -149,6 +147,9 @@ class TimeslotEditFragment : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
 
             // Create a new instance of DatePickerDialog and return it
+            /*val d = DatePickerDialog(requireContext(), this, year, month, day)
+            d.datePicker.minDate = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.date?.timeInMillis!!
+            return d*/
             return DatePickerDialog(requireContext(), this, year, month, day)
         }
 
@@ -168,12 +169,19 @@ class TimeslotEditFragment : Fragment() {
     // END DATE
     private fun showEndDatePickerDialog() {
         val dateFragment = DatePickerFragment(tiEndDate)
+       /* var bundle = Bundle();
+       bundle.putInt("id", requireArguments()?.getInt("id") ?: -1)
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .add(DatePickerFragment::class.java, bundle, "datePicker")
+            .commit()
+        //other operations: insertion,
+        //removal, visibility change, …      .commit()*/
         dateFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
     // Extending DialogFragment for a time picker
-    class TimePickerFragment(tiTime: TextView?) : DialogFragment(),
-        TimePickerDialog.OnTimeSetListener {
+    class TimePickerFragment(tiTime: TextView?) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
         private val tiTime = tiTime
 
@@ -224,15 +232,41 @@ class TimeslotEditFragment : Fragment() {
         tiDays = mDialogView.findViewById(R.id.days)
 
         val repetitions = resources.getStringArray(R.array.repetition_mw)
-        val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.list_item, repetitions)
+        val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
+
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         var autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         autoCompleteTextView?.setAdapter(arrayAdapter)
+        autoCompleteTextView?.onItemClickListener =
+            OnItemClickListener { parent, arg1, position, arg3 ->
+                val item = parent.getItemAtPosition(position)
+                if(position == 0){ //weekly
+                    repeatOn?.visibility = View.VISIBLE
+                    tiDays?.visibility= View.VISIBLE
+                }else{
+                    repeatOn?.visibility = View.GONE
+                    tiDays?.visibility= View.GONE
+                }
+            }
 
-        if (tiRepetition != "") {
-            days?.forEach {
-                val chip = tiDays?.getChildAt(it-1) as Chip
-                tiDays?.check(chip.id)
+        if(arguments?.getInt("id")!= -1){
+            if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "weekly"){
+                autoCompleteTextView?.setText(arrayAdapter.getItem(0).toString(), false)
+            }
+            if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "monthly"){
+                autoCompleteTextView?.setText(arrayAdapter.getItem(1).toString(), false)
+                repeatOn?.visibility = View.GONE
+                tiDays?.visibility= View.GONE
+            }
+            if (timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition != "") {
+                days?.forEach {
+                    val chip = tiDays?.getChildAt(it-1) as Chip
+                    tiDays?.check(chip.id)
+                }
+                tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
+                tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate?.time)
+                tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
             }
         }
 
@@ -259,8 +293,11 @@ class TimeslotEditFragment : Fragment() {
             desc.text = s.description
             //update skills
             refreshSkills()*/
+            //TODO CHECK THAT END DATE IS PRESENT
+            //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
             mAlertDialog?.dismiss() //close dialog
         }
     }
+
 
 }
