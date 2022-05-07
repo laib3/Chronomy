@@ -41,7 +41,7 @@
                 android:checked="true"
                 android:text="Category"
                 android:textSize="14sp"
-                app:chipMinHeight="24dp"
+                app:chipMinHeight="32dp"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintEnd_toStartOf="@+id/item_title"
                 app:layout_constraintHorizontal_bias="0.5"
