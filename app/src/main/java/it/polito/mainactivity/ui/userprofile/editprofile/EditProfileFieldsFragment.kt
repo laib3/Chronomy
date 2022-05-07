@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
+import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.ui.userprofile.SkillCard
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
@@ -39,7 +41,11 @@ class EditProfileFieldsFragment : Fragment() {
         vm.updated.observe(viewLifecycleOwner) {
             val skills = vm.skills.value
             if (it != null) {
+                Log.d("DBG_updated","Updated!")
                 vm.setSkills(skills?.map { s -> if (it.title != s.title) s else it })
+                (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                // reset value of updated to null
+                vm.resetUpdated()
             }
         }
 

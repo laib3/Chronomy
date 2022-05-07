@@ -23,6 +23,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     fun setLocation(s:String) { _location.value = s; model.setData(s, Field.LOCATION) }
     fun setPicture(d: Drawable) { _picture.value = d; model.setPicture(d) }
     fun setUpdated(s: Skill) { _updated.value = s }
+    fun resetUpdated() {_updated.value = null}
     fun setSkills(s: List<Skill>?) { if(s != null) { _skills.value = s!!; model.setSkills(s) } }
 
     private val _name: MutableLiveData<String> = model.getData(Field.NAME)
