@@ -11,11 +11,15 @@ data class Timeslot (val title:String,
                      val location:String,
                      val category:String ){
 
+    override fun toString() = """{"title": "$title", "description": "$description", "date": "${dateToString()}",""" +
+            """"startHour": "$startHour", "endHour": "$endHour", "location": "$location", "category": "$category"}"""
+
+    private fun dateToString(): String = dateFormat.format(date.time)
+
     var repetition:String =""
     var days: List<Int> = listOf()
-    var endRepetitionDate:Calendar?= null
+    var endRepetitionDate: Calendar?= null
     var dates: MutableList<Calendar> = mutableListOf()
-
     var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     constructor(title:String,
@@ -35,6 +39,7 @@ data class Timeslot (val title:String,
         }else {
             _endRepetitionDate
         }
+        dateFormat.timeZone = date.timeZone
         createDates()
     }
 
