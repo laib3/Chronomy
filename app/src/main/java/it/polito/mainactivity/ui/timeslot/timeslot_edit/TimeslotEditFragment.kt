@@ -14,7 +14,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
@@ -71,7 +70,7 @@ class TimeslotEditFragment : Fragment() {
 
                 val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
                 val index = categories.indexOf(it.elementAt(id).category)
-                var chip : Chip = tiCategory?.getChildAt(index) as Chip
+                val chip : Chip = tiCategory?.getChildAt(index) as Chip
                 tiCategory?.check(chip.id)
 
                 days = it.elementAt(id).days
@@ -92,15 +91,15 @@ class TimeslotEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tiTitle = view?.findViewById(R.id.TitleTextField)
-        tiDescription = view?.findViewById(R.id.DescriptionTextField)
-        tiAvailability = view?.findViewById(R.id.AvailabilityTextField)
-        tiStartDate = view?.findViewById(R.id.tv_timeslotEdit_date)
-        tiStartTime = view?.findViewById(R.id.tv_timeslotEdit_startTime)
-        tiEndTime = view?.findViewById(R.id.tv_timeslotEdit_endTime)
-        tiLocation = view?.findViewById(R.id.LocationTextField)
-        tiCategory = view?.findViewById(R.id.chips_group)
-        tiDays = view?.findViewById(R.id.days)
+        tiTitle = view.findViewById(R.id.TitleTextField)
+        tiDescription = view.findViewById(R.id.DescriptionTextField)
+        tiAvailability = view.findViewById(R.id.AvailabilityTextField)
+        tiStartDate = view.findViewById(R.id.tv_timeslotEdit_date)
+        tiStartTime = view.findViewById(R.id.tv_timeslotEdit_startTime)
+        tiEndTime = view.findViewById(R.id.tv_timeslotEdit_endTime)
+        tiLocation = view.findViewById(R.id.LocationTextField)
+        tiCategory = view.findViewById(R.id.chips_group)
+        tiDays = view.findViewById(R.id.days)
 
         val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
         btnDate.setOnClickListener { showDatePickerDialog() }
@@ -143,6 +142,9 @@ class TimeslotEditFragment : Fragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
 
             // Create a new instance of DatePickerDialog and return it
+            /*val d = DatePickerDialog(requireContext(), this, year, month, day)
+            d.datePicker.minDate = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.date?.timeInMillis!!
+            return d*/
             return DatePickerDialog(requireContext(), this, year, month, day)
         }
 
@@ -162,12 +164,19 @@ class TimeslotEditFragment : Fragment() {
     // END DATE
     private fun showEndDatePickerDialog() {
         val dateFragment = DatePickerFragment(tiEndDate)
+        var bundle = Bundle();
+       /* bundle.putInt("id", requireArguments()?.getInt("id") ?: -1)
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .add(DatePickerFragment::class.java, bundle, "datePicker")
+            .commit()
+        //other operations: insertion,
+        //removal, visibility change, …      .commit()*/
         dateFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
     // Extending DialogFragment for a time picker
-    class TimePickerFragment(tiTime: TextView?) : DialogFragment(),
-        TimePickerDialog.OnTimeSetListener {
+    class TimePickerFragment(tiTime: TextView?) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
         private val tiTime = tiTime
 
