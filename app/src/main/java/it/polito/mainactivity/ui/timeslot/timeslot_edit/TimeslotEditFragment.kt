@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -18,11 +19,14 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
+
+//TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
 
 class TimeslotEditFragment : Fragment() {
 
@@ -123,6 +127,7 @@ class TimeslotEditFragment : Fragment() {
         _binding = null
     }
 
+    //TODO CHECK
     private fun addFocusChangeListeners() {
         // binding.TextInputEditTitle.setOnFocusChangeListener{_, focused -> if(!focused) timeSlotDetailsViewModel.apply{timeslot?.apply { binding.TextInputEditTitle.text.toString(); ""; }}}
     } //miss other fields
@@ -227,10 +232,23 @@ class TimeslotEditFragment : Fragment() {
         tiDays = mDialogView.findViewById(R.id.days)
 
         val repetitions = resources.getStringArray(R.array.repetition_mw)
+        val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
+
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         var autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         autoCompleteTextView?.setAdapter(arrayAdapter)
+        autoCompleteTextView?.onItemClickListener =
+            OnItemClickListener { parent, arg1, position, arg3 ->
+                val item = parent.getItemAtPosition(position)
+                if(position == 0){ //weekly
+                    repeatOn?.visibility = View.VISIBLE
+                    tiDays?.visibility= View.VISIBLE
+                }else{
+                    repeatOn?.visibility = View.GONE
+                    tiDays?.visibility= View.GONE
+                }
+            }
 
         if(arguments?.getInt("id")!= -1){
             if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "weekly"){
@@ -238,8 +256,7 @@ class TimeslotEditFragment : Fragment() {
             }
             if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "monthly"){
                 autoCompleteTextView?.setText(arrayAdapter.getItem(1).toString(), false)
-                val repeat_on = mDialogView?.findViewById<TextView>(R.id.repeat_on)
-                repeat_on?.visibility = View.GONE
+                repeatOn?.visibility = View.GONE
                 tiDays?.visibility= View.GONE
             }
             if (timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition != "") {
@@ -276,8 +293,11 @@ class TimeslotEditFragment : Fragment() {
             desc.text = s.description
             //update skills
             refreshSkills()*/
+            //TODO CHECK THAT END DATE IS PRESENT
+            //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
             mAlertDialog?.dismiss() //close dialog
         }
     }
+
 
 }
