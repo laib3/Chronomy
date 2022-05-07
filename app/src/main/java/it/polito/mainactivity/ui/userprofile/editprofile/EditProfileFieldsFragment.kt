@@ -7,11 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
-import com.google.android.material.snackbar.Snackbar
-import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
-import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.ui.userprofile.SkillCard
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
@@ -50,7 +46,8 @@ class EditProfileFieldsFragment : Fragment() {
                 //snack.show()
 
                 // change the message for the show profile fragment
-                (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
+
                 // reset value of updated to null
                 vm.resetUpdated()
             }
@@ -86,7 +83,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.name.value.toString() != binding.textInputEditTextName.text.toString()) {
                     vm.setName(binding.textInputEditTextName.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }
@@ -95,7 +92,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.surname.value.toString() != binding.textInputEditTextSurname.text.toString()) {
                     vm.setSurname(binding.textInputEditTextSurname.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }
@@ -104,7 +101,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.nickname.value.toString() != binding.textInputEditTextNickname.text.toString()) {
                     vm.setNickname(binding.textInputEditTextNickname.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }
@@ -113,7 +110,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.bio.value.toString() != binding.textInputEditTextBio.text.toString()) {
                     vm.setBio(binding.textInputEditTextBio.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }
@@ -122,7 +119,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.phone.value.toString() != binding.textInputEditTextPhone.text.toString()) {
                     vm.setPhone(binding.textInputEditTextPhone.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }
@@ -131,7 +128,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.email.value.toString() != binding.textInputEditTextEmail.text.toString()) {
                     vm.setEmail(binding.textInputEditTextEmail.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }
@@ -140,7 +137,7 @@ class EditProfileFieldsFragment : Fragment() {
             if (!focused) {
                 if (vm.location.value.toString() != binding.textInputEditTextLocation.text.toString()) {
                     vm.setLocation(binding.textInputEditTextLocation.text.toString())
-                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
             }

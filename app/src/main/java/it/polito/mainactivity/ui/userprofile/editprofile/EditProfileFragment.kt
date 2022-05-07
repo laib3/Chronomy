@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment: Fragment() {
@@ -27,6 +28,11 @@ class EditProfileFragment: Fragment() {
         val root: View = binding.root
 
         return root
+    }
+
+    fun notifyMessageEditedProfile() {
+        // message to display in the snackbar in the showProfileFragment if the profile was changed
+        (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited successfully")
     }
 
 }
