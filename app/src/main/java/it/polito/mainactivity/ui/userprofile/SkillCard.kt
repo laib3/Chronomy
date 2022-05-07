@@ -11,7 +11,9 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Skill
 

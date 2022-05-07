@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
 import it.polito.mainactivity.model.Skill
@@ -43,6 +44,12 @@ class EditProfileFieldsFragment : Fragment() {
             if (it != null) {
                 Log.d("DBG_updated","Updated!")
                 vm.setSkills(skills?.map { s -> if (it.title != s.title) s else it })
+
+                //  display a snackbar with the message
+                //val snack = Snackbar.make(binding.root, "Skill edited", Snackbar.LENGTH_SHORT)
+                //snack.show()
+
+                // change the message for the show profile fragment
                 (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
                 // reset value of updated to null
                 vm.resetUpdated()
