@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -37,10 +38,10 @@ class TimeslotEditFragment : Fragment() {
     private var tiEndTime: TextView? = null
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: ChipGroup? = null
-    private var tiRepetition: String? = null
     private var tiDays: ChipGroup? = null
-
     private var mAlertDialog: AlertDialog? = null
+
+    private val timeSlotListViewModel:TimeslotViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -53,9 +54,6 @@ class TimeslotEditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val timeSlotListViewModel =
-            ViewModelProvider(this).get(TimeslotViewModel::class.java)
-
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -69,10 +67,7 @@ class TimeslotEditFragment : Fragment() {
                 tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
                 tiStartTime?.text = it.elementAt(id).startHour
                 tiEndTime?.text = it.elementAt(id).endHour
-                tiEndDate?.text =
-                    it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time)
                 tiLocation?.editText?.setText(it.elementAt(id).location)
-                tiRepetition = it.elementAt(id).repetition
 
                 val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
                 val index = categories.indexOf(it.elementAt(id).category)
@@ -101,7 +96,6 @@ class TimeslotEditFragment : Fragment() {
         tiDescription = view?.findViewById(R.id.DescriptionTextField)
         tiAvailability = view?.findViewById(R.id.AvailabilityTextField)
         tiStartDate = view?.findViewById(R.id.tv_timeslotEdit_date)
-        tiEndDate = view?.findViewById(R.id.tv_timeslotEdit_endDate)
         tiStartTime = view?.findViewById(R.id.tv_timeslotEdit_startTime)
         tiEndTime = view?.findViewById(R.id.tv_timeslotEdit_endTime)
         tiLocation = view?.findViewById(R.id.LocationTextField)
@@ -223,17 +217,35 @@ class TimeslotEditFragment : Fragment() {
 
         tiDays = mDialogView.findViewById(R.id.days)
 
+
         val repetitions = resources.getStringArray(R.array.repetition_mw)
-        val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.list_item, repetitions)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         var autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         autoCompleteTextView?.setAdapter(arrayAdapter)
 
-        if (tiRepetition != "") {
-            days?.forEach {
-                val chip = tiDays?.getChildAt(it-1) as Chip
-                tiDays?.check(chip.id)
+
+
+        if(arguments?.getInt("id")!= -1){
+            if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "weekly"){
+                autoCompleteTextView?.setText(arrayAdapter.getItem(0).toString(), false)
             }
+            if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "monthly"){
+                autoCompleteTextView?.setText(arrayAdapter.getItem(1).toString(), false)
+                val repeat_on = mDialogView?.findViewById<TextView>(R.id.repeat_on)
+                repeat_on?.visibility = View.GONE
+                tiDays?.visibility= View.GONE
+            }
+            if (timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition != "") {
+                days?.forEach {
+                    val chip = tiDays?.getChildAt(it-1) as Chip
+                    tiDays?.check(chip.id)
+                }
+            }
+
+            tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
+            tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate?.time)
+            tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
         }
 
         //AlertDialogBuilder + show

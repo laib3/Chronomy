@@ -176,7 +176,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="50dp"
-        app:layout_constraintEnd_toEndOf="@+id/days"
+        app:layout_constraintEnd_toEndOf="@+id/wm"
         app:layout_constraintStart_toEndOf="@+id/ends_on"
         app:layout_constraintTop_toBottomOf="@+id/days">
 
