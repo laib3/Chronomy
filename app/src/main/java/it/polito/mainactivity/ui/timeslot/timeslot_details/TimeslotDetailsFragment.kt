@@ -57,6 +57,7 @@ class TimeslotDetailsFragment : Fragment() {
                     .italic{append(it.elementAt(id).startHour)}
                     .append(" to ")
                     .italic{append(it.elementAt(id).endHour)}
+
             }
             else if(it.elementAt(id).repetition?.lowercase() == "weekly"){
                 dateString

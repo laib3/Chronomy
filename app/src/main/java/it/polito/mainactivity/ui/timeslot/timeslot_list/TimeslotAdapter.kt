@@ -21,6 +21,7 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
         val title: TextView = v.findViewById(R.id.item_title)
         val location: TextView = v.findViewById(R.id.item_location)
         val date: TextView = v.findViewById(R.id.item_date)
+        val hour: TextView = v.findViewById(R.id.item_hour)
         val category: TextView = v.findViewById(R.id.item_category)
         val card: MaterialCardView= v.findViewById(R.id.item_card)
         val editButton: ImageButton = v.findViewById(R.id.item_button)
@@ -36,8 +37,14 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
     override fun onBindViewHolder(holder: TimeslotViewHolder, position: Int) {
         holder.title.text = data[position].title
         holder.location.text = data[position].location
-        var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
-        holder.date.text = "${dateFormat.format(data[position].date.getTime())} from ${data[position].startHour} to ${data[position].endHour}"
+        val dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
+        holder.date.text = if(data[position].repetition != null){
+            "from ${dateFormat.format(data[position].date.getTime())} every ${data[position].repetition?.dropLast(2)}"
+        }
+        else {
+            dateFormat.format(data[position].date.getTime())
+        }
+        holder.hour.text =  "${data[position].startHour} - ${data[position].endHour}"
         holder.category.text = data[position].category
 
         // pass through bundle the id of the item in the list
