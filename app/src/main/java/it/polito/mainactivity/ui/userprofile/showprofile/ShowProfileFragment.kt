@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
+import com.google.android.material.snackbar.Snackbar
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+
 
 class ShowProfileFragment : Fragment() {
 
@@ -38,7 +39,7 @@ class ShowProfileFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
         if(item.itemId === R.id.action_nav_show_profile_to_nav_edit_profile) {
-            findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile, )
+            findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile)
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -47,6 +48,22 @@ class ShowProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Check for messages in main activity
+        val message = (activity as MainActivity)?.getFragmentTransactionMessage()
+
+        // If any, display as snackbar
+        if (message != null) {
+            val snack = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            snack.show()
+
+            // Reset message in activity
+            (activity as MainActivity)?.resetFragmentTransactionMessage()
+        }
     }
 
 }

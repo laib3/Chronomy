@@ -1,14 +1,17 @@
 package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
 import it.polito.mainactivity.ui.userprofile.SkillCard
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+
 
 class EditProfileFieldsFragment : Fragment() {
 
@@ -33,10 +36,10 @@ class EditProfileFieldsFragment : Fragment() {
         addFocusChangeListeners()
 
         // if updated changes, update the whole list
-        vm.updated.observe(viewLifecycleOwner){
+        vm.updated.observe(viewLifecycleOwner) {
             val skills = vm.skills.value
-            if(it != null){
-                vm.setSkills(skills?.map{ s -> if(it.title != s.title) s else it })
+            if (it != null) {
+                vm.setSkills(skills?.map { s -> if (it.title != s.title) s else it })
             }
         }
 
@@ -48,7 +51,7 @@ class EditProfileFieldsFragment : Fragment() {
         _binding = null
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         vm.name.observe(viewLifecycleOwner) { binding.textInputEditTextName.setText(it) }
         vm.surname.observe(viewLifecycleOwner) { binding.textInputEditTextSurname.setText(it) }
         vm.nickname.observe(viewLifecycleOwner) { binding.textInputEditTextNickname.setText(it) }
@@ -59,20 +62,76 @@ class EditProfileFieldsFragment : Fragment() {
         vm.skills.observe(viewLifecycleOwner) {
             binding.editableSkillsLayout.removeAllViews()
             it
-                .sortedByDescending{ it.active }
-                .map{s -> SkillCard(requireContext(), s, vm, true) }
-                .forEach{ sc : SkillCard -> binding.editableSkillsLayout.addView(sc) }
+                .sortedByDescending { it.active }
+                .map { s -> SkillCard(requireContext(), s, vm, true) }
+                .forEach { sc: SkillCard -> binding.editableSkillsLayout.addView(sc) }
         }
     }
 
-    private fun addFocusChangeListeners(){
-        binding.textInputEditTextName.setOnFocusChangeListener{_, focused -> if(!focused) vm.setName(binding.textInputEditTextName.text.toString()) }
-        binding.textInputEditTextSurname.setOnFocusChangeListener{_, focused -> if(!focused) vm.setSurname(binding.textInputEditTextSurname.text.toString()) }
-        binding.textInputEditTextNickname.setOnFocusChangeListener{_, focused -> if(!focused) vm.setNickname(binding.textInputEditTextNickname.text.toString()) }
-        binding.textInputEditTextBio.setOnFocusChangeListener{_, focused -> if(!focused) vm.setBio(binding.textInputEditTextBio.text.toString()) }
-        binding.textInputEditTextPhone.setOnFocusChangeListener{_, focused -> if(!focused) vm.setPhone(binding.textInputEditTextPhone.text.toString()) }
-        binding.textInputEditTextEmail.setOnFocusChangeListener{_, focused -> if(!focused) vm.setEmail(binding.textInputEditTextEmail.text.toString()) }
-        binding.textInputEditTextLocation.setOnFocusChangeListener{_, focused -> if(!focused) vm.setLocation(binding.textInputEditTextLocation.text.toString()) }
+    private fun addFocusChangeListeners() {
+        binding.textInputEditTextName.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.name.value.toString() != binding.textInputEditTextName.text.toString()) {
+                    vm.setName(binding.textInputEditTextName.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
+        binding.textInputEditTextSurname.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.surname.value.toString() != binding.textInputEditTextSurname.text.toString()) {
+                    vm.setSurname(binding.textInputEditTextSurname.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
+        binding.textInputEditTextNickname.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.nickname.value.toString() != binding.textInputEditTextNickname.text.toString()) {
+                    vm.setNickname(binding.textInputEditTextNickname.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
+        binding.textInputEditTextBio.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.bio.value.toString() != binding.textInputEditTextBio.text.toString()) {
+                    vm.setBio(binding.textInputEditTextBio.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
+        binding.textInputEditTextPhone.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.phone.value.toString() != binding.textInputEditTextPhone.text.toString()) {
+                    vm.setPhone(binding.textInputEditTextPhone.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
+        binding.textInputEditTextEmail.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.email.value.toString() != binding.textInputEditTextEmail.text.toString()) {
+                    vm.setEmail(binding.textInputEditTextEmail.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
+        binding.textInputEditTextLocation.setOnFocusChangeListener { _, focused ->
+            if (!focused) {
+                if (vm.location.value.toString() != binding.textInputEditTextLocation.text.toString()) {
+                    vm.setLocation(binding.textInputEditTextLocation.text.toString())
+                    (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited")
+                }
+
+            }
+        }
     }
 
 }
