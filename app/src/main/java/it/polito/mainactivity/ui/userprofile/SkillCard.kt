@@ -1,6 +1,7 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -10,7 +11,9 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Skill
 
@@ -63,8 +66,15 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
                 alertDialog.dismiss()
                 val checked: Boolean = modalChecked.isChecked
                 val desc: String = modalDescription.text.toString()
-                val newSkill = skill.copy().apply { active = checked; description = desc }
-                vm.setUpdated(newSkill)
+                Log.d("DBG_SK_DESC",skill.description)
+                Log.d("DBG_DESC", desc)
+                Log.d("DBG_SK_ACTIVE", skill.active.toString())
+                Log.d("DBG_ACTIVE", checked.toString())
+
+                if(skill.description != desc || skill.active != checked){
+                    val newSkill = skill.copy().apply { active = checked; description = desc }
+                    vm.setUpdated(newSkill)
+                }
             }
         }
     }
