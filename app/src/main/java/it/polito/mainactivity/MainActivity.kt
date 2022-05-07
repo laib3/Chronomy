@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private var fragmentTransactionMessage : String? = null;
+
+    var snackBarMessage : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,18 +76,5 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    // Three methods used to send information (text) between fragments
-    fun setFragmentTransactionMessage(message: String?) {
-        fragmentTransactionMessage = message
-    }
-
-    fun getFragmentTransactionMessage(): String? {
-        return fragmentTransactionMessage
-    }
-
-    fun resetFragmentTransactionMessage() {
-        fragmentTransactionMessage = null
     }
 }

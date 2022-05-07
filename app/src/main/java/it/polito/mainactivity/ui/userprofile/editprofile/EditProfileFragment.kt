@@ -32,7 +32,7 @@ class EditProfileFragment: Fragment() {
 
     fun notifyMessageEditedProfile() {
         // message to display in the snackbar in the showProfileFragment if the profile was changed
-        (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited successfully")
+        (activity as MainActivity)?.snackBarMessage = "Profile edited successfully"
     }
 
 }

@@ -27,7 +27,7 @@ class EditProfilePictureFragment : Fragment() {
                 binding.profilePictureEditable.setImageBitmap(bitmap)
                 val d: Drawable = BitmapDrawable(resources, bitmap)
                 // change the message for the show profile fragment
-                (activity as MainActivity)?.setFragmentTransactionMessage("Profile edited successfully")
+                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 vm.setPicture(d)
             }
         }

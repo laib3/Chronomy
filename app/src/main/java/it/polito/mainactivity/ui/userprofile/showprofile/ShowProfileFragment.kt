@@ -17,6 +17,7 @@ class ShowProfileFragment : Fragment() {
     private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileBinding? = null
 
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -53,16 +54,10 @@ class ShowProfileFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        // Check for messages in main activity
-        val message = (activity as MainActivity)?.getFragmentTransactionMessage()
-
-        // If any, display as snackbar
-        if (message != null) {
-            val snack = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            snack.show()
-
-            // Reset message in activity
-            (activity as MainActivity)?.resetFragmentTransactionMessage()
+        // If snackbar message is set: display it as snackbar
+        (activity as MainActivity).snackBarMessage?.run{
+            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT).show()
+            (activity as MainActivity).snackBarMessage = null
         }
     }
 
