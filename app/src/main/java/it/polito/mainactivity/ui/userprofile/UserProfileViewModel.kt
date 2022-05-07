@@ -14,18 +14,6 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     // instantiate user profile model - it will be a repository in future (?)
     private val model: UserProfileModel = UserProfileModel(application)
 
-    fun setName(s:String){ _name.value = s; model.setData(s, Field.NAME) }
-    fun setSurname(s: String){ _surname.value = s; model.setData(s, Field.SURNAME) }
-    fun setNickname(s:String) { _nickname.value = s; model.setData(s, Field.NICKNAME) }
-    fun setBio(s:String) { _bio.value = s; model.setData(s, Field.BIO) }
-    fun setEmail(s:String) { _email.value = s; model.setData(s, Field.EMAIL) }
-    fun setPhone(s:String) { _phone.value = s; model.setData(s, Field.PHONE) }
-    fun setLocation(s:String) { _location.value = s; model.setData(s, Field.LOCATION) }
-    fun setPicture(d: Drawable) { _picture.value = d; model.setPicture(d) }
-    fun setUpdated(s: Skill) { _updated.value = s }
-    fun resetUpdated() {_updated.value = null}
-    fun setSkills(s: List<Skill>?) { if(s != null) { _skills.value = s!!; model.setSkills(s) } }
-
     private val _name: MutableLiveData<String> = model.getData(Field.NAME)
     private val _surname: MutableLiveData<String> = model.getData(Field.SURNAME)
     private val _nickname: MutableLiveData<String> = model.getData(Field.NICKNAME)
@@ -49,5 +37,18 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     val skills: LiveData<List<Skill>> = _skills
     val picture: LiveData<Drawable> = _picture
     val updated: MutableLiveData<Skill> = _updated
+
+    fun setName(s:String){ _name.value = s; model.setData(s, Field.NAME) }
+    fun setSurname(s: String){ _surname.value = s; model.setData(s, Field.SURNAME) }
+    fun setNickname(s:String) { _nickname.value = s; model.setData(s, Field.NICKNAME) }
+    fun setBio(s:String) { _bio.value = s; model.setData(s, Field.BIO) }
+    fun setEmail(s:String) { _email.value = s; model.setData(s, Field.EMAIL) }
+    fun setPhone(s:String) { _phone.value = s; model.setData(s, Field.PHONE) }
+    fun setLocation(s:String) { _location.value = s; model.setData(s, Field.LOCATION) }
+    fun setPicture(d: Drawable) { _picture.value = d; model.setPicture(d) }
+    fun setUpdated(s: Skill) { _updated.value = s }
+    fun resetUpdated() {_updated.value = null}
+    fun setSkills(s: List<Skill>?) { if(s != null) { _skills.value = s!!; model.setSkills(s) } }
+    
 
 }

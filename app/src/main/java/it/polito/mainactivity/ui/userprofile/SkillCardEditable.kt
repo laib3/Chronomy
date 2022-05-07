@@ -33,7 +33,7 @@ class SkillCardEditable(val c: Context, val f: Fragment, val s: Skill, var edita
             val modalTitle = modalView.findViewById<TextView>(R.id.modalTitle)
             val modalChecked = modalView.findViewById<SwitchCompat>(R.id.skillActiveSwitch)
             val modalDescription = modalView.findViewById<TextInputEditText>(R.id.textInputEditTextSkillDescription)
-            val mBuilder = android.app.AlertDialog.Builder(this.context).setView(modalView)
+            val mBuilder = android.application.AlertDialog.Builder(this.context).setView(modalView)
             val alertDialog = mBuilder.show()
             val closeButton = modalView.findViewById<ImageView>(R.id.modalCloseButton)
             val saveButton = modalView.findViewById<Button>(R.id.modalSaveButton)

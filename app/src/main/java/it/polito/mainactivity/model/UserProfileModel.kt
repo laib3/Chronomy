@@ -3,14 +3,13 @@ package it.polito.mainactivity.model
 import android.app.Application
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.MutableLiveData
+import it.polito.mainactivity.R
 import org.json.JSONObject
 import java.io.*
 
@@ -21,10 +20,10 @@ enum class Field {
 class UserProfileModel(val application: Application) {
 
     // no database here
-    private val SHARED_PREFERENCES_NAME: String = "userprofilesharedpreferences"
-    private val PROFILE_TAG: String = "profile"
-    private val PICTURE_DIR_PATH: String = "images"
-    private val PROFILE_PICTURE_NAME: String = "profile.jpg"
+    private val SHARED_PREFERENCES_NAME: String = application.resources.getString(R.string.shared_preferences)
+    private val PROFILE_TAG: String = application.resources.getString(R.string.profile_tag)
+    private val PICTURE_DIR_PATH: String = application.resources.getString(R.string.profile_pic_path)
+    private val PROFILE_PICTURE_NAME: String = application.resources.getString(R.string.profile_pic_name)
     private val sharedPreferences = application.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
 
     private var name: String = ""
@@ -44,6 +43,7 @@ class UserProfileModel(val application: Application) {
 
     override fun toString() = """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
             """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills }"""
+
     // load profile from shared preferences (or create fake content)
     private fun loadProfile(){
         // sharedPreferences shouldn't be null, but just in case...
@@ -67,10 +67,7 @@ class UserProfileModel(val application: Application) {
             // if not null return a JSONArray
             else -> {
                 val jsonArray = jsonProfile.getJSONArray("skills")
-                val jsonSkills = mutableListOf<JSONObject>()
-                // jsonArray is not iterable !!
-                for(i in 0 until jsonArray.length())
-                    jsonSkills.add(jsonArray.getJSONObject(i))
+                val jsonSkills = Utils.JSONArrayToList(jsonArray)
                 jsonSkills
                     .map{ js -> Skill(js.getString("title")).apply{ active = js.getBoolean("active"); description = js.getString("description") } }
                     .toMutableList()
