@@ -97,12 +97,10 @@ class UserProfileModel(val application: Application) {
         // update profile string
         sharedPreferences.edit().putString(PROFILE_TAG, this.toString()).apply()
     }
-
     fun setSkills(s: List<Skill>) {
         skills = s.toMutableList()
         sharedPreferences.edit().putString(PROFILE_TAG, this.toString()).apply()
     }
-
     fun setPicture(d: Drawable){
         picture = d
         savePicture()

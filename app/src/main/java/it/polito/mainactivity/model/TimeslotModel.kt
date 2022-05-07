@@ -2,6 +2,7 @@ package it.polito.mainactivity.model
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
+import androidx.lifecycle.MutableLiveData
 import it.polito.mainactivity.R
 import org.json.JSONObject
 import java.util.*
@@ -30,7 +31,7 @@ class TimeslotModel(val application: Application) {
             else -> {
                 val jsonArray = jsonTimeslots.getJSONArray("timeslots")
                 val jsonTimeslots = Utils.JSONArrayToList(jsonArray)
-                listOf()
+                jsonTimeslots.map{jt -> Utils.JSONObjectToTimeslot(jt)}
             }
         }
     }
@@ -90,5 +91,12 @@ class TimeslotModel(val application: Application) {
             )
         )
     }
+
+    // save on shared memory
+    fun setTimeslots(ts : List<Timeslot>){
+        timeslots = ts
+        sharedPreferences.edit().putString(TIMESLOTS_TAG, this.toString()).apply()
+    }
+    fun getTimeslots(): MutableLiveData<List<Timeslot>> = MutableLiveData(timeslots)
 
 }
