@@ -1,4 +1,4 @@
-package it.polito.mainactivity
+package it.polito.mainactivity.ui.timeslot.timeslot_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
+import it.polito.mainactivity.R
+import it.polito.mainactivity.model.Timeslot
 import java.text.DateFormat
 import java.util.*
 
 class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
+
     class TimeslotViewHolder(v: View): RecyclerView.ViewHolder(v) {
         val title: TextView = v.findViewById(R.id.item_title)
         val location: TextView = v.findViewById(R.id.item_location)
@@ -21,7 +24,6 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
         val category: TextView = v.findViewById(R.id.item_category)
         val card: MaterialCardView= v.findViewById(R.id.item_card)
         val editButton: ImageButton = v.findViewById(R.id.item_button)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeslotViewHolder {

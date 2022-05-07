@@ -1,11 +1,11 @@
-package it.polito.mainactivity.ui.timeslot_list
+package it.polito.mainactivity.ui.timeslot
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import it.polito.mainactivity.Timeslot
+import it.polito.mainactivity.model.Timeslot
 import java.util.*
 
-class TimeSlotListViewModel : ViewModel() {
+class TimeslotViewModel : ViewModel() {
 
     private val _timeslots = MutableLiveData<List<Timeslot>>().apply{
         value = listOf(

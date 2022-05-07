@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.timeslot_list.TimeSlotListFragment">
+    tools:context=".ui.timeslot.timeslot_list.TimeslotListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeslot_list_rv"
