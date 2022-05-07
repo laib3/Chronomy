@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_list"
-        android:name="it.polito.mainactivity.ui.timeslot_list.TimeSlotListFragment"
+        android:name="it.polito.mainactivity.ui.timeslot.timeslot_list.TimeslotListFragment"
         android:label="@string/menu_timeslot_list"
         tools:layout="@layout/fragment_timeslot_list" >
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/nav_details"
-        android:name="it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsFragment"
+        android:name="it.polito.mainactivity.ui.timeslot.timeslot_details.TimeslotDetailsFragment"
         android:label="@string/menu_timeslot_details"
         tools:layout="@layout/fragment_timeslot_details" >
         <argument
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/nav_edit"
-        android:name="it.polito.mainactivity.ui.timeslot_edit.TimeSlotEditFragment"
+        android:name="it.polito.mainactivity.ui.timeslot.timeslot_edit.TimeslotEditFragment"
         android:label="@string/menu_timeslot_edit"
         tools:layout="@layout/fragment_timeslot_edit" >
         <argument

@@ -1,23 +1,20 @@
-package it.polito.mainactivity.ui.timeslot_details
+package it.polito.mainactivity.ui.timeslot.timeslot_details
 
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.*
-import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.italic
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
-import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
+import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 import java.util.*
 
-class TimeSlotDetailsFragment : Fragment() {
+class TimeslotDetailsFragment : Fragment() {
 
     private var _binding: FragmentTimeslotDetailsBinding? = null
 
@@ -36,7 +33,7 @@ class TimeSlotDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val timeSlotListViewModel =
-            ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
+            ViewModelProvider(this).get(TimeslotViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -44,12 +41,6 @@ class TimeSlotDetailsFragment : Fragment() {
         val root: View = binding.root
 
         val id = arguments?.getInt("id") ?: -1
-
-        //val textView: TextView = binding.textTimeslotDetails
-        //val timeSlotDetailsViewModel = ViewModelProvider(this)[TimeSlotDetailsViewModel::class.java]
-        //timeSlotDetailsViewModel.text.observe(viewLifecycleOwner) {
-          //  textView.text = it
-        //}
 
         timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
             tiTitle?.editText?.setText(it.elementAt(id).title)

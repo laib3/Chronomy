@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.timeslot_edit
+package it.polito.mainactivity.ui.timeslot.timeslot_edit
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -13,25 +13,18 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputLayout
-import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
-import it.polito.mainactivity.ui.timeslot_details.TimeSlotDetailsViewModel
-import it.polito.mainactivity.ui.timeslot_list.TimeSlotListFragment
-import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
-import java.util.*
+import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
 
-class TimeSlotEditFragment : Fragment() {
-
-    private val timeSlotDetailsViewModel: TimeSlotDetailsViewModel by activityViewModels()
+class TimeslotEditFragment : Fragment() {
 
     private var _binding: FragmentTimeslotEditBinding? = null
 
@@ -61,7 +54,7 @@ class TimeSlotEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val timeSlotListViewModel =
-            ViewModelProvider(this).get(TimeSlotListViewModel::class.java)
+            ViewModelProvider(this).get(TimeslotViewModel::class.java)
 
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root

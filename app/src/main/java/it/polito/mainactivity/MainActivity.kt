@@ -2,10 +2,8 @@ package it.polito.mainactivity
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,12 +12,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import it.polito.mainactivity.databinding.ActivityMainBinding
-import it.polito.mainactivity.ui.timeslot_list.TimeSlotListViewModel
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {

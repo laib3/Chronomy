@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.timeslot_details.TimeSlotDetailsFragment">
+    tools:context=".ui.timeslot.timeslot_details.TimeslotDetailsFragment">
 
     <ScrollView
         android:layout_width="match_parent"

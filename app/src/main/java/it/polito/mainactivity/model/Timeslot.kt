@@ -1,9 +1,6 @@
-package it.polito.mainactivity
+package it.polito.mainactivity.model
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.text.DateFormat
-import java.time.DayOfWeek
 import java.util.*
 
 data class Timeslot (val title:String,

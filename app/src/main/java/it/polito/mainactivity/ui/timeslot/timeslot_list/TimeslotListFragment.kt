@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.timeslot_list
+package it.polito.mainactivity.ui.timeslot.timeslot_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.polito.mainactivity.R
-import it.polito.mainactivity.TimeslotAdapter
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
+import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
-class TimeSlotListFragment : Fragment() {
+class TimeslotListFragment : Fragment() {
 
     private var _binding: FragmentTimeslotListBinding? = null
 
@@ -34,7 +34,7 @@ class TimeSlotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
-        val timeSlotListViewModel = ViewModelProvider(this)[TimeSlotListViewModel::class.java]
+        val timeSlotListViewModel = ViewModelProvider(this)[TimeslotViewModel::class.java]
         timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
 
             val adapter = TimeslotAdapter(it, this)
