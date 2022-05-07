@@ -8,7 +8,9 @@ import androidx.core.text.italic
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
@@ -55,7 +57,9 @@ class TimeslotDetailsFragment : Fragment() {
                     .italic{append(it.elementAt(id).startHour)}
                     .append(" to ")
                     .italic{append(it.elementAt(id).endHour)}
-            }else if(it.elementAt(id).repetition?.lowercase() == "weekly"){
+
+            }
+            else if(it.elementAt(id).repetition?.lowercase() == "weekly"){
                 dateString
                     .append("This timeslots repeats ")
                     .bold{append("weekly")}
@@ -121,5 +125,15 @@ class TimeslotDetailsFragment : Fragment() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // If snackbar message is set: display it as snackbar
+        (activity as MainActivity).snackBarMessage?.run{
+            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT).show()
+            (activity as MainActivity).snackBarMessage = null
+        }
     }
 }

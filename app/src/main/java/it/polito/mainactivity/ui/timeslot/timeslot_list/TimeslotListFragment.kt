@@ -36,10 +36,8 @@ class TimeslotListFragment : Fragment() {
 
         val timeSlotListViewModel = ViewModelProvider(this)[TimeslotViewModel::class.java]
         timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
-
             val adapter = TimeslotAdapter(it, this)
             rv.adapter = adapter
-
             // If the list of timeslots is empty, show a message
             val tv: TextView = binding.emptyTimeslotListMessage
             tv.visibility = if (adapter.itemCount == 0)
@@ -47,7 +45,6 @@ class TimeslotListFragment : Fragment() {
             else
                 View.INVISIBLE
         }
-
 
         // If click on fab, go to Edit timeslot
         val fab: FloatingActionButton = binding.fab
@@ -61,7 +58,6 @@ class TimeslotListFragment : Fragment() {
                 bundle
             )
         }
-
         return root
     }
 
