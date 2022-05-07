@@ -164,8 +164,8 @@ class TimeslotEditFragment : Fragment() {
     // END DATE
     private fun showEndDatePickerDialog() {
         val dateFragment = DatePickerFragment(tiEndDate)
-        var bundle = Bundle();
-       /* bundle.putInt("id", requireArguments()?.getInt("id") ?: -1)
+       /* var bundle = Bundle();
+       bundle.putInt("id", requireArguments()?.getInt("id") ?: -1)
         requireActivity().supportFragmentManager
             .beginTransaction()
             .add(DatePickerFragment::class.java, bundle, "datePicker")
@@ -226,14 +226,11 @@ class TimeslotEditFragment : Fragment() {
 
         tiDays = mDialogView.findViewById(R.id.days)
 
-
         val repetitions = resources.getStringArray(R.array.repetition_mw)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         var autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
         autoCompleteTextView?.setAdapter(arrayAdapter)
-
-
 
         if(arguments?.getInt("id")!= -1){
             if(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.repetition == "weekly"){
@@ -250,11 +247,10 @@ class TimeslotEditFragment : Fragment() {
                     val chip = tiDays?.getChildAt(it-1) as Chip
                     tiDays?.check(chip.id)
                 }
+                tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
+                tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate?.time)
+                tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
             }
-
-            tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
-            tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate?.time)
-            tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
         }
 
         //AlertDialogBuilder + show
