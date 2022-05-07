@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import androidx.lifecycle.MutableLiveData
 import it.polito.mainactivity.R
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
@@ -18,26 +19,37 @@ class TimeslotModel(val application: Application) {
         loadTimeslots()
     }
 
-    override fun toString() = """{"timeslots": $timeslots}"""
+    override fun toString() = """{"timeslots": $timeslots}""".replace("\n", "").replace("\\s+".toRegex(), " ").replaceIndent()
 
     private fun loadTimeslots() {
         val timeslotsString = sharedPreferences?.getString(TIMESLOTS_TAG, null)
-        val jsonTimeslots: JSONObject? = when(timeslotsString) {
-            null -> null
-            else -> JSONObject(timeslotsString)
+        var jsonTimeslots: JSONObject? = null
+        try {
+            if(timeslotsString != null)
+                jsonTimeslots = JSONObject(timeslotsString.trim().replaceIndent())
+        } catch(e: JSONException){
+            e.printStackTrace()
         }
-        timeslots = when(jsonTimeslots){
-            null -> createTimeslots()
-            else -> {
-                val jsonArray = jsonTimeslots.getJSONArray("timeslots")
-                val jsonTimeslots = Utils.JSONArrayToList(jsonArray)
-                jsonTimeslots.map{jt -> Utils.JSONObjectToTimeslot(jt)}
-            }
+        // val jsonTimeslots: JSONObject? = when(timeslotsString) {
+        //     null -> null
+        //     else -> JSONObject(timeslotsString.trim().replaceIndent().)
+        // }
+        if(jsonTimeslots == null){
+            // only first time - create fake timeslots and save them to memory
+            this.timeslots = createTimeslots()
+            val tsString = this.toString()
+            sharedPreferences.edit().putString(TIMESLOTS_TAG, tsString).apply()
+        }
+        else {
+            // if timeslots exist get them from memory
+            val jsonArray = jsonTimeslots.getJSONArray("timeslots")
+            val jsonTimeslotsList = Utils.JSONArrayToList(jsonArray)
+            timeslots = jsonTimeslotsList.map{jt -> Utils.JSONObjectToTimeslot(jt)}
         }
     }
 
     private fun createTimeslots(): List<Timeslot> {
-        return listOf(
+        val _timeslots: List<Timeslot> = listOf(
             Timeslot("Bring grocery shopping to your door",
                 "I'll be happy to receive a list of goods to buy for you and to bring it back home to you. I have a car so the quantity is not an issue. You can also select which supermarket you want me to go to, but please don't choose those outside of the neighbourhood.",
                 GregorianCalendar(2022, 4, 25),
@@ -90,6 +102,7 @@ class TimeslotModel(val application: Application) {
                 GregorianCalendar(2022, 6, 1)
             )
         )
+        return _timeslots
     }
 
     // save on shared memory
