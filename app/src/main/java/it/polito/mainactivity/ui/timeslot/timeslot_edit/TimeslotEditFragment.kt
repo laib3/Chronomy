@@ -7,7 +7,6 @@ import java.util.GregorianCalendar
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,7 +23,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
@@ -48,7 +47,7 @@ class TimeslotEditFragment : Fragment() {
     private var tiEndTime: TextView? = null
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: ChipGroup? = null
-    private var tiDays: ChipGroup? = null
+    private var cgWeekDays: ChipGroup? = null
     private var mAlertDialog: AlertDialog? = null
 
     private var timeslotId: Int = -1
@@ -108,7 +107,7 @@ class TimeslotEditFragment : Fragment() {
         tiEndTime = view.findViewById(R.id.tv_timeslotEdit_endTime)
         tiLocation = view.findViewById(R.id.LocationTextField)
         tiCategory = view.findViewById(R.id.chips_group)
-        tiDays = view.findViewById(R.id.days)
+        cgWeekDays = view.findViewById(R.id.days)
         val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
         btnDate.setOnClickListener { showDatePickerDialog() }
         val btnStartTime = view.findViewById<MaterialButton>(R.id.edit_startTime)
@@ -238,81 +237,6 @@ class TimeslotEditFragment : Fragment() {
         timeFragment.show(requireActivity().supportFragmentManager, "endTimePicker")
     }
 
-    // REPETITION
-    private fun showRepetitionDialog() {
-        val mDialogView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.modal_repetition, null)
-
-        tiDays = mDialogView.findViewById(R.id.days)
-        tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
-
-        val repetitions = resources.getStringArray(R.array.repetition_mw)
-        val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
-
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
-        val autoCompleteTextView =
-            mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
-        autoCompleteTextView?.setAdapter(arrayAdapter)
-        autoCompleteTextView?.onItemClickListener =
-            OnItemClickListener { _, _, position, _ ->
-                if(position == 0){ //weekly
-                    repeatOn?.visibility = View.VISIBLE
-                    tiDays?.visibility= View.VISIBLE
-                }else{
-                    repeatOn?.visibility = View.GONE
-                    tiDays?.visibility= View.GONE
-                }
-            }
-
-        if(arguments?.getInt("timeslotId")!= -1){
-            if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "weekly"){
-                autoCompleteTextView?.setText(arrayAdapter.getItem(0).toString(), false)
-            }
-            if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "monthly"){
-                autoCompleteTextView?.setText(arrayAdapter.getItem(1).toString(), false)
-                repeatOn?.visibility = View.GONE
-                tiDays?.visibility= View.GONE
-            }
-            if (vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition != "") {
-                days?.forEach {
-                    val chip = tiDays?.getChildAt(it - 1) as Chip
-                    tiDays?.check(chip.id)
-                }
-
-                tiEndDate?.text = vm.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(vm.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
-            }
-        }
-        tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
-
-        //AlertDialogBuilder + show
-        val mBuilder = AlertDialog.Builder(requireContext())
-            .setView(mDialogView)
-
-        mAlertDialog = mBuilder.show()
-
-
-        //Attaching the corresponding functions to close and save buttons
-        val closeButton = mDialogView.findViewById<ImageView>(R.id.close_button)
-        closeButton.setOnClickListener {
-            mAlertDialog?.dismiss()
-        }
-
-        val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
-        saveButton.setOnClickListener {
-            /*
-            //get the current state of radioButtonYES. then update the skill's status and description
-            s.active = radioButtonYES.isChecked
-            s.description = description.text.toString()
-            val desc = card.findViewById<TextView>(R.timeslotId.skillDescription)
-            desc.text = s.description
-            //update skills
-            refreshSkills()*/
-            //TODO CHECK THAT END DATE IS PRESENT
-            //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
-            mAlertDialog?.dismiss() //close dialog
-        }
-    }
-
     // Extending DialogFragment for a date picker
     class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
@@ -419,6 +343,97 @@ class TimeslotEditFragment : Fragment() {
         bundle.putInt("id", requireArguments().getInt("id"))
         dateFragment.arguments = bundle
         dateFragment.show(requireActivity().supportFragmentManager,"endDatePicker")
+    }
+
+    // REPETITION
+    private fun showRepetitionDialog() {
+
+        val mDialogView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.modal_repetition, null)
+
+        val chips: MutableList<Chip> = mutableListOf(
+            mDialogView.findViewById(R.id.S0),
+            mDialogView.findViewById(R.id.M1),
+            mDialogView.findViewById(R.id.T2),
+            mDialogView.findViewById(R.id.W3),
+            mDialogView.findViewById(R.id.T4),
+            mDialogView.findViewById(R.id.F5),
+            mDialogView.findViewById(R.id.S6),
+        )
+
+        cgWeekDays = mDialogView.findViewById(R.id.days)
+        tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
+        val autoCompleteTextView =
+            mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
+
+        val repetitions = resources.getStringArray(R.array.repetition_mw)
+        val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
+
+        // required to put weekly / monthly
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
+        autoCompleteTextView?.setAdapter(arrayAdapter)
+        autoCompleteTextView?.onItemClickListener =
+            OnItemClickListener { _, _, position, _ ->
+                if(position == 0){ //weekly
+                    repeatOn?.visibility = View.VISIBLE
+                    cgWeekDays?.visibility= View.VISIBLE
+                } else{
+                    repeatOn?.visibility = View.GONE
+                    cgWeekDays?.visibility= View.GONE
+                }
+            }
+
+        // select right value inside dropdown (monthly/weekly)
+        if(arguments?.getInt("timeslotId")!= -1){
+            if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "weekly"){
+                autoCompleteTextView?.setText(arrayAdapter.getItem(0).toString(), false)
+            }
+            if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "monthly"){
+                autoCompleteTextView?.setText(arrayAdapter.getItem(1).toString(), false)
+                repeatOn?.visibility = View.GONE
+                cgWeekDays?.visibility= View.GONE
+            }
+            if (vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition != "") {
+                days?.forEach {
+                    val chip = cgWeekDays?.getChildAt(it - 1) as Chip
+                    cgWeekDays?.check(chip.id)
+                }
+
+                tiEndDate?.text = vm.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(vm.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
+            }
+        }
+
+        tiEndDate?.setOnClickListener{ showEndDatePickerDialog() }
+
+        //AlertDialogBuilder + show
+        val mBuilder = AlertDialog.Builder(requireContext())
+            .setView(mDialogView)
+
+        mAlertDialog = mBuilder.show()
+
+        //Attaching the corresponding functions to close and save buttons
+        val closeButton = mDialogView.findViewById<ImageView>(R.id.close_button)
+        closeButton.setOnClickListener {
+            mAlertDialog?.dismiss()
+        }
+
+        val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
+
+        saveButton.setOnClickListener {
+            // check selected days chips
+            val selectedDays: MutableList<Int> = mutableListOf()
+            chips.forEachIndexed{ idx, c -> if(c.isChecked) selectedDays.add(idx + 1) }
+            val repetitionType = autoCompleteTextView?.text.toString()
+            val timeslot = vm.timeslots.value?.get(timeslotId)
+            val oldTimeslots = vm.timeslots.value
+            if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days)){
+                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == timeslotId) ts.copy(repetition = repetitionType, days = selectedDays) else ts}
+                vm.setTimeslots(newTimeslots)
+            }
+            //TODO CHECK THAT END DATE IS PRESENT
+            //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
+            mAlertDialog?.dismiss() //close dialog
+        }
     }
 
 }
