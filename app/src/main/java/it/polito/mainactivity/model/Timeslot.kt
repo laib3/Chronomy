@@ -28,8 +28,9 @@ data class Timeslot (val title:String,
         createDates()
     }
 
-    override fun toString() =
-        """
+    override fun toString(): String {
+        val _sRepetition = if(repetition == null) "null" else "\"$repetition\""
+        return """
         {
         "title": "$title", 
         "description": "$description",
@@ -40,9 +41,9 @@ data class Timeslot (val title:String,
         "startHour": "$startHour", 
         "endHour": "$endHour", 
         "location": "$location", 
-        "category": "$category"
-        "repetition": ${if(repetition != null) "$repetition" else null},
-        "days": ${if(days != null) days else null},
+        "category": "$category", 
+        "repetition": $_sRepetition,
+        "days": $days,
         "endRepetitionDate": 
             {"year": ${endRepetitionDate?.get(Calendar.YEAR)},
             "month": ${endRepetitionDate?.get(Calendar.MONTH)},
@@ -50,6 +51,7 @@ data class Timeslot (val title:String,
             }
         }
         """.trimIndent()
+    }
 
     private fun createDates() {
         var tmp = Calendar.getInstance()

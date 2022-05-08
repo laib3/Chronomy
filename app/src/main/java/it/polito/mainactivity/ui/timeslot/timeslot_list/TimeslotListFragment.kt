@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ class TimeslotListFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val timeSlotListViewModel: TimeslotViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +36,6 @@ class TimeslotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
-        val timeSlotListViewModel = ViewModelProvider(this)[TimeslotViewModel::class.java]
         timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
             val adapter = TimeslotAdapter(it, this)
             rv.adapter = adapter
@@ -48,8 +49,7 @@ class TimeslotListFragment : Fragment() {
 
         // If click on fab, go to Edit timeslot
         val fab: FloatingActionButton = binding.fab
-
-        var bundle = Bundle();
+        val bundle = Bundle();
         bundle.putInt("id", -1)
 
         fab.setOnClickListener {
