@@ -101,7 +101,6 @@ class TimeslotEditFragment : Fragment() {
         tiStartTime = binding.tvTimeslotStartTime
         tiEndTime = binding.tvTimeslotEndTime
         tiLocation = binding.tilLocation
-        cgCategory = binding.cgCategory
         cgWeekDays = view.findViewById(R.id.cgDays)
         val btnDate = binding.bStartDate
         val btnStartTime = binding.bStartTime
@@ -125,6 +124,12 @@ class TimeslotEditFragment : Fragment() {
             binding.bSubmit
                 .apply{ visibility = View.VISIBLE }
                 .setOnClickListener{ submit() }
+        }
+        val categories = resources.getStringArray(R.array.skills_array)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
+        binding.dmCategory.setAdapter(arrayAdapter)
+        binding.dmCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> submitTimeslot?.category =
+            categories[idx]
         }
     }
 
@@ -400,7 +405,7 @@ class TimeslotEditFragment : Fragment() {
             }
 
         // select right value inside dropdown (monthly/weekly)
-        if(arguments?.getInt("timeslotId") != -1){
+        if(timeslotId != null){
             if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "weekly"){
                 autoCompleteTextView?.setText(arrayAdapter.getItem(0).toString(), false)
             }
@@ -432,6 +437,7 @@ class TimeslotEditFragment : Fragment() {
         closeButton.setOnClickListener {
             mAlertDialog?.dismiss()
         }
+
 
         val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
         saveButton.setOnClickListener {

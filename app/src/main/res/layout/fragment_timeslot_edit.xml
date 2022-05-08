@@ -271,104 +271,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/outside_shape"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:background="@drawable/outside_shape"
                 app:layout_constraintTop_toBottomOf="@+id/tilLocation">
 
                 <TextView
                     android:id="@+id/category"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textColor="@color/purple_500"
+                    android:layout_marginStart="@dimen/big_distance"
                     android:text="Category:"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tilCategory"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/cgCategory"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilCategory"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:layout_marginEnd="@dimen/big_distance"
+                    android:layout_marginBottom="@dimen/small_distance"
+                    app:layout_constraintBottom_toBottomOf="@+id/category"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/category"
-                    app:singleSelection="true"
-                    app:checkedChip="@id/category"
-                    >
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="2"
+                    app:layout_constraintStart_toEndOf="@+id/category"
+                    app:layout_constraintTop_toTopOf="@+id/category">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/gardening"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
+                    <AutoCompleteTextView
+                        android:id="@+id/dmCategory"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Gardening" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/tutoring"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tutoring" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/childcare"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Child Care" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/oddjobs"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Odd Jobs" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/homerepair"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Home Repair" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/wellness"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Wellness" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/delivery"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Delivery" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/transportation"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Transportation" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/companionship"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Companionship" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/other"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:inputType="none"
                         android:text="Other" />
 
-                </com.google.android.material.chip.ChipGroup>
+                </com.google.android.material.textfield.TextInputLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout

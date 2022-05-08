@@ -42,15 +42,15 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/wm"
-        app:layout_constraintEnd_toStartOf="@+id/wm"
+        app:layout_constraintBottom_toBottomOf="@+id/dmRepetition"
+        app:layout_constraintEnd_toStartOf="@+id/dmRepetition"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/wm" />
+        app:layout_constraintTop_toTopOf="@+id/dmRepetition" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/wm"
+        android:id="@+id/dmRepetition"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="195dp"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/repeat"
-        app:layout_constraintTop_toBottomOf="@+id/wm" />
+        app:layout_constraintTop_toBottomOf="@+id/dmRepetition" />
 
     <!--<HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -97,7 +97,7 @@
         android:layout_marginTop="8dp"
         app:chipSpacingHorizontal="0dp"
         app:ensureMinTouchTargetSize="false"
-        app:layout_constraintEnd_toEndOf="@+id/wm"
+        app:layout_constraintEnd_toEndOf="@+id/dmRepetition"
         app:layout_constraintStart_toStartOf="@+id/repeat_on"
         app:layout_constraintTop_toBottomOf="@+id/repeat_on"
         app:singleLine="true"
@@ -176,7 +176,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="50dp"
-        app:layout_constraintEnd_toEndOf="@+id/wm"
+        app:layout_constraintEnd_toEndOf="@+id/dmRepetition"
         app:layout_constraintStart_toEndOf="@+id/ends_on"
         app:layout_constraintTop_toBottomOf="@+id/cgDays">
 
