@@ -109,11 +109,11 @@ class TimeslotEditFragment : Fragment() {
         tiLocation = view.findViewById(R.id.LocationTextField)
         tiCategory = view.findViewById(R.id.chips_group)
         tiDays = view.findViewById(R.id.days)
-        val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
+        val btnDate = view.findViewById<MaterialCardView>(R.id.mcv_timeslotEdit_date)
         btnDate.setOnClickListener { showDatePickerDialog() }
-        val btnStartTime = view.findViewById<MaterialButton>(R.id.edit_startTime)
+        val btnStartTime = view.findViewById<MaterialCardView>(R.id.mcv_timeslotEdit_startTime)
         btnStartTime.setOnClickListener { showStartTimePickerDialog() }
-        val btnEndTime = view.findViewById<MaterialButton>(R.id.edit_endTime)
+        val btnEndTime = view.findViewById<MaterialCardView>(R.id.mcv_timeslotEdit_endTime)
         btnEndTime.setOnClickListener { showEndTimePickerDialog() }
         val btnRepetition = view.findViewById<Button>(R.id.edit_repetition)
         btnRepetition.setOnClickListener { showRepetitionDialog() }

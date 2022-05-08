@@ -74,10 +74,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/outside_shape"
-                android:paddingStart="4dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="4dp"
-                android:paddingBottom="4dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,9 +95,11 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_timeslotEdit_date"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     app:cardCornerRadius="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/date">
 
@@ -112,48 +114,39 @@
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/edit_startDate"
-                        app:layout_constraintEnd_toStartOf="@id/mcv_timeslotEdit_startTime"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_startDate"
-                    style=""
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Pick date"
-                    app:cornerRadius="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_date"
-                    app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_date"
-                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_date" />
-
                 <TextView
                     android:id="@+id/startTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Start time:"
                     android:textColor="@color/purple_500"
                     app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_startTime"
                     app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_startTime"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_date" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_timeslotEdit_startTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
                     app:cardCornerRadius="50dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_startTime"
-                    app:layout_constraintStart_toStartOf="@+id/edit_startTime"
+                    app:layout_constraintEnd_toStartOf="@+id/mcv_timeslotEdit_endTime"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/startTime">
 
                     <TextView
                         android:id="@+id/tv_timeslotEdit_startTime"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:freezesText="true"
@@ -164,37 +157,29 @@
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
-                <!-- -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_startTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="0dp"
-                    android:gravity="center"
-                    android:text="Set time"
-                    app:cornerRadius="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/edit_endTime"
-                    app:layout_constraintStart_toEndOf="@+id/edit_startDate"
-                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_startTime" />
 
                 <TextView
                     android:id="@+id/endTime"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="19dp"
 
+                    android:layout_marginTop="16dp"
                     android:text="End time:"
                     android:textColor="@color/purple_500"
-                    app:layout_constraintEnd_toEndOf="@+id/mcv_timeslotEdit_endTime"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/mcv_timeslotEdit_endTime"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_date" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mcv_timeslotEdit_endTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
                     app:cardCornerRadius="50dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_endTime"
-                    app:layout_constraintStart_toStartOf="@+id/edit_endTime"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mcv_timeslotEdit_startTime"
                     app:layout_constraintTop_toBottomOf="@+id/endTime">
 
                     <TextView
@@ -211,35 +196,18 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_endTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="0dp"
-                    android:gravity="center"
-                    android:text="Set time"
-                    app:cornerRadius="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_endTime" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="129dp" />
-
                 <Button
                     android:id="@+id/edit_repetition"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:backgroundTint="#FFFFFF"
-                    android:text="Add repetition"
+                    android:text="set repetition"
                     android:textColor="@color/purple_500"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline5" />
+                    app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_startTime" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
