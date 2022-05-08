@@ -277,7 +277,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tilLocation">
 
                 <TextView
-                    android:id="@+id/category"
+                    android:id="@+id/ivCategory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/big_distance"
@@ -298,12 +298,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/big_distance"
                     android:layout_marginBottom="@dimen/small_distance"
-                    app:layout_constraintBottom_toBottomOf="@+id/category"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivCategory"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="2"
-                    app:layout_constraintStart_toEndOf="@+id/category"
-                    app:layout_constraintTop_toTopOf="@+id/category">
+                    app:layout_constraintStart_toEndOf="@+id/ivCategory"
+                    app:layout_constraintTop_toTopOf="@+id/ivCategory">
 
                     <AutoCompleteTextView
                         android:id="@+id/dmCategory"
