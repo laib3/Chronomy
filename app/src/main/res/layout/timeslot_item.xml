@@ -8,7 +8,7 @@
     android:paddingEnd="8dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/item_card"
+        android:id="@+id/cvTimeslotCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"

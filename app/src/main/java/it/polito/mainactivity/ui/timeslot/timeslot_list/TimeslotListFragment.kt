@@ -36,7 +36,7 @@ class TimeslotListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val adapter = TimeslotAdapter(it, this)
+            val adapter = TimeslotAdapter(vm, this)
             rv.adapter = adapter
             // If the list of timeslots is empty, show a message
             val tv: TextView = binding.emptyTimeslotListMessage

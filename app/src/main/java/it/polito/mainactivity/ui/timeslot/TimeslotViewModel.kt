@@ -32,4 +32,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun removeTimeslot(position: Int) {
+        val ts = _timeslots.value?.toMutableList().also { it?.removeAt(position) }
+        _timeslots.value = ts!!
+        model.setTimeslots((ts))
+    }
+
 }
