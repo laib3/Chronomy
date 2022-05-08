@@ -42,6 +42,7 @@ class TimeslotDetailsFragment : Fragment() {
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // TODO remove in favour of null
         val id = arguments?.getInt("id") ?: -1
 
         vm.timeslots.observe(viewLifecycleOwner) {
@@ -122,7 +123,7 @@ class TimeslotDetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
         if(item.itemId === R.id.nav_edit) {
             var bundle = Bundle();
-            bundle.putInt("id", arguments?.getInt("id") ?: -1)
+            arguments?.getInt("id")?.let{ bundle.putInt("id", it) }
             findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
             return true
         }

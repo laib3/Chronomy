@@ -42,7 +42,7 @@
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_details.xml" value="0.3442288049029622" />
-        <entry key="app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.3442288049029622" />
+        <entry key="app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_timeslot_list.xml" value="0.3655316191799861" />
         <entry key="app/src/main/res/layout/list_item.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/modal_repetition.xml" value="0.5" />

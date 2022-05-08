@@ -22,8 +22,11 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return _timeslots.value?.elementAtOrNull(id)
     }
 
-    fun setTimeslots(ts: List<Timeslot>?){
-        if(ts != null){
+    fun setTimeslots(ts: List<Timeslot>?) = ts?.let{ _timeslots.value = it; model.setTimeslots(it) }
+
+    fun addTimeslot(t : Timeslot?){
+        if(t != null){
+            val ts = _timeslots.value?.toMutableList().also{ it?.add(t) }
             _timeslots.value = ts!!
             model.setTimeslots(ts)
         }
