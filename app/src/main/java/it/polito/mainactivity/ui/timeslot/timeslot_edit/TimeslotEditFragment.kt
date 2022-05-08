@@ -347,7 +347,7 @@ class TimeslotEditFragment : Fragment() {
                     tiDays?.check(chip.id)
                 }
 
-                tiEndDate?.text = timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(timeSlotListViewModel.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
+                tiEndDate?.text = vm.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(vm.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
             }
         }
         tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
