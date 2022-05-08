@@ -24,7 +24,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private val _balance: MutableLiveData<String> = model.getData(Field.BALANCE)
     private val _skills: MutableLiveData<List<Skill>> = model.getSkills()
     private val _picture: MutableLiveData<Drawable> = model.getPicture()
-    private val _updated: MutableLiveData<Skill> = MutableLiveData<Skill>().apply{ value = null }
+    private val _updated: MutableLiveData<Skill?> = MutableLiveData<Skill?>().apply{ value = null }
 
     val name: LiveData<String> = _name
     val surname: LiveData<String> = _surname
@@ -36,7 +36,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     val balance: LiveData<String> = _balance
     val skills: LiveData<List<Skill>> = _skills
     val picture: LiveData<Drawable> = _picture
-    val updated: MutableLiveData<Skill> = _updated
+    val updated: MutableLiveData<Skill?> = _updated
 
     fun setName(s:String){ _name.value = s; model.setData(s, Field.NAME) }
     fun setSurname(s: String){ _surname.value = s; model.setData(s, Field.SURNAME) }
@@ -47,8 +47,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     fun setLocation(s:String) { _location.value = s; model.setData(s, Field.LOCATION) }
     fun setPicture(d: Drawable) { _picture.value = d; model.setPicture(d) }
     fun setUpdated(s: Skill) { _updated.value = s }
-    fun resetUpdated() {_updated.value = null}
+    fun resetUpdated() { _updated.value = null }
     fun setSkills(s: List<Skill>?) { if(s != null) { _skills.value = s!!; model.setSkills(s) } }
-    
 
 }

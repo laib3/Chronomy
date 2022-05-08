@@ -3,15 +3,15 @@ package it.polito.mainactivity.model
 import java.text.DateFormat
 import java.util.*
 
-data class Timeslot (val title:String,
-                     val description:String,
-                     val date: Calendar,
-                     val startHour : String,
-                     val endHour:String,
-                     val location:String,
-                     val category:String,
-                     val repetition: String?,
-                     val days: List<Int>,
+data class Timeslot (var title:String,
+                     var description:String,
+                     var date: Calendar,
+                     var startHour : String,
+                     var endHour:String,
+                     var location:String,
+                     var category:String,
+                     var repetition: String?,
+                     var days: List<Int>,
                      var endRepetitionDate: Calendar?
                     ){
 
@@ -58,7 +58,7 @@ data class Timeslot (val title:String,
         tmp.timeInMillis = date.timeInMillis
         if(repetition == null)
             return
-        else if(repetition.lowercase()=="weekly"){
+        else if(repetition!!.lowercase()=="weekly"){
             while(tmp.before(endRepetitionDate)){
                 if(days.contains(tmp.get(Calendar.DAY_OF_WEEK))){
                     dates.add(tmp)
