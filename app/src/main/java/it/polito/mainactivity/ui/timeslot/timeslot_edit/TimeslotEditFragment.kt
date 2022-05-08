@@ -77,10 +77,11 @@ class TimeslotEditFragment : Fragment() {
                 tiEndTime?.text = timeslot.endHour
                 tiLocation?.editText?.setText(timeslot.location)
                 // TODO change to dropdown menu
-                val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
-                val index = categories.indexOf(timeslot.category)
-                val chip : Chip = cgCategory?.getChildAt(index) as Chip
-                cgCategory?.check(chip.id)
+                //val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
+                //val index = categories.indexOf(timeslot.category)
+                //val chip : Chip = cgCategory?.getChildAt(index) as Chip
+                //cgCategory?.check(chip.id)
+
                 days = timeslot.days
             }
             addFocusChangeListeners()
@@ -112,6 +113,11 @@ class TimeslotEditFragment : Fragment() {
         btnEndTime.setOnClickListener { showEndTimePickerDialog() }
         btnRepetition.setOnClickListener { showRepetitionDialog() }
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
+
+        val categories = resources.getStringArray(R.array.skills_array)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
+        binding.dmCategory.setAdapter(arrayAdapter)
+
         if(timeslotId == null){
             // populate fields
             tiTitle?.editText?.setText(submitTimeslot?.title)
@@ -120,17 +126,24 @@ class TimeslotEditFragment : Fragment() {
             tiStartTime?.text = submitTimeslot?.startHour
             tiEndTime?.text = submitTimeslot?.endHour
             tiLocation?.editText?.setText(submitTimeslot?.location)
-            // TODO check category set to dropdown menu
             binding.bSubmit
                 .apply{ visibility = View.VISIBLE }
                 .setOnClickListener{ submit() }
+
+            binding.dmCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> submitTimeslot?.category =
+                categories[idx]
+            }
         }
-        val categories = resources.getStringArray(R.array.skills_array)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
-        binding.dmCategory.setAdapter(arrayAdapter)
-        binding.dmCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> submitTimeslot?.category =
-            categories[idx]
+        else {
+            val positionCategory = arrayAdapter.getPosition(vm.timeslots.value?.elementAt(timeslotId!!)?.category)
+            binding.dmCategory.setText(arrayAdapter.getItem(positionCategory).toString(), false)
+            binding.dmCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.timeslots.value?.get(timeslotId!!)?.category =
+                categories[idx]
+
+
+            }
         }
+
     }
 
     private fun submit(){
