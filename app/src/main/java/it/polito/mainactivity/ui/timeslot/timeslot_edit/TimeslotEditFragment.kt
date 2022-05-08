@@ -14,12 +14,10 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -27,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.model.Timeslot
+import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
 //TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
@@ -46,11 +45,11 @@ class TimeslotEditFragment : Fragment() {
     private var tiStartTime: TextView? = null
     private var tiEndTime: TextView? = null
     private var tiLocation: TextInputLayout? = null
-    private var tiCategory: ChipGroup? = null
+    private var cgCategory: ChipGroup? = null
     private var cgWeekDays: ChipGroup? = null
     private var mAlertDialog: AlertDialog? = null
-
     private var timeslotId: Int = -1
+    private var submitTimeslot: Timeslot? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -58,68 +57,70 @@ class TimeslotEditFragment : Fragment() {
 
     private var days: List<Int>? = null
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         timeslotId = arguments?.getInt("id") ?: -1
+
         // edit existing timeslot
         if(timeslotId != -1){
             vm.timeslots.observe(viewLifecycleOwner) {
                 val timeslot: Timeslot = it.elementAt(timeslotId)
                 tiTitle?.editText?.setText(timeslot.title)
                 tiDescription?.editText?.setText(timeslot.description)
-                tiStartDate?.text = timeslot.dateFormat.format(timeslot.date.time)
+                tiStartDate?.text = Utils.formatDateToString(timeslot.date)
                 tiStartTime?.text = timeslot.startHour
                 tiEndTime?.text = timeslot.endHour
                 tiLocation?.editText?.setText(timeslot.location)
-
+                // TODO change to dropdown menu
                 val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
                 val index = categories.indexOf(timeslot.category)
-                val chip : Chip = tiCategory?.getChildAt(index) as Chip
-                tiCategory?.check(chip.id)
-
+                val chip : Chip = cgCategory?.getChildAt(index) as Chip
+                cgCategory?.check(chip.id)
                 days = timeslot.days
             }
         } else {
+            // populate fields of timeslot to be submitted
+            submitTimeslot =
+                Timeslot("Submit!", "", GregorianCalendar.getInstance(), "", "", "", "", null, listOf(), null)
         }
 
         addFocusChangeListeners()
-
-        vm.updated.observe(viewLifecycleOwner){
-            val timeslots = vm.timeslots.value
-            if(it != null){
-                val updatedTimeslots = timeslots?.mapIndexed{ idx, ts -> if(idx == timeslotId) it else ts}
-                vm.setTimeslots(updatedTimeslots)
-                vm.resetUpdated()
-            }
-        }
-
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tiTitle = view.findViewById(R.id.TitleTextField)
-        tiDescription = view.findViewById(R.id.DescriptionTextField)
-        tiStartDate = view.findViewById(R.id.tv_timeslotEdit_date)
-        tiStartTime = view.findViewById(R.id.tv_timeslotEdit_startTime)
-        tiEndTime = view.findViewById(R.id.tv_timeslotEdit_endTime)
-        tiLocation = view.findViewById(R.id.LocationTextField)
-        tiCategory = view.findViewById(R.id.chips_group)
-        cgWeekDays = view.findViewById(R.id.days)
-        val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
+        // TODO refactor do not use variables
+        tiTitle = binding.tilTitle
+        tiDescription = binding.tilDescription
+        tiStartDate = binding.tvTimeslotStartDate
+        tiStartTime = binding.tvTimeslotStartTime
+        tiEndTime = binding.tvTimeslotEndTime
+        tiLocation = binding.tilLocation
+        cgCategory = binding.cgCategory
+        cgWeekDays = view.findViewById(R.id.cgDays)
+        val btnDate = binding.bStartDate
+        val btnStartTime = binding.bStartTime
+        val btnEndTime = binding.bEndTime
+        val btnRepetition = binding.bSetRepetition
+        val btnEndDate = view.findViewById<MaterialCardView>(R.id.cvEndDate)
         btnDate.setOnClickListener { showDatePickerDialog() }
-        val btnStartTime = view.findViewById<MaterialButton>(R.id.edit_startTime)
         btnStartTime.setOnClickListener { showStartTimePickerDialog() }
-        val btnEndTime = view.findViewById<MaterialButton>(R.id.edit_endTime)
         btnEndTime.setOnClickListener { showEndTimePickerDialog() }
-        val btnRepetition = view.findViewById<Button>(R.id.edit_repetition)
         btnRepetition.setOnClickListener { showRepetitionDialog() }
-        val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
         val id: Int = arguments?.getInt("id") ?: -1
         if(id == -1){
+            // populate fields
+            tiTitle?.editText?.setText(submitTimeslot?.title)
+            tiDescription?.editText?.setText(submitTimeslot?.description)
+            tiStartDate?.text = Utils.formatDateToString(submitTimeslot?.date)
+            tiStartTime?.text = submitTimeslot?.startHour
+            tiEndTime?.text = submitTimeslot?.endHour
+            tiLocation?.editText?.setText(submitTimeslot?.location)
+            // TODO check category set to dropdown menu
             val saveBtnLayout = view.findViewById<LinearLayout>(R.id.buttonSaveLayout)
             //set the properties for button
             val btnSaveTimeslot = AppCompatButton(requireContext())
@@ -361,7 +362,7 @@ class TimeslotEditFragment : Fragment() {
             mDialogView.findViewById(R.id.S6),
         )
 
-        cgWeekDays = mDialogView.findViewById(R.id.days)
+        cgWeekDays = mDialogView.findViewById(R.id.cgDays)
         tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
         val autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)

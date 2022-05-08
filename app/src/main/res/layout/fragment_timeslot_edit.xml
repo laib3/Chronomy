@@ -27,7 +27,7 @@
             android:paddingBottom="60dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/TitleTextField"
+                android:id="@+id/tilTitle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/DescriptionTextField"
+                android:id="@+id/tilDescription"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -57,9 +57,9 @@
                 android:hint="Description"
                 app:endIconMode="clear_text"
                 android:textColorHint="@color/purple_500"
-                app:layout_constraintEnd_toEndOf="@+id/TitleTextField"
-                app:layout_constraintStart_toStartOf="@+id/TitleTextField"
-                app:layout_constraintTop_toBottomOf="@+id/TitleTextField">
+                app:layout_constraintEnd_toEndOf="@+id/tilTitle"
+                app:layout_constraintStart_toStartOf="@+id/tilTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tilTitle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/TextInputEditDescription"
@@ -81,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/DescriptionTextField">
+                app:layout_constraintTop_toBottomOf="@+id/tilDescription">
 
                 <TextView
                     android:id="@+id/date"
@@ -102,7 +102,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/date">
 
                     <TextView
-                        android:id="@+id/tv_timeslotEdit_date"
+                        android:id="@+id/tvTimeslotStartDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -112,7 +112,7 @@
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@id/edit_startDate"
+                        app:layout_constraintBottom_toTopOf="@id/bStartDate"
                         app:layout_constraintEnd_toStartOf="@id/mcv_timeslotEdit_startTime"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +121,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_startDate"
+                    android:id="@+id/bStartDate"
                     style=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,12 +147,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="50dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_startTime"
-                    app:layout_constraintStart_toStartOf="@+id/edit_startTime"
+                    app:layout_constraintEnd_toEndOf="@+id/bStartTime"
+                    app:layout_constraintStart_toStartOf="@+id/bStartTime"
                     app:layout_constraintTop_toBottomOf="@+id/startTime">
 
                     <TextView
-                        android:id="@+id/tv_timeslotEdit_startTime"
+                        android:id="@+id/tvTimeslotStartTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -166,15 +166,15 @@
                 </com.google.android.material.card.MaterialCardView>
                 <!-- -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_startTime"
+                    android:id="@+id/bStartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
                     android:gravity="center"
                     android:text="Set time"
                     app:cornerRadius="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/edit_endTime"
-                    app:layout_constraintStart_toEndOf="@+id/edit_startDate"
+                    app:layout_constraintEnd_toStartOf="@+id/bEndTime"
+                    app:layout_constraintStart_toEndOf="@+id/bStartDate"
                     app:layout_constraintTop_toBottomOf="@+id/mcv_timeslotEdit_startTime" />
 
                 <TextView
@@ -193,12 +193,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="50dp"
-                    app:layout_constraintEnd_toEndOf="@+id/edit_endTime"
-                    app:layout_constraintStart_toStartOf="@+id/edit_endTime"
+                    app:layout_constraintEnd_toEndOf="@+id/bEndTime"
+                    app:layout_constraintStart_toStartOf="@+id/bEndTime"
                     app:layout_constraintTop_toBottomOf="@+id/endTime">
 
                     <TextView
-                        android:id="@+id/tv_timeslotEdit_endTime"
+                        android:id="@+id/tvTimeslotEndTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -212,7 +212,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/edit_endTime"
+                    android:id="@+id/bEndTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
@@ -230,11 +230,11 @@
                     app:layout_constraintGuide_begin="129dp" />
 
                 <Button
-                    android:id="@+id/edit_repetition"
+                    android:id="@+id/bSetRepetition"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#FFFFFF"
-                    android:text="Add repetition"
+                    android:text="Set repetition"
                     android:textColor="@color/purple_500"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -244,7 +244,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/LocationTextField"
+                android:id="@+id/tilLocation"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
                 android:background="@drawable/outside_shape"
-                app:layout_constraintTop_toBottomOf="@+id/LocationTextField">
+                app:layout_constraintTop_toBottomOf="@+id/tilLocation">
 
                 <TextView
                     android:id="@+id/category"
@@ -287,7 +287,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chips_group"
+                    android:id="@+id/cgCategory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="8dp"

@@ -102,10 +102,10 @@ class TimeslotDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tiTitle = view.findViewById(R.id.TitleTextField)
-        tiDescription = view.findViewById(R.id.DescriptionTextField)
+        tiTitle = view.findViewById(R.id.tilTitle)
+        tiDescription = view.findViewById(R.id.tilDescription)
         tiAvailability = view.findViewById(R.id.AvailabilityTextField)
-        tiLocation = view.findViewById(R.id.LocationTextField)
+        tiLocation = view.findViewById(R.id.tilLocation)
         tiCategory = view.findViewById(R.id.CategoryTextField)
     }
 

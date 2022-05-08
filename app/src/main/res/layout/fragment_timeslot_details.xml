@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/TitleTextField"
+                android:id="@+id/tilTitle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/DescriptionTextField"
+                android:id="@+id/tilDescription"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:textColorHint="@color/purple_500"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TitleTextField">
+                app:layout_constraintTop_toBottomOf="@+id/tilTitle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                 app:endIconMode="custom"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/DescriptionTextField">
+                app:layout_constraintTop_toBottomOf="@+id/tilDescription">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -82,7 +82,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/LocationTextField"
+                android:id="@+id/tilLocation"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/LocationTextField">
+                app:layout_constraintTop_toBottomOf="@+id/tilLocation">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

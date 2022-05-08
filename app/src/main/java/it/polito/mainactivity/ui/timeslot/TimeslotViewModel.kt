@@ -16,10 +16,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private val model: TimeslotModel = TimeslotModel(application)
 
     private val _timeslots: MutableLiveData<List<Timeslot>> = model.getTimeslots()
-    private val _updated: MutableLiveData<Timeslot?> = MutableLiveData<Timeslot?>().apply{ value = null }
-
     val timeslots : LiveData<List<Timeslot>> = _timeslots
-    val updated: MutableLiveData<Timeslot?> = _updated
 
     fun findById(id: Int) : Timeslot? {
         return _timeslots.value?.elementAtOrNull(id)
@@ -31,11 +28,5 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             model.setTimeslots(ts)
         }
     }
-
-    fun setUpdated(t: Timeslot?){
-        if(t != null)
-            _updated.value = t
-    }
-    fun resetUpdated(){ _updated.value = null }
 
 }

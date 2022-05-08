@@ -2,6 +2,7 @@ package it.polito.mainactivity.model
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.DateFormat
 import java.util.*
 
 class Utils {
@@ -46,6 +47,14 @@ class Utils {
                     startHour, endHour, location, category, repetition,
                     days, GregorianCalendar(erYear, erMonth, erDay))
             }
+
+        fun formatDateToString(date: Calendar?): String {
+            if(date == null)
+                return ""
+            var dateFormat:DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
+            dateFormat.timeZone = date.timeZone
+            return dateFormat.format(date.time)
+        }
 
     }
 
