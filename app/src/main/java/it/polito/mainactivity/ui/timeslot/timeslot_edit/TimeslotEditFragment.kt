@@ -23,12 +23,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
-
 
 //TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
 
 class TimeslotEditFragment : Fragment() {
+
+    private val timeSlotListViewModel:TimeslotViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotEditBinding? = null
 
@@ -44,7 +46,6 @@ class TimeslotEditFragment : Fragment() {
     private var tiDays: ChipGroup? = null
     private var mAlertDialog: AlertDialog? = null
 
-    private val timeSlotListViewModel:TimeslotViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -62,29 +63,25 @@ class TimeslotEditFragment : Fragment() {
 
         val id: Int = arguments?.getInt("id") ?: -1
 
-        //i don't need to observe anything, it will be a new timeslot
-        if(id!= -1){
+        // edit existing timeslot
+        if(id != -1){
             timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
-                tiTitle?.editText?.setText(it.elementAt(id).title)
-                tiDescription?.editText?.setText(it.elementAt(id).description)
-                tiStartDate?.text = it.elementAt(id).dateFormat.format(it.elementAt(id).date.time)
-                tiStartTime?.text = it.elementAt(id).startHour
-                tiEndTime?.text = it.elementAt(id).endHour
-                tiLocation?.editText?.setText(it.elementAt(id).location)
+                val timeslot: Timeslot = it.elementAt(id)
+                tiTitle?.editText?.setText(timeslot.title)
+                tiDescription?.editText?.setText(timeslot.description)
+                tiStartDate?.text = timeslot.dateFormat.format(timeslot.date.time)
+                tiStartTime?.text = timeslot.startHour
+                tiEndTime?.text = timeslot.endHour
+                tiLocation?.editText?.setText(timeslot.location)
 
                 val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
-                val index = categories.indexOf(it.elementAt(id).category)
+                val index = categories.indexOf(timeslot.category)
                 val chip : Chip = tiCategory?.getChildAt(index) as Chip
                 tiCategory?.check(chip.id)
 
-                days = it.elementAt(id).days
+                days = timeslot.days
             }
-        }else {
-            /*val actionBar: ActionBar? = requireActivity().actionBar
-            actionBar?.title = "New Timeslot"*/
-           // activity?.title = "New Timeslot"
-            //requireActivity().actionBar?.title="New Timeslot"
-            
+        } else {
         }
 
         addFocusChangeListeners()
@@ -94,7 +91,6 @@ class TimeslotEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         tiTitle = view.findViewById(R.id.TitleTextField)
         tiDescription = view.findViewById(R.id.DescriptionTextField)
         tiAvailability = view.findViewById(R.id.AvailabilityTextField)
@@ -104,22 +100,16 @@ class TimeslotEditFragment : Fragment() {
         tiLocation = view.findViewById(R.id.LocationTextField)
         tiCategory = view.findViewById(R.id.chips_group)
         tiDays = view.findViewById(R.id.days)
-
         val btnDate = view.findViewById<MaterialButton>(R.id.edit_startDate)
         btnDate.setOnClickListener { showDatePickerDialog() }
-
         val btnStartTime = view.findViewById<MaterialButton>(R.id.edit_startTime)
         btnStartTime.setOnClickListener { showStartTimePickerDialog() }
-
         val btnEndTime = view.findViewById<MaterialButton>(R.id.edit_endTime)
         btnEndTime.setOnClickListener { showEndTimePickerDialog() }
-
         val btnRepetition = view.findViewById<Button>(R.id.edit_repetition)
         btnRepetition.setOnClickListener { showRepetitionDialog() }
-
         val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
-
     }
 
     override fun onDestroyView() {
@@ -127,8 +117,13 @@ class TimeslotEditFragment : Fragment() {
         _binding = null
     }
 
-    //TODO CHECK
+    // TODO CHECK
     private fun addFocusChangeListeners() {
+        binding.TextInputEditTitle.setOnFocusChangeListener { _, focused ->
+            if(!focused){
+
+            }
+        }
         // binding.TextInputEditTitle.setOnFocusChangeListener{_, focused -> if(!focused) timeSlotDetailsViewModel.apply{timeslot?.apply { binding.TextInputEditTitle.text.toString(); ""; }}}
     } //miss other fields
 
