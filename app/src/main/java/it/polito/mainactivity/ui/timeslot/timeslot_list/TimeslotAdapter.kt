@@ -1,6 +1,7 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +60,6 @@ class TimeslotAdapter(val data: List<Timeslot>, val parentFragment: Fragment): R
         holder.editButton.setOnClickListener{
             parentFragment.findNavController().navigate(R.id.action_nav_list_to_nav_edit, bundle)
         }
-
 
     }
 

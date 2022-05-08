@@ -6,7 +6,7 @@ import android.view.*
 import androidx.core.text.bold
 import androidx.core.text.italic
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -17,6 +17,8 @@ import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 import java.util.*
 
 class TimeslotDetailsFragment : Fragment() {
+
+    private val vm: TimeslotViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotDetailsBinding? = null
 
@@ -34,8 +36,6 @@ class TimeslotDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val timeSlotListViewModel =
-            ViewModelProvider(this).get(TimeslotViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -44,62 +44,64 @@ class TimeslotDetailsFragment : Fragment() {
 
         val id = arguments?.getInt("id") ?: -1
 
-        timeSlotListViewModel.timeslots.observe(viewLifecycleOwner) {
-            tiTitle?.editText?.setText(it.elementAt(id).title)
-            tiDescription?.editText?.setText(it.elementAt(id).description)
+        vm.timeslots.observe(viewLifecycleOwner) {
+
+            val ts = it.elementAt(id)
+
+            tiTitle?.editText?.setText(ts.title)
+            tiDescription?.editText?.setText(ts.description)
 
             val dateString = SpannableStringBuilder()
 
-            if(it.elementAt(id).repetition == ""){
+            if(ts.repetition == ""){
                 dateString
-                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).date.time))}
+                    .italic{append(ts.dateFormat.format(ts.date.time))}
                     .append(" from ")
-                    .italic{append(it.elementAt(id).startHour)}
+                    .italic{append(ts.startHour)}
                     .append(" to ")
-                    .italic{append(it.elementAt(id).endHour)}
+                    .italic{append(ts.endHour)}
 
             }
-            else if(it.elementAt(id).repetition?.lowercase() == "weekly"){
+            else if(ts.repetition?.lowercase() == "weekly"){
                 dateString
                     .append("This timeslots repeats ")
                     .bold{append("weekly")}
                     .append(".\n\nStarting on ")
-                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).date.time))}
+                    .italic{append(ts.dateFormat.format(ts.date.time))}
                     .append(" until ")
-                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time))}
+                    .italic{append(ts.dateFormat.format(ts.endRepetitionDate?.time))}
                     .append("\nevery ")
-                    .italic{append("${it.elementAt(id).getDaysOfRepetition()}\n")}
+                    .italic{append("${ts.getDaysOfRepetition()}\n")}
                     .append("from ")
-                    .italic{append(it.elementAt(id).startHour)}
+                    .italic{append(ts.startHour)}
                     .append(" to ")
-                    .italic{append(it.elementAt(id).endHour)}
+                    .italic{append(ts.endHour)}
             }else { //monthly
                 dateString
                     .append("This timeslots repeats ")
                     .bold{append("monthly")}
                     .append(".\n\nStarting on ")
-                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).date.time))}
+                    .italic{append(ts.dateFormat.format(ts.date.time))}
                     .append(" until ")
-                    .italic{append(it.elementAt(id).dateFormat.format(it.elementAt(id).endRepetitionDate?.time))}
+                    .italic{append(ts.dateFormat.format(ts.endRepetitionDate?.time))}
                     .append("\nevery ")
-                    .italic{append("${it.elementAt(id).date.get(Calendar.DAY_OF_MONTH)}")}
+                    .italic{append("${ts.date.get(Calendar.DAY_OF_MONTH)}")}
                     .append(" of the month\n")
                     .append("from ")
-                    .italic{append(it.elementAt(id).startHour)}
+                    .italic{append(ts.startHour)}
                     .append(" to ")
-                    .italic{append(it.elementAt(id).endHour)}
+                    .italic{append(ts.endHour)}
             }
 
             tiAvailability?.editText?.text = dateString
-            tiLocation?.editText?.setText(it.elementAt(id).location)
-            tiCategory?.editText?.setText(it.elementAt(id).category)
+            tiLocation?.editText?.setText(ts.location)
+            tiCategory?.editText?.setText(ts.category)
         }
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         tiTitle = view.findViewById(R.id.TitleTextField)
         tiDescription = view.findViewById(R.id.DescriptionTextField)
         tiAvailability = view.findViewById(R.id.AvailabilityTextField)
@@ -129,7 +131,6 @@ class TimeslotDetailsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         // If snackbar message is set: display it as snackbar
         (activity as MainActivity).snackBarMessage?.run{
             Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT).show()

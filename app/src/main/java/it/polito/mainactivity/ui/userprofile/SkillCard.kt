@@ -55,9 +55,11 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
             val alertDialog = mBuilder.show()
             val closeButton = modalView.findViewById<ImageView>(R.id.modalCloseButton)
             val saveButton = modalView.findViewById<Button>(R.id.modalSaveButton)
-            modalDescription.setText(skill.description)
+            // populate fields
             modalTitle.text = skill.title
+            modalDescription.setText(skill.description)
             modalChecked.isChecked = skill.active
+            // add click listeners
             closeButton.setOnClickListener{
                 alertDialog.dismiss()
             }
@@ -66,10 +68,6 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
                 alertDialog.dismiss()
                 val checked: Boolean = modalChecked.isChecked
                 val desc: String = modalDescription.text.toString()
-                Log.d("DBG_SK_DESC",skill.description)
-                Log.d("DBG_DESC", desc)
-                Log.d("DBG_SK_ACTIVE", skill.active.toString())
-                Log.d("DBG_ACTIVE", checked.toString())
 
                 if(skill.description != desc || skill.active != checked){
                     val newSkill = skill.copy().apply { active = checked; description = desc }

@@ -38,16 +38,12 @@ class EditProfileFieldsFragment : Fragment() {
         vm.updated.observe(viewLifecycleOwner) {
             val skills = vm.skills.value
             if (it != null) {
-                Log.d("DBG_updated","Updated!")
                 vm.setSkills(skills?.map { s -> if (it.title != s.title) s else it })
-
-                //  display a snackbar with the message
+                // display a snackbar with the message
                 //val snack = Snackbar.make(binding.root, "Skill edited", Snackbar.LENGTH_SHORT)
                 //snack.show()
-
                 // change the message for the show profile fragment
                 (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
-
                 // reset value of updated to null
                 vm.resetUpdated()
             }
