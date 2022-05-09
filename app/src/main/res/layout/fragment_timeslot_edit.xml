@@ -55,8 +55,8 @@
                 android:layout_marginTop="8dp"
                 android:enabled="true"
                 android:hint="Description"
-                app:endIconMode="clear_text"
                 android:textColorHint="@color/purple_500"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="@+id/tilTitle"
                 app:layout_constraintStart_toStartOf="@+id/tilTitle"
                 app:layout_constraintTop_toBottomOf="@+id/tilTitle">
@@ -73,6 +73,99 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/outside_shape"
+                android:padding="@dimen/medium_distance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilDescription">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="@dimen/medium_distance"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cvEndTime"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lStartTime">
+
+                    <TextView
+                        android:id="@+id/tvStartTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:freezesText="true"
+                        android:padding="@dimen/big_distance"
+                        android:text="hh:mm"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/lEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End time:"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintBottom_toTopOf="@+id/cvStartTime"
+                    app:layout_constraintEnd_toEndOf="@+id/cvEndTime"
+                    app:layout_constraintStart_toStartOf="@+id/cvEndTime"
+                    app:layout_constraintTop_toTopOf="@+id/lStartTime" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="@dimen/medium_distance"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/cvStartTime"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/cvStartTime"
+                    app:layout_constraintTop_toTopOf="@+id/cvStartTime">
+
+                    <TextView
+                        android:id="@+id/tvEndTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:freezesText="true"
+                        android:padding="@dimen/big_distance"
+                        android:text="hh:mm"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/lStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+
+                    android:text="Start time:"
+                    android:textColor="@color/purple_500"
+                    app:layout_constraintBottom_toTopOf="@+id/cvStartTime"
+                    app:layout_constraintEnd_toEndOf="@+id/cvStartTime"
+                    app:layout_constraintStart_toStartOf="@+id/cvStartTime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="248dp"
                 android:background="@drawable/outside_shape"
                 android:padding="@dimen/medium_distance"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -221,6 +314,8 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+            <!--
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLocation"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -315,6 +410,8 @@
                     android:textSize="@dimen/profile_text_size_small"
                     android:visibility="gone" />
             </LinearLayout>
+            -->
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
