@@ -84,16 +84,15 @@ class TimeslotEditFragment : Fragment() {
             // if new timeslot (to be added)
             vm.submitTimeslot.observe(viewLifecycleOwner){
                 // populate fields
-                tiTitle?.editText?.setText(it.title)
-                tiDescription?.editText?.setText(it.description)
+                // tiTitle?.editText?.setText(it.title)
+                // tiDescription?.editText?.setText(it.description)
+                // tiLocation?.editText?.setText(it.location)
                 tiStartDate?.text = Utils.formatDateToString(it.date)
                 tiStartTime?.text = it.startHour
                 tiEndTime?.text = it.endHour
-                tiLocation?.editText?.setText(it.location)
                 binding.bSubmit
                     .apply{ visibility = View.VISIBLE }
                     .apply{ isEnabled = vm.isValid(it) }
-                    .setOnClickListener{ submit() }
             }
             addTextChangedListeners()
         }
@@ -120,6 +119,7 @@ class TimeslotEditFragment : Fragment() {
         btnEndTime.setOnClickListener { showEndTimePickerDialog() }
         btnRepetition.setOnClickListener { showRepetitionDialog() }
         btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
+        binding.bSubmit.setOnClickListener{ submit() }
 
         val categories = resources.getStringArray(R.array.skills_array)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
@@ -184,58 +184,24 @@ class TimeslotEditFragment : Fragment() {
         val oldTimeslots = vm.timeslots.value
         binding.TextInputEditTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-                val old = t?.title.toString()
-                val new = binding.TextInputEditTitle.text.toString()
-                if(old != new) {
-                    if (tId != null) {
-                        val newTimeslots =
-                            oldTimeslots?.mapIndexed { idx, ts -> if (idx == tId) ts.copy(title = new) else ts }
-                        vm.setTimeslots(newTimeslots)
-                    } else
-                        vm.setSubmitFields(title = new)
-                }
-                // restore cursor position to the end -- VITAL!
-                binding.TextInputEditTitle.setSelection(binding.TextInputEditTitle.text.toString().length)
+            override fun afterTextChanged(s: Editable?) {
+                vm.setSubmitFields(title = s.toString())
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         binding.TextInputEditDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                val old = t?.description.toString()
-                val new = binding.TextInputEditDescription.text.toString()
-                if(old != new){
-                    if(tId != null){
-                        val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(description = new) else ts}
-                        vm.setTimeslots(newTimeslots)
-                    }
-                    else
-                        vm.setSubmitFields(description = new)
-                }
-                // restore cursor position to the end -- VITAL!
-                binding.TextInputEditDescription.setSelection(binding.TextInputEditDescription.text.toString().length)
+                vm.setSubmitFields(description = p0.toString())
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         binding.TextInputEditLocation.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                val old = t?.location.toString()
-                val new = binding.TextInputEditLocation.text.toString()
-                if(old != new){
-                    if(tId != null){
-                        val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(location = new) else ts}
-                        vm.setTimeslots(newTimeslots)
-                    }
-                    else
-                        vm.setSubmitFields(location = new)
-                }
-                // restore cursor position to the end -- VITAL!
-                binding.TextInputEditLocation.setSelection(binding.TextInputEditLocation.text.toString().length)
+                vm.setSubmitFields(location = p0.toString())
             }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
 
@@ -474,27 +440,27 @@ class TimeslotEditFragment : Fragment() {
             mAlertDialog?.dismiss()
         }
 
-
         val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
         saveButton.setOnClickListener {
             val selectedDays: MutableList<Int> = mutableListOf()
             chips.forEachIndexed{ idx, c -> if(c.isChecked) selectedDays.add(idx + 1) }
             val repetitionType = autoCompleteTextView?.text.toString()
+            val oldTimeslots = vm.timeslots.value
+            val timeslot = if(tId == null) vm.timeslots.value?.get(tId!!) else vm.submitTimeslot.value
             if(tId != null){
                 // check selected days chips
-                val timeslot = vm.timeslots.value?.get(tId!!)
-                val oldTimeslots = vm.timeslots.value
                 if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days)){
                     val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetitionType, days = selectedDays) else ts}
                     vm.setTimeslots(newTimeslots)
                 }
-                //TODO CHECK THAT END DATE IS PRESENT
-                //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
-                mAlertDialog?.dismiss() //close dialog
             }
             else {
-                vm.setSubmitFields(repetition = repetitionType, days = selectedDays)
+                if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days))
+                    vm.setSubmitFields(repetition = repetitionType, days = selectedDays)
             }
+            //TODO CHECK THAT END DATE IS PRESENT
+            //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
+            mAlertDialog?.dismiss() //close dialog
         }
     }
 
