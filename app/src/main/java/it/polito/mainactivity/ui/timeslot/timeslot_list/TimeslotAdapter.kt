@@ -44,13 +44,13 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
         holder.tvLocation.text = ts?.location
 
         holder.tvDate.text = when (ts?.repetition) {
-            "weekly" -> "from " + Utils.formatDateToString(ts.date) +
-                    " until " + Utils.formatDateToString(ts.date) +
+            "weekly" -> "from " + Utils.formatDateToString(ts.startDate) +
+                    " until " + Utils.formatDateToString(ts.startDate) +
                     "\nevery week"
-            "monthly" -> "from " + Utils.formatDateToString(ts.date) +
-                    " until " + Utils.formatDateToString(ts.date) +
+            "monthly" -> "from " + Utils.formatDateToString(ts.startDate) +
+                    " until " + Utils.formatDateToString(ts.startDate) +
                     "\nevery month"
-            else -> Utils.formatDateToString(vm.timeslots.value?.get(position)?.date)
+            else -> Utils.formatDateToString(vm.timeslots.value?.get(position)?.startDate)
         }
         holder.tvHour.text =
             parentFragment.activity?.getString(

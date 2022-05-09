@@ -56,7 +56,7 @@ class TimeslotDetailsFragment : Fragment() {
 
             if(ts.repetition == ""){
                 dateString
-                    .italic{append(ts.dateFormat.format(ts.date.time))}
+                    .italic{append(ts.dateFormat.format(ts.startDate.time))}
                     .append(" from ")
                     .italic{append(ts.startHour)}
                     .append(" to ")
@@ -68,7 +68,7 @@ class TimeslotDetailsFragment : Fragment() {
                     .append("This timeslots repeats ")
                     .bold{append("weekly")}
                     .append(".\n\nStarting on ")
-                    .italic{append(ts.dateFormat.format(ts.date.time))}
+                    .italic{append(ts.dateFormat.format(ts.startDate.time))}
                     .append(" until ")
                     .italic{append(ts.dateFormat.format(ts.endRepetitionDate?.time))}
                     .append("\nevery ")
@@ -82,11 +82,11 @@ class TimeslotDetailsFragment : Fragment() {
                     .append("This timeslots repeats ")
                     .bold{append("monthly")}
                     .append(".\n\nStarting on ")
-                    .italic{append(ts.dateFormat.format(ts.date.time))}
+                    .italic{append(ts.dateFormat.format(ts.startDate.time))}
                     .append(" until ")
                     .italic{append(ts.dateFormat.format(ts.endRepetitionDate?.time))}
                     .append("\nevery ")
-                    .italic{append("${ts.date.get(Calendar.DAY_OF_MONTH)}")}
+                    .italic{append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}")}
                     .append(" of the month\n")
                     .append("from ")
                     .italic{append(ts.startHour)}

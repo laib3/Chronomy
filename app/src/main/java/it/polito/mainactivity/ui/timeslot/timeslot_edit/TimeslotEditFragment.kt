@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import kotlin.math.max
 
 //TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
 
@@ -102,7 +104,7 @@ class TimeslotEditFragment : Fragment() {
         }
     }
 
-    // Extending DialogFragment for a date picker
+    // Extending DialogFragment for a startDate picker
     class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         enum class DType {
@@ -125,9 +127,9 @@ class TimeslotEditFragment : Fragment() {
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            // Use the current date as the default date in the picker
+            // Use the current startDate as the default startDate in the picker
             // val c = Calendar.getInstance()
-            val startDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.date else vm?.submitTimeslot?.value?.date
+            val startDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.startDate else vm?.submitTimeslot?.value?.startDate
             val endDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.endRepetitionDate else vm?.submitTimeslot?.value?.endRepetitionDate
             val repetition = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.repetition else vm?.submitTimeslot?.value?.repetition
 
@@ -155,7 +157,7 @@ class TimeslotEditFragment : Fragment() {
             if(tId != null){
                 if(type == DType.START && old != new){
                     val oldTimeslots = vm?.timeslots?.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(date = date) else ts}
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(startDate = date) else ts}
                     vm?.setTimeslots(newTimeslots)
                 }
                 else if (type == DType.END && old != new){
@@ -180,7 +182,6 @@ class TimeslotEditFragment : Fragment() {
 
     private var _binding: FragmentTimeslotEditBinding? = null
     private val binding get() = _binding!!
-    private var days: List<Int>? = null
     private var tId: Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -194,6 +195,7 @@ class TimeslotEditFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         val categories = resources.getStringArray(R.array.skills_array)
         val repetitions = resources.getStringArray(R.array.repetitionMw)
@@ -202,33 +204,44 @@ class TimeslotEditFragment : Fragment() {
         binding.tvCategory.setAdapter(categoryArrayAdapter)
         binding.tvRepetition.setAdapter(repetitionsArrayAdapter)
 
+
         // set listeners
         if(tId != null)
             addFocusChangeListeners()
-        else
+        else{
             addTextChangedListeners()
+        }
         if(tId != null){
             val t = vm.timeslots.value?.elementAt(tId!!)
             val positionCategory = categoryArrayAdapter.getPosition(t?.category)
-            val positionRepetition = repetitionsArrayAdapter.getPosition(t?.repetition ?: repetitions.first())
+            val positionRepetition = max(repetitionsArrayAdapter.getPosition(t?.repetition), 0)
             // TODO check
             binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
             binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
             // TODO change to setTimeslots
-            binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> t?.category = categories[idx] }
+            binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ ->
+                val oldTimeslots = vm.timeslots.value
+                val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(category = categories[idx]) else ts}
+                vm.setTimeslots(newTimeslots)
+            }
             // TODO change to setTimeslots
-            binding.tvRepetition.onItemClickListener = OnItemClickListener{_, _, idx, _ -> t?.repetition = repetitions[idx]}
+            binding.tvRepetition.onItemClickListener = OnItemClickListener{_, _, idx, _ ->
+                val oldTimeslots = vm.timeslots.value
+                val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(repetition = repetitions[idx]) else ts}
+                vm.setTimeslots(newTimeslots)
+            }
         }
         else {
             val positionCategory = categoryArrayAdapter.getPosition(vm.submitTimeslot.value?.category)
-            val positionRepetition = repetitionsArrayAdapter.getPosition(vm.submitTimeslot.value?.repetition ?: repetitions.first())
+            val positionRepetition = max(repetitionsArrayAdapter.getPosition(vm.submitTimeslot.value?.repetition),0)
             binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
             binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(category = categories[idx]) }
             binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
             binding.tvRepetition.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(repetition = repetitions[idx]) }
+            binding.bSubmit.apply{ visibility = View.VISIBLE }
         }
 
-        // show start date picker dialog
+        // show start startDate picker dialog
         binding.tvStartDate.setOnClickListener {
             DatePickerFragment(binding.tvStartDate, vm, DatePickerFragment.DType.START, tId)
                 .show(requireActivity().supportFragmentManager, "startDatePicker") }
@@ -245,11 +258,10 @@ class TimeslotEditFragment : Fragment() {
             TimePickerFragment(binding.tvEndTime, vm, TimePickerFragment.Type.END, tId)
                 .show(requireActivity().supportFragmentManager, "endTimePicker")
         }
-        binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()) findNavController().navigateUp() }
         binding.swRepetition.setOnClickListener {
             if(tId != null){
                 val oldTimeslots = vm.timeslots.value
-                val repetition = if(binding.swRepetition.isChecked) "" else "Weekly"
+                val repetition = if(binding.swRepetition.isChecked) "Weekly" else ""
                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
                 vm.setTimeslots(newTimeslots)
             }
@@ -257,38 +269,43 @@ class TimeslotEditFragment : Fragment() {
                 vm.setSubmitFields(repetition = if(binding.swRepetition.isChecked) "Weekly" else "")
             }
         }
+        binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()) findNavController().navigateUp() }
 
         // observe viewmodel
         if(tId != null){
             vm.timeslots.observe(viewLifecycleOwner) {
-                val timeslot: Timeslot = it.elementAt(tId!!)
-                binding.tilTitle.editText?.setText(timeslot.title)
-                binding.tilDescription.editText?.setText(timeslot.description)
-                binding.tilLocation.editText?.setText(timeslot.location)
-                binding.tvStartDate.text = Utils.formatDateToString(timeslot.date)
-                binding.tvStartTime.text = timeslot.startHour
-                binding.tvEndTime.text = timeslot.endHour
-                binding.tvEndDate.text = Utils.formatDateToString(timeslot.endRepetitionDate)
-                setRepetitionComponentsVisibility(timeslot.repetition)
-                val positionCategory = categoryArrayAdapter.getPosition(timeslot.category)
-                val positionRepetition = repetitionsArrayAdapter.getPosition(timeslot.repetition ?: repetitions.first())
+                val t: Timeslot = it.elementAt(tId!!)
+                binding.tilTitle.editText?.setText(t.title)
+                binding.tilDescription.editText?.setText(t.description)
+                binding.tilLocation.editText?.setText(t.location)
+                binding.tvStartDate.text = Utils.formatDateToString(t.startDate)
+                binding.tvStartTime.text = t.startHour
+                binding.tvEndTime.text = t.endHour
+                binding.tvEndDate.text = if(t.startDate.before(t.endRepetitionDate) || t.startDate == t.endRepetitionDate)
+                    Utils.formatDateToString(t.endRepetitionDate)
+                else
+                    Utils.formatDateToString(t.startDate)
+                val positionCategory = categoryArrayAdapter.getPosition(t.category)
+                val positionRepetition = max(repetitionsArrayAdapter.getPosition(t.repetition), 0)
                 // TODO check
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
                 binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
-                days = timeslot.days
+                setRepetitionComponentsVisibility(t.repetition)
             }
         } else {
             // if new timeslot (to be added)
             vm.submitTimeslot.observe(viewLifecycleOwner){
-                binding.tvStartDate.text = Utils.formatDateToString(it.date)
+                binding.tvStartDate.text = Utils.formatDateToString(it.startDate)
                 binding.tvStartTime.text = it.startHour
                 binding.tvEndTime.text = it.endHour
-                binding.tvEndDate.text = Utils.formatDateToString(it.endRepetitionDate)
-                setRepetitionComponentsVisibility(it.repetition)
+                binding.tvEndDate.text = if(it.startDate.before(it.endRepetitionDate) || it.startDate == it.endRepetitionDate)
+                    Utils.formatDateToString(it.endRepetitionDate)
+                else
+                    Utils.formatDateToString(it.startDate)
                 val positionCategory = categoryArrayAdapter.getPosition(it.category)
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
+                setRepetitionComponentsVisibility(it.repetition)
                 binding.bSubmit
-                    .apply{ visibility = View.VISIBLE }
                     .apply{ isEnabled = vm.isValid(it) }
             }
         }

@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.TimeslotModel
-import it.polito.mainactivity.model.Utils
 import java.util.*
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
@@ -49,7 +48,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 (t.repetition == null || (
                     t.repetition in app.resources.getStringArray(R.array.repetitionMw) &&
                     t.days.isNotEmpty() &&
-                    (t.endRepetitionDate.after(t.date) || t.endRepetitionDate.equals(t.date))))
+                    (t.endRepetitionDate.after(t.startDate) || t.endRepetitionDate.equals(t.startDate))))
     }
 
     fun removeTimeslot(position: Int) {
@@ -83,7 +82,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         val sTs = submitTimeslot.value
         title?.let{ sTs?.title = it }
         description?.let{ sTs?.description = it }
-        date?.let{ sTs?.date = it }
+        date?.let{ sTs?.startDate = it }
         startHour?.let{ sTs?.startHour = it }
         endHour?.let{ sTs?.endHour = it }
         location?.let{ sTs?.location = it }

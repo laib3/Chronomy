@@ -1,12 +1,11 @@
 package it.polito.mainactivity.model
 
-import it.polito.mainactivity.R
 import java.text.DateFormat
 import java.util.*
 
 data class Timeslot (var title:String,
                      var description:String,
-                     var date: Calendar,
+                     var startDate: Calendar,
                      var startHour : String,
                      var endHour:String,
                      var location:String,
@@ -20,12 +19,12 @@ data class Timeslot (var title:String,
     var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     init {
-        endRepetitionDate = if(endRepetitionDate.before(date)){
-            date
+        endRepetitionDate = if(endRepetitionDate.before(startDate)){
+            startDate
         } else {
             endRepetitionDate
         }
-        dateFormat.timeZone = date.timeZone
+        dateFormat.timeZone = startDate.timeZone
         createDates()
     }
 
@@ -35,10 +34,10 @@ data class Timeslot (var title:String,
         {
         "title": "$title", 
         "description": "$description",
-        "date": 
-            {"year": ${date.get(Calendar.YEAR)}, 
-            "month": ${date.get(Calendar.MONTH)}, 
-            "day": ${date.get(Calendar.DAY_OF_MONTH)}},
+        "startDate": 
+            {"year": ${startDate.get(Calendar.YEAR)}, 
+            "month": ${startDate.get(Calendar.MONTH)}, 
+            "day": ${startDate.get(Calendar.DAY_OF_MONTH)}},
         "startHour": "$startHour", 
         "endHour": "$endHour", 
         "location": "$location", 
@@ -56,7 +55,7 @@ data class Timeslot (var title:String,
 
     private fun createDates() {
         var tmp = Calendar.getInstance()
-        tmp.timeInMillis = date.timeInMillis
+        tmp.timeInMillis = startDate.timeInMillis
         if(repetition == null)
             return
         else if(repetition!!.lowercase()=="weekly"){

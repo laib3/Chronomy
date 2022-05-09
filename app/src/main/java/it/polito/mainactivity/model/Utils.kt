@@ -29,7 +29,7 @@ class Utils {
         fun JSONObjectToTimeslot(jo: JSONObject): Timeslot {
                 val title: String = jo.getString("title")
                 val description: String = jo.getString("description")
-                val date: JSONObject = jo.getJSONObject("date")
+                val date: JSONObject = jo.getJSONObject("startDate")
                 val dYear: Int = date.getInt("year")
                 val dMonth: Int = date.getInt("month")
                 val dDay: Int = date.getInt("day")
