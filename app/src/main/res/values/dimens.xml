@@ -12,6 +12,7 @@
     <dimen name="medium_distance">8dp</dimen>
     <dimen name="big_distance">16dp</dimen>
     <dimen name="huge_distance">32dp</dimen>
+    <dimen name="enormous_distance">48dp</dimen>
 
     <!-- size of pictures -->
     <dimen name="profile_picture_size">128dp</dimen>

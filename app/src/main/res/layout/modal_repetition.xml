@@ -33,33 +33,13 @@
         app:tint="@color/black" />
 
 
-    <TextView
-        android:id="@+id/lRepeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Repetition"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/dmRepetition"
-        app:layout_constraintEnd_toStartOf="@+id/dmRepetition"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dmRepetition" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dmRepetition"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="195dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/lRepeat"
-        app:layout_constraintTop_toBottomOf="@+id/modalTitle">
+        tools:layout_editor_absoluteX="200dp"
+        tools:layout_editor_absoluteY="72dp">
 
         <AutoCompleteTextView
             android:id="@+id/tvRepetition"
@@ -70,17 +50,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <TextView
-        android:id="@+id/lRepeatOn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Repeat on"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/lRepeat"
-        app:layout_constraintTop_toBottomOf="@+id/dmRepetition" />
 
     <!--<HorizontalScrollView
         android:id="@+id/horizontalScrollView"
@@ -94,14 +63,12 @@
         android:id="@+id/cgDays"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
         app:chipSpacingHorizontal="0dp"
         app:ensureMinTouchTargetSize="false"
-        app:layout_constraintEnd_toEndOf="@+id/dmRepetition"
-        app:layout_constraintStart_toStartOf="@+id/lRepeatOn"
-        app:layout_constraintTop_toBottomOf="@+id/lRepeatOn"
         app:singleLine="true"
-        app:singleSelection="false">
+        app:singleSelection="false"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="163dp">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/S0"
@@ -166,8 +133,8 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/cvEndDate"
-        app:layout_constraintStart_toStartOf="@+id/lRepeatOn"
-        app:layout_constraintTop_toTopOf="@+id/cvEndDate" />
+        app:layout_constraintTop_toTopOf="@+id/cvEndDate"
+        tools:layout_editor_absoluteX="16dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvEndDate"
