@@ -39,7 +39,7 @@ class ShowProfileFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
-        if(item.itemId === R.id.action_nav_show_profile_to_nav_edit_profile) {
+        if(item.itemId == R.id.action_nav_show_profile_to_nav_edit_profile) {
             findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile)
             return true
         }

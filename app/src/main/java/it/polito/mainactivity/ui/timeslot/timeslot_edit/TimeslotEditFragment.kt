@@ -2,6 +2,8 @@ package it.polito.mainactivity.ui.timeslot.timeslot_edit
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.content.DialogInterface
+import android.graphics.Color
 import java.util.Calendar
 import java.util.GregorianCalendar
 import android.os.Build
@@ -21,6 +23,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.model.Timeslot
@@ -34,20 +38,10 @@ class TimeslotEditFragment : Fragment() {
     private val vm:TimeslotViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotEditBinding? = null
-
-    // private var tiTitle: TextInputLayout? = null
-    // private var tiDescription: TextInputLayout? = null
-    // private var tiStartDate: TextView? = null
-    // private var tiEndDate: TextView? = null
-    // private var tiStartTime: TextView? = null
-    // private var tiEndTime: TextView? = null
-    // private var tiLocation: TextInputLayout? = null
-    // private var cgCategory: ChipGroup? = null
     private var cgWeekDays: ChipGroup? = null
     private var mAlertDialog: AlertDialog? = null
     private var days: List<Int>? = null
     private var tId: Int? = null
-    // private var submitTimeslot: Timeslot? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -188,7 +182,7 @@ class TimeslotEditFragment : Fragment() {
     class TimePickerFragment(private val tiTime: TextView?,
                              private val vm: TimeslotViewModel,
                              private val type: Type,
-                             private val tId: Int? = null) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
+                             private val tId: Int? = null) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
         enum class Type {
             START, END
@@ -242,16 +236,17 @@ class TimeslotEditFragment : Fragment() {
                         }
                     }
                     else if(type == Type.END){
-                        if(timeText.compareTo(vm.submitTimeslot.value!!.startHour.toString()) >= 0)
+                        if(timeText.compareTo(vm.submitTimeslot.value!!.startHour) >= 0)
                             vm.setSubmitFields(endHour = timeText)
-                        else
-                            TODO("implement")
-                            // display snackbar
+                        else {
+                            // display snackbar when end time is before start time
+                            val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "ERROR: End time must be after start time!", Snackbar.LENGTH_LONG)
+                            s.setTextColor(Color.parseColor("#ffff00"))
+                            s.show()
+                        }
                     }
                 }
             }
-            // TODO move up in observe
-            tiTime?.text = timeText
         }
     }
 
