@@ -57,7 +57,10 @@ class Utils {
             return dateFormat.format(date.time)
         }
 
-        fun formatYearMonthDayToString(year: Int, month: Int, day: Int): String = "${day}/${(month + 1)}/${year}"
+        fun formatYearMonthDayToString(year: Int, month: Int, day: Int): String {
+            val date = GregorianCalendar(year, month, day)
+            return formatDateToString(date)
+        }
 
         fun getSkillImgRes(title: String) : Int?{
             return when(title){

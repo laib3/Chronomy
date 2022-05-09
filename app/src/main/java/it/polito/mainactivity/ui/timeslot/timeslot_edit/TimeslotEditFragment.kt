@@ -173,8 +173,6 @@ class TimeslotEditFragment : Fragment() {
                     vm?.setSubmitFields(endRepetitionDate = date)
                 }
             }
-            // TODO modify move up in observe
-            tiDate?.text = new
         }
     }
 
@@ -182,7 +180,6 @@ class TimeslotEditFragment : Fragment() {
 
     private var _binding: FragmentTimeslotEditBinding? = null
     private val binding get() = _binding!!
-    private var mAlertDialog: AlertDialog? = null
     private var days: List<Int>? = null
     private var tId: Int? = null
 
@@ -205,6 +202,11 @@ class TimeslotEditFragment : Fragment() {
         binding.tvCategory.setAdapter(categoryArrayAdapter)
         binding.tvRepetition.setAdapter(repetitionsArrayAdapter)
 
+        // set listeners
+        if(tId != null)
+            addFocusChangeListeners()
+        else
+            addTextChangedListeners()
         if(tId != null){
             val t = vm.timeslots.value?.elementAt(tId!!)
             val positionCategory = categoryArrayAdapter.getPosition(t?.category)
@@ -226,34 +228,33 @@ class TimeslotEditFragment : Fragment() {
             binding.tvRepetition.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(repetition = repetitions[idx]) }
         }
 
-        // set on click listeners
-        if(tId != null)
-            addFocusChangeListeners()
-        else
-            addTextChangedListeners()
         // show start date picker dialog
         binding.tvStartDate.setOnClickListener {
             DatePickerFragment(binding.tvStartDate, vm, DatePickerFragment.DType.START, tId)
                 .show(requireActivity().supportFragmentManager, "startDatePicker") }
         // show start time picker dialog
+        binding.tvEndDate.setOnClickListener {
+            DatePickerFragment(binding.tvEndDate, vm, DatePickerFragment.DType.END, tId)
+                .show(requireActivity().supportFragmentManager, "endDatePicker")
+        }
         binding.tvStartTime.setOnClickListener {
             TimePickerFragment(binding.tvStartTime, vm, TimePickerFragment.Type.START, tId)
                 .show(requireActivity().supportFragmentManager, "startTimePicker") }
         // show end time picker dialog
         binding.tvEndTime.setOnClickListener {
-            val timeFragment = TimePickerFragment(binding.tvEndTime, vm, TimePickerFragment.Type.END, tId)
-            timeFragment.show(requireActivity().supportFragmentManager, "endTimePicker")
+            TimePickerFragment(binding.tvEndTime, vm, TimePickerFragment.Type.END, tId)
+                .show(requireActivity().supportFragmentManager, "endTimePicker")
         }
         binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()) findNavController().navigateUp() }
         binding.swRepetition.setOnClickListener {
             if(tId != null){
                 val oldTimeslots = vm.timeslots.value
-                val repetition = if(binding.swRepetition.isChecked) null else "Weekly"
+                val repetition = if(binding.swRepetition.isChecked) "" else "Weekly"
                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
                 vm.setTimeslots(newTimeslots)
             }
             else {
-                vm.setSubmitFields(repetition = if(binding.swRepetition.isChecked) "Weekly" else null)
+                vm.setSubmitFields(repetition = if(binding.swRepetition.isChecked) "Weekly" else "")
             }
         }
 
@@ -267,6 +268,7 @@ class TimeslotEditFragment : Fragment() {
                 binding.tvStartDate.text = Utils.formatDateToString(timeslot.date)
                 binding.tvStartTime.text = timeslot.startHour
                 binding.tvEndTime.text = timeslot.endHour
+                binding.tvEndDate.text = Utils.formatDateToString(timeslot.endRepetitionDate)
                 setRepetitionComponentsVisibility(timeslot.repetition)
                 val positionCategory = categoryArrayAdapter.getPosition(timeslot.category)
                 val positionRepetition = repetitionsArrayAdapter.getPosition(timeslot.repetition ?: repetitions.first())
@@ -281,6 +283,7 @@ class TimeslotEditFragment : Fragment() {
                 binding.tvStartDate.text = Utils.formatDateToString(it.date)
                 binding.tvStartTime.text = it.startHour
                 binding.tvEndTime.text = it.endHour
+                binding.tvEndDate.text = Utils.formatDateToString(it.endRepetitionDate)
                 setRepetitionComponentsVisibility(it.repetition)
                 val positionCategory = categoryArrayAdapter.getPosition(it.category)
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
@@ -289,10 +292,9 @@ class TimeslotEditFragment : Fragment() {
                     .apply{ isEnabled = vm.isValid(it) }
             }
         }
-
     }
 
-    fun setRepetitionComponentsVisibility(repetition: String?){
+    private fun setRepetitionComponentsVisibility(repetition: String?){
         binding.lEndDate.visibility = if(repetition != null) View.VISIBLE else View.INVISIBLE
         binding.cvEndDate.visibility = if(repetition != null) View.VISIBLE else View.INVISIBLE
         binding.lRepeat.visibility = if(repetition != null) View.VISIBLE else View.GONE

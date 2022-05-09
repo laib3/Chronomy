@@ -38,7 +38,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             return false
     }
 
-    fun isValid(t: Timeslot): Boolean{
+    fun isValid(t: Timeslot): Boolean {
         val app = getApplication<Application>()
         return t.title.isNotBlank() &&
                 t.location.isNotBlank() &&
@@ -88,7 +88,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         endHour?.let{ sTs?.endHour = it }
         location?.let{ sTs?.location = it }
         category?.let{ sTs?.category = it }
-        repetition.let{ sTs?.repetition = it }
+        // if you pass an empty string then it means that you want it to be null
+        repetition?.let{ sTs?.repetition = if(it == "") null else it }
         days?.let{ sTs?.days = it }
         endRepetitionDate?.let{ sTs?.endRepetitionDate = it }
         _submitTimeslot.value = sTs!!
