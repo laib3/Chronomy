@@ -34,7 +34,7 @@
 
 
     <TextView
-        android:id="@+id/repeat"
+        android:id="@+id/lRepeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -58,11 +58,11 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/repeat"
+        app:layout_constraintStart_toEndOf="@+id/lRepeat"
         app:layout_constraintTop_toBottomOf="@+id/modalTitle">
 
         <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
+            android:id="@+id/tvRepetition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
@@ -72,14 +72,14 @@
 
 
     <TextView
-        android:id="@+id/repeat_on"
+        android:id="@+id/lRepeatOn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Repeat on"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/repeat"
+        app:layout_constraintStart_toStartOf="@+id/lRepeat"
         app:layout_constraintTop_toBottomOf="@+id/dmRepetition" />
 
     <!--<HorizontalScrollView
@@ -98,8 +98,8 @@
         app:chipSpacingHorizontal="0dp"
         app:ensureMinTouchTargetSize="false"
         app:layout_constraintEnd_toEndOf="@+id/dmRepetition"
-        app:layout_constraintStart_toStartOf="@+id/repeat_on"
-        app:layout_constraintTop_toBottomOf="@+id/repeat_on"
+        app:layout_constraintStart_toStartOf="@+id/lRepeatOn"
+        app:layout_constraintTop_toBottomOf="@+id/lRepeatOn"
         app:singleLine="true"
         app:singleSelection="false">
 
@@ -158,7 +158,7 @@
     <!--</HorizontalScrollView>-->
 
     <TextView
-        android:id="@+id/ends_on"
+        android:id="@+id/lEnds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ends"
@@ -166,7 +166,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/cvEndDate"
-        app:layout_constraintStart_toStartOf="@+id/repeat_on"
+        app:layout_constraintStart_toStartOf="@+id/lRepeatOn"
         app:layout_constraintTop_toTopOf="@+id/cvEndDate" />
 
     <com.google.android.material.card.MaterialCardView
@@ -177,7 +177,7 @@
         android:layout_marginTop="8dp"
         app:cardCornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="@+id/dmRepetition"
-        app:layout_constraintStart_toEndOf="@+id/ends_on"
+        app:layout_constraintStart_toEndOf="@+id/lEnds"
         app:layout_constraintTop_toBottomOf="@+id/cgDays">
 
         <TextView
@@ -199,7 +199,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <Button
-        android:id="@+id/save_button"
+        android:id="@+id/bSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
