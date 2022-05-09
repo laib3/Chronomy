@@ -17,7 +17,6 @@ class ShowProfileFragment : Fragment() {
     private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileBinding? = null
 
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!

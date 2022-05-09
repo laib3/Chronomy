@@ -1,12 +1,14 @@
 package it.polito.mainactivity.ui.timeslot
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.TimeslotModel
+import it.polito.mainactivity.model.Utils
 import java.util.*
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
@@ -91,5 +93,4 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         endRepetitionDate?.let{ sTs?.endRepetitionDate = it }
         _submitTimeslot.value = sTs!!
     }
-
 }
