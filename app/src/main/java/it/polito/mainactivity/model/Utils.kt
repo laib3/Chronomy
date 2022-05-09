@@ -72,6 +72,9 @@ class Utils {
                 else -> null
             }
         }
+
+        fun formatTime(hh: Int, mm: Int): String = String.format("%02d:%02d", hh, mm)
+
     }
 
 }

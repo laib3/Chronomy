@@ -26,7 +26,7 @@ class TimeslotModel(val application: Application) {
         var jsonTimeslots: JSONObject? = null
         try {
             if(timeslotsString != null)
-                jsonTimeslots = JSONObject(timeslotsString.trim().replaceIndent())
+                jsonTimeslots = JSONObject(timeslotsString.trim().trimIndent())
         } catch(e: JSONException){
             e.printStackTrace()
         }
@@ -58,7 +58,7 @@ class TimeslotModel(val application: Application) {
                 "Delivery",
                 null,
                 listOf(),
-                null),
+                GregorianCalendar(2022, 4, 25)),
 
             Timeslot("Walk your dog",
                 "Donec eu dui nec nisl egestas tristique suscipit non mauris. Nullam nec magna neque. Quisque a quam sodales quam dapibus euismod non et diam. Nulla molestie ex orci, vitae suscipit velit viverra non. Phasellus diam massa, sollicitudin ac interdum commodo.",
@@ -68,7 +68,7 @@ class TimeslotModel(val application: Application) {
                 "Other",
                 null,
                 listOf(),
-                null),
+                GregorianCalendar(2022, 4, 25)),
 
             Timeslot("Teach to your kid",
                 "Praesent euismod est ac dictum gravida. Praesent nulla metus, ultrices eu tempor ac, pretium viverra nisi. Morbi odio urna, ornare sit amet dictum in, commodo vel mauris. Vivamus et massa quis lorem iaculis laoreet. Vestibulum eros diam, condimentum ac libero eget, lobortis fringilla orci.",
@@ -78,7 +78,7 @@ class TimeslotModel(val application: Application) {
                 "Tutoring",
                 null,
                 listOf(),
-                null),
+                GregorianCalendar(2022, 4, 25)),
 
             Timeslot("Bring grocery YOGA to your door",
                 "Phasellus fermentum sagittis leo finibus fringilla. Proin est magna, varius ut arcu lobortis, imperdiet facilisis ex. Mauris varius at metus nec faucibus. Fusce et dapibus ipsum. In hac habitasse platea dictumst. Duis arcu nulla, imperdiet quis placerat eget.",
@@ -110,6 +110,7 @@ class TimeslotModel(val application: Application) {
         timeslots = ts
         sharedPreferences.edit().putString(TIMESLOTS_TAG, this.toString()).apply()
     }
+
     fun getTimeslots(): MutableLiveData<List<Timeslot>> = MutableLiveData(timeslots)
 
 }

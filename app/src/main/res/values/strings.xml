@@ -61,7 +61,7 @@
     <!-- separators -->
     <string name="starting_hour_dash_ending_hour">%s - %s</string>
 
-    <string-array name="repetition_mw">
+    <string-array name="repetitionMw">
         <item id="isWeekly">Weekly</item>
         <item id="isMonthly">Monthly</item>
     </string-array>
