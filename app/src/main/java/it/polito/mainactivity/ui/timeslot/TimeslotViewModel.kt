@@ -22,15 +22,11 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val timeslots : LiveData<List<Timeslot>> = _timeslots
     val submitTimeslot: LiveData<Timeslot> = _submitTimeslot
 
-    fun findById(id: Int) : Timeslot? {
-        return _timeslots.value?.elementAtOrNull(id)
-    }
-
     fun setTimeslots(ts: List<Timeslot>?) = ts?.let{ _timeslots.value = it; model.setTimeslots(it) }
 
-    fun addTimeslot(t : Timeslot?): Boolean {
+    private fun addTimeslot(t : Timeslot?): Boolean {
         if(t != null && isValid(t)){
-            t?.let{ val ts = _timeslots.value?.toMutableList(); ts?.add(it); _timeslots.value = ts!!; model.setTimeslots(ts) }
+            t.let{ val ts = _timeslots.value?.toMutableList(); ts?.add(it); _timeslots.value = ts!!; model.setTimeslots(ts) }
             return true
         }
         else
@@ -43,12 +39,12 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 t.location.isNotBlank() &&
                 t.startHour.length == TIME_LENGTH &&
                 t.endHour.length == TIME_LENGTH &&
-                t.startHour.compareTo(t.endHour) <= 0 &&
+                t.startHour <= t.endHour &&
                 t.category in app.resources.getStringArray(R.array.skills_array) &&
                 (t.repetition == null || (
                     t.repetition in app.resources.getStringArray(R.array.repetitionMw) &&
                     t.days.isNotEmpty() &&
-                    (t.endRepetitionDate.after(t.startDate) || t.endRepetitionDate.equals(t.startDate))))
+                    (t.endRepetitionDate.after(t.startDate) || t.endRepetitionDate == t.startDate)))
     }
 
     fun removeTimeslot(position: Int) {
@@ -65,7 +61,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return false
     }
 
-    fun resetSubmit() {
+    private fun resetSubmit() {
         _submitTimeslot.value = Timeslot.emptyTimeslot()
     }
 

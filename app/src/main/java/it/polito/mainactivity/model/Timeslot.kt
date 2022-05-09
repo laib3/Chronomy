@@ -16,7 +16,6 @@ data class Timeslot (var title:String,
                     ){
 
     private var dates: MutableList<Calendar> = mutableListOf()
-    var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     init {
         endRepetitionDate = if(endRepetitionDate.before(startDate)){
@@ -24,7 +23,6 @@ data class Timeslot (var title:String,
         } else {
             endRepetitionDate
         }
-        dateFormat.timeZone = startDate.timeZone
         createDates()
     }
 
@@ -73,23 +71,6 @@ data class Timeslot (var title:String,
                 tmp.add(Calendar.MONTH, 1)
             }
         }
-    }
-
-    private fun getDayName(num : Int):String{
-        when (num) {
-            Calendar.SUNDAY -> return "Sunday"
-            Calendar.MONDAY -> return "Monday"
-            Calendar.TUESDAY -> return "Tuesday"
-            Calendar.WEDNESDAY -> return "Wednesday"
-            Calendar.THURSDAY -> return "Thursday"
-            Calendar.FRIDAY -> return "Friday"
-            Calendar.SATURDAY -> return "Saturday"
-            else -> return ""
-        }
-    }
-
-    fun getDaysOfRepetition(): String?{
-        return days?.joinToString(", ","","",-1, "...") { getDayName(it) }
     }
 
     companion object {

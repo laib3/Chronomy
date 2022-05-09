@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
+import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 import java.util.*
 
@@ -56,7 +57,7 @@ class TimeslotDetailsFragment : Fragment() {
 
             if(ts.repetition == ""){
                 dateString
-                    .italic{append(ts.dateFormat.format(ts.startDate.time))}
+                    .italic{append(Utils.formatDateToString(ts.startDate))}
                     .append(" from ")
                     .italic{append(ts.startHour)}
                     .append(" to ")
@@ -68,23 +69,24 @@ class TimeslotDetailsFragment : Fragment() {
                     .append("This timeslots repeats ")
                     .bold{append("weekly")}
                     .append(".\n\nStarting on ")
-                    .italic{append(ts.dateFormat.format(ts.startDate.time))}
+                    .italic{append(Utils.formatDateToString(ts.startDate))}
                     .append(" until ")
-                    .italic{append(ts.dateFormat.format(ts.endRepetitionDate?.time))}
+                    .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
                     .append("\nevery ")
-                    .italic{append("${ts.getDaysOfRepetition()}\n")}
+                    .italic{append("${Utils.getDaysOfRepetition(ts.days)}\n")}
                     .append("from ")
                     .italic{append(ts.startHour)}
                     .append(" to ")
                     .italic{append(ts.endHour)}
-            }else { //monthly
+            }
+            else { //monthly
                 dateString
                     .append("This timeslots repeats ")
                     .bold{append("monthly")}
                     .append(".\n\nStarting on ")
-                    .italic{append(ts.dateFormat.format(ts.startDate.time))}
+                    .italic{append(Utils.formatDateToString(ts.startDate))}
                     .append(" until ")
-                    .italic{append(ts.dateFormat.format(ts.endRepetitionDate?.time))}
+                    .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
                     .append("\nevery ")
                     .italic{append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}")}
                     .append(" of the month\n")
@@ -121,8 +123,8 @@ class TimeslotDetailsFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
-        if(item.itemId === R.id.nav_edit) {
-            var bundle = Bundle();
+        if(item.itemId == R.id.nav_edit) {
+            val bundle = Bundle();
             arguments?.getInt("id")?.let{ bundle.putInt("id", it) }
             findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
             return true

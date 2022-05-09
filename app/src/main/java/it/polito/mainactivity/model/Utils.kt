@@ -80,6 +80,22 @@ class Utils {
 
         fun formatTime(hh: Int, mm: Int): String = String.format("%02d:%02d", hh, mm)
 
+        fun getDayName(num: Int): String = when (num) {
+                Calendar.SUNDAY -> "Sunday"
+                Calendar.MONDAY -> "Monday"
+                Calendar.TUESDAY -> "Tuesday"
+                Calendar.WEDNESDAY -> "Wednesday"
+                Calendar.THURSDAY -> "Thursday"
+                Calendar.FRIDAY -> "Friday"
+                Calendar.SATURDAY -> "Saturday"
+                else -> ""
+        }
+
+        fun getInitialsOfDayName(num: Int) = getDayName(num).substring(0, 2).uppercase()
+
+        fun getDaysOfRepetition(days: List<Int>): String =
+            days.sorted().joinToString(", ","","",-1, "...") { getDayName(it) }
+
     }
 
 }

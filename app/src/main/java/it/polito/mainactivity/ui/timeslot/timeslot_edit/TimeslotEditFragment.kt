@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
@@ -204,6 +205,7 @@ class TimeslotEditFragment : Fragment() {
         binding.tvCategory.setAdapter(categoryArrayAdapter)
         binding.tvRepetition.setAdapter(repetitionsArrayAdapter)
 
+        val chips: MutableList<Chip> = mutableListOf(binding.S0, binding.M1, binding.T2, binding.W3, binding.T4, binding.F5, binding.S6)
 
         // set listeners
         if(tId != null)
@@ -215,21 +217,27 @@ class TimeslotEditFragment : Fragment() {
             val t = vm.timeslots.value?.elementAt(tId!!)
             val positionCategory = categoryArrayAdapter.getPosition(t?.category)
             val positionRepetition = max(repetitionsArrayAdapter.getPosition(t?.repetition), 0)
-            // TODO check
             binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
             binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
-            // TODO change to setTimeslots
             binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ ->
                 val oldTimeslots = vm.timeslots.value
                 val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(category = categories[idx]) else ts}
                 vm.setTimeslots(newTimeslots)
             }
-            // TODO change to setTimeslots
             binding.tvRepetition.onItemClickListener = OnItemClickListener{_, _, idx, _ ->
                 val oldTimeslots = vm.timeslots.value
                 val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(repetition = repetitions[idx]) else ts}
                 vm.setTimeslots(newTimeslots)
             }
+            val oldTimeslots = vm.timeslots.value
+            val oldDays = oldTimeslots?.elementAt(tId!!)?.days?.toMutableSet()
+            chips.forEachIndexed{ idx, chip -> chip.setOnClickListener{
+                if(oldDays?.contains(idx + 1) == true)
+                    oldDays.remove(idx + 1)
+                else
+                    oldDays?.add(idx + 1)
+                vm.setTimeslots(oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays?.toList() ?: listOf()) else ts})
+            }}
         }
         else {
             val positionCategory = categoryArrayAdapter.getPosition(vm.submitTimeslot.value?.category)
@@ -239,6 +247,14 @@ class TimeslotEditFragment : Fragment() {
             binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
             binding.tvRepetition.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(repetition = repetitions[idx]) }
             binding.bSubmit.apply{ visibility = View.VISIBLE }
+            val oldDays = vm.submitTimeslot.value?.days?.toMutableList()
+            chips.forEachIndexed{ idx, chip -> chip.setOnClickListener {
+                if(oldDays?.contains(idx + 1) == true)
+                    oldDays.remove(idx + 1)
+                else
+                    oldDays?.add(idx + 1)
+                vm.setSubmitFields(days = oldDays?.toList())
+            }}
         }
 
         // show start startDate picker dialog
@@ -261,17 +277,18 @@ class TimeslotEditFragment : Fragment() {
         binding.swRepetition.setOnClickListener {
             if(tId != null){
                 val oldTimeslots = vm.timeslots.value
-                val repetition = if(binding.swRepetition.isChecked) "Weekly" else ""
+                val repetition = if(binding.swRepetition.isChecked) "Weekly" else null
                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
                 vm.setTimeslots(newTimeslots)
             }
             else {
+                // to set repetition to null you need to pass empty string
                 vm.setSubmitFields(repetition = if(binding.swRepetition.isChecked) "Weekly" else "")
             }
         }
         binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()) findNavController().navigateUp() }
 
-        // observe viewmodel
+        // observe ViewModel
         if(tId != null){
             vm.timeslots.observe(viewLifecycleOwner) {
                 val t: Timeslot = it.elementAt(tId!!)
@@ -287,12 +304,14 @@ class TimeslotEditFragment : Fragment() {
                     Utils.formatDateToString(t.startDate)
                 val positionCategory = categoryArrayAdapter.getPosition(t.category)
                 val positionRepetition = max(repetitionsArrayAdapter.getPosition(t.repetition), 0)
-                // TODO check
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
                 binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
+                binding.swRepetition.isChecked = t.repetition != null
+                chips.forEachIndexed{ idx, chip -> chip.isChecked = (idx + 1) in t.days }
                 setRepetitionComponentsVisibility(t.repetition)
             }
-        } else {
+        }
+        else {
             // if new timeslot (to be added)
             vm.submitTimeslot.observe(viewLifecycleOwner){
                 binding.tvStartDate.text = Utils.formatDateToString(it.startDate)
@@ -304,6 +323,7 @@ class TimeslotEditFragment : Fragment() {
                     Utils.formatDateToString(it.startDate)
                 val positionCategory = categoryArrayAdapter.getPosition(it.category)
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
+                chips.forEachIndexed{ idx, chip -> chip.isChecked = (idx + 1) in it.days }
                 setRepetitionComponentsVisibility(it.repetition)
                 binding.bSubmit
                     .apply{ isEnabled = vm.isValid(it) }
@@ -311,7 +331,7 @@ class TimeslotEditFragment : Fragment() {
         }
     }
 
-    private fun setRepetitionComponentsVisibility(repetition: String?){
+    private fun setRepetitionComponentsVisibility(repetition: String?) {
         binding.lEndDate.visibility = if(repetition != null) View.VISIBLE else View.INVISIBLE
         binding.cvEndDate.visibility = if(repetition != null) View.VISIBLE else View.INVISIBLE
         binding.lRepeat.visibility = if(repetition != null) View.VISIBLE else View.GONE
@@ -381,85 +401,5 @@ class TimeslotEditFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
-
-    // REPETITION
-    //     val chips: MutableList<Chip> = mutableListOf(
-    //         mDialogView.findViewById(R.id.S0),
-    //         mDialogView.findViewById(R.id.M1),
-    //         mDialogView.findViewById(R.id.T2),
-    //         mDialogView.findViewById(R.id.W3),
-    //         mDialogView.findViewById(R.id.T4),
-    //         mDialogView.findViewById(R.id.F5),
-    //         mDialogView.findViewById(R.id.S6)
-    //     )
-    //     val repetitions = resources.getStringArray(R.array.repetitionMw)
-    //     // required to put weekly / monthly
-    //     val repetitionsArrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
-    //     tvRepetitionType?.setAdapter(repetitionsArrayAdapter)
-    //     tvRepetitionType?.onItemClickListener = OnItemClickListener { _, _, position, _ ->
-    //             if(position == 0){ //weekly
-    //                 lRepeatOn?.visibility = View.VISIBLE
-    //                 cgWeekDays?.visibility = View.VISIBLE
-    //             } else {
-    //                 lRepeatOn?.visibility = View.GONE
-    //                 cgWeekDays?.visibility = View.GONE
-    //             }
-    //         }
-    //     // select right value inside dropdown (monthly/weekly)
-    //     if(tId != null){
-    //         if(vm.timeslots.value?.get(tId!!)?.repetition == "weekly"){
-    //             tvRepetitionType?.setText(repetitionsArrayAdapter.getItem(0).toString(), false)
-    //         }
-    //         if(vm.timeslots.value?.get(tId!!)?.repetition == "monthly"){
-    //             tvRepetitionType?.setText(repetitionsArrayAdapter.getItem(1).toString(), false)
-    //             lRepeatOn?.visibility = View.GONE
-    //             cgWeekDays?.visibility = View.GONE
-    //         }
-    //         if (vm.timeslots.value?.get(tId!!)?.repetition != "") {
-    //             days?.forEach {
-    //                 val chip = cgWeekDays?.getChildAt(it - 1) as Chip
-    //                 cgWeekDays.check(chip.id)
-    //             }
-    //         }
-    //     }
-    //     else {
-    //         tvEndDate.text = Utils.formatDateToString(vm.submitTimeslot.value?.endRepetitionDate)
-    //     }
-
-    //     tvEndDate?.setOnClickListener{
-    //         DatePickerFragment(view?.findViewById(R.id.tvEndDate), vm, DatePickerFragment.DType.END, tId)
-    //             .show(requireActivity().supportFragmentManager,"endDatePicker") }
-
-    //     mAlertDialog = mBuilder.show()
-
-    //     //Attaching the corresponding functions to close and save buttons
-    //     val closeButton = mDialogView.findViewById<ImageView>(R.id.close_button)
-    //     closeButton.setOnClickListener {
-    //         mAlertDialog?.dismiss()
-    //     }
-
-    //     val saveButton = mDialogView.findViewById<Button>(R.id.bSave)
-    //     saveButton.setOnClickListener {
-    //         val selectedDays: MutableList<Int> = mutableListOf()
-    //         chips.forEachIndexed{ idx, c -> if(c.isChecked) selectedDays.add(idx + 1) }
-    //         val repetitionType = tvRepetitionType?.text.toString()
-    //         val oldTimeslots = vm.timeslots.value
-    //         val timeslot = if(tId != null) vm.timeslots.value?.get(tId!!) else vm.submitTimeslot.value
-    //         if(tId != null){
-    //             // check selected days chips
-    //             if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days)){
-    //                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetitionType, days = selectedDays) else ts}
-    //                 vm.setTimeslots(newTimeslots)
-    //             }
-    //         }
-    //         else {
-    //             if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days))
-    //                 vm.setSubmitFields(repetition = repetitionType, days = selectedDays)
-    //         }
-    //         //TODO CHECK THAT END DATE IS PRESENT
-    //         //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
-    //         mAlertDialog?.dismiss() //close dialog
-    //     }
-    // }
 
 }
