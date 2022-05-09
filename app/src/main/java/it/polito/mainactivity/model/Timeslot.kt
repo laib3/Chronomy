@@ -1,5 +1,6 @@
 package it.polito.mainactivity.model
 
+import it.polito.mainactivity.R
 import java.text.DateFormat
 import java.util.*
 
@@ -12,14 +13,14 @@ data class Timeslot (var title:String,
                      var category:String,
                      var repetition: String?,
                      var days: List<Int>,
-                     var endRepetitionDate: Calendar?
+                     var endRepetitionDate: Calendar
                     ){
 
     private var dates: MutableList<Calendar> = mutableListOf()
     var dateFormat: DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
 
     init {
-        endRepetitionDate = if(endRepetitionDate?.before(date) ?: true){
+        endRepetitionDate = if(endRepetitionDate.before(date)){
             date
         } else {
             endRepetitionDate
@@ -50,7 +51,7 @@ data class Timeslot (var title:String,
             "day": ${endRepetitionDate?.get(Calendar.DAY_OF_MONTH)}
             }
         }
-        """.trimIndent()
+        """.replace("\n", "").trimIndent()
     }
 
     private fun createDates() {
@@ -91,4 +92,15 @@ data class Timeslot (var title:String,
     fun getDaysOfRepetition(): String?{
         return days?.joinToString(", ","","",-1, "...") { getDayName(it) }
     }
+
+    companion object {
+        fun emptyTimeslot(): Timeslot {
+            val hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val min = GregorianCalendar.getInstance().get(Calendar.MINUTE)
+            val timeText = Utils.formatTime(hour, min)
+            val date = GregorianCalendar.getInstance()
+            return Timeslot("", "", date, timeText, timeText, "", "Other", null, listOf(), date)
+        }
+    }
+
 }

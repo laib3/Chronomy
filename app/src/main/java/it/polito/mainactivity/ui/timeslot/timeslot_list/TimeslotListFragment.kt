@@ -36,7 +36,7 @@ class TimeslotListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val adapter = TimeslotAdapter(it, this)
+            val adapter = TimeslotAdapter(vm, this)
             rv.adapter = adapter
             // If the list of timeslots is empty, show a message
             val tv: TextView = binding.emptyTimeslotListMessage
@@ -48,14 +48,10 @@ class TimeslotListFragment : Fragment() {
 
         // If click on fab, go to Edit timeslot
         val fab: FloatingActionButton = binding.fab
-        val bundle = Bundle();
-        bundle.putInt("id", -1)
+        val bundle = Bundle()
 
         fab.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_nav_list_to_nav_edit,
-                bundle
-            )
+            findNavController().navigate(R.id.action_nav_list_to_nav_edit)
         }
         return root
     }

@@ -2,37 +2,32 @@ package it.polito.mainactivity.ui.timeslot.timeslot_edit
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.icu.util.Calendar
-import android.icu.util.GregorianCalendar
+import java.util.Calendar
+import java.util.GregorianCalendar
 import android.os.Build
 import android.os.Bundle
-import android.text.format.DateFormat
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.button.MaterialButton
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.model.Timeslot
+import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
 //TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
-
-var CHOSEN_DATE: Calendar? = null
 
 class TimeslotEditFragment : Fragment() {
 
@@ -40,107 +35,90 @@ class TimeslotEditFragment : Fragment() {
 
     private var _binding: FragmentTimeslotEditBinding? = null
 
-    private var tiTitle: TextInputLayout? = null
-    private var tiDescription: TextInputLayout? = null
-    private var tiStartDate: TextView? = null
-    private var tiEndDate: TextView? = null
-    private var tiStartTime: TextView? = null
-    private var tiEndTime: TextView? = null
-    private var tiLocation: TextInputLayout? = null
-    private var tiCategory: ChipGroup? = null
-    private var tiDays: ChipGroup? = null
+    // private var tiTitle: TextInputLayout? = null
+    // private var tiDescription: TextInputLayout? = null
+    // private var tiStartDate: TextView? = null
+    // private var tiEndDate: TextView? = null
+    // private var tiStartTime: TextView? = null
+    // private var tiEndTime: TextView? = null
+    // private var tiLocation: TextInputLayout? = null
+    // private var cgCategory: ChipGroup? = null
+    private var cgWeekDays: ChipGroup? = null
     private var mAlertDialog: AlertDialog? = null
-
-    private var timeslotId: Int = -1
+    private var days: List<Int>? = null
+    private var tId: Int? = null
+    // private var submitTimeslot: Timeslot? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var days: List<Int>? = null
-
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        timeslotId = arguments?.getInt("id") ?: -1
+        tId = arguments?.getInt("id", -1)
+        tId = if(tId == -1) null else tId
+
         // edit existing timeslot
-        if(timeslotId != -1){
+        if(tId != null){
             vm.timeslots.observe(viewLifecycleOwner) {
-                val timeslot: Timeslot = it.elementAt(timeslotId)
-                tiTitle?.editText?.setText(timeslot.title)
-                tiDescription?.editText?.setText(timeslot.description)
-                tiStartDate?.text = timeslot.dateFormat.format(timeslot.date.time)
-                tiStartTime?.text = timeslot.startHour
-                tiEndTime?.text = timeslot.endHour
-                tiLocation?.editText?.setText(timeslot.location)
-
-                val categories: List<String> = resources.getStringArray(R.array.skills_array).toList()
-                val index = categories.indexOf(timeslot.category)
-                val chip : Chip = tiCategory?.getChildAt(index) as Chip
-                tiCategory?.check(chip.id)
-
+                val timeslot: Timeslot = it.elementAt(tId!!)
+                binding.tilTitle.editText?.setText(timeslot.title)
+                binding.tilDescription.editText?.setText(timeslot.description)
+                binding.tilLocation.editText?.setText(timeslot.location)
+                binding.tvStartDate.text = Utils.formatDateToString(timeslot.date)
+                binding.tvStartTime.text = timeslot.startHour
+                binding.tvEndTime.text = timeslot.endHour
                 days = timeslot.days
             }
+            addFocusChangeListeners()
         } else {
-        }
-
-        addFocusChangeListeners()
-
-        vm.updated.observe(viewLifecycleOwner){
-            val timeslots = vm.timeslots.value
-            if(it != null){
-                val updatedTimeslots = timeslots?.mapIndexed{ idx, ts -> if(idx == timeslotId) it else ts}
-                vm.setTimeslots(updatedTimeslots)
-                vm.resetUpdated()
+            // if new timeslot (to be added)
+            vm.submitTimeslot.observe(viewLifecycleOwner){
+                binding.tvStartDate.text = Utils.formatDateToString(it.date)
+                binding.tvStartTime.text = it.startHour
+                binding.tvEndTime.text = it.endHour
+                binding.bSubmit
+                    .apply{ visibility = View.VISIBLE }
+                    .apply{ isEnabled = vm.isValid(it) }
             }
+            addTextChangedListeners()
         }
-
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tiTitle = view.findViewById(R.id.TitleTextField)
-        tiDescription = view.findViewById(R.id.DescriptionTextField)
-        tiStartDate = view.findViewById(R.id.tv_timeslotEdit_date)
-        tiStartTime = view.findViewById(R.id.tv_timeslotEdit_startTime)
-        tiEndTime = view.findViewById(R.id.tv_timeslotEdit_endTime)
-        tiLocation = view.findViewById(R.id.LocationTextField)
-        tiCategory = view.findViewById(R.id.chips_group)
-        tiDays = view.findViewById(R.id.days)
-        val btnDate = view.findViewById<MaterialCardView>(R.id.mcv_timeslotEdit_date)
-        btnDate.setOnClickListener { showDatePickerDialog() }
-        val btnStartTime = view.findViewById<MaterialCardView>(R.id.mcv_timeslotEdit_startTime)
-        btnStartTime.setOnClickListener { showStartTimePickerDialog() }
-        val btnEndTime = view.findViewById<MaterialCardView>(R.id.mcv_timeslotEdit_endTime)
-        btnEndTime.setOnClickListener { showEndTimePickerDialog() }
-        val btnRepetition = view.findViewById<Button>(R.id.edit_repetition)
-        btnRepetition.setOnClickListener { showRepetitionDialog() }
-        val btnEndDate = view.findViewById<MaterialCardView>(R.id.end_rep_date)
-        btnEndDate?.setOnClickListener { showEndDatePickerDialog() }
-        val id: Int = arguments?.getInt("id") ?: -1
-        if(id == -1){
-            val saveBtnLayout = view.findViewById<LinearLayout>(R.id.buttonSaveLayout)
-            //set the properties for button
-            val btnSaveTimeslot = AppCompatButton(requireContext())
-                .apply{
-                    background = this.context.resources.getDrawable(R.drawable.rectangle_save_button)
-                    setTextColor(this.context.resources.getColor(R.color.white))
-                    setPadding(32,0,32,0)
-                    text = "Save timeslot"
-                    textSize = 20f
-                }
+        // TODO refactor do not use variables
+        cgWeekDays = view.findViewById(R.id.cgDays)
+        // val btnEndDate = view.findViewById<MaterialCardView>(R.id.cvEndDate)
+        binding.tvStartDate.setOnClickListener { showStartDatePickerDialog() }
+        binding.tvStartTime.setOnClickListener { showStartTimePickerDialog() }
+        binding.tvEndTime.setOnClickListener { showEndTimePickerDialog() }
+        binding.bSetRepetition.setOnClickListener { showRepetitionDialog() }
+        view.findViewById<MaterialCardView>(R.id.cvEndDate)?.setOnClickListener { showEndDatePickerDialog() }
+        binding.bSubmit.setOnClickListener{ submit() }
 
-            btnSaveTimeslot.layoutParams =
-                GridLayoutManager.LayoutParams(
-                    GridLayoutManager.LayoutParams.WRAP_CONTENT,
-                    GridLayoutManager.LayoutParams.WRAP_CONTENT,
-                    ).apply {
-                    setMargins(0, 32, 0, 0)
-                    }
-            saveBtnLayout.addView(btnSaveTimeslot)
+        val categories = resources.getStringArray(R.array.skills_array)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
+        binding.dmCategory.setAdapter(arrayAdapter)
+        if(tId != null){
+            val positionCategory = arrayAdapter.getPosition(vm.timeslots.value?.elementAt(tId!!)?.category)
+            binding.dmCategory.setText(arrayAdapter.getItem(positionCategory).toString(), false)
+            binding.dmCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.timeslots.value?.get(tId!!)?.category = categories[idx] }
         }
+        else {
+            val positionCategory = arrayAdapter.getPosition(vm.submitTimeslot.value?.category)
+            binding.dmCategory.setText(arrayAdapter.getItem(positionCategory).toString(), false)
+            binding.dmCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(category = categories[idx]) }
+        }
+    }
+
+    private fun submit() {
+        // in theory you could not submit a invalid Timeslot, but for the sake of safety...
+        if(vm.submitTimeslot())
+            findNavController().navigateUp()
     }
 
     override fun onDestroyView() {
@@ -148,124 +126,73 @@ class TimeslotEditFragment : Fragment() {
         _binding = null
     }
 
+    // use only when the timeslot exists
     private fun addFocusChangeListeners() {
-        binding.TextInputEditTitle.setOnFocusChangeListener{ _, focused ->
-            val old = vm.timeslots.value?.elementAt(timeslotId)?.title.toString()
-            val new = binding.TextInputEditTitle.text.toString()
-            if(!focused && old != new){
+        binding.teTitle.setOnFocusChangeListener{ _, focused ->
+            val old = vm.timeslots.value?.elementAt(tId!!)?.title.toString()
+            val new = binding.teTitle.text.toString()
+            if(!focused && old != new && new.isNotBlank()){
                 val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == timeslotId) ts.copy(title = new) else ts}
+                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(title = new) else ts}
                 vm.setTimeslots(newTimeslots)
             }
         }
-        binding.TextInputEditDescription.setOnFocusChangeListener{ _, focused ->
-            val old = vm.timeslots.value?.elementAt(timeslotId)?.description.toString()
-            val new = binding.TextInputEditDescription.text.toString()
+        binding.teDescription.setOnFocusChangeListener{ _, focused ->
+            val old = vm.timeslots.value?.elementAt(tId!!)?.description.toString()
+            val new = binding.teDescription.text.toString()
             if(!focused && old != new){
                 val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == timeslotId) ts.copy(description = new) else ts}
+                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(description = new) else ts}
                 vm.setTimeslots(newTimeslots)
             }
         }
-        binding.TextInputEditLocation.setOnFocusChangeListener{ _, focused ->
-            val old = vm.timeslots.value?.elementAt(timeslotId)?.location.toString()
-            val new = binding.TextInputEditLocation.text.toString()
-            if(!focused && old != new){
+        binding.teLocation.setOnFocusChangeListener{ _, focused ->
+            val old = vm.timeslots.value?.elementAt(tId!!)?.location.toString()
+            val new = binding.teLocation.text.toString()
+            if(!focused && old != new && new.isNotBlank()){
                 val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == timeslotId) ts.copy(location = new) else ts}
+                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(location = new) else ts}
                 vm.setTimeslots(newTimeslots)
             }
         }
     }
 
-    // Extending DialogFragment for a date picker
-    class DatePickerFragment() : DialogFragment(),DatePickerDialog.OnDateSetListener {
-
-        private var tiDate: TextView? = null
-        private val timeSlotListViewModel:TimeslotViewModel by activityViewModels()
-
-        private lateinit var d:DatePickerDialog
-
-        constructor(_tiDate: TextView?):this(){
-            tiDate=_tiDate
-        }
-
-        @RequiresApi(Build.VERSION_CODES.N)
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            // Use the current date as the default date in the picker
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-
-            val id = requireArguments().getInt("id")
-
-            // Create a new instance of DatePickerDialog and return it
-            if(id!= -1 ) {
-                //timeslot already exists
-                d = if(this.tag.toString() == "endDatePicker" && timeSlotListViewModel.timeslots.value?.get(id)?.repetition!= ""){
-                    DatePickerDialog(requireContext(), this,
-                        timeSlotListViewModel.timeslots.value?.get(id)?.endRepetitionDate!!.get(Calendar.YEAR),
-                        timeSlotListViewModel.timeslots.value?.get(id)?.endRepetitionDate!!.get(Calendar.MONTH),
-                        timeSlotListViewModel.timeslots.value?.get(id)?.endRepetitionDate!!.get(Calendar.DAY_OF_MONTH))
-                }else{
-                    DatePickerDialog(requireContext(), this,
-                        timeSlotListViewModel.timeslots.value?.get(id)?.date!!.get(Calendar.YEAR),
-                        timeSlotListViewModel.timeslots.value?.get(id)?.date!!.get(Calendar.MONTH),
-                        timeSlotListViewModel.timeslots.value?.get(id)?.date!!.get(Calendar.DAY_OF_MONTH))
-                }
-                if( this.tag.toString() == "endDatePicker") {
-                    //it MUST have a date
-                    d.datePicker.minDate =
-                        timeSlotListViewModel.timeslots.value?.get(id)?.date?.timeInMillis!!
-                }else{
-                    d.datePicker.minDate = c.timeInMillis
-                }
-            } else {
-                d = DatePickerDialog( requireContext(), this, year, month, day)
-                //the timeslot is new!
-                if(this.tag.toString() == "datePicker"){
-                    d.datePicker.minDate = c.timeInMillis
-                    //saving the global variable to check the end date
-                    CHOSEN_DATE = c.clone() as Calendar
-                }else{
-                    d.datePicker.minDate = CHOSEN_DATE!!.timeInMillis
-                }
+    // use only when the timeslot is new
+    private fun addTextChangedListeners() {
+        val t = if(tId != null) vm.timeslots.value?.elementAt(tId!!) else vm.submitTimeslot.value
+        val oldTimeslots = vm.timeslots.value
+        binding.teTitle.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                vm.setSubmitFields(title = s.toString())
             }
-            return d
-        }
-
-        @RequiresApi(Build.VERSION_CODES.N)
-        @SuppressLint("SetTextI18n")
-        override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-            tiDate?.text = "${day}/${(month + 1)}/${year}"
-           if(requireArguments().getInt("id")== -1 &&  this.tag.toString() == "datePicker"){
-               CHOSEN_DATE = GregorianCalendar(year, month, day)
-         }
-        }
-
-    }
-
-    // START DATE
-    private fun showDatePickerDialog() {
-        val dateFragment = DatePickerFragment(tiStartDate)
-        val bundle = Bundle()
-        bundle.putInt("id", requireArguments().getInt("id"))
-        dateFragment.arguments = bundle
-        dateFragment.show(requireActivity().supportFragmentManager, "datePicker")
-    }
-
-    // END DATE
-    private fun showEndDatePickerDialog() {
-       val dateFragment = DatePickerFragment(tiEndDate)
-       val bundle = Bundle()
-       bundle.putInt("id", requireArguments().getInt("id"))
-        dateFragment.arguments = bundle
-        dateFragment.show(requireActivity().supportFragmentManager, "endDatePicker")
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        binding.teDescription.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                vm.setSubmitFields(description = p0.toString())
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        binding.teLocation.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                vm.setSubmitFields(location = p0.toString())
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     // Extending DialogFragment for a time picker
-    class TimePickerFragment(private val tiTime: TextView?) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
+    class TimePickerFragment(private val tiTime: TextView?,
+                             private val vm: TimeslotViewModel,
+                             private val type: Type,
+                             private val tId: Int? = null) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
+
+        enum class Type {
+            START, END
+        }
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -280,84 +207,211 @@ class TimeslotEditFragment : Fragment() {
                 this,
                 hour,
                 minute,
-                DateFormat.is24HourFormat(activity)
+                true
             )
         }
 
         @SuppressLint("SetTextI18n")
-        override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-            if (minute < 10) {
-                tiTime?.text = "$hourOfDay:0$minute"
-            } else {
-                tiTime?.text = "$hourOfDay:$minute"
+        override fun onTimeSet(timePicker: TimePicker, hourOfDay: Int, minute: Int) {
+            val timeText = Utils.formatTime(hourOfDay, minute)
+            // modify existing timeslot
+            if(tId != null){
+                // TODO refactor
+                val old = tiTime?.text
+                val new = timeText
+                if(type == Type.START && old != new){
+                    val oldTimeslots = vm.timeslots.value
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(startHour = new) else ts}
+                    vm.setTimeslots(newTimeslots)
+                }
+                else if(type == Type.END && old != new) {
+                    val oldTimeslots = vm.timeslots.value
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(endHour = new) else ts}
+                    vm.setTimeslots(newTimeslots)
+                }
             }
+            // new timeslot
+            else {
+                if(vm.submitTimeslot.value != null){
+                    if(type == Type.START)
+                        vm.setSubmitFields(startHour = timeText)
+                    else if(type == Type.END)
+                        vm.setSubmitFields(endHour = timeText)
+                }
+            }
+            // TODO move up in observe
+            tiTime?.text = timeText
         }
     }
 
     // START TIME
     private fun showStartTimePickerDialog() {
-        val timeFragment = TimePickerFragment(tiStartTime)
-        timeFragment.show(requireActivity().supportFragmentManager, "timePicker")
+        val timeFragment = TimePickerFragment(binding.tvStartTime, vm, TimePickerFragment.Type.START, tId)
+        timeFragment.show(requireActivity().supportFragmentManager, "startTimePicker")
     }
 
     // END TIME
     private fun showEndTimePickerDialog() {
-        val timeFragment = TimePickerFragment(tiEndTime)
-        timeFragment.show(requireActivity().supportFragmentManager, "timePicker")
+        val timeFragment = TimePickerFragment(binding.tvEndTime, vm, TimePickerFragment.Type.END, tId)
+        timeFragment.show(requireActivity().supportFragmentManager, "endTimePicker")
+    }
+
+    // Extending DialogFragment for a date picker
+    class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
+
+        enum class DType {
+            START, END
+        }
+
+        private var tiDate: TextView? = null
+        private var vm: TimeslotViewModel? = null
+        private var type: DType? = null
+        private var tId: Int? = null
+
+        private lateinit var dialog: DatePickerDialog
+
+        constructor(_tiDate: TextView?, _vm: TimeslotViewModel, _type: DType, _timeslotId: Int? = null): this(){
+            tiDate = _tiDate
+            vm = _vm
+            type = _type
+            tId = _timeslotId
+        }
+
+        @RequiresApi(Build.VERSION_CODES.N)
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            // Use the current date as the default date in the picker
+            // val c = Calendar.getInstance()
+            val startDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.date else vm?.submitTimeslot?.value?.date
+            val endDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.endRepetitionDate else vm?.submitTimeslot?.value?.endRepetitionDate
+            val repetition = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.repetition else vm?.submitTimeslot?.value?.repetition
+
+            val year = if(type == DType.END && repetition != null) endDate?.get(Calendar.YEAR) else startDate?.get(Calendar.YEAR)
+            val month = if(type == DType.END && repetition != null) endDate?.get(Calendar.MONTH) else startDate?.get(Calendar.MONTH)
+            val day = if(type == DType.END && repetition != null) endDate?.get(Calendar.DAY_OF_MONTH) else startDate?.get(Calendar.DAY_OF_MONTH)
+
+            // Create a new instance of DatePickerDialog and return it
+            dialog = DatePickerDialog(requireContext(), this, year!!, month!!, day!!)
+            if(type == DType.END)
+                dialog.datePicker.minDate = startDate!!.timeInMillis
+            return dialog
+        }
+
+        @RequiresApi(Build.VERSION_CODES.N)
+        @SuppressLint("SetTextI18n")
+        override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
+            val old = tiDate?.text
+            val new = "${day}/${(month + 1)}/${year}"
+            // if the timeslot is being created
+            val date: Calendar = GregorianCalendar(year, month, day)
+            // modify existing timeslot
+            if(tId != null){
+                if(type == DType.START && old != new){
+                    val oldTimeslots = vm?.timeslots?.value
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(date = date) else ts}
+                    vm?.setTimeslots(newTimeslots)
+                }
+                else if (type == DType.END && old != new){
+                    val oldTimeslots = vm?.timeslots?.value
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(endRepetitionDate = date) else ts}
+                    vm?.setTimeslots(newTimeslots)
+                }
+            }
+            // if new timeslot
+            else {
+                if(type == DType.START){
+                    vm?.setSubmitFields(date = date)
+                }
+                else if(type == DType.END)
+                    vm?.setSubmitFields(endRepetitionDate = date)
+            }
+            // TODO modify move up in observe
+            tiDate?.text = new
+        }
+    }
+
+    // START DATE
+    private fun showStartDatePickerDialog() {
+        val dateFragment = DatePickerFragment(binding.tvStartDate, vm, DatePickerFragment.DType.START, tId)
+        val bundle = Bundle()
+        bundle.putInt("id", requireArguments().getInt("id"))
+        dateFragment.arguments = bundle
+        dateFragment.show(requireActivity().supportFragmentManager, "startDatePicker")
+    }
+
+    // END DATE
+    private fun showEndDatePickerDialog() {
+        val dateFragment = DatePickerFragment(view?.findViewById(R.id.cvEndDate), vm, DatePickerFragment.DType.END, tId)
+        val bundle = Bundle()
+        bundle.putInt("id", requireArguments().getInt("id"))
+        dateFragment.arguments = bundle
+        dateFragment.show(requireActivity().supportFragmentManager,"endDatePicker")
     }
 
     // REPETITION
     private fun showRepetitionDialog() {
+
         val mDialogView =
             LayoutInflater.from(requireContext()).inflate(R.layout.modal_repetition, null)
 
-        tiDays = mDialogView.findViewById(R.id.days)
-        tiEndDate = mDialogView?.findViewById(R.id.tv_timeslotEdit_endDate)
+        val chips: MutableList<Chip> = mutableListOf(
+            mDialogView.findViewById(R.id.S0),
+            mDialogView.findViewById(R.id.M1),
+            mDialogView.findViewById(R.id.T2),
+            mDialogView.findViewById(R.id.W3),
+            mDialogView.findViewById(R.id.T4),
+            mDialogView.findViewById(R.id.F5),
+            mDialogView.findViewById(R.id.S6),
+        )
 
-        val repetitions = resources.getStringArray(R.array.repetition_mw)
-        val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
-
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
+        cgWeekDays = mDialogView.findViewById(R.id.cgDays)
+        val tvEndDate = mDialogView.findViewById<TextView>(R.id.tvEndDate)
         val autoCompleteTextView =
             mDialogView?.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView)
+
+        val repetitions = resources.getStringArray(R.array.repetitionMw)
+        val repeatOn = mDialogView?.findViewById<TextView>(R.id.repeat_on)
+
+        // required to put weekly / monthly
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         autoCompleteTextView?.setAdapter(arrayAdapter)
         autoCompleteTextView?.onItemClickListener =
             OnItemClickListener { _, _, position, _ ->
                 if(position == 0){ //weekly
                     repeatOn?.visibility = View.VISIBLE
-                    tiDays?.visibility= View.VISIBLE
-                }else{
+                    cgWeekDays?.visibility= View.VISIBLE
+                } else{
                     repeatOn?.visibility = View.GONE
-                    tiDays?.visibility= View.GONE
+                    cgWeekDays?.visibility= View.GONE
                 }
             }
 
-        if(arguments?.getInt("timeslotId")!= -1){
-            if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "weekly"){
+        // select right value inside dropdown (monthly/weekly)
+        if(tId != null){
+            if(vm.timeslots.value?.get(requireArguments().getInt("tId"))?.repetition == "weekly"){
                 autoCompleteTextView?.setText(arrayAdapter.getItem(0).toString(), false)
             }
-            if(vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition == "monthly"){
+            if(vm.timeslots.value?.get(requireArguments().getInt("tId"))?.repetition == "monthly"){
                 autoCompleteTextView?.setText(arrayAdapter.getItem(1).toString(), false)
                 repeatOn?.visibility = View.GONE
-                tiDays?.visibility= View.GONE
+                cgWeekDays?.visibility= View.GONE
             }
-            if (vm.timeslots.value?.get(requireArguments().getInt("timeslotId"))?.repetition != "") {
+            if (vm.timeslots.value?.get(requireArguments().getInt("tId"))?.repetition != "") {
                 days?.forEach {
-                    val chip = tiDays?.getChildAt(it - 1) as Chip
-                    tiDays?.check(chip.id)
+                    val chip = cgWeekDays?.getChildAt(it - 1) as Chip
+                    cgWeekDays?.check(chip.id)
                 }
 
-                tiEndDate?.text = vm.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(vm.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
+                tvEndDate?.text = vm.timeslots.value?.get(requireArguments().getInt("id"))?.dateFormat?.format(vm.timeslots.value?.get(requireArguments().getInt("id"))?.endRepetitionDate!!.time)
             }
         }
-        tiEndDate?.setOnClickListener{ showEndDatePickerDialog()}
+
+        tvEndDate?.setOnClickListener{ showEndDatePickerDialog() }
 
         //AlertDialogBuilder + show
         val mBuilder = AlertDialog.Builder(requireContext())
             .setView(mDialogView)
 
         mAlertDialog = mBuilder.show()
-
 
         //Attaching the corresponding functions to close and save buttons
         val closeButton = mDialogView.findViewById<ImageView>(R.id.close_button)
@@ -367,19 +421,26 @@ class TimeslotEditFragment : Fragment() {
 
         val saveButton = mDialogView.findViewById<Button>(R.id.save_button)
         saveButton.setOnClickListener {
-            /*
-            //get the current state of radioButtonYES. then update the skill's status and description
-            s.active = radioButtonYES.isChecked
-            s.description = description.text.toString()
-            val desc = card.findViewById<TextView>(R.timeslotId.skillDescription)
-            desc.text = s.description
-            //update skills
-            refreshSkills()*/
+            val selectedDays: MutableList<Int> = mutableListOf()
+            chips.forEachIndexed{ idx, c -> if(c.isChecked) selectedDays.add(idx + 1) }
+            val repetitionType = autoCompleteTextView?.text.toString()
+            val oldTimeslots = vm.timeslots.value
+            val timeslot = if(tId == null) vm.timeslots.value?.get(tId!!) else vm.submitTimeslot.value
+            if(tId != null){
+                // check selected days chips
+                if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days)){
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetitionType, days = selectedDays) else ts}
+                    vm.setTimeslots(newTimeslots)
+                }
+            }
+            else {
+                if(timeslot?.repetition != repetitionType || !timeslot.days.containsAll(selectedDays) || !selectedDays.containsAll(timeslot.days))
+                    vm.setSubmitFields(repetition = repetitionType, days = selectedDays)
+            }
             //TODO CHECK THAT END DATE IS PRESENT
             //TODO CHECK THAT ONE CHIP HAS BEEN SELECTED
             mAlertDialog?.dismiss() //close dialog
         }
     }
-
 
 }

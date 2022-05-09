@@ -1,21 +1,17 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Skill
+import it.polito.mainactivity.model.Utils
 
 class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, val editable: Boolean): CardView(c){
 
@@ -25,7 +21,7 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
         val tvTitle = findViewById<TextView>(R.id.skillTitle)
         val ivSkillIcon = findViewById<ImageView>(R.id.skillIcon)
         // set the icon
-        val imgRes = getImgRes(skill.title)
+        val imgRes = Utils.getSkillImgRes(skill.title)
         if(imgRes != null)
             ivSkillIcon.setImageResource(imgRes)
         tvTitle.text = skill.title
@@ -77,19 +73,5 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
         }
     }
 
-    private fun getImgRes(title: String) : Int?{
-        return when(title){
-            "Gardening" -> R.drawable.ic_skill_gardening
-            "Tutoring" -> R.drawable.ic_skill_tutoring
-            "Child Care" -> R.drawable.ic_skill_child_care
-            "Odd Jobs" -> R.drawable.ic_skill_odd_jobs
-            "Home Repair" -> R.drawable.ic_skill_home_repair
-            "Wellness" -> R.drawable.ic_skill_wellness
-            "Delivery" -> R.drawable.ic_skill_delivery
-            "Transportation" -> R.drawable.ic_skill_transportation
-            "Companionship" -> R.drawable.ic_skill_companionship
-            "Other" -> R.drawable.ic_skill_other
-            else -> null
-        }
-    }
+
 }

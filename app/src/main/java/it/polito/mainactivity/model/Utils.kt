@@ -1,7 +1,9 @@
 package it.polito.mainactivity.model
 
+import it.polito.mainactivity.R
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.DateFormat
 import java.util.*
 
 class Utils {
@@ -46,6 +48,32 @@ class Utils {
                     startHour, endHour, location, category, repetition,
                     days, GregorianCalendar(erYear, erMonth, erDay))
             }
+
+        fun formatDateToString(date: Calendar?): String {
+            if(date == null)
+                return ""
+            var dateFormat:DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
+            dateFormat.timeZone = date.timeZone
+            return dateFormat.format(date.time)
+        }
+
+        fun getSkillImgRes(title: String) : Int?{
+            return when(title){
+                "Gardening" -> R.drawable.ic_skill_gardening
+                "Tutoring" -> R.drawable.ic_skill_tutoring
+                "Child Care" -> R.drawable.ic_skill_child_care
+                "Odd Jobs" -> R.drawable.ic_skill_odd_jobs
+                "Home Repair" -> R.drawable.ic_skill_home_repair
+                "Wellness" -> R.drawable.ic_skill_wellness
+                "Delivery" -> R.drawable.ic_skill_delivery
+                "Transportation" -> R.drawable.ic_skill_transportation
+                "Companionship" -> R.drawable.ic_skill_companionship
+                "Other" -> R.drawable.ic_skill_other
+                else -> null
+            }
+        }
+
+        fun formatTime(hh: Int, mm: Int): String = String.format("%02d:%02d", hh, mm)
 
     }
 

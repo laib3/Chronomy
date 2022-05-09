@@ -8,7 +8,7 @@
     android:paddingEnd="8dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/item_card"
+        android:id="@+id/cvTimeslotCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
@@ -30,102 +30,97 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/item_category"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
+            <ImageView
+                android:id="@+id/lCategory"
+                android:layout_width="@dimen/skill_icon_size"
+                android:layout_height="@dimen/skill_icon_size"
+                android:layout_marginStart="@dimen/big_distance"
                 android:layout_marginTop="@dimen/medium_distance"
+                android:layout_marginEnd="@dimen/big_distance"
                 android:layout_marginBottom="@dimen/medium_distance"
-                android:checked="true"
-                android:text="Category"
-                android:textSize="14sp"
-                app:chipMinHeight="32dp"
+                android:contentDescription="Category"
+                android:src="@drawable/ic_skill_gardening"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
-                app:layout_constraintEnd_toStartOf="@+id/item_title"
+                app:layout_constraintEnd_toStartOf="@+id/tvTitle"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:srcCompat="@drawable/ic_skill_gardening" />
 
             <TextView
-                android:id="@+id/item_title"
+                android:id="@+id/tvTitle"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:layout_marginEnd="@dimen/medium_distance"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/big_distance"
                 android:gravity="center_vertical"
                 android:text="Title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/item_category"
+                app:layout_constraintBottom_toBottomOf="@+id/lCategory"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/item_category"
-                app:layout_constraintTop_toTopOf="@+id/item_category" />
+                app:layout_constraintStart_toEndOf="@+id/lCategory"
+                app:layout_constraintTop_toTopOf="@+id/lCategory" />
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/item_location"
+                app:layout_constraintBottom_toTopOf="@+id/tvLocation"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/item_category" />
+                app:layout_constraintTop_toBottomOf="@+id/lCategory" />
 
             <TextView
-                android:id="@+id/item_location"
+                android:id="@+id/tvLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:layout_marginTop="@dimen/big_distance"
-                android:layout_marginBottom="@dimen/tiny_distance"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:layout_marginEnd="@dimen/medium_distance"
                 android:text="Location"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/item_date"
-                app:layout_constraintEnd_toStartOf="@+id/item_button"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="@+id/item_category"
+                app:layout_constraintBottom_toTopOf="@+id/tvDate"
+                app:layout_constraintEnd_toStartOf="@+id/ibEdit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="@+id/lCategory"
                 app:layout_constraintTop_toBottomOf="@+id/divider" />
 
             <TextView
-                android:id="@+id/item_date"
+                android:id="@+id/tvHour"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/tiny_distance"
-                android:layout_marginBottom="@dimen/tiny_distance"
-                android:text="Date"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/item_hour"
-                app:layout_constraintEnd_toEndOf="@+id/item_location"
-                app:layout_constraintStart_toStartOf="@+id/item_location"
-                app:layout_constraintTop_toBottomOf="@+id/item_location" />
-
-            <TextView
-                android:id="@+id/item_hour"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/tiny_distance"
+                android:layout_marginBottom="@dimen/medium_distance"
                 android:text="Hour"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/item_button"
-                app:layout_constraintEnd_toEndOf="@+id/item_location"
-                app:layout_constraintStart_toStartOf="@+id/item_date"
-                app:layout_constraintTop_toBottomOf="@+id/item_date" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tvLocation"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvLocation"
+                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/tvHour"
+                app:layout_constraintEnd_toEndOf="@+id/tvLocation"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvLocation"
+                app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
 
             <ImageButton
-                android:id="@+id/item_button"
+                android:id="@+id/ibEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:layout_marginEnd="@dimen/big_distance"
+                android:layout_marginTop="@dimen/medium_distance"
                 android:layout_marginBottom="@dimen/big_distance"
                 android:background="@drawable/circle"
                 android:backgroundTint="#FFCAC1EA"
@@ -133,10 +128,31 @@
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/item_location"
+                app:layout_constraintStart_toEndOf="@+id/tvLocation"
+                app:layout_constraintTop_toBottomOf="@+id/ibDelete"
                 app:srcCompat="@drawable/ic_menu_edit"
+                app:tint="@color/purple_500" />
+
+            <ImageButton
+                android:id="@+id/ibDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:layout_marginBottom="@dimen/medium_distance"
+                android:background="@drawable/circle"
+                android:backgroundTint="#FFCAC1EA"
+                android:contentDescription="deleteButton"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                app:layout_constraintBottom_toTopOf="@+id/ibEdit"
+                app:layout_constraintEnd_toEndOf="@+id/ibEdit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/ibEdit"
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                app:layout_constraintVertical_chainStyle="spread"
+                app:srcCompat="@drawable/ic_baseline_delete_24"
                 app:tint="@color/purple_500" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
