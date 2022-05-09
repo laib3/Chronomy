@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +27,6 @@ import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 import kotlin.math.max
-
-//TODO: CHECK BEFORE SAVE, BLOCK BACK NAVIGATION
 
 class TimeslotEditFragment : Fragment() {
 
@@ -68,15 +65,18 @@ class TimeslotEditFragment : Fragment() {
             if(tId != null){
                 // TODO refactor
                 val old = tiTime?.text
-                val new = timeText
-                if(type == Type.START && old != new){
+                if(type == Type.START && old != timeText){
                     val oldTimeslots = vm.timeslots.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(startHour = new) else ts}
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(
+                        startHour = timeText
+                    ) else ts}
                     vm.setTimeslots(newTimeslots)
                 }
-                else if(type == Type.END && old != new) {
+                else if(type == Type.END && old != timeText) {
                     val oldTimeslots = vm.timeslots.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(endHour = new) else ts}
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(
+                        endHour = timeText
+                    ) else ts}
                     vm.setTimeslots(newTimeslots)
                 }
             }
@@ -86,15 +86,15 @@ class TimeslotEditFragment : Fragment() {
                     if(type == Type.START){
                         vm.setSubmitFields(startHour = timeText)
                         // if start hour is after end hour, set end hour to start hour
-                        if(timeText.compareTo(vm.submitTimeslot.value!!.endHour.toString()) > 0){
+                        if(timeText > vm.submitTimeslot.value!!.endHour){
                             vm.setSubmitFields(endHour = timeText)
                         }
                     }
                     else if(type == Type.END){
-                        if(timeText.compareTo(vm.submitTimeslot.value!!.startHour) >= 0)
+                        if(timeText >= vm.submitTimeslot.value!!.startHour)
                             vm.setSubmitFields(endHour = timeText)
                         else {
-                            // display snackbar when end time is before start time
+                            // display SnackBar when end time is before start time
                             val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "ERROR: End time must be after start time!", Snackbar.LENGTH_LONG)
                             s.setTextColor(Color.parseColor("#ffff00"))
                             s.show()
@@ -195,15 +195,15 @@ class TimeslotEditFragment : Fragment() {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume(){
+        super.onResume()
         val categories = resources.getStringArray(R.array.skills_array)
         val repetitions = resources.getStringArray(R.array.repetitionMw)
         val categoryArrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
         val repetitionsArrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         binding.tvCategory.setAdapter(categoryArrayAdapter)
         binding.tvRepetition.setAdapter(repetitionsArrayAdapter)
+
 
         val chips: MutableList<Chip> = mutableListOf(binding.S0, binding.M1, binding.T2, binding.W3, binding.T4, binding.F5, binding.S6)
 
@@ -331,17 +331,17 @@ class TimeslotEditFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setRepetitionComponentsVisibility(repetition: String?) {
         binding.lEndDate.visibility = if(repetition != null) View.VISIBLE else View.INVISIBLE
         binding.cvEndDate.visibility = if(repetition != null) View.VISIBLE else View.INVISIBLE
         binding.lRepeat.visibility = if(repetition != null) View.VISIBLE else View.GONE
         binding.dmRepetition.visibility = if(repetition != null) View.VISIBLE else View.GONE
         binding.cgDays.visibility = if(repetition == "Weekly") View.VISIBLE else View.GONE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     // use only when the timeslot exists
@@ -377,8 +377,6 @@ class TimeslotEditFragment : Fragment() {
 
     // use only when the timeslot is new
     private fun addTextChangedListeners() {
-        val t = if(tId != null) vm.timeslots.value?.elementAt(tId!!) else vm.submitTimeslot.value
-        val oldTimeslots = vm.timeslots.value
         binding.teTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
@@ -401,5 +399,6 @@ class TimeslotEditFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
+
 
 }
