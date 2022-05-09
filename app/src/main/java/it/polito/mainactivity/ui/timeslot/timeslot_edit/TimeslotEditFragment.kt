@@ -228,7 +228,7 @@ class TimeslotEditFragment : Fragment() {
                 this,
                 hour,
                 minute,
-                DateFormat.is24HourFormat(activity)
+                true
             )
         }
 

@@ -95,7 +95,11 @@ data class Timeslot (var title:String,
 
     companion object {
         fun emptyTimeslot(): Timeslot {
-            return Timeslot("", "", GregorianCalendar.getInstance(), "", "", "", "Other", null, listOf(), GregorianCalendar.getInstance())
+            val hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
+            val min = GregorianCalendar.getInstance().get(Calendar.MINUTE)
+            val timeText = Utils.formatTime(hour, min)
+            val date = GregorianCalendar.getInstance()
+            return Timeslot("", "", date, timeText, timeText, "", "Other", null, listOf(), date)
         }
     }
 
