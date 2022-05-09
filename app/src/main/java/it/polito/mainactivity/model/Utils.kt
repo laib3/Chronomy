@@ -57,6 +57,8 @@ class Utils {
             return dateFormat.format(date.time)
         }
 
+        fun formatYearMonthDayToString(year: Int, month: Int, day: Int): String = "${day}/${(month + 1)}/${year}"
+
         fun getSkillImgRes(title: String) : Int?{
             return when(title){
                 "Gardening" -> R.drawable.ic_skill_gardening

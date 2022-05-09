@@ -202,6 +202,7 @@ class TimeslotEditFragment : Fragment() {
             val minute = c.get(Calendar.MINUTE)
 
             // Create a new instance of TimePickerDialog and return it
+
             return TimePickerDialog(
                 activity,
                 this,
@@ -233,10 +234,20 @@ class TimeslotEditFragment : Fragment() {
             // new timeslot
             else {
                 if(vm.submitTimeslot.value != null){
-                    if(type == Type.START)
+                    if(type == Type.START){
                         vm.setSubmitFields(startHour = timeText)
-                    else if(type == Type.END)
-                        vm.setSubmitFields(endHour = timeText)
+                        // if start hour is after end hour, set end hour to start hour
+                        if(timeText.compareTo(vm.submitTimeslot.value!!.endHour.toString()) > 0){
+                            vm.setSubmitFields(endHour = timeText)
+                        }
+                    }
+                    else if(type == Type.END){
+                        if(timeText.compareTo(vm.submitTimeslot.value!!.startHour.toString()) >= 0)
+                            vm.setSubmitFields(endHour = timeText)
+                        else
+                            TODO("implement")
+                            // display snackbar
+                    }
                 }
             }
             // TODO move up in observe
@@ -293,6 +304,8 @@ class TimeslotEditFragment : Fragment() {
             dialog = DatePickerDialog(requireContext(), this, year!!, month!!, day!!)
             if(type == DType.END)
                 dialog.datePicker.minDate = startDate!!.timeInMillis
+            else if(type == DType.START)
+                dialog.datePicker.minDate = GregorianCalendar.getInstance().timeInMillis
             return dialog
         }
 
@@ -300,7 +313,7 @@ class TimeslotEditFragment : Fragment() {
         @SuppressLint("SetTextI18n")
         override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
             val old = tiDate?.text
-            val new = "${day}/${(month + 1)}/${year}"
+            val new = Utils.formatYearMonthDayToString(year, month, day)
             // if the timeslot is being created
             val date: Calendar = GregorianCalendar(year, month, day)
             // modify existing timeslot

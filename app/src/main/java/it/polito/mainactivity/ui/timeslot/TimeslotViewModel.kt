@@ -44,9 +44,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 t.endHour.length == TIME_LENGTH &&
                 t.startHour.compareTo(t.endHour) <= 0 &&
                 t.category in app.resources.getStringArray(R.array.skills_array) &&
-                (t.endRepetitionDate.after(t.date) || t.endRepetitionDate.equals(t.date)) &&
-                if(t.repetition != null) t.repetition in app.resources.getStringArray(R.array.repetitionMw) && t.days.isNotEmpty()
-                else true
+                (t.repetition == null || (
+                    t.repetition in app.resources.getStringArray(R.array.repetitionMw) &&
+                    t.days.isNotEmpty() &&
+                    (t.endRepetitionDate.after(t.date) || t.endRepetitionDate.equals(t.date))))
     }
 
     fun removeTimeslot(position: Int) {
