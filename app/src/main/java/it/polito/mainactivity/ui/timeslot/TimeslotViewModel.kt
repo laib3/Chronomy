@@ -88,7 +88,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         endHour?.let{ sTs?.endHour = it }
         location?.let{ sTs?.location = it }
         category?.let{ sTs?.category = it }
-        repetition?.let{ sTs?.repetition = it }
+        repetition.let{ sTs?.repetition = it }
         days?.let{ sTs?.days = it }
         endRepetitionDate?.let{ sTs?.endRepetitionDate = it }
         _submitTimeslot.value = sTs!!
