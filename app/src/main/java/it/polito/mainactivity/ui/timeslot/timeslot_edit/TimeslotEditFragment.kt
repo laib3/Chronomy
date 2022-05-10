@@ -249,8 +249,9 @@ class TimeslotEditFragment : Fragment() {
                     oldDays.remove(idx + 1)
                 else
                     oldDays?.add(idx + 1)
-                vm.setTimeslots(oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays?.toList() ?:
-                    listOf(GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK))) else ts})
+                val oldTimeslots = vm.timeslots.value
+                val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays!!.toList()) else ts}
+                vm.setTimeslots(newTimeslots)
             }}
         }
         else {
