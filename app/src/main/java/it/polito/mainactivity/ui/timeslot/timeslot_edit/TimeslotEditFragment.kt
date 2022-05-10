@@ -74,11 +74,22 @@ class TimeslotEditFragment : Fragment() {
                     vm.setTimeslots(newTimeslots)
                 }
                 else if(type == Type.END && old != timeText) {
-                    val oldTimeslots = vm.timeslots.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(
-                        endHour = timeText
-                    ) else ts}
-                    vm.setTimeslots(newTimeslots)
+                    if(timeText >= vm.submitTimeslot.value!!.startHour) {
+                        val oldTimeslots = vm.timeslots.value
+                        val newTimeslots = oldTimeslots?.mapIndexed { idx, ts ->
+                            if (idx == tId) ts.copy(
+                                endHour = timeText
+                            ) else ts
+                        }
+                        vm.setTimeslots(newTimeslots)
+                    }
+                    else {
+                        // display SnackBar when end time is before start time
+                        val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "ERROR: End time must be after start time!", Snackbar.LENGTH_LONG)
+                        s.setTextColor(Color.parseColor("#ffff00"))
+                        s.show()
+                    }
+
                 }
             }
             // new timeslot
