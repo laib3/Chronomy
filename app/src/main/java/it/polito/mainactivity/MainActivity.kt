@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
 
-        LayoutInflater.from(this).inflate(R.layout.nav_header_main, navView);
+        LayoutInflater.from(this).inflate(R.layout.nav_header_main, navView)
         val navHeaderName : TextView = navView.findViewById(R.id.navHeaderName)
         val navHeaderSurname: TextView = navView.findViewById(R.id.navHeaderSurname)
         val navHeaderBalance : TextView = navView.findViewById(R.id.navHeaderBalance)
