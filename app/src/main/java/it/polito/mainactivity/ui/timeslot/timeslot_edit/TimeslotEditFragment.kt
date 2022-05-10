@@ -67,13 +67,18 @@ class TimeslotEditFragment : Fragment() {
                 val old = tiTime?.text
                 if(type == Type.START && old != timeText){
                     val oldTimeslots = vm.timeslots.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(
-                        startHour = timeText
-                    ) else ts}
+                    val newTimeslots = if(timeText <= oldTimeslots?.elementAt(tId)?.endHour!!) {
+                        oldTimeslots.mapIndexed { idx, ts -> if (idx == tId) ts.copy(startHour = timeText) else ts }
+                    }
+                    else {
+                        // if start hour is after end hour, set end hour to start hour
+                        oldTimeslots.mapIndexed { idx, ts -> if (idx == tId) ts.copy(startHour = timeText, endHour = timeText) else ts }
+                    }
                     vm.setTimeslots(newTimeslots)
+
                 }
                 else if(type == Type.END && old != timeText) {
-                    if(timeText >= vm.submitTimeslot.value!!.startHour) {
+                    if(timeText >= vm.timeslots.value?.elementAt(tId)?.startHour!!) {
                         val oldTimeslots = vm.timeslots.value
                         val newTimeslots = oldTimeslots?.mapIndexed { idx, ts ->
                             if (idx == tId) ts.copy(
