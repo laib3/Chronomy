@@ -52,11 +52,13 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
                     "\nevery month"
             else -> Utils.formatDateToString(vm.timeslots.value?.get(position)?.startDate)
         }
+
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,
                 ts?.startHour,
-                ts?.endHour
+                ts?.endHour,
+                Utils.getDuration(ts?.startHour?:"0:0", ts?.endHour?:"0:0")
             )
 
         // Change the image icon of the skill with the correct one

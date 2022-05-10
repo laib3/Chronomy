@@ -59,7 +59,7 @@
     <string name="empty_timeslot_list_message">The list of timeslots is empty, press the button below to add one</string>
 
     <!-- separators -->
-    <string name="starting_hour_dash_ending_hour">%s - %s</string>
+    <string name="starting_hour_dash_ending_hour">%s - %s  (%s)</string>
 
     <string-array name="repetitionMw">
         <item id="isWeekly">Weekly</item>

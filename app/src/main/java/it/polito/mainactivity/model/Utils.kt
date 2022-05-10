@@ -84,6 +84,20 @@ class Utils {
 
         fun formatTime(hh: Int, mm: Int): String = String.format("%02d:%02d", hh, mm)
 
+        fun getDuration(startHourMinutes: String, endHourMinutes: String): String {
+            val endH : Int = startHourMinutes.split(":")[0].toInt()
+            val endM : Int = startHourMinutes.split(":")[1].toInt()
+            val startH : Int = endHourMinutes.split(":")[0].toInt()
+            val startM: Int = endHourMinutes.split(":")[1].toInt()
+
+            var durationH: Int = startH - endH
+            var durationM: Int = if(startM >= endM)  startM - endM else {
+                durationH -= 1
+                startM + 60 - endM
+            }
+            return "%dh:%02dm".format(durationH, durationM)
+        }
+
         fun getDayName(num: Int): String = when (num) {
                 Calendar.SUNDAY -> "Sunday"
                 Calendar.MONDAY -> "Monday"

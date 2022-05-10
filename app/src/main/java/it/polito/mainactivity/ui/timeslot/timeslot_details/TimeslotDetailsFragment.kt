@@ -87,14 +87,17 @@ class TimeslotDetailsFragment : Fragment() {
                         .italic{append(ts.startHour)}
                         .append(" to ")
                         .italic{append(ts.endHour)}
+                        .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
                 }
                 else -> {  // No repetition
                     dateString
                         .italic{append(Utils.formatDateToString(ts.startDate))}
-                        .append(" from ")
+                        .append("\nfrom ")
                         .italic{append(ts.startHour)}
                         .append(" to ")
                         .italic{append(ts.endHour)}
+                        .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
+
 
                 }
             }
