@@ -43,10 +43,22 @@ class TimeslotEditFragment : Fragment() {
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            // Use the current time as the default values for the picker
+            // Use the saved time as initial value for the picker
+            // Otheerwise use the current time
             val c = Calendar.getInstance()
-            val hour = c.get(Calendar.HOUR_OF_DAY)
-            val minute = c.get(Calendar.MINUTE)
+            var hour = c.get(Calendar.HOUR_OF_DAY)
+            var minute = c.get(Calendar.MINUTE)
+
+            if(type==Type.START){
+                val savedHourMinutes = if(tId != null) vm.timeslots.value?.elementAt(tId)?.startHour else vm.submitTimeslot.value?.startHour
+                hour = savedHourMinutes?.split(":")?.get(0)?.toInt() ?: hour
+                minute = savedHourMinutes?.split(":")?.get(1)?.toInt() ?: minute
+            }
+            else {
+                val savedHourMinutes = if(tId != null) vm.timeslots.value?.elementAt(tId)?.endHour else vm.submitTimeslot.value?.endHour
+                hour = savedHourMinutes?.split(":")?.get(0)?.toInt() ?: hour
+                minute = savedHourMinutes?.split(":")?.get(1)?.toInt() ?: minute
+            }
 
             // Create a new instance of TimePickerDialog and return it
 
@@ -144,8 +156,8 @@ class TimeslotEditFragment : Fragment() {
 
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            // Use the current startDate as the default startDate in the picker
-            // val c = Calendar.getInstance()
+            // Use the current startDate as the default startDate in the picker in new Timeslot,
+            // otherwise use the saved one
             val startDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.startDate else vm?.submitTimeslot?.value?.startDate
             val endDate = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.endRepetitionDate else vm?.submitTimeslot?.value?.endRepetitionDate
             val repetition = if(tId != null) vm?.timeslots?.value?.elementAt(tId!!)?.repetition else vm?.submitTimeslot?.value?.repetition
