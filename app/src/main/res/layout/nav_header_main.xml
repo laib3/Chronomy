@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navHeaderLayout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
+    android:layout_height="wrap_content"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -13,8 +13,9 @@
         android:id="@+id/navHeaderProfilePicture"
         android:layout_width="@dimen/profile_picture_small_size"
         android:layout_height="@dimen/profile_picture_small_size"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="@dimen/huge_distance"
+        android:layout_marginTop="90dp"
+        android:layout_marginBottom="@dimen/big_distance"
         android:background="@drawable/white_circle_bg"
         android:backgroundTint="@android:color/transparent"
         android:contentDescription="@string/user_profile_picture_label"
@@ -22,6 +23,7 @@
         android:src="@drawable/profile_pic_1"
         app:layout_constraintBottom_toTopOf="@+id/navHeaderName"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ImageContrastCheck" />
 
     <TextView
@@ -31,7 +33,8 @@
         android:text="@string/user_profile_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toTopOf="@+id/navHeaderBalance"
-        app:layout_constraintStart_toStartOf="@+id/navHeaderProfilePicture" />
+        app:layout_constraintStart_toStartOf="@+id/navHeaderProfilePicture"
+        app:layout_constraintTop_toBottomOf="@+id/navHeaderProfilePicture" />
 
     <TextView
         android:id="@+id/navHeaderSurname"
@@ -47,8 +50,9 @@
         android:id="@+id/navHeaderBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="@dimen/big_distance"
         android:text="@string/user_profile_balance"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/navHeaderName" />
+        app:layout_constraintStart_toStartOf="@+id/navHeaderName"
+        app:layout_constraintTop_toBottomOf="@+id/navHeaderName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
