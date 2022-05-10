@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_list
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
+import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
 class TimeslotListFragment : Fragment() {
@@ -51,6 +55,7 @@ class TimeslotListFragment : Fragment() {
         val bundle = Bundle()
 
         fab.setOnClickListener {
+            vm.resetSubmitTimeslot()
             findNavController().navigate(R.id.action_nav_list_to_nav_edit)
         }
         return root
@@ -59,5 +64,16 @@ class TimeslotListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume(){
+        super.onResume()
+        // if snackbar message is set: display it as snackbar
+        (activity as MainActivity).snackBarMessage?.run {
+            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT)
+                .setTextColor(Utils.getSnackbarColor(this))
+                .show()
+            (activity as MainActivity).snackBarMessage = null
+        }
     }
 }

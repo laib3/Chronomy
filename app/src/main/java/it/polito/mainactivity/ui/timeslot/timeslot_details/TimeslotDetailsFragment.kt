@@ -135,8 +135,10 @@ class TimeslotDetailsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // If snackbar message is set: display it as snackbar
-        (activity as MainActivity).snackBarMessage?.run{
-            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT).show()
+        (activity as MainActivity).snackBarMessage?.run {
+            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT)
+                .setTextColor(Utils.getSnackbarColor(this))
+                .show()
             (activity as MainActivity).snackBarMessage = null
         }
     }

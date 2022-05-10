@@ -1,5 +1,8 @@
 package it.polito.mainactivity.model
 
+import android.graphics.Color
+import com.google.android.material.snackbar.Snackbar
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import org.json.JSONArray
 import org.json.JSONObject
@@ -95,6 +98,10 @@ class Utils {
 
         fun getDaysOfRepetition(days: List<Int>): String =
             days.sorted().joinToString(", ","","",-1, "...") { getDayName(it) }
+
+        fun getSnackbarColor(msg: String): Int =
+            if(msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
+            else Color.parseColor("#55ff55")
 
     }
 

@@ -21,6 +21,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.model.Timeslot
@@ -179,7 +180,7 @@ class TimeslotEditFragment : Fragment() {
         }
     }
 
-    private val vm:TimeslotViewModel by activityViewModels()
+    private val vm: TimeslotViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotEditBinding? = null
     private val binding get() = _binding!!
@@ -189,21 +190,22 @@ class TimeslotEditFragment : Fragment() {
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        tId = arguments?.getInt("id", -1)
-        tId = if(tId == -1) null else tId
-
         return root
     }
 
     override fun onResume(){
+        // check https://www.youtube.com/watch?v=741l_fPKL3Y
         super.onResume()
+
+        tId = arguments?.getInt("id", -1)
+        tId = if(tId == -1) null else tId
+
         val categories = resources.getStringArray(R.array.skills_array)
         val repetitions = resources.getStringArray(R.array.repetitionMw)
         val categoryArrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, categories)
         val repetitionsArrayAdapter = ArrayAdapter(requireContext(), R.layout.list_item, repetitions)
         binding.tvCategory.setAdapter(categoryArrayAdapter)
         binding.tvRepetition.setAdapter(repetitionsArrayAdapter)
-
 
         val chips: MutableList<Chip> = mutableListOf(binding.S0, binding.M1, binding.T2, binding.W3, binding.T4, binding.F5, binding.S6)
 
@@ -232,11 +234,12 @@ class TimeslotEditFragment : Fragment() {
             val oldTimeslots = vm.timeslots.value
             val oldDays = oldTimeslots?.elementAt(tId!!)?.days?.toMutableSet()
             chips.forEachIndexed{ idx, chip -> chip.setOnClickListener{
-                if(oldDays?.contains(idx + 1) == true)
+                if(oldDays?.contains(idx + 1) == true && oldDays.size > 1)
                     oldDays.remove(idx + 1)
                 else
                     oldDays?.add(idx + 1)
-                vm.setTimeslots(oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays?.toList() ?: listOf()) else ts})
+                vm.setTimeslots(oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays?.toList() ?:
+                    listOf(GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK))) else ts})
             }}
         }
         else {
@@ -249,7 +252,7 @@ class TimeslotEditFragment : Fragment() {
             binding.bSubmit.apply{ visibility = View.VISIBLE }
             val oldDays = vm.submitTimeslot.value?.days?.toMutableList()
             chips.forEachIndexed{ idx, chip -> chip.setOnClickListener {
-                if(oldDays?.contains(idx + 1) == true)
+                if(oldDays?.contains(idx + 1) == true && oldDays.size > 1)
                     oldDays.remove(idx + 1)
                 else
                     oldDays?.add(idx + 1)
@@ -275,20 +278,34 @@ class TimeslotEditFragment : Fragment() {
                 .show(requireActivity().supportFragmentManager, "endTimePicker")
         }
         binding.swRepetition.setOnClickListener {
+            val currentDayOfWeek = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK)
             if(tId != null){
                 val oldTimeslots = vm.timeslots.value
+                val oldT = oldTimeslots?.elementAt(tId!!)
                 val repetition = if(binding.swRepetition.isChecked) "Weekly" else null
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
+                // at the beginning is empty
+                val newDays: MutableSet<Int> = if(oldT?.days?.size!! == 0) oldT.days.toMutableSet().apply{ add(currentDayOfWeek) } else oldT.days.toMutableSet()
+                val newTimeslots = oldTimeslots.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
                 vm.setTimeslots(newTimeslots)
             }
             else {
                 // to set repetition to null you need to pass empty string
+                val days = vm.submitTimeslot.value?.days?.toMutableSet()
+                if(days?.size!! == 0)
+                    days.add(currentDayOfWeek)
                 vm.setSubmitFields(repetition = if(binding.swRepetition.isChecked) "Weekly" else "")
             }
         }
-        binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()) findNavController().navigateUp() }
+        binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()){
+            // display SnackBar when end time is before start time
+            val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "New timeslot saved correctly!", Snackbar.LENGTH_LONG)
+            s.setTextColor(Color.parseColor("#55ff55"))
+            s.show()
+            findNavController().navigateUp()
+        } }
 
-        // observe ViewModel
+        // OBSERVE
+        // edit existing timeslot
         if(tId != null){
             vm.timeslots.observe(viewLifecycleOwner) {
                 val t: Timeslot = it.elementAt(tId!!)
@@ -298,21 +315,26 @@ class TimeslotEditFragment : Fragment() {
                 binding.tvStartDate.text = Utils.formatDateToString(t.startDate)
                 binding.tvStartTime.text = t.startHour
                 binding.tvEndTime.text = t.endHour
-                binding.tvEndDate.text = if(t.startDate.before(t.endRepetitionDate) || t.startDate == t.endRepetitionDate)
-                    Utils.formatDateToString(t.endRepetitionDate)
-                else
-                    Utils.formatDateToString(t.startDate)
+                binding.tvEndDate.text =
+                    if(t.startDate.before(t.endRepetitionDate) || t.startDate == t.endRepetitionDate)
+                        Utils.formatDateToString(t.endRepetitionDate)
+                    else
+                        Utils.formatDateToString(t.startDate)
                 val positionCategory = categoryArrayAdapter.getPosition(t.category)
                 val positionRepetition = max(repetitionsArrayAdapter.getPosition(t.repetition), 0)
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
                 binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
                 binding.swRepetition.isChecked = t.repetition != null
                 chips.forEachIndexed{ idx, chip -> chip.isChecked = (idx + 1) in t.days }
+                if(vm.isValid(t))
+                    notifySuccess(true)
+                else
+                    notifySuccess(false)
                 setRepetitionComponentsVisibility(t.repetition)
             }
         }
+        // add new timeslot
         else {
-            // if new timeslot (to be added)
             vm.submitTimeslot.observe(viewLifecycleOwner){
                 binding.tvStartDate.text = Utils.formatDateToString(it.startDate)
                 binding.tvStartTime.text = it.startHour
@@ -349,6 +371,8 @@ class TimeslotEditFragment : Fragment() {
         binding.teTitle.setOnFocusChangeListener{ _, focused ->
             val old = vm.timeslots.value?.elementAt(tId!!)?.title.toString()
             val new = binding.teTitle.text.toString()
+            if(new.isBlank())
+                notifySuccess(false)
             if(!focused && old != new && new.isNotBlank()){
                 val oldTimeslots = vm.timeslots.value
                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(title = new) else ts}
@@ -358,6 +382,8 @@ class TimeslotEditFragment : Fragment() {
         binding.teDescription.setOnFocusChangeListener{ _, focused ->
             val old = vm.timeslots.value?.elementAt(tId!!)?.description.toString()
             val new = binding.teDescription.text.toString()
+            if(new.isBlank())
+                notifySuccess(false)
             if(!focused && old != new){
                 val oldTimeslots = vm.timeslots.value
                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(description = new) else ts}
@@ -367,6 +393,8 @@ class TimeslotEditFragment : Fragment() {
         binding.teLocation.setOnFocusChangeListener{ _, focused ->
             val old = vm.timeslots.value?.elementAt(tId!!)?.location.toString()
             val new = binding.teLocation.text.toString()
+            if(new.isBlank())
+                notifySuccess(false)
             if(!focused && old != new && new.isNotBlank()){
                 val oldTimeslots = vm.timeslots.value
                 val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(location = new) else ts}
@@ -400,5 +428,11 @@ class TimeslotEditFragment : Fragment() {
         })
     }
 
+    private fun notifySuccess(success: Boolean){
+        if(success)
+            (activity as MainActivity).snackBarMessage = "Timeslot changed successfully!"
+        else
+            (activity as MainActivity).snackBarMessage = "ERROR: Some fields were missing. Incomplete update."
+    }
 
 }

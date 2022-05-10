@@ -79,8 +79,8 @@ data class Timeslot (var title:String,
             val min = GregorianCalendar.getInstance().get(Calendar.MINUTE)
             val timeText = Utils.formatTime(hour, min)
             val date = GregorianCalendar.getInstance()
-            val repetitionDay = date.get(Calendar.DAY_OF_WEEK)
-            return Timeslot("", "", date, timeText, timeText, "", "Other", null, listOf(), date)
+            val currentDay = date.get(Calendar.DAY_OF_WEEK)
+            return Timeslot("", "", date, timeText, timeText, "", "Other", null, listOf(currentDay), date)
         }
     }
 

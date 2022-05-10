@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
+import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 
@@ -52,10 +53,11 @@ class ShowProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         // If snackbar message is set: display it as snackbar
-        (activity as MainActivity).snackBarMessage?.run{
-            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT).show()
+        (activity as MainActivity).snackBarMessage?.run {
+            Snackbar.make(binding.root, this, Snackbar.LENGTH_SHORT)
+                .setTextColor(Utils.getSnackbarColor(this))
+                .show()
             (activity as MainActivity).snackBarMessage = null
         }
     }

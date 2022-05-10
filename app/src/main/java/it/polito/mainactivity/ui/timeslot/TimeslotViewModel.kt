@@ -89,4 +89,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         endRepetitionDate?.let{ sTs?.endRepetitionDate = it }
         _submitTimeslot.value = sTs!!
     }
+
+    fun resetSubmitTimeslot() {
+        _submitTimeslot.value = Timeslot.emptyTimeslot()
+    }
 }
