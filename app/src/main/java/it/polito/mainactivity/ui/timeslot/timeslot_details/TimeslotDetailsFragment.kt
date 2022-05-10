@@ -56,45 +56,47 @@ class TimeslotDetailsFragment : Fragment() {
             val dateString = SpannableStringBuilder()
 
 
-            if(ts.repetition?.lowercase() == "weekly"){
-                dateString
-                    .append("This timeslots repeats ")
-                    .bold{append("weekly")}
-                    .append(".\n\nStarting on ")
-                    .italic{append(Utils.formatDateToString(ts.startDate))}
-                    .append(" until ")
-                    .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
-                    .append("\nevery ")
-                    .italic{append("${Utils.getDaysOfRepetition(ts.days)}\n")}
-                    .append("from ")
-                    .italic{append(ts.startHour)}
-                    .append(" to ")
-                    .italic{append(ts.endHour)}
-            }
-            else if (ts.repetition?.lowercase() == "monthly"){ //monthly
-                dateString
-                    .append("This timeslots repeats ")
-                    .bold{append("Monthly")}
-                    .append(".\n\nStarting on ")
-                    .italic{append(Utils.formatDateToString(ts.startDate))}
-                    .append(" until ")
-                    .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
-                    .append("\nevery ")
-                    .italic{append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}")}
-                    .append(" of the month\n")
-                    .append("from ")
-                    .italic{append(ts.startHour)}
-                    .append(" to ")
-                    .italic{append(ts.endHour)}
-            }
-            else{  // No repetition
-                dateString
-                    .italic{append(Utils.formatDateToString(ts.startDate))}
-                    .append(" from ")
-                    .italic{append(ts.startHour)}
-                    .append(" to ")
-                    .italic{append(ts.endHour)}
+            when {
+                ts.repetition?.lowercase() == "weekly" -> {
+                    dateString
+                        .append("This timeslots repeats ")
+                        .bold{append("weekly")}
+                        .append(".\n\nStarting on ")
+                        .italic{append(Utils.formatDateToString(ts.startDate))}
+                        .append(" until ")
+                        .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
+                        .append("\nevery ")
+                        .italic{append("${Utils.getDaysOfRepetition(ts.days)}\n")}
+                        .append("from ")
+                        .italic{append(ts.startHour)}
+                        .append(" to ")
+                        .italic{append(ts.endHour)}
+                }
+                ts.repetition?.lowercase() == "monthly" -> { //monthly
+                    dateString
+                        .append("This timeslots repeats ")
+                        .bold{append("Monthly")}
+                        .append(".\n\nStarting on ")
+                        .italic{append(Utils.formatDateToString(ts.startDate))}
+                        .append(" until ")
+                        .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
+                        .append("\nevery ")
+                        .italic{append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}")}
+                        .append(" of the month\n")
+                        .append("from ")
+                        .italic{append(ts.startHour)}
+                        .append(" to ")
+                        .italic{append(ts.endHour)}
+                }
+                else -> {  // No repetition
+                    dateString
+                        .italic{append(Utils.formatDateToString(ts.startDate))}
+                        .append(" from ")
+                        .italic{append(ts.startHour)}
+                        .append(" to ")
+                        .italic{append(ts.endHour)}
 
+                }
             }
 
             tiAvailability?.editText?.text = dateString
@@ -125,7 +127,7 @@ class TimeslotDetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem):Boolean {
         if(item.itemId == R.id.nav_edit) {
-            val bundle = Bundle();
+            val bundle = Bundle()
             arguments?.getInt("id")?.let{ bundle.putInt("id", it) }
             findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
             return true

@@ -1,7 +1,6 @@
 package it.polito.mainactivity.model
 
 import android.app.Application
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -74,7 +73,7 @@ class UserProfileModel(val application: Application) {
             }
         }
         try {
-            val imageDirectory: File = application.getDir(PICTURE_DIR_PATH, Context.MODE_PRIVATE)
+            val imageDirectory: File = application.getDir(PICTURE_DIR_PATH, MODE_PRIVATE)
             val file = File(imageDirectory, PROFILE_PICTURE_NAME)
             val b: Bitmap = BitmapFactory.decodeStream(FileInputStream(file))
             picture = BitmapDrawable(application.applicationContext.resources, b)
@@ -138,8 +137,8 @@ class UserProfileModel(val application: Application) {
     }
 
     private fun savePicture(): String {
-        val imageDirectory: File = application.getDir(PICTURE_DIR_PATH, Context.MODE_PRIVATE)
-        val imagePath: File = File(imageDirectory, PROFILE_PICTURE_NAME)
+        val imageDirectory: File = application.getDir(PICTURE_DIR_PATH, MODE_PRIVATE)
+        val imagePath = File(imageDirectory, PROFILE_PICTURE_NAME)
         var outputStream: FileOutputStream? = null
         try {
             outputStream = FileOutputStream(imagePath)

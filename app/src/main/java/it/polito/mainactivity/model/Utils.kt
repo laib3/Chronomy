@@ -1,8 +1,6 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
-import com.google.android.material.snackbar.Snackbar
-import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import org.json.JSONArray
 import org.json.JSONObject
@@ -58,7 +56,7 @@ class Utils {
         fun formatDateToString(date: Calendar?): String {
             if(date == null)
                 return ""
-            var dateFormat:DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
+            val dateFormat:DateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.ITALY)
             dateFormat.timeZone = date.timeZone
             return dateFormat.format(date.time)
         }

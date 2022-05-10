@@ -1,6 +1,5 @@
 package it.polito.mainactivity.model
 
-import java.text.DateFormat
 import java.util.*
 
 data class Timeslot (var title:String,
@@ -43,33 +42,35 @@ data class Timeslot (var title:String,
         "repetition": $_sRepetition,
         "days": $days,
         "endRepetitionDate": 
-            {"year": ${endRepetitionDate?.get(Calendar.YEAR)},
-            "month": ${endRepetitionDate?.get(Calendar.MONTH)},
-            "day": ${endRepetitionDate?.get(Calendar.DAY_OF_MONTH)}
+            {"year": ${endRepetitionDate.get(Calendar.YEAR)},
+            "month": ${endRepetitionDate.get(Calendar.MONTH)},
+            "day": ${endRepetitionDate.get(Calendar.DAY_OF_MONTH)}
             }
         }
         """.replace("\n", "").trimIndent()
     }
 
     private fun createDates() {
-        var tmp = Calendar.getInstance()
+        val tmp = Calendar.getInstance()
         tmp.timeInMillis = startDate.timeInMillis
-        if(repetition == null)
-            return
-        else if(repetition!!.lowercase()=="weekly"){
-            while(tmp.before(endRepetitionDate)){
-                if(days.contains(tmp.get(Calendar.DAY_OF_WEEK))){
-                    dates.add(tmp)
+        when {
+            repetition?.lowercase()=="weekly" -> {
+                while(tmp.before(endRepetitionDate)){
+                    if(days.contains(tmp.get(Calendar.DAY_OF_WEEK))){
+                        dates.add(tmp)
+                    }
+                    //we bring tmp to the next day
+                    tmp.add(Calendar.DATE, 1)
                 }
-                //we bring tmp to the next day
-                tmp.add(Calendar.DATE, 1)
             }
-        }else{ //monthly
-            while(tmp.before(endRepetitionDate)){
-                dates.add(tmp)
-                //we bring tmp to the next day
-                tmp.add(Calendar.MONTH, 1)
+            repetition?.lowercase()=="monthly" -> { //monthly
+                while(tmp.before(endRepetitionDate)){
+                    dates.add(tmp)
+                    //we bring tmp to the next day
+                    tmp.add(Calendar.MONTH, 1)
+                }
             }
+            else -> return
         }
     }
 

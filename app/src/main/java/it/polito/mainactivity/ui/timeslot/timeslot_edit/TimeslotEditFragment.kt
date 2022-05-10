@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +65,6 @@ class TimeslotEditFragment : Fragment() {
             val timeText = Utils.formatTime(hourOfDay, minute)
             // modify existing timeslot
             if(tId != null){
-                // TODO refactor
                 val old = tiTime?.text
                 if(type == Type.START && old != timeText){
                     val oldTimeslots = vm.timeslots.value
@@ -242,14 +242,13 @@ class TimeslotEditFragment : Fragment() {
                 val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(repetition = repetitions[idx]) else ts}
                 vm.setTimeslots(newTimeslots)
             }
-            val oldTimeslots = vm.timeslots.value
-            val oldDays = oldTimeslots?.elementAt(tId!!)?.days?.toMutableSet()
-            chips.forEachIndexed{ idx, chip -> chip.setOnClickListener{
-                if(oldDays?.contains(idx + 1) == true && oldDays.size > 1)
-                    oldDays.remove(idx + 1)
-                else
-                    oldDays?.add(idx + 1)
+            chips.forEachIndexed{ index, chip -> chip.setOnClickListener{
                 val oldTimeslots = vm.timeslots.value
+                val oldDays = oldTimeslots?.elementAt(tId!!)?.days?.toMutableSet()
+                if(oldDays?.contains(index + 1) == true && oldDays.size > 1)
+                    oldDays.remove(index + 1)
+                else
+                    oldDays?.add(index + 1)
                 val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays!!.toList()) else ts}
                 vm.setTimeslots(newTimeslots)
             }}
@@ -294,18 +293,36 @@ class TimeslotEditFragment : Fragment() {
             if(tId != null){
                 val oldTimeslots = vm.timeslots.value
                 val oldT = oldTimeslots?.elementAt(tId!!)
+
+                // if the switch is checked, set repetition to weekly and add the day of the startDate
                 val repetition = if(binding.swRepetition.isChecked) "Weekly" else null
-                // at the beginning is empty
-                val newDays: MutableSet<Int> = if(oldT?.days?.size!! == 0) oldT.days.toMutableSet().apply{ add(currentDayOfWeek) } else oldT.days.toMutableSet()
-                val newTimeslots = oldTimeslots.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
-                vm.setTimeslots(newTimeslots)
+
+                if (repetition != null) {
+                    val days = oldT?.days?.toMutableList()
+                    if(days?.size!! == 0)
+                        days.add(currentDayOfWeek)
+                    val newTimeslots = oldTimeslots.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition, days = days.toList()) else ts}
+                    vm.setTimeslots(newTimeslots)
+                }
+                else {
+                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
+                    vm.setTimeslots(newTimeslots)
+                }
             }
             else {
-                // to set repetition to null you need to pass empty string
-                val days = vm.submitTimeslot.value?.days?.toMutableSet()
-                if(days?.size!! == 0)
-                    days.add(currentDayOfWeek)
-                vm.setSubmitFields(repetition = if(binding.swRepetition.isChecked) "Weekly" else "")
+                // if the switch is checked, set repetition to weekly and add the day of the startDate
+                val repetition = if(binding.swRepetition.isChecked) "Weekly" else null
+                if (repetition != null) {
+                    val days = vm.submitTimeslot.value?.days?.toMutableSet()
+                    if(days?.size!! == 0)
+                        days.add(currentDayOfWeek)
+                    // to set repetition to null in submitTimeslot you need to pass empty string
+                    vm.setSubmitFields(repetition = "Weekly", days = days.toList())
+                }
+                else {
+                    // to set repetition to null in submitTimeslot you need to pass empty string
+                    vm.setSubmitFields(repetition = "")
+                }
             }
         }
         binding.bSubmit.setOnClickListener{ if(vm.submitTimeslot()){
@@ -336,7 +353,6 @@ class TimeslotEditFragment : Fragment() {
                 val positionRepetition = max(repetitionsArrayAdapter.getPosition(t.repetition), 0)
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
                 binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
-                //  TODO: find a better solution later
                 binding.swRepetition.isChecked = t.repetition != null
                 chips.forEachIndexed{ idx, chip -> chip.isChecked = (idx + 1) in t.days }
                 if(vm.isValid(t))
