@@ -55,16 +55,8 @@ class TimeslotDetailsFragment : Fragment() {
 
             val dateString = SpannableStringBuilder()
 
-            if(ts.repetition == ""){
-                dateString
-                    .italic{append(Utils.formatDateToString(ts.startDate))}
-                    .append(" from ")
-                    .italic{append(ts.startHour)}
-                    .append(" to ")
-                    .italic{append(ts.endHour)}
 
-            }
-            else if(ts.repetition?.lowercase() == "weekly"){
+            if(ts.repetition?.lowercase() == "weekly"){
                 dateString
                     .append("This timeslots repeats ")
                     .bold{append("weekly")}
@@ -79,10 +71,10 @@ class TimeslotDetailsFragment : Fragment() {
                     .append(" to ")
                     .italic{append(ts.endHour)}
             }
-            else { //monthly
+            else if (ts.repetition?.lowercase() == "monthly"){ //monthly
                 dateString
                     .append("This timeslots repeats ")
-                    .bold{append("monthly")}
+                    .bold{append("Monthly")}
                     .append(".\n\nStarting on ")
                     .italic{append(Utils.formatDateToString(ts.startDate))}
                     .append(" until ")
@@ -94,6 +86,15 @@ class TimeslotDetailsFragment : Fragment() {
                     .italic{append(ts.startHour)}
                     .append(" to ")
                     .italic{append(ts.endHour)}
+            }
+            else{  // No repetition
+                dateString
+                    .italic{append(Utils.formatDateToString(ts.startDate))}
+                    .append(" from ")
+                    .italic{append(ts.startHour)}
+                    .append(" to ")
+                    .italic{append(ts.endHour)}
+
             }
 
             tiAvailability?.editText?.text = dateString

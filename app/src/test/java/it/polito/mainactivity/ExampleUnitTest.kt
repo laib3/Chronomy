@@ -27,7 +27,7 @@ class ExampleUnitTest {
             "09:10 AM", "10:00 PM",
             "via vincenzo vela, 49, Torino, To, 10128",
             "Wellness",
-            "weekly",
+            "Weekly",
             listOf(1, 2, 3),
             GregorianCalendar(2022, 6, 1)
         )
