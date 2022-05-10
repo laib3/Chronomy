@@ -40,7 +40,10 @@ class Utils {
                 val endHour: String = jo.getString("endHour")
                 val location: String = jo.getString("location")
                 val category: String = jo.getString("category")
-                val repetition: String = jo.getString("repetition")
+                var repetition: String? = jo.getString("repetition")
+                // NOTE: no repetition is saved with null value, not null string like in json
+                if (repetition == "null" || repetition == "")
+                    repetition = null
                 val JSONDays: JSONArray = jo.getJSONArray("days")
                 val days: MutableList<Int> = JSONArrayToIntList(JSONDays)
                 val endRepetitionDate: JSONObject = jo.getJSONObject("endRepetitionDate")

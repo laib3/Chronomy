@@ -335,6 +335,7 @@ class TimeslotEditFragment : Fragment() {
                 val positionRepetition = max(repetitionsArrayAdapter.getPosition(t.repetition), 0)
                 binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
                 binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
+                //  TODO: find a better solution later
                 binding.swRepetition.isChecked = t.repetition != null
                 chips.forEachIndexed{ idx, chip -> chip.isChecked = (idx + 1) in t.days }
                 if(vm.isValid(t))
