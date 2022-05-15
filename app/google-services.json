@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "903427285285",
+    "project_id": "chronomy-3fc87",
+    "storage_bucket": "chronomy-3fc87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903427285285:android:f05ef69fd5c19022cabacc",
+        "android_client_info": {
+          "package_name": "it.polito.mainactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903427285285-pu25cc7cdjtrb0dbpj5lucdi8jalollk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByVo28824AuSiLQ1aXuNusuSflz6chttI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903427285285-pu25cc7cdjtrb0dbpj5lucdi8jalollk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
