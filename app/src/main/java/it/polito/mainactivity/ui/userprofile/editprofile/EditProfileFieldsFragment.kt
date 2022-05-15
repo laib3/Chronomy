@@ -1,7 +1,6 @@
 package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class EditProfileFieldsFragment : Fragment() {
         vm.updated.observe(viewLifecycleOwner) {
             val skills = vm.skills.value
             if (it != null) {
-                vm.setSkills(skills?.map { s -> if (it.title != s.title) s else it })
+                vm.setSkills(skills?.map { s -> if (it.category != s.category) s else it })
                 // display a snackbar with the message
                 //val snack = Snackbar.make(binding.root, "Skill edited", Snackbar.LENGTH_SHORT)
                 //snack.show()

@@ -21,10 +21,10 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
         val tvTitle = findViewById<TextView>(R.id.skillTitle)
         val ivSkillIcon = findViewById<ImageView>(R.id.skillIcon)
         // set the icon
-        val imgRes = Utils.getSkillImgRes(skill.title)
+        val imgRes = Utils.getSkillImgRes(skill.category)
         if(imgRes != null)
             ivSkillIcon.setImageResource(imgRes)
-        tvTitle.text = skill.title
+        tvTitle.text = skill.category
         tvDescription.text = skill.description
         val iconEye = findViewById<ImageView>(R.id.eyeSlashedIcon)
 
@@ -52,7 +52,7 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
             val closeButton = modalView.findViewById<ImageView>(R.id.modalCloseButton)
             val saveButton = modalView.findViewById<Button>(R.id.modalSaveButton)
             // populate fields
-            modalTitle.text = skill.title
+            modalTitle.text = skill.category
             modalDescription.setText(skill.description)
             modalChecked.isChecked = skill.active
             // add click listeners
