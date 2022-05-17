@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.TimeslotModel
