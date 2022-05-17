@@ -1,5 +1,6 @@
 package it.polito.mainactivity.home
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
@@ -36,7 +38,15 @@ class HomeFragment : Fragment() {
             //remove duplicates and show the buttons
             presentSkills.toSet()
                 .map{s -> SkillHomeButton(requireContext(), s)}
-                .forEach{shb:SkillHomeButton -> gridLayout.addView(shb)}
+                .forEach { shb: SkillHomeButton ->
+                    gridLayout.addView(shb)
+                     shb.setOnClickListener{
+                         //TODO: navigation to nav_list with FILTER
+                        val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "New timeslot saved correctly!", Snackbar.LENGTH_LONG)
+                        s.setTextColor(Color.parseColor("#55ff55"))
+                        s.show()
+                    }}
+
         }
 
         return root

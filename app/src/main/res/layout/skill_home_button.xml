@@ -7,8 +7,7 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="4dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginBottom="4dp"
-    android:elevation="8dp">
+    android:layout_marginBottom="4dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -20,14 +19,14 @@
         android:layout_marginBottom="@dimen/big_distance"
         android:elevation="8dp"
         app:cardCornerRadius="10pt"
-        app:cardElevation="15dp"
+        app:cardElevation="10dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        >
+        android:foreground="?android:attr/selectableItemBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/skillCardInnerLayout"
@@ -59,8 +58,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skillIcon"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/skillIcon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
