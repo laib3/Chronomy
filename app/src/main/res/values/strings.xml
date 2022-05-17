@@ -2,11 +2,12 @@
     <string name="app_name">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-<!--    <string name="nav_header_title">Android Studio</string>-->
-<!--    <string name="nav_header_subtitle">android.studio@android.com</string>-->
+    <!--    <string name="nav_header_title">Android Studio</string>-->
+    <!--    <string name="nav_header_subtitle">android.studio@android.com</string>-->
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="menu_home">Home</string>
     <string name="menu_timeslot_list">Timeslot List</string>
     <string name="menu_timeslot_details">Timeslot Details</string>
     <string name="menu_timeslot_edit">Timeslot Edit</string>
@@ -65,6 +66,11 @@
         <item id="isWeekly">Weekly</item>
         <item id="isMonthly">Monthly</item>
     </string-array>
+
+    <!-- messages -->
+    <string name="welcome_string">Hello! What do you need today?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
