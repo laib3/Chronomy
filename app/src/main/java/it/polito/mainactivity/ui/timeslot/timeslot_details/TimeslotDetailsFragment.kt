@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.MainActivity
+import it.polito.mainactivity.MainViewModel
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.model.Utils
@@ -19,7 +20,8 @@ import java.util.*
 
 class TimeslotDetailsFragment : Fragment() {
 
-    private val vm: TimeslotViewModel by activityViewModels()
+    //private val vm: TimeslotViewModel by activityViewModels()
+    private val vm: MainViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotDetailsBinding? = null
 
