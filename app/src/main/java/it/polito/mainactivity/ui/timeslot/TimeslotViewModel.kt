@@ -15,8 +15,6 @@ import java.util.*
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
 
-    // instantiate timeslot model - it will be a repository in future (?)
-
     private val TIME_LENGTH: Int = 5
 
     private val _timeslots= MutableLiveData<List<Timeslot>>()
@@ -65,22 +63,32 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
 
 
+
+    /*
+
     // TODO: REMOVE IT, REPLACE IT WITH UPDATE TIMESLOT
     //fun setTimeslots(ts: List<Timeslot>?) = ts?.let{ _timeslots.value = it; model.setTimeslots(it) }
     fun setTimeslots(ts: List<Timeslot>?) = ts?.let{
         _timeslots.value = it;
-        // db
-        //     .collection("timeslots")
-        //     .document()
-        //     .set(mapOf("msg" to "Hello"))
-        //     .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
-        //     .addOnFailureListener{ Log.d("Firebase", it.message?:"Error")}
+    }
+     */
+
+
+
+    fun updateTimeslotField(id: String, field: String, newValue: Any?): Boolean {
+        var returnValue = false
+       db
+           .collection("timeslots")
+           .document(id)
+           .update(field, newValue)
+           .addOnSuccessListener { Log.d("Firebase", "Timeslot updated successfully"); returnValue = true;}
+           .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not updated correctly"); returnValue = false;}
+        return returnValue
     }
 
-
-    fun updateTimeslot(t: Timeslot){
+    fun updateTimeslot(t: Timeslot): Boolean{
+        var returnValue = false
         val id = t.tid
-        // pass the new timeslot
         val ts = hashMapOf(
             "title" to t.title,
             "description" to t.description,
@@ -97,9 +105,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             .collection("timeslots")
             .document(id)
             .set(ts)
-            .addOnSuccessListener { Log.d("Firebase", "Timeslot updated successfully") }
-            .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not updated correctly")}
+            .addOnSuccessListener { Log.d("Firebase", "Timeslot updated successfully"); returnValue = true}
+            .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not updated correctly"); returnValue = false}
 
+        return returnValue
 
     }
 
@@ -157,26 +166,26 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     fun submitTimeslot(): Boolean {
         if(addTimeslot(_submitTimeslot.value)){
-            resetSubmit()
+            resetSubmitTimeslot()
             return true
         }
         return false
     }
 
-    private fun resetSubmit() {
+    private fun resetSubmitTimeslot() {
         _submitTimeslot.value = Timeslot.emptyTimeslot()
     }
 
-    fun setSubmitFields(title: String? = null,
-                        description: String? = null,
-                        date: Calendar? = null,
-                        startHour : String? = null,
-                        endHour:String? = null,
-                        location:String? = null,
-                        category:String? = null,
-                        repetition: String? = null,
-                        days: List<Int>? = null,
-                        endRepetitionDate: Calendar? = null) {
+    fun setSubmitTimeslotFields(title: String? = null,
+                                description: String? = null,
+                                date: Calendar? = null,
+                                startHour : String? = null,
+                                endHour:String? = null,
+                                location:String? = null,
+                                category:String? = null,
+                                repetition: String? = null,
+                                days: List<Int>? = null,
+                                endRepetitionDate: Calendar? = null) {
         val sTs = submitTimeslot.value
         title?.let{ sTs?.title = it }
         description?.let{ sTs?.description = it }
@@ -192,7 +201,4 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         _submitTimeslot.value = sTs!!
     }
 
-    fun resetSubmitTimeslot() {
-        _submitTimeslot.value = Timeslot.emptyTimeslot()
-    }
 }

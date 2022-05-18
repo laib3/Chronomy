@@ -78,49 +78,44 @@ class TimeslotEditFragment : Fragment() {
             if(tId != null){
                 val old = tiTime?.text
                 if(type == Type.START && old != timeText){
-                    val oldTimeslots = vm.timeslots.value
-                    val newTimeslots = if(timeText <= oldTimeslots?.elementAt(tId)?.endHour!!) {
-                        oldTimeslots.mapIndexed { idx, ts -> if (idx == tId) ts.copy(startHour = timeText) else ts }
+                    vm.timeslots.value?.elementAt(tId)?.apply{
+                        !vm.updateTimeslotField(this.tid, "startHour", timeText)
+                        if(timeText > this.endHour) {
+                            vm.updateTimeslotField(this.tid, "endHour", timeText)
+                        }
+                    }?:apply{
+                       // TODO: Show error message
                     }
-                    else {
-                        // if start hour is after end hour, set end hour to start hour
-                        oldTimeslots.mapIndexed { idx, ts -> if (idx == tId) ts.copy(startHour = timeText, endHour = timeText) else ts }
-                    }
-                    vm.setTimeslots(newTimeslots)
-
                 }
                 else if(type == Type.END && old != timeText) {
-                    if(timeText >= vm.timeslots.value?.elementAt(tId)?.startHour!!) {
-                        val oldTimeslots = vm.timeslots.value
-                        val newTimeslots = oldTimeslots?.mapIndexed { idx, ts ->
-                            if (idx == tId) ts.copy(
-                                endHour = timeText
-                            ) else ts
+                    vm.timeslots.value?.elementAt(tId)?.apply{
+                        if(timeText >= this.startHour) {
+                            vm.updateTimeslotField(this.tid, "endHour", timeText)
                         }
-                        vm.setTimeslots(newTimeslots)
+                        else {
+                            // display SnackBar when end time is before start time
+                            val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "ERROR: End time must be after start time!", Snackbar.LENGTH_LONG)
+                            s.setTextColor(Color.parseColor("#ffff00"))
+                            s.show()
+                        }
+                    }?:apply{
+                        // TODO: Show error message
                     }
-                    else {
-                        // display SnackBar when end time is before start time
-                        val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "ERROR: End time must be after start time!", Snackbar.LENGTH_LONG)
-                        s.setTextColor(Color.parseColor("#ffff00"))
-                        s.show()
-                    }
-
                 }
             }
             // new timeslot
             else {
                 if(vm.submitTimeslot.value != null){
                     if(type == Type.START){
-                        vm.setSubmitFields(startHour = timeText)
+                        vm.setSubmitTimeslotFields(startHour = timeText)
                         // if start hour is after end hour, set end hour to start hour
                         if(timeText > vm.submitTimeslot.value!!.endHour){
-                            vm.setSubmitFields(endHour = timeText)
+                            vm.setSubmitTimeslotFields(endHour = timeText)
                         }
                     }
                     else if(type == Type.END){
                         if(timeText >= vm.submitTimeslot.value!!.startHour)
-                            vm.setSubmitFields(endHour = timeText)
+                            vm.setSubmitTimeslotFields(endHour = timeText)
                         else {
                             // display SnackBar when end time is before start time
                             val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "ERROR: End time must be after start time!", Snackbar.LENGTH_LONG)
@@ -184,24 +179,33 @@ class TimeslotEditFragment : Fragment() {
             val date: Calendar = GregorianCalendar(year, month, day)
             // modify existing timeslot
             if(tId != null){
+
                 if(type == DType.START && old != new){
-                    val oldTimeslots = vm?.timeslots?.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(startDate = date) else ts}
-                    vm?.setTimeslots(newTimeslots)
+                    vm?.timeslots?.value?.elementAt(tId!!)?.apply{
+                            vm?.updateTimeslotField(this.tid, "startDate", Utils.formatDateToString(date))
+                        if(this.endRepetitionDate.before(date)==true)
+                            vm?.updateTimeslotField(this.tid, "endRepetitionDate", Utils.formatDateToString(date))
+                    }?:apply{
+                        // TODO: Show error message
+                    }
                 }
                 else if (type == DType.END && old != new){
-                    val oldTimeslots = vm?.timeslots?.value
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(endRepetitionDate = date) else ts}
-                    vm?.setTimeslots(newTimeslots)
+                    vm?.timeslots?.value?.elementAt(tId!!)?.apply{
+                        vm?.updateTimeslotField(this.tid, "endRepetitionDate", Utils.formatDateToString(date))
+                    }?:apply{
+                        // TODO: Show error message
+                    }
                 }
             }
             // if new timeslot
             else {
                 if(type == DType.START){
-                    vm?.setSubmitFields(date = date)
+                    vm?.setSubmitTimeslotFields(date = date)
+                    if(vm?.submitTimeslot?.value?.endRepetitionDate?.before(date) == true)
+                        vm?.setSubmitTimeslotFields(endRepetitionDate = date)
                 }
                 else if(type == DType.END){
-                    vm?.setSubmitFields(endRepetitionDate = date)
+                    vm?.setSubmitTimeslotFields(endRepetitionDate = date)
                 }
             }
         }
@@ -249,33 +253,39 @@ class TimeslotEditFragment : Fragment() {
             binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
             binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
             binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ ->
-                val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(category = categories[idx]) else ts}
-                vm.setTimeslots(newTimeslots)
+                vm.timeslots.value?.elementAt(tId!!)?.apply{
+                    vm?.updateTimeslotField(this.tid, "category", categories[idx])
+                }?:apply{
+                    // TODO: Show error message
+                }
             }
             binding.tvRepetition.onItemClickListener = OnItemClickListener{_, _, idx, _ ->
-                val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(repetition = repetitions[idx]) else ts}
-                vm.setTimeslots(newTimeslots)
+                vm.timeslots.value?.elementAt(tId!!)?.apply{
+                    vm?.updateTimeslotField(this.tid, "repetition", repetitions[idx])
+                }?:apply{
+                    // TODO: Show error message
+                }
             }
             chips.forEachIndexed{ index, chip -> chip.setOnClickListener{
-                val oldTimeslots = vm.timeslots.value
-                val oldDays = oldTimeslots?.elementAt(tId!!)?.days?.toMutableSet()
+                val oldDays = vm.timeslots.value?.elementAt(tId!!)?.days?.toMutableSet()
                 if(oldDays?.contains(index + 1) == true && oldDays.size > 1)
                     oldDays.remove(index + 1)
                 else
                     oldDays?.add(index + 1)
-                val newTimeslots = oldTimeslots?.mapIndexed{ i, ts -> if(i == tId) ts.copy(days = oldDays!!.toList()) else ts}
-                vm.setTimeslots(newTimeslots)
+                vm.timeslots.value?.elementAt(tId!!)?.apply{
+                    vm?.updateTimeslotField(this.tid, "days", oldDays!!.toList())
+                }?:apply{
+                    // TODO: Show error message
+                }
             }}
         }
         else {
             val positionCategory = categoryArrayAdapter.getPosition(vm.submitTimeslot.value?.category)
             val positionRepetition = max(repetitionsArrayAdapter.getPosition(vm.submitTimeslot.value?.repetition),0)
             binding.tvCategory.setText(categoryArrayAdapter.getItem(positionCategory).toString(), false)
-            binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(category = categories[idx]) }
+            binding.tvCategory.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitTimeslotFields(category = categories[idx]) }
             binding.tvRepetition.setText(repetitionsArrayAdapter.getItem(positionRepetition).toString(), false)
-            binding.tvRepetition.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitFields(repetition = repetitions[idx]) }
+            binding.tvRepetition.onItemClickListener = OnItemClickListener{ _, _, idx, _ -> vm.setSubmitTimeslotFields(repetition = repetitions[idx]) }
             binding.bSubmit.apply{ visibility = View.VISIBLE }
             val oldDays = vm.submitTimeslot.value?.days?.toMutableList()
             chips.forEachIndexed{ idx, chip -> chip.setOnClickListener {
@@ -283,7 +293,7 @@ class TimeslotEditFragment : Fragment() {
                     oldDays.remove(idx + 1)
                 else
                     oldDays?.add(idx + 1)
-                vm.setSubmitFields(days = oldDays?.toList())
+                vm.setSubmitTimeslotFields(days = oldDays?.toList())
             }}
         }
 
@@ -314,15 +324,23 @@ class TimeslotEditFragment : Fragment() {
                 val repetition = if(binding.swRepetition.isChecked) "Weekly" else null
 
                 if (repetition != null) {
+
                     val days = oldT?.days?.toMutableList()
                     if(days?.size!! == 0)
                         days.add(currentDayOfWeek)
-                    val newTimeslots = oldTimeslots.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition, days = days.toList()) else ts}
-                    vm.setTimeslots(newTimeslots)
+                    vm.timeslots.value?.elementAt(tId!!)?.apply{
+                        vm?.updateTimeslotField(this.tid, "repetition", repetition)
+                        vm?.updateTimeslotField(this.tid, "days", days.toList())
+                    }?:apply{
+                        // TODO: Show error message
+                    }
                 }
                 else {
-                    val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(repetition = repetition) else ts}
-                    vm.setTimeslots(newTimeslots)
+                    vm.timeslots.value?.elementAt(tId!!)?.apply{
+                        vm?.updateTimeslotField(this.tid, "repetition", repetition)
+                    }?:apply{
+                        // TODO: Show error message
+                    }
                 }
             }
             else {
@@ -333,11 +351,11 @@ class TimeslotEditFragment : Fragment() {
                     if(days?.size!! == 0)
                         days.add(currentDayOfWeek)
                     // to set repetition to null in submitTimeslot you need to pass empty string
-                    vm.setSubmitFields(repetition = "Weekly", days = days.toList())
+                    vm.setSubmitTimeslotFields(repetition = "Weekly", days = days.toList())
                 }
                 else {
                     // to set repetition to null in submitTimeslot you need to pass empty string
-                    vm.setSubmitFields(repetition = "")
+                    vm.setSubmitTimeslotFields(repetition = "")
                 }
             }
         }
@@ -419,9 +437,11 @@ class TimeslotEditFragment : Fragment() {
             if(new.isBlank())
                 notifySuccess(false)
             if(!focused && old != new && new.isNotBlank()){
-                val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(title = new) else ts}
-                vm.setTimeslots(newTimeslots)
+                vm.timeslots.value?.elementAt(tId!!)?.apply{
+                    vm?.updateTimeslotField(this.tid, "title", new)
+                }?:apply{
+                    // TODO: Show error message
+                }
             }
         }
         binding.teDescription.setOnFocusChangeListener{ _, focused ->
@@ -430,9 +450,11 @@ class TimeslotEditFragment : Fragment() {
             if(new.isBlank())
                 notifySuccess(false)
             if(!focused && old != new){
-                val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(description = new) else ts}
-                vm.setTimeslots(newTimeslots)
+                vm.timeslots.value?.elementAt(tId!!)?.apply{
+                    vm?.updateTimeslotField(this.tid, "description", new)
+                }?:apply{
+                    // TODO: Show error message
+                }
             }
         }
         binding.teLocation.setOnFocusChangeListener{ _, focused ->
@@ -441,9 +463,11 @@ class TimeslotEditFragment : Fragment() {
             if(new.isBlank())
                 notifySuccess(false)
             if(!focused && old != new && new.isNotBlank()){
-                val oldTimeslots = vm.timeslots.value
-                val newTimeslots = oldTimeslots?.mapIndexed{ idx, ts -> if(idx == tId) ts.copy(location = new) else ts}
-                vm.setTimeslots(newTimeslots)
+                vm.timeslots.value?.elementAt(tId!!)?.apply{
+                    vm?.updateTimeslotField(this.tid, "location", new)
+                }?:apply{
+                    // TODO: Show error message
+                }
             }
         }
     }
@@ -453,21 +477,21 @@ class TimeslotEditFragment : Fragment() {
         binding.teTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                vm.setSubmitFields(title = s.toString())
+                vm.setSubmitTimeslotFields(title = s.toString())
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         binding.teDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                vm.setSubmitFields(description = p0.toString())
+                vm.setSubmitTimeslotFields(description = p0.toString())
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
         binding.teLocation.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                vm.setSubmitFields(location = p0.toString())
+                vm.setSubmitTimeslotFields(location = p0.toString())
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
