@@ -17,7 +17,7 @@
     <!-- fake data -->
     <string name="user_profile_name">Name</string>
     <string name="user_profile_surname">Surname</string>
-    <string name="user_profile_nickname">Nickname</string>
+    <string name="user_profile_nickname">\@nickname</string>
     <string name="user_profile_bio">«Bio»</string>
     <string name="user_profile_email">e.mail@email.it</string>
     <string name="user_profile_phone">+39333123456789</string>

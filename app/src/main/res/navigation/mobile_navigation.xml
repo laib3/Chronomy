@@ -77,8 +77,16 @@
         android:label=" @string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_nav_home_to_nav_list"
-            app:destination="@id/nav_list" />
+            android:id="@+id/action_nav_home_to_filteredTimeslotListFragment"
+            app:destination="@id/nav_filtered" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_details"
+            app:destination="@id/nav_details" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_filtered"
+        android:name="it.polito.mainactivity.ui.home.FilteredTimeslotListFragment"
+        android:label="Timeslot List"
+        tools:layout="@layout/fragment_filtered_timeslot_list" />
 
 </navigation>

@@ -31,4 +31,5 @@
 
     <!-- skill home buttons dimension -->
     <dimen name="side_of_square">110dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

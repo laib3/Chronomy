@@ -6,16 +6,19 @@
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/drawable/rectangle.xml" value="0.198" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/content_main.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_filtered_timeslot_list.xml" value="0.2662037037037037" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_filtered_timeslot_list_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_home.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_nav_home.xml" value="0.264" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_details.xml" value="0.2" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_list.xml" value="0.176" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/global_timeslot_item.xml" value="0.6" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/list_item.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/nav_header_main.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/skill_home_button.xml" value="0.24603174603174602" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/skillcard.xml" value="0.1" />
-        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/timeslot_item.xml" value="0.14814814814814814" />
+        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/timeslot_item.xml" value="0.152" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/activity_main_drawer.xml" value="0.27384615384615385" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/main.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.3565" />

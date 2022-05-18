@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
@@ -41,10 +42,14 @@ class HomeFragment : Fragment() {
                 .forEach { shb: SkillHomeButton ->
                     gridLayout.addView(shb)
                      shb.setOnClickListener{
-                         //TODO: navigation to nav_list with FILTER
+
+                         parentFragment?.findNavController()?.navigate(R.id.action_nav_home_to_filteredTimeslotListFragment)
+
+                         /*//TODO: navigation to nav_list with FILTER
                         val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "New timeslot saved correctly!", Snackbar.LENGTH_LONG)
                         s.setTextColor(Color.parseColor("#55ff55"))
                         s.show()
+                          */
                     }}
 
         }
