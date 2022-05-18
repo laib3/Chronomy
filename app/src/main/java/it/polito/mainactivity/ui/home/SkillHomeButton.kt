@@ -1,4 +1,4 @@
-package it.polito.mainactivity.home
+package it.polito.mainactivity.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater

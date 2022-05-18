@@ -1,4 +1,4 @@
-package it.polito.mainactivity.home
+package it.polito.mainactivity.ui.home
 
 import android.graphics.Color
 import android.os.Bundle

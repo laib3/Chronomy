@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_list">
+    app:startDestination="@id/nav_home">
 
     <fragment
         android:id="@+id/nav_list"
@@ -73,7 +73,7 @@
         android:label="Edit Profile"/>
     <fragment
         android:id="@+id/nav_home"
-        android:name="it.polito.mainactivity.home.HomeFragment"
+        android:name="it.polito.mainactivity.ui.home.HomeFragment"
         android:label=" @string/menu_home"
         tools:layout="@layout/fragment_home" >
         <action
