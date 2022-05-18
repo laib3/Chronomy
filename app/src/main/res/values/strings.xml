@@ -70,8 +70,9 @@
     <!-- messages -->
     <string name="welcome_string1">Hello!</string>
     <string name="welcome_string2">What do you need today?</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- category in filtered list -->
+    <string name="nav_filtered_label">Browsing: {category}</string>
 
 
 </resources>

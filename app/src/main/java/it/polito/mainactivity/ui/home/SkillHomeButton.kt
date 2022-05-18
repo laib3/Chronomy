@@ -8,7 +8,7 @@ import androidx.cardview.widget.CardView
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Utils
 
-internal class SkillHomeButton (private val c: Context, private val category:String): CardView(c){
+internal class SkillHomeButton (private val c: Context, val category:String): CardView(c){
 
     init {
         LayoutInflater.from(c).inflate(R.layout.skill_home_button, this, true)

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
@@ -113,6 +114,8 @@ class FilteredTimeslotListFragment : Fragment() {
         )
     private var _binding: FragmentFilteredTimeslotListBinding? = null
 
+
+    val args: FilteredTimeslotListFragmentArgs by navArgs()
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -131,24 +134,11 @@ class FilteredTimeslotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
-        val adapter = TimeslotsRecyclerViewAdapter(values, this)
+        val category = args.category
+
+        val adapter = TimeslotsRecyclerViewAdapter(values.filter { it.first.category.lowercase() == category }, this)
         rv.adapter = adapter
 
-        /* val view = inflater.inflate(R.layout.fragment_filtered_timeslot_list_list, container, false)
-
-         // Set the adapter
-         if (view is RecyclerView) {
-             with(view) {
-                 layoutManager = when {
-                     columnCount <= 1 -> LinearLayoutManager(context)
-                     else -> GridLayoutManager(context, columnCount)
-                 }
-                 adapter = TimeslotsRecyclerViewAdapter(values, this)
-             }
-         }
-         return view
-
-         */
         return root
     }
 

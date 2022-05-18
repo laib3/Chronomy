@@ -86,7 +86,12 @@
     <fragment
         android:id="@+id/nav_filtered"
         android:name="it.polito.mainactivity.ui.home.FilteredTimeslotListFragment"
-        android:label="Timeslot List"
-        tools:layout="@layout/fragment_filtered_timeslot_list" />
+        android:label="@string/nav_filtered_label"
+        tools:layout="@layout/fragment_filtered_timeslot_list" >
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue="Timeslots" />
+    </fragment>
 
 </navigation>

@@ -42,18 +42,10 @@ class HomeFragment : Fragment() {
                 .forEach { shb: SkillHomeButton ->
                     gridLayout.addView(shb)
                      shb.setOnClickListener{
-
-                         parentFragment?.findNavController()?.navigate(R.id.action_nav_home_to_filteredTimeslotListFragment)
-
-                         /*//TODO: navigation to nav_list with FILTER
-                        val s: Snackbar = Snackbar.make(requireActivity().findViewById(R.id.drawer_layout), "New timeslot saved correctly!", Snackbar.LENGTH_LONG)
-                        s.setTextColor(Color.parseColor("#55ff55"))
-                        s.show()
-                          */
+                         val action = HomeFragmentDirections.actionNavHomeToFilteredTimeslotListFragment( shb.category.lowercase())
+                         parentFragment?.findNavController()?.navigate(action)
                     }}
-
         }
-
         return root
     }
 }
