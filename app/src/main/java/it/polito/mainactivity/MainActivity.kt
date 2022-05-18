@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     // private val vm: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
-    var snackBarMessage : String? = null
+    var snackBarMessage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,23 +47,26 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         LayoutInflater.from(this).inflate(R.layout.nav_header_main, navView)
-        val navHeaderName : TextView = navView.findViewById(R.id.navHeaderName)
+        val navHeaderName: TextView = navView.findViewById(R.id.navHeaderName)
         val navHeaderSurname: TextView = navView.findViewById(R.id.navHeaderSurname)
-        val navHeaderBalance : TextView = navView.findViewById(R.id.navHeaderBalance)
+        val navHeaderBalance: TextView = navView.findViewById(R.id.navHeaderBalance)
         val navProfilePicture: ImageView = navView.findViewById(R.id.navHeaderProfilePicture)
 
         navProfilePicture.clipToOutline = true
 
         //val userProfileViewModel = UserProfileViewModel(application)
-        val userProfileViewModel=
+        val userProfileViewModel =
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         // observe viewModel changes
         userProfileViewModel.name.observe(this) { navHeaderName.text = it }
         userProfileViewModel.surname.observe(this) { navHeaderSurname.text = it }
-        userProfileViewModel.balance.observe(this) { navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it) }
+        userProfileViewModel.balance.observe(this) {
+            navHeaderBalance.text =
+                String.format(getString(R.string.user_profile_balance_placeholder), it)
+        }
         userProfileViewModel.picture.observe(this) {
-            if(it != null) navProfilePicture.setImageDrawable(it)
+            if (it != null) navProfilePicture.setImageDrawable(it)
         }
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
         auth.addAuthStateListener { state ->
             userState = state.currentUser
-            if(userState == null){
+            if (userState == null) {
                 Log.d("Auth error", "user is null")
             } else {
                 TODO("retrieve data")
@@ -88,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun populateHeader(navigationView: NavigationView){
+    private fun populateHeader(navigationView: NavigationView) {
         val headerView: View = navigationView.getHeaderView(0)
     }
 

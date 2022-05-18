@@ -61,43 +61,43 @@ class TimeslotDetailsFragment : Fragment() {
                 ts.repetition?.lowercase() == "weekly" -> {
                     dateString
                         .append("This timeslots repeats ")
-                        .bold{append("weekly")}
+                        .bold { append("weekly") }
                         .append(".\n\nStarting on ")
-                        .italic{append(Utils.formatDateToString(ts.startDate))}
+                        .italic { append(Utils.formatDateToString(ts.startDate)) }
                         .append(" until ")
-                        .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
+                        .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
                         .append("\nevery ")
-                        .italic{append("${Utils.getDaysOfRepetition(ts.days)}\n")}
+                        .italic { append("${Utils.getDaysOfRepetition(ts.days)}\n") }
                         .append("from ")
-                        .italic{append(ts.startHour)}
+                        .italic { append(ts.startHour) }
                         .append(" to ")
-                        .italic{append(ts.endHour)}
+                        .italic { append(ts.endHour) }
                         .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
                 }
                 ts.repetition?.lowercase() == "monthly" -> { //monthly
                     dateString
                         .append("This timeslots repeats ")
-                        .bold{append("Monthly")}
+                        .bold { append("Monthly") }
                         .append(".\n\nStarting on ")
-                        .italic{append(Utils.formatDateToString(ts.startDate))}
+                        .italic { append(Utils.formatDateToString(ts.startDate)) }
                         .append(" until ")
-                        .italic{append(Utils.formatDateToString(ts.endRepetitionDate))}
+                        .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
                         .append("\nevery ")
-                        .italic{append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}")}
+                        .italic { append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}") }
                         .append(" of the month\n")
                         .append("from ")
-                        .italic{append(ts.startHour)}
+                        .italic { append(ts.startHour) }
                         .append(" to ")
-                        .italic{append(ts.endHour)}
+                        .italic { append(ts.endHour) }
                         .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
                 }
                 else -> {  // No repetition
                     dateString
-                        .italic{append(Utils.formatDateToString(ts.startDate))}
+                        .italic { append(Utils.formatDateToString(ts.startDate)) }
                         .append("\nfrom ")
-                        .italic{append(ts.startHour)}
+                        .italic { append(ts.startHour) }
                         .append(" to ")
-                        .italic{append(ts.endHour)}
+                        .italic { append(ts.endHour) }
                         .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
 
 
@@ -130,10 +130,10 @@ class TimeslotDetailsFragment : Fragment() {
         inflater.inflate(R.menu.timeslot_details_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem):Boolean {
-        if(item.itemId == R.id.nav_edit) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.nav_edit) {
             val bundle = Bundle()
-            arguments?.getInt("id")?.let{ bundle.putInt("id", it) }
+            arguments?.getInt("id")?.let { bundle.putInt("id", it) }
             findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
             return true
         }
