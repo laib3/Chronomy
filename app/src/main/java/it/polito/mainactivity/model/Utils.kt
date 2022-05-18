@@ -1,6 +1,7 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
+import com.google.firebase.Timestamp
 import it.polito.mainactivity.R
 import org.json.JSONArray
 import org.json.JSONObject
@@ -54,6 +55,18 @@ class Utils {
                     days, GregorianCalendar(erYear, erMonth, erDay))
             }
         */
+
+        fun formatStringToDate(strDate: String): Calendar {
+            // TODO: improve using dateFormat
+            val day = strDate.split("/")[0]
+            val month = strDate.split("/")[1]
+            val year = strDate.split("/")[2]
+
+            // TODO: Check why this -1 is needed
+            return GregorianCalendar(year.toInt(), month.toInt() - 1, day.toInt())
+        }
+
+
         fun formatDateToString(date: Calendar?): String {
             if(date == null)
                 return ""

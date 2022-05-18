@@ -8,8 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.model.Utils
@@ -18,12 +16,9 @@ import java.util.*
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
 
     // instantiate timeslot model - it will be a repository in future (?)
-    // /private val model: TimeslotModel = TimeslotModel(application)
 
     private val TIME_LENGTH: Int = 5
 
-    // /private val _timeslots: MutableLiveData<List<Timeslot>> = model.getTimeslots()
-    // /val timeslots : LiveData<List<Timeslot>> = _timeslots
     private val _timeslots= MutableLiveData<List<Timeslot>>()
     val timeslots: LiveData<List<Timeslot>> = _timeslots
 
@@ -34,7 +29,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private var lTimeslots: ListenerRegistration
 
     init {
-        // db = FirebaseFirestore.getInstance()
         lTimeslots = db.collection("timeslots")
             .addSnapshotListener { v, e ->
                 if (e==null) {
@@ -47,27 +41,21 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     override fun onCleared() {
         super.onCleared()
-        //lUsers.remove()
         lTimeslots.remove()
     }
-    fun DocumentSnapshot.toTimeslot(): Timeslot? {
+    private fun DocumentSnapshot.toTimeslot(): Timeslot? {
         return try {
-            val title = get("title") as String
-            val description = get("description") as String
-            // TODO: ADD OTHER FIELDS FROM DB
-            val startDate = GregorianCalendar(2022, 5, 25)
-            val startHour = get("startHour") as String
-            val endHour = get("endHour") as String
-            val location = get("location") as String
-            val category = get("category") as String
-            val repetition = null
-            val days = listOf(GregorianCalendar(2022, 5, 25).get(Calendar.DAY_OF_WEEK))
-            val endRepetitionDate = GregorianCalendar(2022, 5, 25)
-
-            Timeslot(id, title, description, startDate, startHour, endHour,location, category, repetition, days, endRepetitionDate)
-
-
-
+            Timeslot(id,
+                get("title") as String,
+                get("description") as String,
+                Utils.formatStringToDate(get("startDate") as String),
+                get("startHour") as String,
+                get("endHour") as String,
+                get("location") as String,
+                get("category") as String,
+                get("repetition") as String?,
+                get("days") as List<Int>,
+                Utils.formatStringToDate(get("endRepetitionDate") as String))
         } catch (e: Exception) {
             e.printStackTrace()
             null
@@ -77,7 +65,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
 
 
-    // TODO: CHECK IT!
+    // TODO: REMOVE IT, REPLACE IT WITH UPDATE TIMESLOT
     //fun setTimeslots(ts: List<Timeslot>?) = ts?.let{ _timeslots.value = it; model.setTimeslots(it) }
     fun setTimeslots(ts: List<Timeslot>?) = ts?.let{
         _timeslots.value = it;
@@ -87,6 +75,12 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         //     .set(mapOf("msg" to "Hello"))
         //     .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
         //     .addOnFailureListener{ Log.d("Firebase", it.message?:"Error")}
+    }
+
+    fun updateTimeslot(newTs: Timeslot) {
+        // Retrieve id
+        // pass the new timeslot
+
     }
 
     private fun addTimeslot(t : Timeslot?): Boolean {
@@ -101,11 +95,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 "endHour" to t.endHour,
                 "location" to t.location,
                 "category" to t.category,
-                // TODO: Substitute with real values
-                //"repetition" to null,
-                //"days" to null,
-                //"startDate" to null,
-                //"endRepetitionDate" to null
+                "repetition" to t.repetition,
+                "days" to t.days,
+                "startDate" to Utils.formatDateToString(t.startDate),
+                "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate)
             );
             db
                  .collection("timeslots")
