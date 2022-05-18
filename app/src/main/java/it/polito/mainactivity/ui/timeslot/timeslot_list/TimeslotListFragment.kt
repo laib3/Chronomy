@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.MainActivity
-import it.polito.mainactivity.MainViewModel
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
 import it.polito.mainactivity.model.Utils
@@ -22,8 +21,8 @@ import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
 class TimeslotListFragment : Fragment() {
 
-    // private val vm: TimeslotViewModel by activityViewModels()
-    private val vm: MainViewModel by activityViewModels()
+    private val vm: TimeslotViewModel by activityViewModels()
+    //private val vm: MainViewModel by activityViewModels()
     private var _binding: FragmentTimeslotListBinding? = null
 
     // This property is only valid between onCreateView and

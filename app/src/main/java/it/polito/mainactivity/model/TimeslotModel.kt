@@ -1,4 +1,5 @@
 package it.polito.mainactivity.model
+/*
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
@@ -114,3 +115,5 @@ class TimeslotModel(val application: Application) {
     fun getTimeslots(): MutableLiveData<List<Timeslot>> = MutableLiveData(timeslots)
 
 }
+
+ */

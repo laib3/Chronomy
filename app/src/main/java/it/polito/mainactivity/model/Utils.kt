@@ -27,6 +27,7 @@ class Utils {
             return list
         }
 
+        /*
         fun JSONObjectToTimeslot(jo: JSONObject): Timeslot {
                 val title: String = jo.getString("title")
                 val description: String = jo.getString("description")
@@ -52,7 +53,7 @@ class Utils {
                     startHour, endHour, location, category, repetition,
                     days, GregorianCalendar(erYear, erMonth, erDay))
             }
-
+        */
         fun formatDateToString(date: Calendar?): String {
             if(date == null)
                 return ""

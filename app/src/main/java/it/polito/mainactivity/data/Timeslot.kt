@@ -1,19 +1,21 @@
-package it.polito.mainactivity.model
+package it.polito.mainactivity.data
 
+import it.polito.mainactivity.model.Utils
 import java.util.*
 
-data class Timeslot (var title:String,
-                     var description:String,
-                     var startDate: Calendar,
-                     var startHour : String,
-                     var endHour:String,
-                     var location:String,
-                     var category:String,
-                     var repetition: String?,
-                     var days: List<Int>,
-                     var endRepetitionDate: Calendar
-                    ){
-
+data class Timeslot(
+    var tid: String,
+    var title: String,
+    var description: String,
+    var startDate: Calendar,
+    var startHour : String,
+    var endHour:String,
+    var location:String,
+    var category:String,
+    var repetition: String?,
+    var days: List<Int>,
+    var endRepetitionDate: Calendar
+){
     private var dates: MutableList<Calendar> = mutableListOf()
 
     init {
@@ -81,7 +83,19 @@ data class Timeslot (var title:String,
             val timeText = Utils.formatTime(hour, min)
             val date = GregorianCalendar.getInstance()
             val currentDay = date.get(Calendar.DAY_OF_WEEK)
-            return Timeslot("", "", date, timeText, timeText, "", "Other", null, listOf(currentDay), date)
+            return Timeslot(
+                "",
+                "",
+                "",
+                date,
+                timeText,
+                timeText,
+                "",
+                "Other",
+                null,
+                listOf(currentDay),
+                date
+            )
         }
     }
 

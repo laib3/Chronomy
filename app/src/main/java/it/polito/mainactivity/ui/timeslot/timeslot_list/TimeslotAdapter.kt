@@ -12,14 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import it.polito.mainactivity.MainViewModel
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
 
-//class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragment: Fragment) :
-class TimeslotAdapter(private val vm: MainViewModel, private val parentFragment: Fragment) :
+class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragment: Fragment) :
+//class TimeslotAdapter(private val vm: MainViewModel, private val parentFragment: Fragment) :
     RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
 
     class TimeslotViewHolder(v: View) : RecyclerView.ViewHolder(v) {

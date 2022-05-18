@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var currentUser: User
     private var userState: FirebaseUser? = null
     private var RC_SIGN_IN: Int = 5
-    private val vm: MainViewModel by viewModels()
+    // private val vm: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
     var snackBarMessage : String? = null
