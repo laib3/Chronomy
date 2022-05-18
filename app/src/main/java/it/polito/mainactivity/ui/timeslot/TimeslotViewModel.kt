@@ -77,17 +77,36 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         //     .addOnFailureListener{ Log.d("Firebase", it.message?:"Error")}
     }
 
-    fun updateTimeslot(newTs: Timeslot) {
-        // Retrieve id
+
+    fun updateTimeslot(t: Timeslot){
+        val id = t.tid
         // pass the new timeslot
+        val ts = hashMapOf(
+            "title" to t.title,
+            "description" to t.description,
+            "startHour" to t.startHour,
+            "endHour" to t.endHour,
+            "location" to t.location,
+            "category" to t.category,
+            "repetition" to t.repetition,
+            "days" to t.days,
+            "startDate" to Utils.formatDateToString(t.startDate),
+            "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate)
+        )
+        db
+            .collection("timeslots")
+            .document(id)
+            .set(ts)
+            .addOnSuccessListener { Log.d("Firebase", "Timeslot updated successfully") }
+            .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not updated correctly")}
+
 
     }
 
     private fun addTimeslot(t : Timeslot?): Boolean {
+        var success = false;
+
         if(t != null && isValid(t)){
-            // TODO: CHECK IT
-            // t.let{ val ts = _timeslots.value?.toMutableList(); ts?.add(it); _timeslots.value = ts!!; model.setTimeslots(ts) }
-            //t.let{ val ts = _timeslots.value?.toMutableList(); ts?.add(it); _timeslots.value = ts!!; }
             val ts = hashMapOf(
                 "title" to t.title,
                 "description" to t.description,
@@ -104,13 +123,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                  .collection("timeslots")
                  .document()
                  .set(ts)
-                 .addOnSuccessListener { Log.d("Firebase", "New timeslot successfully saved ") }
-                 .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not saved correctly")}
-
-            return true
+                 .addOnSuccessListener { Log.d("Firebase", "New timeslot successfully saved "); success = true}
+                 .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not saved correctly"); success = false}
         }
-        else
-            return false
+        return success
     }
 
     fun isValid(t: Timeslot): Boolean {
@@ -127,11 +143,16 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     (t.endRepetitionDate.after(t.startDate) || t.endRepetitionDate == t.startDate)))
     }
 
-    fun removeTimeslot(position: Int) {
-        val ts = _timeslots.value?.toMutableList().also { it?.removeAt(position) }
-        _timeslots.value = ts!!
-        // TODO: fix the following method
-        // model.setTimeslots((ts))
+    fun removeTimeslot(id: String?): Boolean {
+        var success : Boolean = false;
+        id?.apply {
+            db.collection("timeslots")
+                .document(id)
+                .delete()
+                .addOnSuccessListener { Log.d("Firebase", "Timeslot successfully deleted!"); success = true; }
+                .addOnFailureListener { Log.d("Firebase", "Error: deleting timeslot"); success = false;}
+        }
+        return success
     }
 
     fun submitTimeslot(): Boolean {

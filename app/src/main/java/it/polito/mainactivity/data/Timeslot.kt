@@ -31,6 +31,7 @@ data class Timeslot(
         val _sRepetition = if(repetition == null) "null" else "\"$repetition\""
         return """
         {
+        "id": "$tid",
         "title": "$title", 
         "description": "$description",
         "startDate": 

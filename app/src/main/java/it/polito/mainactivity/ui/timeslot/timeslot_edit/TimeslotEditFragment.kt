@@ -44,7 +44,7 @@ class TimeslotEditFragment : Fragment() {
         @RequiresApi(Build.VERSION_CODES.N)
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the saved time as initial value for the picker
-            // Otheerwise use the current time
+            // Otherwise use the current time
             val c = Calendar.getInstance()
             var hour = c.get(Calendar.HOUR_OF_DAY)
             var minute = c.get(Calendar.MINUTE)

@@ -84,12 +84,11 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
                 .setTitle("Delete Timeslot")
                 .setMessage(
                     "Are you sure you want to delete this timeslot?\n\n" +
-                            "\'${vm.timeslots.value?.get(position)?.title}\'\n"
+                            "\'${ts?.title}\'\n"
                 )
                 .setPositiveButton("Delete", DialogInterface.OnClickListener(
                     fun(_, _) {
-                        // TODO: FIX THIS
-                        // vm.removeTimeslot(position)
+                        vm.removeTimeslot(ts?.tid)
                     }
 
                 ))
