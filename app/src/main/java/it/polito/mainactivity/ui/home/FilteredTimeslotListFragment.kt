@@ -2,6 +2,7 @@ package it.polito.mainactivity.ui.home
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.navigation.fragment.navArgs
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
@@ -22,7 +24,7 @@ import java.util.*
 
 class FilteredTimeslotListFragment : Fragment() {
 
-    private val values : List<Pair<Timeslot, User>> = listOf(
+    private var values : List<Pair<Timeslot, User>> = listOf(
         Pair(
             Timeslot("Bring grocery shopping to your door",
                 "I'll be happy to receive a list of goods to buy for you and to bring it back home to you. I have a car so the quantity is not an issue. You can also select which supermarket you want me to go to, but please don't choose those outside of the neighbourhood.",
@@ -138,6 +140,23 @@ class FilteredTimeslotListFragment : Fragment() {
 
         val adapter = TimeslotsRecyclerViewAdapter(values.filter { it.first.category.lowercase() == category }, this)
         rv.adapter = adapter
+
+        val search = binding.searchView
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                search.clearFocus()
+                values = values.filter{it.first.title.contains(query as CharSequence)}
+                adapter.notifyDataSetChanged()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                values = values.filter{it.first.title.contains(newText as CharSequence)}
+                adapter.notifyDataSetChanged()
+                return false
+            }
+
+        })
 
         return root
     }
