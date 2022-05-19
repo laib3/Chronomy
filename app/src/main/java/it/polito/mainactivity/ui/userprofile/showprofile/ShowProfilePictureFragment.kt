@@ -14,7 +14,7 @@ import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class ShowProfilePictureFragment: Fragment() {
 
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfilePictureBinding? = null
     private val binding get() = _binding!!
 
@@ -35,16 +35,14 @@ class ShowProfilePictureFragment: Fragment() {
         profilePicture.clipToOutline = true
 
         // observe viewModel changes
-        userProfileViewModel.name.observe(viewLifecycleOwner) { nameTextView.text = it }
-        userProfileViewModel.surname.observe(viewLifecycleOwner) { surnameTextView.text = it }
-        userProfileViewModel.nickname.observe(viewLifecycleOwner) {
-            nicknameTextView.text =
-                String.format(getString(R.string.user_profile_nickname_placeholder), it)
-        }
-        userProfileViewModel.picture.observe(viewLifecycleOwner) {
-            if(it != null) profilePicture.setImageDrawable(it)
-        }
+        vm.user.observe(viewLifecycleOwner){
+            nameTextView.text = it.name
+            surnameTextView.text = it.surname
+            nicknameTextView.text = String.format(getString(R.string.user_profile_nickname_placeholder), it.nickname)
+            //TODO: observe also picture
+            //if(it.picture != null) profilePicture.setImageDrawable(it.picture)
 
+        }
         return root
     }
 

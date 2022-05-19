@@ -59,15 +59,15 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         // observe viewModel changes
-        userProfileViewModel.name.observe(this) { navHeaderName.text = it }
-        userProfileViewModel.surname.observe(this) { navHeaderSurname.text = it }
-        userProfileViewModel.balance.observe(this) {
-            navHeaderBalance.text =
-                String.format(getString(R.string.user_profile_balance_placeholder), it)
+        userProfileViewModel.user.observe(this) {
+            navHeaderName.text = it.name
+            navHeaderSurname.text = it.surname
+            navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it.balance)
+            // TODO: profile picture
+            //if (it.profilePicture != null) navProfilePicture.setImageDrawable(it)
         }
-        userProfileViewModel.picture.observe(this) {
-            if (it != null) navProfilePicture.setImageDrawable(it)
-        }
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
