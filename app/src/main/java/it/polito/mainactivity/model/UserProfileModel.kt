@@ -47,6 +47,7 @@ class UserProfileModel(val application: Application) {
     private fun loadProfile(){
         // sharedPreferences shouldn't be null, but just in case...
         // retrieve profile as a JSON string
+
         val profileString: String? = sharedPreferences?.getString(PROFILE_TAG, null)
         val jsonProfile: JSONObject? = when(profileString) {
             null -> null

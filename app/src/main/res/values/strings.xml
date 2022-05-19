@@ -62,6 +62,10 @@
     <!-- separators -->
     <string name="starting_hour_dash_ending_hour">%s - %s  (%s)</string>
 
+    <string name="web_client_id">
+        903427285285-pu25cc7cdjtrb0dbpj5lucdi8jalollk.apps.googleusercontent.com
+    </string>
+
     <string-array name="repetitionMw">
         <item id="isWeekly">Weekly</item>
         <item id="isMonthly">Monthly</item>

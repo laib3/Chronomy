@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/nav_home">
-
+  
     <fragment
         android:id="@+id/nav_list"
         android:name="it.polito.mainactivity.ui.timeslot.timeslot_list.TimeslotListFragment"
@@ -72,6 +72,14 @@
         android:name="it.polito.mainactivity.ui.userprofile.editprofile.EditProfileFragment"
         android:label="Edit Profile"/>
     <fragment
+        android:id="@+id/loginFragment"
+        android:name="it.polito.mainactivity.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_nav_list"
+            app:destination="@id/nav_list" />
+  </fragment>
+  <fragment>
         android:id="@+id/nav_home"
         android:name="it.polito.mainactivity.ui.home.HomeFragment"
         android:label=" @string/menu_home"

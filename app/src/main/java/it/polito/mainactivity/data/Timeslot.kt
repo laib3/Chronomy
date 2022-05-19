@@ -1,23 +1,25 @@
-package it.polito.mainactivity.model
+package it.polito.mainactivity.data
 
+import it.polito.mainactivity.model.Utils
 import java.util.*
 
-data class Timeslot (var title:String,
-                     var description:String,
-                     var startDate: Calendar,
-                     var startHour : String,
-                     var endHour:String,
-                     var location:String,
-                     var category:String,
-                     var repetition: String?,
-                     var days: List<Int>,
-                     var endRepetitionDate: Calendar
-                    ){
-
+data class Timeslot(
+    var tid: String,
+    var title: String,
+    var description: String,
+    var startDate: Calendar,
+    var startHour: String,
+    var endHour: String,
+    var location: String,
+    var category: String,
+    var repetition: String?,
+    var days: List<Int>,
+    var endRepetitionDate: Calendar
+) {
     private var dates: MutableList<Calendar> = mutableListOf()
 
     init {
-        endRepetitionDate = if(endRepetitionDate.before(startDate)){
+        endRepetitionDate = if (endRepetitionDate.before(startDate)) {
             startDate
         } else {
             endRepetitionDate
@@ -26,9 +28,10 @@ data class Timeslot (var title:String,
     }
 
     override fun toString(): String {
-        val _sRepetition = if(repetition == null) "null" else "\"$repetition\""
+        val _sRepetition = if (repetition == null) "null" else "\"$repetition\""
         return """
         {
+        "id": "$tid",
         "title": "$title", 
         "description": "$description",
         "startDate": 
@@ -54,17 +57,17 @@ data class Timeslot (var title:String,
         val tmp = Calendar.getInstance()
         tmp.timeInMillis = startDate.timeInMillis
         when {
-            repetition?.lowercase()=="weekly" -> {
-                while(tmp.before(endRepetitionDate)){
-                    if(days.contains(tmp.get(Calendar.DAY_OF_WEEK))){
+            repetition?.lowercase() == "weekly" -> {
+                while (tmp.before(endRepetitionDate)) {
+                    if (days.contains(tmp.get(Calendar.DAY_OF_WEEK))) {
                         dates.add(tmp)
                     }
                     //we bring tmp to the next day
                     tmp.add(Calendar.DATE, 1)
                 }
             }
-            repetition?.lowercase()=="monthly" -> { //monthly
-                while(tmp.before(endRepetitionDate)){
+            repetition?.lowercase() == "monthly" -> { //monthly
+                while (tmp.before(endRepetitionDate)) {
                     dates.add(tmp)
                     //we bring tmp to the next day
                     tmp.add(Calendar.MONTH, 1)
@@ -81,7 +84,19 @@ data class Timeslot (var title:String,
             val timeText = Utils.formatTime(hour, min)
             val date = GregorianCalendar.getInstance()
             val currentDay = date.get(Calendar.DAY_OF_WEEK)
-            return Timeslot("", "", date, timeText, timeText, "", "Other", null, listOf(currentDay), date)
+            return Timeslot(
+                "",
+                "",
+                "",
+                date,
+                timeText,
+                timeText,
+                "",
+                "Other",
+                null,
+                listOf(currentDay),
+                date
+            )
         }
     }
 
