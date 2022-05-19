@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
@@ -25,6 +27,7 @@ class FilteredTimeslotListFragment : Fragment() {
     private val args: FilteredTimeslotListFragmentArgs by navArgs()
 
     private val binding get() = _binding!!
+    var adapter:TimeslotsRecyclerViewAdapter?=null
 
     //private var columnCount = 1
 
@@ -41,34 +44,37 @@ class FilteredTimeslotListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
         val category = args.category
+        val filterButton = binding.filterButton
+        filterButton.setOnClickListener{
+            parentFragment?.findNavController()?.navigate(R.id.action_nav_filtered_to_nav_filters)
+        }
 
         vm.timeslots.observe(viewLifecycleOwner) {
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category }
                 .sortedBy { it.startDate }
-            val adapter = TimeslotsRecyclerViewAdapter(
+            adapter = TimeslotsRecyclerViewAdapter(
                 loadedList!!,
                 this
             )
             rv.adapter = adapter
+        }
 
-            val search = binding.searchView
+        val search = binding.searchView
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 search.clearFocus()
                 val filteredList = loadedList!!.filter{it.title.lowercase().contains(query!!.lowercase() as CharSequence)}
-                adapter.filterList(filteredList)
+                adapter!!.filterList(filteredList)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val filteredList = loadedList!!.filter{it.title.lowercase().contains(newText!!.lowercase() as CharSequence)}
-                adapter.filterList(filteredList)
+                adapter!!.filterList(filteredList)
                 return false
             }
         })
-        }
-
         return root
     }
 

@@ -6,6 +6,6 @@
         android:radius="16dp"/>
     <stroke
         android:color="#C0BEBE"
-        android:width="4dp"/>
+        android:width="2dp"/>
 
 </shape>
