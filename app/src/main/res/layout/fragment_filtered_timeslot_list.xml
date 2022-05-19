@@ -17,7 +17,9 @@
         android:background="@drawable/searchview_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/medium_distance"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeslot_list_rv"
