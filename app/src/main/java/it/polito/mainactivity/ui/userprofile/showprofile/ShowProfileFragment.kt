@@ -1,6 +1,7 @@
 package it.polito.mainactivity.ui.userprofile.showprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,6 +31,15 @@ class ShowProfileFragment : Fragment() {
         setHasOptionsMenu(true)
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        root.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if(keyCode == KeyEvent.KEYCODE_BACK){
+                Log.d("back pressed", "back")
+                true
+            }
+            false
+        })
+
         return root
     }
 
@@ -61,5 +71,6 @@ class ShowProfileFragment : Fragment() {
             (activity as MainActivity).snackBarMessage = null
         }
     }
+
 
 }

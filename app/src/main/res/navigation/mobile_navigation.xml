@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/nav_login_fragment">
 
     <fragment
         android:id="@+id/nav_list"
@@ -72,12 +72,15 @@
         android:name="it.polito.mainactivity.ui.userprofile.editprofile.EditProfileFragment"
         android:label="Edit Profile"/>
     <fragment
-        android:id="@+id/loginFragment"
+        android:id="@+id/nav_login_fragment"
         android:name="it.polito.mainactivity.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_loginFragment_to_nav_list"
+            android:id="@+id/action_nav_login_fragment_to_nav_list"
             app:destination="@id/nav_list" />
+        <action
+            android:id="@+id/action_nav_login_fragment_to_nav_show_profile"
+            app:destination="@id/nav_show_profile" />
     </fragment>
 
 </navigation>

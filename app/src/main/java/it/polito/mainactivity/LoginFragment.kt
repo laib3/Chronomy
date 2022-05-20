@@ -1,50 +1,105 @@
 package it.polito.mainactivity
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObjects
+import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.FragmentLoginBinding
+import kotlinx.coroutines.processNextEventInCurrentThread
 
 class LoginFragment: Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private var authStateListener: FirebaseAuth.AuthStateListener =
+        FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if(user != null){ // logged in
+                Log.d("LoginFragment", "logged in as " + user.uid)
+            } else { // user = null, not logged in
+                Log.d("LoginFragment", "not logged in")
+            }
+        }
+    private val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
+        .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
+        .build()
+    private val signInLauncher =
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
+        res -> onSignInResult(res)
+    }
 
-    private val REQ_ONE_TAP = 2
-    private var showOneTapUI = true
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult){
+        val response = result.idpResponse
+        if(result.resultCode == RESULT_OK) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            FirebaseFirestore.getInstance().collection("users").document("02SI6rzBrETnUoFGLCJH").get().addOnSuccessListener {
+                Log.d("LoginFragment", "02SI6rzBrETnUoFGLCJH: exists: " + it.exists())
+            }
+            FirebaseFirestore.getInstance().collection("users").document(userId.toString()).get().addOnSuccessListener {
+                Log.d("LoginFragment", userId.toString() + ": exists: " + it.exists())
+            }
+            // TODO if userId not yet present, add user to the db
+            // check if user is present
+            // if not present add to Firebase
+            // redirect to timeslot list
+            findNavController().navigate(R.id.nav_list)
+            findNavController().clearBackStack(R.id.nav_login_fragment)
+        } else {
+            Log.d("LoginFragment", "sign in failed")
+            if(response == null)
+                Log.d("LoginFragment", "canceled by user")
+            else
+                Log.d("LoginFragment", "error:" + response.error?.errorCode)
+        }
+    }
+
+    init {
+        FirebaseAuth.getInstance().addAuthStateListener(authStateListener)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
         // super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                     .setSupported(true)
-                     .setServerClientId(getString(R.string.web_client_id))
-                            // Only show accounts previously used to sign in.
-                            .setFilterByAuthorizedAccounts(true)
-                            .build())
-                    .build()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        // if logged in
+        if(currentUser != null){
+            // TODO check if authorized
+            findNavController().navigate(R.id.nav_list)
+            findNavController().clearBackStack(R.id.nav_login_fragment)
+        }
 
+        val bSignIn = binding.bSignIn
+        bSignIn.setOnClickListener {
+            login()
+        }
 
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    private fun login(){
+        signInLauncher.launch(signInIntent)
     }
 
 }

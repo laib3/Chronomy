@@ -12,6 +12,7 @@
     <string name="menu_timeslot_edit">Timeslot Edit</string>
     <string name="menu_show_profile">Show profile</string>
     <string name="menu_edit_profile">Edit profile</string>
+    <string name="menu_logout">Logout</string>
 
     <!-- fake data -->
     <string name="user_profile_name">Name</string>

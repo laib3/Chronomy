@@ -1,42 +1,45 @@
 package it.polito.mainactivity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.android.material.internal.NavigationMenuItemView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var auth: FirebaseAuth
-    private lateinit var currentUser: User
-    private var userState: FirebaseUser? = null
-    private var RC_SIGN_IN: Int = 5
     private val vm: MainViewModel by viewModels()
-
     private lateinit var binding: ActivityMainBinding
     var snackBarMessage : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -75,25 +78,35 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        auth = Firebase.auth
-        auth.addAuthStateListener { state ->
-            userState = state.currentUser
-            if(userState == null){
-                Log.d("Auth error", "user is null")
-            } else {
-                TODO("retrieve data")
-
-            }
+        navView.menu.findItem(R.id.bGotoTimeslotList).setOnMenuItemClickListener {
+            drawerLayout.closeDrawers()
+            navController.popBackStack()
+            navController.navigate(R.id.nav_list)
+            true
         }
 
-    }
+        navView.menu.findItem(R.id.bGotoShowProfile).setOnMenuItemClickListener {
+            drawerLayout.closeDrawers()
+            navController.popBackStack()
+            navController.navigate(R.id.nav_show_profile)
+            true
+        }
 
-    private fun populateHeader(navigationView: NavigationView){
-        val headerView: View = navigationView.getHeaderView(0)
+        // when logout is clicked
+        navView.menu.findItem(R.id.bLogout).setOnMenuItemClickListener {
+            // when logout is clicked -> go to login screen
+            AuthUI.getInstance().signOut(this).addOnCompleteListener {
+                drawerLayout.closeDrawers()
+                navController.popBackStack()
+                navController.navigate(R.id.nav_login_fragment)
+            }
+            true
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
 }

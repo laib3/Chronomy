@@ -13,4 +13,8 @@ data class User (
     var balance: Int = 0,
     var timeslots: List<String> = listOf(),
     var profilePicture: String? = null
-)
+){
+    override fun toString(): String {
+        return "${name} ${surname}, ${nickname}"
+    }
+}
