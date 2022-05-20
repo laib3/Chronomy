@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_show_profile">
-
+    app:startDestination="@id/nav_home">
+  
     <fragment
         android:id="@+id/nav_list"
         android:name="it.polito.mainactivity.ui.timeslot.timeslot_list.TimeslotListFragment"
@@ -78,6 +78,28 @@
         <action
             android:id="@+id/action_loginFragment_to_nav_list"
             app:destination="@id/nav_list" />
+  </fragment>
+  <fragment>
+        android:id="@+id/nav_home"
+        android:name="it.polito.mainactivity.ui.home.HomeFragment"
+        android:label=" @string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_filteredTimeslotListFragment"
+            app:destination="@id/nav_filtered" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_details"
+            app:destination="@id/nav_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_filtered"
+        android:name="it.polito.mainactivity.ui.home.FilteredTimeslotListFragment"
+        android:label="@string/nav_filtered_label"
+        tools:layout="@layout/fragment_filtered_timeslot_list" >
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue="Timeslots" />
     </fragment>
 
 </navigation>
