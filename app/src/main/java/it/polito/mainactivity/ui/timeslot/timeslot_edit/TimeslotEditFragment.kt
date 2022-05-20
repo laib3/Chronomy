@@ -82,6 +82,7 @@ class TimeslotEditFragment : Fragment() {
                 val old = tiTime?.text
                 if (type == Type.START && old != timeText) {
                     vm.timeslots.value?.elementAt(tId)?.apply {
+                        // TODO: CHECK THIS !
                         !vm.updateTimeslotField(this.tid, "startHour", timeText)
                         if (timeText > this.endHour) {
                             vm.updateTimeslotField(this.tid, "endHour", timeText)

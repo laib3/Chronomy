@@ -34,6 +34,7 @@ class EditProfileFieldsFragment : Fragment() {
         addFocusChangeListeners()
 
         // if updated changes, update the whole list
+
         vm.updated.observe(viewLifecycleOwner) {
             val skills = vm.skills.value
             if (it != null) {

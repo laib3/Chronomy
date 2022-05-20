@@ -33,7 +33,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (e == null) {
                     _timeslots.value = v!!.mapNotNull { d -> d.toTimeslot() }
                     Log.d("TIMESLOT", _timeslots.value.toString())
-                } else _timeslots.value = emptyList()
+                } // TODO: CHOOSE WHAT TO DO else _timeslots.value = emptyList()
             }
 
     }

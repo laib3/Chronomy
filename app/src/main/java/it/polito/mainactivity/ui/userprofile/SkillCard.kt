@@ -67,7 +67,8 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
 
                 if(skill.description != desc || skill.active != checked){
                     val newSkill = skill.copy().apply { active = checked; description = desc }
-                    vm.setUpdated(newSkill)
+                    // TODO: FIX THIS
+                    // vm.setUpdated(newSkill)
                 }
             }
         }
