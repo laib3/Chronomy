@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.home.FiltersDialogFragment">
+
+    <TextView
+        android:id="@+id/modalTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_distance"
+        android:layout_marginStart="@dimen/medium_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:text="Filter results"
+        android:textColor="@color/purple_500"
+        android:textSize="@dimen/profile_text_size_normal"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.skydoves.expandablelayout.ExpandableLayout
+        android:id="@+id/expandableDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_distance"
+        android:layout_marginEnd="@dimen/big_distance"
+        app:expandable_duration="300"
+        app:expandable_isExpanded="false"
+        app:expandable_parentLayout="@layout/collapse_date"
+        app:expandable_secondLayout="@layout/collapse_date_inside"
+        app:expandable_showSpinner="true"
+        app:expandable_spinner="@drawable/ic_arrow_down"
+        app:expandable_spinner_animate="true"
+        app:expandable_spinner_color="@color/not_so_black"
+        app:expandable_spinner_gravity="end"
+        app:expandable_spinner_margin="14dp"
+        app:expandable_spinner_size="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/modalTitle"
+        app:layout_constraintTop_toBottomOf="@+id/modalTitle"
+        />
+
+    <com.skydoves.expandablelayout.ExpandableLayout
+        android:id="@+id/expandableHour"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_distance"
+        app:expandable_duration="300"
+        app:expandable_isExpanded="false"
+        app:expandable_parentLayout="@layout/collapse_hour"
+        app:expandable_secondLayout="@layout/collapse_hour_inside"
+        app:expandable_showSpinner="true"
+        app:expandable_spinner="@drawable/ic_arrow_down"
+        app:expandable_spinner_animate="true"
+        app:expandable_spinner_color="@color/not_so_black"
+        app:expandable_spinner_gravity="end"
+        app:expandable_spinner_margin="14dp"
+        app:expandable_spinner_size="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/expandableDate"
+        app:layout_constraintStart_toStartOf="@+id/expandableDate"
+        app:layout_constraintTop_toBottomOf="@+id/expandableDate" />
+
+    <com.skydoves.expandablelayout.ExpandableLayout
+        android:id="@+id/expandableDuration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:expandable_duration="300"
+        android:layout_marginTop="@dimen/medium_distance"
+        app:expandable_isExpanded="false"
+        app:expandable_parentLayout="@layout/collapse_duration"
+        app:expandable_secondLayout="@layout/collapse_duration_inside"
+        app:expandable_showSpinner="true"
+        app:expandable_spinner="@drawable/ic_arrow_down"
+        app:expandable_spinner_animate="true"
+        app:expandable_spinner_color="@color/not_so_black"
+        app:expandable_spinner_gravity="end"
+        app:expandable_spinner_margin="14dp"
+        app:expandable_spinner_size="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/expandableHour"
+        app:layout_constraintStart_toStartOf="@+id/expandableHour"
+        app:layout_constraintTop_toBottomOf="@+id/expandableHour" />
+
+
+    <Button
+        android:id="@+id/modalSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_distance"
+        android:text="@string/user_profile_save_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/expandableDuration"
+        app:layout_constraintTop_toBottomOf="@+id/expandableDuration" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

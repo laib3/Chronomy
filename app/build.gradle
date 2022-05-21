@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -31,6 +32,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -42,6 +44,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     platform('com.google.firebase:firebase-bom:30.0.1')
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -60,6 +63,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
+
+    implementation "com.github.skydoves:expandablelayout:1.0.7"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

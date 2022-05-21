@@ -1,20 +1,37 @@
 package it.polito.mainactivity.data
+import android.graphics.drawable.Drawable
+import it.polito.mainactivity.model.Skill
 
-data class User (
-    var uid: String = "userId",
-    var name: String = "name",
-    var surname: String = "surname",
-    var nickname: String = "nickname",
-    var bio: String = "bio",
-    var email: String = "email",
-    var location: String = "location",
-    var phone: String = "phone",
-    var skills: List<String> = listOf(),
-    var balance: Int = 0,
-    var timeslots: List<String> = listOf(),
-    var profilePicture: String? = null
-){
-    override fun toString(): String {
-        return "${name} ${surname}, ${nickname}"
-    }
+data class User(
+    var name: String,
+    var surname: String,
+    var nickname: String,
+    var bio: String,
+    var email: String,
+    var location: String,
+    var phone: String,
+    var skills: List<Skill>,
+    var balance: Int,
+    var timeslots: List<String>,
+    var profilePicture: Drawable?
+) {
+    override fun toString() =
+        """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
+                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills }"""
+}
+
+fun emptyUser(): User {
+    return User(
+        "name",
+        "surname",
+        "nickname",
+        "bio",
+        "email",
+        "location",
+        "phone",
+        listOf(),
+        0,
+        listOf(),
+        null
+    )
 }

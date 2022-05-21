@@ -15,6 +15,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -28,15 +30,21 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
+import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val vm: MainViewModel by viewModels()
+    private lateinit var auth: FirebaseAuth
+    private lateinit var currentUser: User
+    private var userState: FirebaseUser? = null
+    private var RC_SIGN_IN: Int = 5
+    // private val vm: MainViewModel by viewModels()
+
     private lateinit var binding: ActivityMainBinding
-    var snackBarMessage : String? = null
+    var snackBarMessage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,29 +58,33 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         LayoutInflater.from(this).inflate(R.layout.nav_header_main, navView)
-        val navHeaderName : TextView = navView.findViewById(R.id.navHeaderName)
+        val navHeaderName: TextView = navView.findViewById(R.id.navHeaderName)
         val navHeaderSurname: TextView = navView.findViewById(R.id.navHeaderSurname)
-        val navHeaderBalance : TextView = navView.findViewById(R.id.navHeaderBalance)
+        val navHeaderBalance: TextView = navView.findViewById(R.id.navHeaderBalance)
         val navProfilePicture: ImageView = navView.findViewById(R.id.navHeaderProfilePicture)
 
         navProfilePicture.clipToOutline = true
 
         //val userProfileViewModel = UserProfileViewModel(application)
-        val userProfileViewModel=
+        val userProfileViewModel =
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         // observe viewModel changes
-        userProfileViewModel.name.observe(this) { navHeaderName.text = it }
-        userProfileViewModel.surname.observe(this) { navHeaderSurname.text = it }
-        userProfileViewModel.balance.observe(this) { navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it) }
-        userProfileViewModel.picture.observe(this) {
-            if(it != null) navProfilePicture.setImageDrawable(it)
+        userProfileViewModel.user.observe(this) {
+            navHeaderName.text = it?.name ?: "null"
+            navHeaderSurname.text = it?.surname ?: "null"
+            // TODO error
+            navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
+            // TODO: profile picture
+            //if (it.profilePicture != null) navProfilePicture.setImageDrawable(it)
         }
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_list, R.id.nav_show_profile
+                R.id.nav_list, R.id.nav_show_profile, R.id.nav_home
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

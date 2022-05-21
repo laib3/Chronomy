@@ -2,12 +2,13 @@
     <string name="app_name">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-<!--    <string name="nav_header_title">Android Studio</string>-->
-<!--    <string name="nav_header_subtitle">android.studio@android.com</string>-->
+    <!--    <string name="nav_header_title">Android Studio</string>-->
+    <!--    <string name="nav_header_subtitle">android.studio@android.com</string>-->
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_timeslot_list">Timeslot List</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_timeslot_list">My Timeslots</string>
     <string name="menu_timeslot_details">Timeslot Details</string>
     <string name="menu_timeslot_edit">Timeslot Edit</string>
     <string name="menu_show_profile">Show profile</string>
@@ -17,7 +18,7 @@
     <!-- fake data -->
     <string name="user_profile_name">Name</string>
     <string name="user_profile_surname">Surname</string>
-    <string name="user_profile_nickname">Nickname</string>
+    <string name="user_profile_nickname">\@nickname</string>
     <string name="user_profile_bio">«Bio»</string>
     <string name="user_profile_email">e.mail@email.it</string>
     <string name="user_profile_phone">+39333123456789</string>
@@ -70,6 +71,13 @@
         <item id="isWeekly">Weekly</item>
         <item id="isMonthly">Monthly</item>
     </string-array>
+
+    <!-- messages -->
+    <string name="welcome_string1">Hello!</string>
+    <string name="welcome_string2">What do you need today?</string>
+
+    <!-- category in filtered list -->
+    <string name="nav_filtered_label">Browsing: {category}</string>
 
 
 </resources>
