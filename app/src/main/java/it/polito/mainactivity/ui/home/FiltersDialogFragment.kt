@@ -4,35 +4,57 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.text.format.DateFormat.is24HourFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.TimePicker
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
+import com.skydoves.expandablelayout.ExpandableLayout
 import it.polito.mainactivity.R
-import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
-import it.polito.mainactivity.ui.timeslot.timeslot_edit.TimeslotEditFragment
-import java.text.DateFormat
+import it.polito.mainactivity.databinding.FragmentFiltersBottomDialogBinding
+
+
 import java.util.*
-import android.text.format.DateFormat.is24HourFormat
 
 class FiltersDialogFragment(): BottomSheetDialogFragment() {
 
     private lateinit var tvDate: TextView
     private lateinit var tvTime: TextView
+    private var _binding: FragmentFiltersBottomDialogBinding? = null
+    private val binding get() = _binding!!
 
-    class DatePickerFragment() : DialogFragment(),
-        DatePickerDialog.OnDateSetListener {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentFiltersBottomDialogBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        val expandableDate= binding.expandableDate
+        val expandableHour = binding.expandableHour
+        val expandableDuration = binding.expandableDuration
+
+        expandableDate.parentLayout.setOnClickListener{toggleExpandable(expandableDate)}
+        expandableHour.parentLayout.setOnClickListener{toggleExpandable(expandableHour)}
+        expandableDuration.parentLayout.setOnClickListener{toggleExpandable(expandableDuration)}
+        return root
+        // show start startDate picker dialog
+
+    }
+
+    private fun toggleExpandable(ex: ExpandableLayout){
+        if(ex.isExpanded){
+            ex.parentLayout.setBackgroundResource(R.drawable.searchview_background)
+            ex.collapse()
+        }else{
+            ex.parentLayout.setBackgroundResource(R.drawable.expandable_parent_background)
+            ex.expand()
+        }
+    }
+
+
+    class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         private val tvDate: TextView? = null
 
@@ -54,8 +76,7 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
 
     }
 
-    class TimePickerFragment(tvTime: TextView) : DialogFragment(),
-        TimePickerDialog.OnTimeSetListener {
+    class TimePickerFragment(tvTime: TextView) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
         private val tvTime = tvTime
 
@@ -89,17 +110,4 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
         val timeFragment = TimePickerFragment(tvTime)
         timeFragment.show(requireActivity().supportFragmentManager, "timePicker")
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        var view = inflater.inflate(R.layout.fragment_filters_bottom_dialog, container, false)
-        return view
-
-        // show start startDate picker dialog
-
-    }
-
 }

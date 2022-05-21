@@ -51,7 +51,6 @@ class FilteredTimeslotListFragment : Fragment() {
         filterButton.setOnClickListener{
             var bottomFragment = FiltersDialogFragment()
             fragmentManager?.let { bottomFragment.show(it, "" ) }
-            //findNavController()?.navigate(R.id.action_nav_filtered_to_nav_filters, savedInstanceState)
         }
 
         vm.timeslots.observe(viewLifecycleOwner) {
