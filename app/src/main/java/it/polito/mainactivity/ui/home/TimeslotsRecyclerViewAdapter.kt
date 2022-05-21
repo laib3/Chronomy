@@ -1,6 +1,5 @@
 package it.polito.mainactivity.ui.home
 
-import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import it.polito.mainactivity.R
-import it.polito.mainactivity.model.Timeslot
-import it.polito.mainactivity.model.User
+import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.model.Utils
 
-import it.polito.mainactivity.placeholder.PlaceholderContent.PlaceholderItem
-
-class TimeslotsRecyclerViewAdapter(
-    private val values: List<Pair <Timeslot, User>>,
+class TimeslotsRecyclerViewAdapter (
+    private var values: List<Timeslot>,
     private val parentFragment: Fragment
 ) : RecyclerView.Adapter<TimeslotsRecyclerViewAdapter.TimeslotViewHolder>() {
 
@@ -28,7 +23,7 @@ class TimeslotsRecyclerViewAdapter(
         val tvDate: TextView = v.findViewById(R.id.tvDate)
         val tvHour: TextView = v.findViewById(R.id.tvHour)
         val ivProfilePic: ImageView = v.findViewById(R.id.ivProfilePic)
-        val tvNickname : TextView = v.findViewById(R.id.nickname)
+        val tvNickname: TextView = v.findViewById(R.id.nickname)
 
         val cvTimeslotCard: MaterialCardView = v.findViewById(R.id.cvTimeslotCard)
     }
@@ -43,28 +38,29 @@ class TimeslotsRecyclerViewAdapter(
     override fun onBindViewHolder(holder: TimeslotViewHolder, position: Int) {
         val item = values[position]
         //NB first is the timeslot!
-        holder.tvTitle.text = item.first.title
-        holder.tvLocation.text = item.first.location
-        holder.tvDate.text = when (item.first.repetition) {
-            "Weekly" -> "from " + Utils.formatDateToString(item.first.startDate) +
-                    " until " + Utils.formatDateToString(item.first.endRepetitionDate) +
+        holder.tvTitle.text = item.title
+        holder.tvLocation.text = item.location
+        holder.tvDate.text = when (item.repetition) {
+            "Weekly" -> "from " + Utils.formatDateToString(item.startDate) +
+                    " until " + Utils.formatDateToString(item.endRepetitionDate) +
                     "\nevery week"
-            "Monthly" -> "from " + Utils.formatDateToString(item.first.startDate) +
-                    " until " + Utils.formatDateToString(item.first.endRepetitionDate) +
+            "Monthly" -> "from " + Utils.formatDateToString(item.startDate) +
+                    " until " + Utils.formatDateToString(item.endRepetitionDate) +
                     "\nevery month"
-            else -> Utils.formatDateToString(item.first.startDate)
+            else -> Utils.formatDateToString(item.startDate)
         }
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,
-                item.first.startHour,
-                item.first.endHour,
-                Utils.getDuration(item.first.startHour?:"0:0", item.first.endHour?:"0:0")
+                item.startHour,
+                item.endHour,
+                Utils.getDuration(item.startHour ?: "0:0", item.endHour ?: "0:0")
             )
 
         //holder.ivProfilePic.setImageBitmap(item.second.profilePicture)
 
-        holder.tvNickname.text = item.second.nickname
+        //holder.tvNickname.text = item.user.nickname
+        holder.tvNickname.text = "@provaProva"
 
         /* FIXME NOT WORKING
         // Pass through bundle the id of the item in the list
@@ -79,4 +75,9 @@ class TimeslotsRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = values.size
+
+    fun filterList(filteredList: List<Timeslot>){
+        values = filteredList
+        notifyDataSetChanged()
+    }
 }

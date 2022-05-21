@@ -7,25 +7,29 @@
     tools:context=".ui.timeslot.timeslot_list.TimeslotListFragment">
 
     <SearchView
-        android:layout_marginTop="@dimen/medium_distance"
         android:id="@+id/searchView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/searchview_background"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search title"
-        android:background="@drawable/searchview_background"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/filterButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/big_distance"
+        android:layout_marginStart="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/medium_distance"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeslot_list_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/big_distance"
         android:clipToPadding="false"
         android:paddingBottom="72dp"
-        android:layout_marginTop="@dimen/big_distance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -33,6 +37,22 @@
         app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintVertical_bias="1.0" />
 
+    <Button
+        android:id="@+id/filterButton"
+        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/searchView"
+        app:layout_constraintTop_toTopOf="@+id/searchView"
+        android:layout_marginEnd="@dimen/medium_distance"
+        android:contentDescription="filter"
+        android:focusable="true"
+        app:strokeWidth="2dp"
+        app:strokeColor="#C0BEBE"
+      />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

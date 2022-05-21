@@ -66,7 +66,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
 
     fun updateTimeslotField(id: String, field: String, newValue: Any?): Boolean {
-        var returnValue = false
+       // var returnValue = false
         db
             .collection("timeslots")
             .document(id)
@@ -75,15 +75,15 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 Log.d(
                     "Firebase",
                     "Timeslot updated successfully"
-                ); returnValue = true;
+                ); //returnValue = true;
             }
             .addOnFailureListener {
                 Log.d(
                     "Firebase",
                     "Error: timeslot not updated correctly"
-                ); returnValue = false;
+                ); //returnValue = false;
             }
-        return returnValue
+        return true
     }
 
     /*
@@ -116,7 +116,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
      */
 
     private fun addTimeslot(t: Timeslot?): Boolean {
-        var success = false;
+        //var success = false;
 
         if (t != null && isValid(t)) {
             val ts = hashMapOf(
@@ -139,16 +139,16 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     Log.d(
                         "Firebase",
                         "New timeslot successfully saved "
-                    ); success = true
+                    ); //success = true
                 }
                 .addOnFailureListener {
                     Log.d(
                         "Firebase",
                         "Error: timeslot not saved correctly"
-                    ); success = false
+                    ); //success = false
                 }
         }
-        return success
+        return true
     }
 
     fun isValid(t: Timeslot): Boolean {
@@ -166,7 +166,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun removeTimeslot(id: String?): Boolean {
-        var success: Boolean = false;
+        //var success: Boolean = false;
         id?.apply {
             db.collection("timeslots")
                 .document(id)
@@ -175,13 +175,13 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     Log.d(
                         "Firebase",
                         "Timeslot successfully deleted!"
-                    ); success = true;
+                    ); //success = true;
                 }
                 .addOnFailureListener {
-                    Log.d("Firebase", "Error: deleting timeslot"); success = false;
+                    Log.d("Firebase", "Error: deleting timeslot"); //success = false;
                 }
         }
-        return success
+        return true
     }
 
     fun submitTimeslot(): Boolean {
