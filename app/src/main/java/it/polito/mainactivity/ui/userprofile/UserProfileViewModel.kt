@@ -93,8 +93,9 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 get("email") as String,
                 get("location") as String,
                 get("phone") as String,
-                get("skills") as List<Skill>,
-                get("balance") as Int,
+                //get("skills") as List<Skill>,
+                listOf(),
+                (get("balance") as Long).toInt(),
                 listOf(),
                null
                 // TODO: update with real values
