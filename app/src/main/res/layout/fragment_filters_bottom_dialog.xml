@@ -6,20 +6,284 @@
     android:layout_height="wrap_content"
     tools:context=".ui.home.FiltersBottomDialogFragment">
 
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/modalTitleLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="PROVA"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView2"
+        <TextView
+            android:id="@+id/modalTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_distance"
+            android:text="Filter"
+            android:textColor="@color/not_so_black"
+            android:textSize="@dimen/profile_text_size_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/modalContentLayout"
+        android:layout_width="411dp"
+        android:layout_height="match_parent"
+        android:padding="@dimen/big_distance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modalTitleLayout">
+
+        <TextView
+            android:id="@+id/lDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By date"
+            android:textColor="@color/not_so_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modalContentLayoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/big_distance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lDate">
+
+            <TextView
+                android:id="@+id/lStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start date:"
+                app:layout_constraintBottom_toBottomOf="@+id/cvStartDate"
+                app:layout_constraintEnd_toStartOf="@+id/cvStartDate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cvStartDate" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/medium_distance"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/lStartDate"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvStartDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:freezesText="true"
+                    android:padding="@dimen/big_distance"
+                    android:text="dd/mm/yyyy"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/lEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End date:"
+                app:layout_constraintBottom_toBottomOf="@+id/cvEndDate"
+                app:layout_constraintEnd_toStartOf="@+id/cvEndDate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cvEndDate" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/medium_distance"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvStartDate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/cvStartDate"
+                app:layout_constraintTop_toBottomOf="@+id/cvStartDate">
+
+                <TextView
+                    android:id="@+id/tvEndDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:freezesText="true"
+                    android:padding="@dimen/big_distance"
+                    android:text="dd/mm/yyyy"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/lHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By hour"
+            android:textSize="14dp"
+            android:textColor="@color/not_so_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/modalContentLayoutDate" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modalContentLayoutHour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/big_distance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lHour">
+
+            <TextView
+                android:id="@+id/lStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:text="Start hour:"
+                app:layout_constraintBottom_toBottomOf="@+id/cvStartTime"
+                app:layout_constraintEnd_toStartOf="@+id/cvStartTime"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cvStartTime" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="@dimen/medium_distance"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/lStartTime"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread">
+
+                <TextView
+                    android:id="@+id/tvStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:freezesText="true"
+                    android:padding="@dimen/big_distance"
+                    android:text="hh:mm"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/lEndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End hour:"
+                app:layout_constraintBottom_toBottomOf="@+id/cvEndTime"
+                app:layout_constraintEnd_toStartOf="@+id/cvEndTime"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cvEndTime" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvEndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="@dimen/medium_distance"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvStartTime"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/cvStartTime"
+                app:layout_constraintTop_toBottomOf="@+id/cvStartTime">
+
+                <TextView
+                    android:id="@+id/tvEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:freezesText="true"
+                    android:padding="@dimen/big_distance"
+                    android:text="hh:mm"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/lDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="By duration"
+            android:textSize="14dp"
+            android:textColor="@color/not_so_black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/modalContentLayoutHour" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/modalContentLayoutDuration"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/big_distance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lDuration">
+
+            <TextView
+                android:id="@+id/lMinDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:text="Min:"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lMaxDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Max:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lMinDuration" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/modalSaveButton"
+        style="@style/ModalSaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PROVA2"
-        app:layout_constraintStart_toStartOf="@id/textView1"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="@string/user_profile_save_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modalContentLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

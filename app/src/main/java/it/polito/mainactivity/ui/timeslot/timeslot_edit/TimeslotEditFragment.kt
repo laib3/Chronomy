@@ -367,11 +367,12 @@ class TimeslotEditFragment : Fragment() {
             DatePickerFragment(binding.tvStartDate, vm, DatePickerFragment.DType.START, tId)
                 .show(requireActivity().supportFragmentManager, "startDatePicker")
         }
-        // show start time picker dialog
+        // show end date picker dialog
         binding.tvEndDate.setOnClickListener {
             DatePickerFragment(binding.tvEndDate, vm, DatePickerFragment.DType.END, tId)
                 .show(requireActivity().supportFragmentManager, "endDatePicker")
         }
+        // show start time picker dialog
         binding.tvStartTime.setOnClickListener {
             TimePickerFragment(binding.tvStartTime, vm, TimePickerFragment.Type.START, tId)
                 .show(requireActivity().supportFragmentManager, "startTimePicker")
