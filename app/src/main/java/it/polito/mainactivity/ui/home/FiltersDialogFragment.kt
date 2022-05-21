@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +16,25 @@ import android.widget.TextView
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.skydoves.expandablelayout.ExpandableLayout
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentFiltersBottomDialogBinding
+import it.polito.mainactivity.model.Utils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 private var MINDATE:Long = GregorianCalendar.getInstance().timeInMillis
 
+private var MINHOUR:Int = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
+private var MINMINUTE:Int = GregorianCalendar.getInstance().get(Calendar.MINUTE)
+
 class FiltersDialogFragment(): BottomSheetDialogFragment() {
 
     private var _binding: FragmentFiltersBottomDialogBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         _binding = FragmentFiltersBottomDialogBinding.inflate(inflater, container, false)
@@ -71,12 +78,11 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
         var tvEndTime = secondLayoutHour.findViewById<TextView>(R.id.tvEndTime)
 
         tvStartTime.setOnClickListener{
-            TimePickerFragment(tvStartTime).show(requireActivity().supportFragmentManager, "startTimePicker")
+            TimePickerFragment(tvStartTime, TimePickerFragment.HType.START, MINHOUR, MINHOUR, binding.root).show(requireActivity().supportFragmentManager, "startTimePicker")
         }
         tvEndTime.setOnClickListener{
-            TimePickerFragment(tvEndTime).show(requireActivity().supportFragmentManager, "endTimePicker")
+            TimePickerFragment(tvEndTime, TimePickerFragment.HType.END, MINHOUR, MINMINUTE, binding.root).show(requireActivity().supportFragmentManager, "endTimePicker")
         }
-
         super.onResume()
     }
 
@@ -101,10 +107,10 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             var day = 0
             val c = Calendar.getInstance()
             if(tvDate.text != "dd/mm/yyyy"){
-                var list = tvDate.text.toString().split("/")
-                var y = list[2].toInt()
-                var m = list[1].toInt()-1
-                var d = list[0].toInt()
+                val list = tvDate.text.toString().split("/")
+                val y = list[2].toInt()
+                val m = list[1].toInt()-1
+                val d = list[0].toInt()
                 c.set(y, m, d)
             }
             year = c.get(Calendar.YEAR)
@@ -132,9 +138,13 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             }
         }
 
-    }
+    class TimePickerFragment(private val tvTime: TextView, private var type:HType,
+                             private var minHour:Int, private var minMinute:Int,
+                             private var v:View) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
-    class TimePickerFragment(private val tvTime: TextView) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
+        enum class HType {
+            START, END
+        }
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current time as the default values for the picker
@@ -143,13 +153,7 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             val minute = c.get(Calendar.MINUTE)
 
             // Create a new instance of TimePickerDialog and return it
-            return TimePickerDialog(
-                activity,
-                this,
-                hour,
-                minute,
-                true
-            )
+            return  TimePickerDialog( activity,this,hour,minute,true)
         }
 
         @SuppressLint("SetTextI18n")
@@ -159,5 +163,22 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             } else {
                 tvTime.text = "$hourOfDay:$minute"
             }
+            if(type==HType.START){
+                MINHOUR = hourOfDay
+                MINMINUTE = minute
+            } else{
+                if(hourOfDay < MINHOUR){
+                    if (minute < 10) {
+                        tvTime.text = "$MINHOUR:0$MINMINUTE"
+                    } else {
+                        tvTime.text = "$MINHOUR:$MINMINUTE"
+                    }
+                    //TODO: SHOW SNACKBAR
+                }
+            }
         }
     }
+
+    }
+
+
