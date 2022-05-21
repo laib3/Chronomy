@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_nav_login_fragment_to_nav_show_profile"
             app:destination="@id/nav_show_profile" />
+        <action
+            android:id="@+id/action_nav_login_fragment_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
     </fragment>
 
 </navigation>

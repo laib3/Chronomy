@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
@@ -20,10 +21,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.FragmentLoginBinding
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 import kotlinx.coroutines.processNextEventInCurrentThread
 
 class LoginFragment: Fragment() {
 
+    private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private var authStateListener: FirebaseAuth.AuthStateListener =
@@ -47,11 +50,8 @@ class LoginFragment: Fragment() {
         val response = result.idpResponse
         if(result.resultCode == RESULT_OK) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
-            FirebaseFirestore.getInstance().collection("users").document("02SI6rzBrETnUoFGLCJH").get().addOnSuccessListener {
-                Log.d("LoginFragment", "02SI6rzBrETnUoFGLCJH: exists: " + it.exists())
-            }
-            FirebaseFirestore.getInstance().collection("users").document(userId.toString()).get().addOnSuccessListener {
-                Log.d("LoginFragment", userId.toString() + ": exists: " + it.exists())
+            if(!vm.userIsRegistered()){
+                findNavController().navigate(R.id.action_nav_login_fragment_to_nav_edit_profile)
             }
             // TODO if userId not yet present, add user to the db
             // check if user is present

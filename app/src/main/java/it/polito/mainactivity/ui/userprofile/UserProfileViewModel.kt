@@ -2,9 +2,14 @@ package it.polito.mainactivity.ui.userprofile
 
 import android.app.Application
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import it.polito.mainactivity.data.User
 import it.polito.mainactivity.model.Field
 import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.model.UserProfileModel
@@ -12,8 +17,18 @@ import it.polito.mainactivity.model.UserProfileModel
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     // instantiate user profile model - it will be a repository in future (?)
+    // TODO remove
     private val model: UserProfileModel = UserProfileModel(application)
 
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> = _user
+    private val _uId = MutableLiveData<String?>()
+    val uId: LiveData<String?> = _uId
+
+    // TODO remove
     private val _name: MutableLiveData<String> = model.getData(Field.NAME)
     private val _surname: MutableLiveData<String> = model.getData(Field.SURNAME)
     private val _nickname: MutableLiveData<String> = model.getData(Field.NICKNAME)
@@ -49,5 +64,37 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     fun setUpdated(s: Skill) { _updated.value = s }
     fun resetUpdated() { _updated.value = null }
     fun setSkills(s: List<Skill>?) { if(s != null) { _skills.value = s!!; model.setSkills(s) } }
+
+    init {
+        // when user is authenticated, check if it exists in the db
+        FirebaseAuth.getInstance().addAuthStateListener {
+            val userId = it.currentUser?.uid
+            if(userId != null){
+                FirebaseFirestore.getInstance().collection("users").document(userId).addSnapshotListener { value, error ->
+                    if(value != null && value.exists()){
+                        _uId.value = value.id
+                    }
+                    else {
+
+                    }
+                }
+            }
+            // logged out
+            else _uId.value = null
+        }
+    }
+
+    fun userIsRegistered(): Boolean{
+        return uId.value != null
+    }
+
+    fun registerUser() {
+        // create document
+        TODO("implement")
+    }
+
+    fun isLoggedIn(userId: String): Boolean{
+        return FirebaseAuth.getInstance().currentUser != null
+    }
 
 }
