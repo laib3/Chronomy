@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.skydoves.expandablelayout.ExpandableLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentFiltersBottomDialogBinding
+import org.w3c.dom.Text
 
 
 import java.util.*
@@ -27,8 +28,7 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
     private var _binding: FragmentFiltersBottomDialogBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         _binding = FragmentFiltersBottomDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val expandableDate= binding.expandableDate
@@ -38,9 +38,8 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
         expandableDate.parentLayout.setOnClickListener{toggleExpandable(expandableDate)}
         expandableHour.parentLayout.setOnClickListener{toggleExpandable(expandableHour)}
         expandableDuration.parentLayout.setOnClickListener{toggleExpandable(expandableDuration)}
-        return root
-        // show start startDate picker dialog
 
+        return root
     }
 
     private fun toggleExpandable(ex: ExpandableLayout){
@@ -53,10 +52,40 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
         }
     }
 
+    override fun onResume() {
+        var secondLayoutDate = binding.expandableDate.secondLayout
+        var tvStartDate = secondLayoutDate.findViewById<TextView>(R.id.tvStartDate)
+        var tvEndDate = secondLayoutDate.findViewById<TextView>(R.id.tvEndDate)
 
-    class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
+        tvStartDate.setOnClickListener{
+            DatePickerFragment(tvStartDate, DatePickerFragment.DType.START).show(requireActivity().supportFragmentManager, "startDatePicker")
+        }
 
-        private val tvDate: TextView? = null
+       tvEndDate.setOnClickListener{
+            DatePickerFragment(tvEndDate, DatePickerFragment.DType.END).show(requireActivity().supportFragmentManager, "endDatePicker")
+        }
+
+        var secondLayoutHour = binding.expandableHour.secondLayout
+        var tvStartTime = secondLayoutHour.findViewById<TextView>(R.id.tvStartTime)
+        var tvEndTime = secondLayoutHour.findViewById<TextView>(R.id.tvEndTime)
+
+        tvStartTime.setOnClickListener{
+            TimePickerFragment(tvStartTime).show(requireActivity().supportFragmentManager, "startTimePicker")
+        }
+        tvEndTime.setOnClickListener{
+            TimePickerFragment(tvEndTime).show(requireActivity().supportFragmentManager, "endTimePicker")
+        }
+
+        super.onResume()
+    }
+
+    class DatePickerFragment(private val tvDate : TextView, private var type:DType) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+
+        enum class DType {
+            START, END
+        }
+
+        private lateinit var dialog: DatePickerDialog
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current date as the default date in the picker
@@ -66,7 +95,10 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             val day = c.get(Calendar.DAY_OF_MONTH)
 
             // Create a new instance of DatePickerDialog and return it
-            return DatePickerDialog(requireContext(), this, year, month, day)
+           dialog = DatePickerDialog(requireContext(), this, year, month, day)
+            if(type == DType.START) dialog.datePicker.minDate = GregorianCalendar.getInstance().timeInMillis
+//todo: end date must not be before start
+            return dialog
         }
 
         @SuppressLint("SetTextI18n")
@@ -76,9 +108,7 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
 
     }
 
-    class TimePickerFragment(tvTime: TextView) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
-
-        private val tvTime = tvTime
+    class TimePickerFragment(private val tvTime: TextView) : DialogFragment(),TimePickerDialog.OnTimeSetListener {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current time as the default values for the picker
@@ -104,10 +134,5 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
                 tvTime.text = "$hourOfDay:$minute"
             }
         }
-    }
-
-    private fun showTimePickerDialog() {
-        val timeFragment = TimePickerFragment(tvTime)
-        timeFragment.show(requireActivity().supportFragmentManager, "timePicker")
     }
 }

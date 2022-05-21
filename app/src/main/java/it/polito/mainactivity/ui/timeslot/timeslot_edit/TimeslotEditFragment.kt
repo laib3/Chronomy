@@ -32,13 +32,7 @@ import kotlin.math.max
 class TimeslotEditFragment : Fragment() {
 
     // Extending DialogFragment for a time picker
-    class TimePickerFragment(
-        private val tiTime: TextView?,
-        private val vm: TimeslotViewModel,
-        private val type: Type,
-        private val tId: Int? = null
-    ) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
-
+    class TimePickerFragment(private val tiTime: TextView?,private val vm: TimeslotViewModel,private val type: Type,private val tId: Int? = null) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         enum class Type {
             START, END
         }
@@ -252,11 +246,7 @@ class TimeslotEditFragment : Fragment() {
     private val binding get() = _binding!!
     private var tId: Int? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
