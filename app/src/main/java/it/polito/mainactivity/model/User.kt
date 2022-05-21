@@ -2,6 +2,7 @@ package it.polito.mainactivity.model
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import it.polito.mainactivity.R
 
 data class User (
@@ -15,6 +16,6 @@ data class User (
     var phone: String = "phone",
     var skills: List<String> = listOf(),
     var balance: Int = 0,
-    var profilePicture: Bitmap? = null
+    var profilePicture: Drawable? = null
 
 )

@@ -15,7 +15,7 @@ import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 class ShowProfileFragment : Fragment() {
 
-    private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    //private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileBinding? = null
 
     // This property is only valid between onCreateView and

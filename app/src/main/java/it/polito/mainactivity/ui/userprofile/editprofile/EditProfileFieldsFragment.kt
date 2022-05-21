@@ -30,23 +30,37 @@ class EditProfileFieldsFragment : Fragment() {
         _binding = FragmentEditProfileFieldsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        observeViewModel()
+        // observeViewModel()
         addFocusChangeListeners()
 
         // if updated changes, update the whole list
 
-        vm.updated.observe(viewLifecycleOwner) {
-            val skills = vm.skills.value
-            if (it != null) {
-                vm.setSkills(skills?.map { s -> if (it.category != s.category) s else it })
-                // display a snackbar with the message
-                //val snack = Snackbar.make(binding.root, "Skill edited", Snackbar.LENGTH_SHORT)
-                //snack.show()
-                // change the message for the show profile fragment
-                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
-                // reset value of updated to null
-                vm.resetUpdated()
-            }
+        vm.user.observe(viewLifecycleOwner) {
+            //val skills = vm.skills.value
+            //if (it != null) {
+            //    vm.setSkills(skills?.map { s -> if (it.category != s.category) s else it })
+            //    // display a snackbar with the message
+            //    //val snack = Snackbar.make(binding.root, "Skill edited", Snackbar.LENGTH_SHORT)
+            //    //snack.show()
+            //    // change the message for the show profile fragment
+            //    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
+            //    // reset value of updated to null
+            //    vm.resetUpdated()
+            //}
+            binding.textInputEditTextName.setText(it.name)
+            binding.textInputEditTextSurname.setText(it.surname)
+            binding.textInputEditTextNickname.setText(it.nickname)
+            binding.textInputEditTextBio.setText(it.bio)
+            binding.textInputEditTextPhone.setText(it.phone)
+            binding.textInputEditTextEmail.setText(it.email)
+            binding.textInputEditTextLocation.setText(it.location)
+
+            binding.editableSkillsLayout.removeAllViews()
+            it.skills
+                .sortedByDescending { it.active }
+                .map { s -> SkillCard(requireContext(), s, vm, true) }
+                .forEach { sc: SkillCard -> binding.editableSkillsLayout.addView(sc) }
+            // TODO: message when skill changed, see above in the comment
         }
 
         return root
@@ -57,28 +71,29 @@ class EditProfileFieldsFragment : Fragment() {
         _binding = null
     }
 
-    private fun observeViewModel() {
-        vm.name.observe(viewLifecycleOwner) { binding.textInputEditTextName.setText(it) }
-        vm.surname.observe(viewLifecycleOwner) { binding.textInputEditTextSurname.setText(it) }
-        vm.nickname.observe(viewLifecycleOwner) { binding.textInputEditTextNickname.setText(it) }
-        vm.bio.observe(viewLifecycleOwner) { binding.textInputEditTextBio.setText(it) }
-        vm.phone.observe(viewLifecycleOwner) { binding.textInputEditTextPhone.setText(it) }
-        vm.email.observe(viewLifecycleOwner) { binding.textInputEditTextEmail.setText(it) }
-        vm.location.observe(viewLifecycleOwner) { binding.textInputEditTextLocation.setText(it) }
-        vm.skills.observe(viewLifecycleOwner) {
-            binding.editableSkillsLayout.removeAllViews()
-            it
-                .sortedByDescending { it.active }
-                .map { s -> SkillCard(requireContext(), s, vm, true) }
-                .forEach { sc: SkillCard -> binding.editableSkillsLayout.addView(sc) }
-        }
-    }
+    //private fun observeViewModel() {
+    //    vm.name.observe(viewLifecycleOwner) { binding.textInputEditTextName.setText(it) }
+    //    vm.surname.observe(viewLifecycleOwner) { binding.textInputEditTextSurname.setText(it) }
+    //    vm.nickname.observe(viewLifecycleOwner) { binding.textInputEditTextNickname.setText(it) }
+    //    vm.bio.observe(viewLifecycleOwner) { binding.textInputEditTextBio.setText(it) }
+    //    vm.phone.observe(viewLifecycleOwner) { binding.textInputEditTextPhone.setText(it) }
+    //    vm.email.observe(viewLifecycleOwner) { binding.textInputEditTextEmail.setText(it) }
+    //    vm.location.observe(viewLifecycleOwner) { binding.textInputEditTextLocation.setText(it) }
+    //    vm.skills.observe(viewLifecycleOwner) {
+    //        binding.editableSkillsLayout.removeAllViews()
+    //        it
+    //            .sortedByDescending { it.active }
+    //            .map { s -> SkillCard(requireContext(), s, vm, true) }
+    //            .forEach { sc: SkillCard -> binding.editableSkillsLayout.addView(sc) }
+    //    }
+    //}
 
     private fun addFocusChangeListeners() {
         binding.textInputEditTextName.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.name.value.toString() != binding.textInputEditTextName.text.toString()) {
-                    vm.setName(binding.textInputEditTextName.text.toString())
+                if (vm.user.value?.name.toString() != binding.textInputEditTextName.text.toString()) {
+                    //vm.setName(binding.textInputEditTextName.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "name", binding.textInputEditTextName.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -86,8 +101,9 @@ class EditProfileFieldsFragment : Fragment() {
         }
         binding.textInputEditTextSurname.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.surname.value.toString() != binding.textInputEditTextSurname.text.toString()) {
-                    vm.setSurname(binding.textInputEditTextSurname.text.toString())
+                if (vm.user.value?.surname.toString() != binding.textInputEditTextSurname.text.toString()) {
+                    //vm.setSurname(binding.textInputEditTextSurname.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "surname", binding.textInputEditTextSurname.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -95,8 +111,9 @@ class EditProfileFieldsFragment : Fragment() {
         }
         binding.textInputEditTextNickname.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.nickname.value.toString() != binding.textInputEditTextNickname.text.toString()) {
-                    vm.setNickname(binding.textInputEditTextNickname.text.toString())
+                if (vm.user.value?.nickname.toString() != binding.textInputEditTextNickname.text.toString()) {
+                    //vm.setNickname(binding.textInputEditTextNickname.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "nickname", binding.textInputEditTextNickname.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -104,8 +121,9 @@ class EditProfileFieldsFragment : Fragment() {
         }
         binding.textInputEditTextBio.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.bio.value.toString() != binding.textInputEditTextBio.text.toString()) {
-                    vm.setBio(binding.textInputEditTextBio.text.toString())
+                if (vm.user.value?.bio.toString() != binding.textInputEditTextBio.text.toString()) {
+                    //vm.setBio(binding.textInputEditTextBio.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "bio", binding.textInputEditTextBio.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -113,8 +131,9 @@ class EditProfileFieldsFragment : Fragment() {
         }
         binding.textInputEditTextPhone.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.phone.value.toString() != binding.textInputEditTextPhone.text.toString()) {
-                    vm.setPhone(binding.textInputEditTextPhone.text.toString())
+                if (vm.user.value?.phone.toString() != binding.textInputEditTextPhone.text.toString()) {
+                    //vm.setPhone(binding.textInputEditTextPhone.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "phone", binding.textInputEditTextPhone.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -122,8 +141,9 @@ class EditProfileFieldsFragment : Fragment() {
         }
         binding.textInputEditTextEmail.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.email.value.toString() != binding.textInputEditTextEmail.text.toString()) {
-                    vm.setEmail(binding.textInputEditTextEmail.text.toString())
+                if (vm.user.value?.email.toString() != binding.textInputEditTextEmail.text.toString()) {
+                    //vm.setEmail(binding.textInputEditTextEmail.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "email", binding.textInputEditTextEmail.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -131,8 +151,9 @@ class EditProfileFieldsFragment : Fragment() {
         }
         binding.textInputEditTextLocation.setOnFocusChangeListener { _, focused ->
             if (!focused) {
-                if (vm.location.value.toString() != binding.textInputEditTextLocation.text.toString()) {
-                    vm.setLocation(binding.textInputEditTextLocation.text.toString())
+                if (vm.user.value?.location.toString() != binding.textInputEditTextLocation.text.toString()) {
+                    //vm.setLocation(binding.textInputEditTextLocation.text.toString())
+                    vm.user.value?.let { vm.updateTimeslotField(it.uid, "location", binding.textInputEditTextLocation.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 

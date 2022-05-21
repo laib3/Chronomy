@@ -1,5 +1,8 @@
 package it.polito.mainactivity.data
 
+import android.graphics.drawable.Drawable
+import it.polito.mainactivity.model.Skill
+
 data class User(
     var uid: String,
     var name: String,
@@ -9,10 +12,10 @@ data class User(
     var email: String,
     var location: String,
     var phone: String,
-    var skills: List<String>,
+    var skills: List<Skill>,
     var balance: Int,
     var timeslots: List<String>,
-    var profilePicture: String?
+    var profilePicture: Drawable?
 ) {
     override fun toString() =
         """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
@@ -32,6 +35,6 @@ fun emptyUser(): User {
         listOf(),
         0,
         listOf(),
-        ""
+        null
     )
 }

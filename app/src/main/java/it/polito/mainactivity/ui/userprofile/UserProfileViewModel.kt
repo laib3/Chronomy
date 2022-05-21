@@ -12,9 +12,9 @@ import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.data.emptyUser
-import it.polito.mainactivity.model.Field
+//import it.polito.mainactivity.model.Field
 import it.polito.mainactivity.model.Skill
-import it.polito.mainactivity.model.UserProfileModel
+//import it.polito.mainactivity.model.UserProfileModel
 import it.polito.mainactivity.model.Utils
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
@@ -71,7 +71,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
             .addSnapshotListener { d, e ->
                 if (e == null && d != null) {
                     _user.value = d.toUser()
-                    Log.d("USEr", _user.value.toString())
+                    Log.d("USER", _user.value.toString())
                 } else _user.value = emptyUser()
             }
 
@@ -93,7 +93,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 get("email") as String,
                 get("location") as String,
                 get("phone") as String,
-                get("skills") as List<String>,
+                get("skills") as List<Skill>,
                 get("balance") as Int,
                 listOf(),
                null

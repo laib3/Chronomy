@@ -28,7 +28,8 @@ class EditProfilePictureFragment : Fragment() {
                 val d: Drawable = BitmapDrawable(resources, bitmap)
                 // change the message for the show profile fragment
                 (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
-                vm.setPicture(d)
+                //TODO: implement this with new vm
+                //vm.setPicture(d)
             }
         }
 
@@ -42,7 +43,8 @@ class EditProfilePictureFragment : Fragment() {
                 // change the message for the show profile fragment
                 (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
 
-                vm.setPicture(d)
+                //TODO: implement this with new vm
+                //vm.setPicture(d)
             }
         }
 
@@ -62,10 +64,11 @@ class EditProfilePictureFragment : Fragment() {
         binding.profilePictureEditable.clipToOutline = true
 
         /* if the profile picture changes set it inside the imageview */
-        vm.picture.observe(viewLifecycleOwner)
+        vm.user.observe(viewLifecycleOwner)
         {
-            if (it != null) {
-                binding.profilePictureEditable.setImageDrawable(it)
+            if (it.profilePicture != null) {
+                //binding.profilePictureEditable.setImageDrawable(it.profilePicture)
+                binding.profilePictureEditable.setImageDrawable(it.profilePicture)
             }
         }
 

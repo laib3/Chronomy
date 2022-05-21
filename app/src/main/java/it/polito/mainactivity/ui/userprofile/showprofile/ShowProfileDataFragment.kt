@@ -42,7 +42,7 @@ class ShowProfileDataFragment: Fragment() {
             locationTextView.text = it.location
             emailTextView.text = it.email
             skillsLayout.removeAllViews()
-            it.skills.map{ s -> SkillCard(requireContext(), Skill(s), vm, false) }
+            it.skills.map{ s -> SkillCard(requireContext(), s, vm, false) }
                 .forEach{ sc: SkillCard -> skillsLayout.addView(sc) }
 
         }
