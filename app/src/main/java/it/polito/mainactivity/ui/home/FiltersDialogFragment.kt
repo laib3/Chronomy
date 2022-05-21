@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.home
 
+
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -16,17 +17,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.skydoves.expandablelayout.ExpandableLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentFiltersBottomDialogBinding
-import org.w3c.dom.Text
-
-
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
+
+private var MINDATE:Long = GregorianCalendar.getInstance().timeInMillis
 
 class FiltersDialogFragment(): BottomSheetDialogFragment() {
 
-    private lateinit var tvDate: TextView
-    private lateinit var tvTime: TextView
     private var _binding: FragmentFiltersBottomDialogBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         _binding = FragmentFiltersBottomDialogBinding.inflate(inflater, container, false)
@@ -58,11 +59,11 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
         var tvEndDate = secondLayoutDate.findViewById<TextView>(R.id.tvEndDate)
 
         tvStartDate.setOnClickListener{
-            DatePickerFragment(tvStartDate, DatePickerFragment.DType.START).show(requireActivity().supportFragmentManager, "startDatePicker")
+            DatePickerFragment(tvStartDate, DatePickerFragment.DType.START, MINDATE).show(requireActivity().supportFragmentManager, "startDatePicker")
         }
 
        tvEndDate.setOnClickListener{
-            DatePickerFragment(tvEndDate, DatePickerFragment.DType.END).show(requireActivity().supportFragmentManager, "endDatePicker")
+            DatePickerFragment(tvEndDate, DatePickerFragment.DType.END, MINDATE).show(requireActivity().supportFragmentManager, "endDatePicker")
         }
 
         var secondLayoutHour = binding.expandableHour.secondLayout
@@ -85,25 +86,50 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             START, END
         }
 
+        private var minDate:Long? = null
+
+        constructor( _tvDate:TextView, _type:DType, _minDate:Long) : this(_tvDate, _type){
+            minDate = _minDate
+        }
+
         private lateinit var dialog: DatePickerDialog
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            // Use the current date as the default date in the picker
+            // Use the current date as the default date in the picker only if it's the first time opening
+            var year = 0
+            var month = 0
+            var day = 0
             val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
+            if(tvDate.text != "dd/mm/yyyy"){
+                var list = tvDate.text.toString().split("/")
+                var y = list[2].toInt()
+                var m = list[1].toInt()-1
+                var d = list[0].toInt()
+                c.set(y, m, d)
+            }
+            year = c.get(Calendar.YEAR)
+            month = c.get(Calendar.MONTH)
+            day = c.get(Calendar.DAY_OF_MONTH)
+
 
             // Create a new instance of DatePickerDialog and return it
            dialog = DatePickerDialog(requireContext(), this, year, month, day)
-            if(type == DType.START) dialog.datePicker.minDate = GregorianCalendar.getInstance().timeInMillis
-//todo: end date must not be before start
+            if(type == DType.START)
+                    dialog.datePicker.minDate = c.timeInMillis
+                else
+                    dialog.datePicker.minDate = minDate!!
             return dialog
         }
 
         @SuppressLint("SetTextI18n")
         override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
             tvDate?.text = "${day}/${(month + 1)}/${year}"
+            if(type == DType.START){
+                val cal  = GregorianCalendar.getInstance()
+                    cal.set(year, month, day)
+                MINDATE = cal.timeInMillis
+                }
+            }
         }
 
     }
@@ -135,4 +161,3 @@ class FiltersDialogFragment(): BottomSheetDialogFragment() {
             }
         }
     }
-}
