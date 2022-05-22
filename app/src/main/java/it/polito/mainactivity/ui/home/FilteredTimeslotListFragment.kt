@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.home
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,12 +12,14 @@ import android.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
+import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
-import java.time.Period
 import java.util.*
+import kotlin.math.max
 
 class FilteredTimeslotListFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
@@ -28,71 +31,53 @@ class FilteredTimeslotListFragment : Fragment() {
     private val binding get() = _binding!!
     var adapter: TimeslotsRecyclerViewAdapter? = null
 
+    //results from filterFragment
+    private var startDate: String? = null
+    private var endDate: String? = null
+    private var startTime: String? = null
+    private var endTime: String? = null
+    private var minDuration: String? = null
+    private var maxDuration: String? = null
+
+    private var category: String = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener("applyFilters") { requestKey, bundle ->
-            val startDate = bundle.getString("startDate")
-            val endDate = bundle.getString("endDate")
-            val startTime = bundle.getString("startTime")
-            val endTime = bundle.getString("endTime")
-            val minDuration = bundle.getString("minDuration")
-            val maxDuration = bundle.getString("maxDuration")
+            startDate = bundle.getString("startDate")
+            endDate = bundle.getString("endDate")
+            startTime = bundle.getString("startTime")
+            endTime = bundle.getString("endTime")
+            minDuration = bundle.getString("minDuration")
+            maxDuration = bundle.getString("maxDuration")
 
-            //TODO: check if it's better to get it from model
             var filteredList = loadedList
 
-            if (startDate != "dd/mm/yyyy" && endDate != "dd/mm/yyyy") {
-                val calendarStartDate = Calendar.getInstance()
-                val startList = startDate.toString().split("/")
-                val ys = startList[2].toInt()
-                val ms = startList[1].toInt() - 1
-                val ds = startList[0].toInt()
-                calendarStartDate.set(ys, ms, ds)
+            filteredList = applyFilters(
+                startDate,
+                endDate,
+                startTime,
+                endTime,
+                minDuration,
+                maxDuration,
+                filteredList
+            )
 
-                val calendarEndDate = Calendar.getInstance()
-                val endList = endDate.toString().split("/")
-                val ye = endList[2].toInt()
-                val me = endList[1].toInt() - 1
-                val de = endList[0].toInt()
-                calendarEndDate.set(ye, me, de)
+            adapter!!.filterList(filteredList)
 
-                filteredList = filteredList?.filter {
-                    it.startDate.after(calendarStartDate) && it.endRepetitionDate.before(
-                        calendarEndDate
-                    )
-                }
-            }
+            binding.filterButton.setBackgroundColor(resources.getColor(R.color.not_so_dark_slate_blue))
+            Snackbar.make(binding.root, "Filters has been applied", Snackbar.LENGTH_LONG)
+                .setTextColor(Color.GREEN)
+                .show()
+        }
 
-            if (startTime != "hh:mm" && endTime != "hh:mm") {
-                filteredList =
-                    filteredList?.filter { it.startHour >= startTime!! && it.endHour <= endTime!! }
-            }
-
-            if (minDuration != "--h --m" && maxDuration != "--h --m") {
-                filteredList = filteredList?.filter {
-                    val duration = Utils.getDuration(it.startHour, it.endHour)
-                    val durationList = duration.split(" ")
-                    val hours = durationList[0].dropLast(1).toInt()
-                    val minutes = durationList[1].dropLast(1).toInt()
-
-                    val minDurationList = minDuration.toString().split(" ")
-                    val minHours = minDurationList[0].dropLast(1).toInt()
-                    val minMinutes =
-                        if (minDurationList.size == 2) minDurationList[1].dropLast(1).toInt()
-                        else 0
-
-                    val maxDurationList = maxDuration.toString().split(" ")
-                    val maxHours = maxDurationList[0].dropLast(1).toInt()
-                    val maxMinutes =
-                        if (maxDurationList.size == 2) maxDurationList[1].dropLast(1).toInt()
-                        else 0
-
-                    (hours in (minHours + 1) until maxHours) ||
-                            ( (hours== minHours || hours==maxHours) && (minutes in minMinutes..maxMinutes))
-                }
-            }
-
-            adapter!!.filterList(filteredList!!)
+        setFragmentResultListener("cleanFilters") { _, _ ->
+            adapter!!.filterList(loadedList!!)
+            binding.filterButton.setBackgroundColor(Color.TRANSPARENT)
+            Snackbar.make(binding.root, "Filters has been cleaned", Snackbar.LENGTH_LONG)
+                .setTextColor(Color.GREEN)
+                .show()
         }
     }
 
@@ -108,7 +93,7 @@ class FilteredTimeslotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
-        val category = args.category
+        category = args.category
 
         val filterButton = binding.filterButton
         filterButton.setOnClickListener {
@@ -120,6 +105,17 @@ class FilteredTimeslotListFragment : Fragment() {
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category }
                 .sortedBy { it.startDate }
+
+            loadedList = applyFilters(
+                startDate,
+                endDate,
+                startTime,
+                endTime,
+                minDuration,
+                maxDuration,
+                loadedList
+            )
+
             adapter = TimeslotsRecyclerViewAdapter(
                 loadedList!!,
                 this
@@ -152,5 +148,66 @@ class FilteredTimeslotListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun applyFilters(
+        startDate: String?, endDate: String?,
+        startTime: String?, endTime: String?,
+        minDuration: String?, maxDuration: String?,
+        filteredList: List<Timeslot>?
+    ): List<Timeslot> {
+        var result = filteredList
+
+        if (startDate != null && startDate != "dd/mm/yyyy" && endDate != null && endDate != "dd/mm/yyyy") {
+            val calendarStartDate = Calendar.getInstance()
+            val startList = startDate.toString().split("/")
+            val ys = startList[2].toInt()
+            val ms = startList[1].toInt() - 1
+            val ds = startList[0].toInt()
+            calendarStartDate.set(ys, ms, ds)
+
+            val calendarEndDate = Calendar.getInstance()
+            val endList = endDate.toString().split("/")
+            val ye = endList[2].toInt()
+            val me = endList[1].toInt() - 1
+            val de = endList[0].toInt()
+            calendarEndDate.set(ye, me, de)
+
+            result = result?.filter {
+                it.startDate.after(calendarStartDate) && it.endRepetitionDate.before(
+                    calendarEndDate
+                )
+            }
+        }
+
+        if (startTime != null && endTime != null && startTime != "hh:mm" && endTime != "hh:mm") {
+            result =
+                result?.filter { it.startHour >= startTime!! && it.endHour <= endTime!! }
+        }
+
+        if (minDuration != null && maxDuration != null && minDuration != "--h --m" && maxDuration != "--h --m") {
+            result = result?.filter {
+                val duration = Utils.getDuration(it.startHour, it.endHour)
+                val durationList = duration.split(" ")
+                val hours = durationList[0].dropLast(1).toInt()
+                val minutes = durationList[1].dropLast(1).toInt()
+
+                val minDurationList = minDuration.toString().split(" ")
+                val minHours = minDurationList[0].dropLast(1).toInt()
+                val minMinutes =
+                    if (minDurationList.size == 2) minDurationList[1].dropLast(1).toInt()
+                    else 0
+
+                val maxDurationList = maxDuration.toString().split(" ")
+                val maxHours = maxDurationList[0].dropLast(1).toInt()
+                val maxMinutes =
+                    if (maxDurationList.size == 2) maxDurationList[1].dropLast(1).toInt()
+                    else 0
+
+                (hours in (minHours + 1) until maxHours) ||
+                        ((hours == minHours || hours == maxHours) && (minutes in minMinutes..maxMinutes))
+            }
+        }
+        return result!!
     }
 }

@@ -60,6 +60,12 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
 
             fragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
+
+        binding.btnClearFilters.setOnClickListener{
+            val bundle = bundleOf("result" to true)
+            setFragmentResult("cleanFilters", bundle)
+            fragmentManager?.beginTransaction()?.remove(this)?.commit()
+        }
         return root
     }
 
