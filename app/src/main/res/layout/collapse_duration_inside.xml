@@ -1,87 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/expandable_child_background">
+    android:paddingBottom="@dimen/big_distance"
+    android:paddingTop="@dimen/medium_distance">
 
 
-        <TextView
-            android:id="@+id/lStartTime"
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:text="Start hour:"
-            app:layout_constraintBottom_toBottomOf="@+id/cvStartTime"
-            app:layout_constraintEnd_toStartOf="@+id/cvStartTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cvStartTime" />
+    <TextView
+        android:id="@+id/lMinDuration"
+        android:layout_width="0dp"
+        android:layout_height="19dp"
+        android:text="Min duration:"
+        app:layout_constraintBottom_toBottomOf="@+id/dmMinDuration"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/dmMinDuration" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvStartTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="50dp"
-            app:cardElevation="@dimen/medium_distance"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/lStartTime"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread">
 
-            <TextView
-                android:id="@+id/tvStartTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:freezesText="true"
-                android:padding="@dimen/big_distance"
-                android:text="hh:mm"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dmMinDuration"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/lMinDuration"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/not_so_black">
 
-        </com.google.android.material.card.MaterialCardView>
+        <AutoCompleteTextView
+            android:id="@+id/tvMinDuration"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:text="@string/duration_placeholder"
+             />
 
-        <TextView
-            android:id="@+id/lEndTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="End hour:"
-            app:layout_constraintBottom_toBottomOf="@+id/cvEndTime"
-            app:layout_constraintEnd_toStartOf="@+id/cvEndTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cvEndTime" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvEndTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="50dp"
-            app:cardElevation="@dimen/medium_distance"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="@+id/cvStartTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/cvStartTime"
-            app:layout_constraintTop_toBottomOf="@+id/cvStartTime">
 
-            <TextView
-                android:id="@+id/tvEndTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:freezesText="true"
-                android:padding="@dimen/big_distance"
-                android:text="hh:mm"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold" />
+    <TextView
+        android:id="@+id/lMaxDuration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Max duration:"
+        app:layout_constraintBottom_toBottomOf="@+id/dmMaxDuration"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/dmMaxDuration" />
 
-        </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dmMaxDuration"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_distance"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/lMaxDuration"
+        android:textColor="@color/not_so_black"
+        app:layout_constraintTop_toBottomOf="@+id/dmMinDuration">
+
+        <AutoCompleteTextView
+            android:id="@+id/tvMaxDuration"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:text="@string/duration_placeholder" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/enormous_distance" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/enormous_distance" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="197dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

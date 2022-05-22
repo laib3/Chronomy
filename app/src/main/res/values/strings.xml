@@ -39,6 +39,7 @@
     <string name="user_profile_picture_label">Location</string>
     <string name="user_profile_save_label">Save</string>
     <string name="user_profile_active_label">Active</string>
+    <string name="filers_apply">Apply filters</string>
 
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
@@ -78,5 +79,9 @@
     <!-- category in filtered list -->
     <string name="nav_filtered_label">Browsing: {category}</string>
 
+    <!-- placeholders-->
+    <string name="date_placeholder">dd/mm/yyyy</string>
+    <string name="hour_placeholder">hh:mm</string>
+    <string name="duration_placeholder">--h --m</string>
 
 </resources>

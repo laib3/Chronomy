@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="skills_array">
-        <item name="gardening">Gardening</item>
-        <item name="tutoring">Tutoring</item>
-        <item name="child_care">Child Care</item>
-        <item name="odd_jobs">Odd Jobs</item>
-        <item name="home_repair" >Home Repair</item>
-        <item name="wellness">Wellness</item>
-        <item name="delivery">Delivery</item>
-        <item name="transportation">Transportation</item>
-        <item name="companionship">Companionship</item>
-        <item name="other">Other</item>
+    <string-array name="duration_array">
+        <item name="30m">30m</item>
+        <item name="1h">1h</item>
+        <item name="1h30m">1h 30m</item>
+        <item name="2h">2h</item>
+        <item name="2h30m" >2h 30m</item>
+        <item name="3h">3h</item>
+        <item name="3h30m">3h 30m</item>
+        <item name="4h">4h</item>
     </string-array>
 </resources>
