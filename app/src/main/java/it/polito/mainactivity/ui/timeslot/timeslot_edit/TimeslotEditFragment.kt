@@ -345,7 +345,7 @@ class TimeslotEditFragment : Fragment() {
                 OnItemClickListener { _, _, idx, _ -> vm.setSubmitTimeslotFields(repetition = repetitions[idx]) }
             binding.bSubmit.apply { visibility = View.VISIBLE }
 
-            val oldDays = vm.submitTimeslot.value?.days?.toMutableList()
+            val oldDays = vm.submitTimeslot.value?.days?.toMutableSet()
             chips.forEachIndexed { idx, chip ->
                 chip.setOnClickListener {
                     if (oldDays?.contains(idx + 1) == true && oldDays.size > 1)
@@ -410,7 +410,7 @@ class TimeslotEditFragment : Fragment() {
         // OBSERVE
         // edit existing timeslot
         if (tId != null) {
-            vm.timeslots.observe(viewLifecycleOwner) {
+            vm.timeslots.observe(viewLifecycleOwner) { it ->
                 val t: Timeslot = it.elementAt(tId!!)
                 binding.tilTitle.editText?.setText(t.title)
                 binding.tilDescription.editText?.setText(t.description)
@@ -432,10 +432,7 @@ class TimeslotEditFragment : Fragment() {
                     repetitionsArrayAdapter.getItem(positionRepetition).toString(), false
                 )
                 binding.swRepetition.isChecked = t.repetition != null
-                chips.forEachIndexed{ idx, chip -> Log.d("TimeslotEditFragment", t.days.toString() + " contains " + (idx+1) + " = " + t.days.find { it == idx + 1 }) }
-                // chips.forEachIndexed{ idx, chip -> Log.d("TimeslotEditFragment", t.days.toString() + " contains " + (idx+1) + " = " + t.days.contains(idx+1))}
-                // chips.forEachIndexed { idx, chip -> chip.isChecked = t.days.toSet().contains(idx + 1) }
-                // chips.forEachIndexed{ i, c -> c.isChecked = true }
+                chips.forEachIndexed { idx, chip -> chip.isChecked = t.days.any{it == idx+1}}
                 if (vm.isValid(t))
                     notifySuccess(true)
                 else
@@ -445,23 +442,23 @@ class TimeslotEditFragment : Fragment() {
         }
         // add new timeslot
         else {
-            vm.submitTimeslot.observe(viewLifecycleOwner) {
-                binding.tvStartDate.text = Utils.formatDateToString(it.startDate)
-                binding.tvStartTime.text = it.startHour
-                binding.tvEndTime.text = it.endHour
+            vm.submitTimeslot.observe(viewLifecycleOwner) { ts ->
+                binding.tvStartDate.text = Utils.formatDateToString(ts.startDate)
+                binding.tvStartTime.text = ts.startHour
+                binding.tvEndTime.text = ts.endHour
                 binding.tvEndDate.text =
-                    if (it.startDate.before(it.endRepetitionDate) || it.startDate == it.endRepetitionDate)
-                        Utils.formatDateToString(it.endRepetitionDate)
+                    if (ts.startDate.before(ts.endRepetitionDate) || ts.startDate == ts.endRepetitionDate)
+                        Utils.formatDateToString(ts.endRepetitionDate)
                     else
-                        Utils.formatDateToString(it.startDate)
-                val positionCategory = categoryArrayAdapter.getPosition(it.category)
+                        Utils.formatDateToString(ts.startDate)
+                val positionCategory = categoryArrayAdapter.getPosition(ts.category)
                 binding.tvCategory.setText(
                     categoryArrayAdapter.getItem(positionCategory).toString(), false
                 )
-                chips.forEachIndexed { idx, chip -> chip.isChecked = (idx + 1) in it.days }
-                setRepetitionComponentsVisibility(it.repetition)
+                chips.forEachIndexed { idx, chip -> chip.isChecked = ts.days.any{it == idx+1}}
+                setRepetitionComponentsVisibility(ts.repetition)
                 binding.bSubmit
-                    .apply { isEnabled = vm.isValid(it) }
+                    .apply { isEnabled = vm.isValid(ts) }
             }
         }
     }

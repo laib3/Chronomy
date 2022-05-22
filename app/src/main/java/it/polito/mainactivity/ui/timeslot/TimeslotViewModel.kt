@@ -55,7 +55,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 get("location") as String,
                 get("category") as String,
                 get("repetition") as String?,
-                get("days") as List<Int>,
+                (get("days") as List<Number>).map{it.toInt()},
                 Utils.formatStringToDate(get("endRepetitionDate") as String)
             )
         } catch (e: Exception) {
