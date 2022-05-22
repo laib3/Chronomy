@@ -376,29 +376,21 @@ class TimeslotEditFragment : Fragment() {
         binding.swRepetition.setOnClickListener {
             val currentDayOfWeek = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK)
             if (tId != null) {
-                val oldTimeslots = vm.timeslots.value
-                val oldT = oldTimeslots?.elementAt(tId!!)
+                // val oldTimeslots = vm.timeslots.value
+                // val oldT = oldTimeslots?.elementAt(tId!!)
 
                 // if the switch is checked, set repetition to weekly and add the day of the startDate
                 val repetition = if (binding.swRepetition.isChecked) "Weekly" else null
-
-                if (repetition != null) {
-
-                    val days = oldT?.days?.toMutableList()
-                    if (days?.size!! == 0)
-                        days.add(currentDayOfWeek)
-                    vm.timeslots.value?.elementAt(tId!!)?.apply {
-                        vm?.updateTimeslotField(this.tid, "repetition", repetition)
-                        vm?.updateTimeslotField(this.tid, "days", days.toList())
-                    } ?: apply {
-                        // TODO: Show error message
-                    }
-                } else {
-                    vm.timeslots.value?.elementAt(tId!!)?.apply {
-                        vm?.updateTimeslotField(this.tid, "repetition", repetition)
-                    } ?: apply {
-                        // TODO: Show error message
-                    }
+                // get selected repetition days from db
+                // val days = vm.timeslots.value?.elementAt(tId!!)?.days?.toMutableSet()
+                // TODO check if it is done at creation time
+                // if (days?.size!! == 0)
+                //     days.add(currentDayOfWeek)
+                vm.timeslots.value?.elementAt(tId!!)?.apply {
+                    vm.updateTimeslotField(this.tid, "repetition", repetition)
+                    // vm?.updateTimeslotField(this.tid, "days", days.toList())
+                } ?: apply {
+                    // TODO: Show error message
                 }
             } else {
                 // if the switch is checked, set repetition to weekly and add the day of the startDate
