@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfilePictureBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
@@ -66,9 +65,9 @@ class EditProfilePictureFragment : Fragment() {
         /* if the profile picture changes set it inside the imageview */
         vm.user.observe(viewLifecycleOwner)
         {
-            if (it?.profilePicture != null) {
+            if (it?.profilePictureUrl != null) {
                 //binding.profilePictureEditable.setImageDrawable(it.profilePicture)
-                binding.profilePictureEditable.setImageDrawable(it.profilePicture)
+                // TODO: !!
             }
         }
 

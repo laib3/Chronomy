@@ -13,7 +13,7 @@ data class User(
     var skills: List<Skill>,
     var balance: Int,
     var timeslots: List<String>,
-    var profilePicture: Drawable?
+    var profilePictureUrl: String?
 ) {
     override fun toString() =
         """{ "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +

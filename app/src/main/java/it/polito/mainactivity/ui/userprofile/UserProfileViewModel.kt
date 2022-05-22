@@ -109,7 +109,8 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 (get("skills") as List<Map<Any?,Any?>>).map{s -> Skill(s["category"] as String, s["description"] as String, s["active"] as Boolean)},
                 (get("balance") as Long).toInt(),
                 listOf(),
-               null
+                "https://firebasestorage.googleapis.com/v0/b/chronomy-3fc87.appspot.com/o/dog-png-22667.png?alt=media&token=073755c2-c289-4af4-b0f6-b4110ae07b17"
+                //get("profilePicture") as String?,
                 // TODO: update with real values
                 //get("timeslots") as List<String>,
                 //get("profilePicture") as String
