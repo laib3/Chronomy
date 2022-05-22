@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.data.emptyUser
+import it.polito.mainactivity.model.Skill
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -105,8 +106,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 get("email") as String,
                 get("location") as String,
                 get("phone") as String,
-                //get("skills") as List<Skill>,
-                listOf(),
+                (get("skills") as List<Map<Any?,Any?>>).map{s -> Skill(s["category"] as String, s["description"] as String, s["active"] as Boolean)},
                 (get("balance") as Long).toInt(),
                 listOf(),
                null
@@ -122,7 +122,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
 
     fun updateTimeslotField(id: String?, field: String, newValue: Any?): Boolean {
         //var returnValue = false
-        if(id == null)
+        if(id == null || newValue == null)
             return false
         db
             .collection("users")
