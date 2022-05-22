@@ -86,7 +86,7 @@
         app:expandable_spinner_gravity="end"
         app:expandable_spinner_margin="14dp"
         app:expandable_spinner_size="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/modalSaveButton"
+        app:layout_constraintBottom_toTopOf="@+id/btnApplyFilters"
         app:layout_constraintEnd_toEndOf="@+id/expandableHour"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/expandableHour"
@@ -94,7 +94,7 @@
         android:background="@drawable/searchview_background"/>
 
     <Button
-        android:id="@+id/modalSaveButton"
+        android:id="@+id/btnApplyFilters"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

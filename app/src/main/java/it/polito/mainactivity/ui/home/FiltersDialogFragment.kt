@@ -9,16 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.skydoves.expandablelayout.ExpandableLayout
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentFiltersBottomDialogBinding
 import java.util.*
 
-
 private var MINDATE: Long = GregorianCalendar.getInstance().timeInMillis
-
 private var MINHOUR: Int = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
 private var MINMINUTE: Int = GregorianCalendar.getInstance().get(Calendar.MINUTE)
 
@@ -43,6 +43,21 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
         expandableDate.parentLayout.setOnClickListener { toggleExpandable(expandableDate) }
         expandableHour.parentLayout.setOnClickListener { toggleExpandable(expandableHour) }
         expandableDuration.parentLayout.setOnClickListener { toggleExpandable(expandableDuration) }
+
+        binding.btnApplyFilters.setOnClickListener{
+            //put values of the filters in the bundle and give them back to filteredTimeslotListFragment
+            val bundle = bundleOf(
+                "startDate" to expandableDate.secondLayout.findViewById<TextView>(R.id.tvStartDate).text.toString(),
+                "endDate" to expandableDate.secondLayout.findViewById<TextView>(R.id.tvEndDate).text.toString(),
+
+                "startTime" to expandableHour.secondLayout.findViewById<TextView>(R.id.tvStartTime).text.toString(),
+                "endTime" to expandableHour.secondLayout.findViewById<TextView>(R.id.tvEndTime).text.toString(),
+
+                "minDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(R.id.tvMinDuration).text.toString(),
+                "maxDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration).text.toString(),
+            )
+            setFragmentResult("applyFilters", bundle)
+        }
 
         return root
     }
@@ -98,10 +113,8 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
         }
 
         val secondLayoutDuration = binding.expandableDuration.secondLayout
-        val tvMinDuration =
-            secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMinDuration)
-        val tvMaxDuration =
-            secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration)
+        val tvMinDuration = secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMinDuration)
+        val tvMaxDuration = secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration)
 
         val durations = resources.getStringArray(R.array.durations_array)
         val anyObject: Any = durations

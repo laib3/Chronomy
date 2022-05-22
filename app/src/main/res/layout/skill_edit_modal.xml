@@ -62,7 +62,7 @@
             android:layout_marginBottom="@dimen/medium_distance"
             app:counterMaxLength="@integer/maxDescriptionLength"
             app:counterEnabled="true"
-            app:layout_constraintBottom_toTopOf="@+id/modalSaveButton"
+            app:layout_constraintBottom_toTopOf="@+id/btnApplyFilters"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,15 +85,15 @@
             android:minHeight="@dimen/switch_size"
             android:text="@string/user_profile_active_label"
             android:textSize="@dimen/profile_text_size_small"
-            app:layout_constraintBottom_toBottomOf="@+id/modalSaveButton"
-            app:layout_constraintEnd_toStartOf="@+id/modalSaveButton"
+            app:layout_constraintBottom_toBottomOf="@+id/btnApplyFilters"
+            app:layout_constraintEnd_toStartOf="@+id/btnApplyFilters"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/modalSaveButton" />
+            app:layout_constraintTop_toTopOf="@+id/btnApplyFilters" />
 
         <Button
-            android:id="@+id/modalSaveButton"
+            android:id="@+id/btnApplyFilters"
             style="@style/ModalSaveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

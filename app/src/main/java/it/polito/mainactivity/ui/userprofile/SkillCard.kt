@@ -50,7 +50,7 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
             val mBuilder = android.app.AlertDialog.Builder(this.context).setView(modalView)
             val alertDialog = mBuilder.show()
             val closeButton = modalView.findViewById<ImageView>(R.id.modalCloseButton)
-            val saveButton = modalView.findViewById<Button>(R.id.modalSaveButton)
+            val saveButton = modalView.findViewById<Button>(R.id.btnApplyFilters)
             // populate fields
             modalTitle.text = skill.category
             modalDescription.setText(skill.description)
