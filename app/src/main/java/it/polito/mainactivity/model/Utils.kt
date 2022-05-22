@@ -109,7 +109,7 @@ class Utils {
                 durationH -= 1
                 startM + 60 - endM
             }
-            return "%dh:%02dm".format(durationH, durationM)
+            return "%dh %02dm".format(durationH, durationM)
         }
 
         fun getDayName(num: Int): String = when (num) {

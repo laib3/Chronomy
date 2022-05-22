@@ -57,8 +57,9 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
                 "maxDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration).text.toString(),
             )
             setFragmentResult("applyFilters", bundle)
-        }
 
+            fragmentManager?.beginTransaction()?.remove(this)?.commit()
+        }
         return root
     }
 
@@ -178,9 +179,9 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
 
             // Create a new instance of DatePickerDialog and return it
             dialog = DatePickerDialog(requireContext(), this, year, month, day)
-            if (type == DType.START)
-                dialog.datePicker.minDate = c.timeInMillis
-            else
+            //if (type == DType.START)
+              //  dialog.datePicker.minDate = c.timeInMillis
+            if(type == DType.END)
                 dialog.datePicker.minDate = minDate!!
             return dialog
         }

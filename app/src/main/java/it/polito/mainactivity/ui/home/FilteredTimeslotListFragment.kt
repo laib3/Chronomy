@@ -13,7 +13,9 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
+import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import java.time.Period
 import java.util.*
 
 class FilteredTimeslotListFragment : Fragment() {
@@ -37,7 +39,7 @@ class FilteredTimeslotListFragment : Fragment() {
             val maxDuration = bundle.getString("maxDuration")
 
             //TODO: check if it's better to get it from model
-            val filteredList = loadedList
+            var filteredList = loadedList
 
             if (startDate != "dd/mm/yyyy" && endDate != "dd/mm/yyyy") {
                 val calendarStartDate = Calendar.getInstance()
@@ -54,15 +56,40 @@ class FilteredTimeslotListFragment : Fragment() {
                 val de = endList[0].toInt()
                 calendarEndDate.set(ye, me, de)
 
-                filteredList?.filter { it.startDate >= calendarStartDate && it.endRepetitionDate <= calendarEndDate }
+                filteredList = filteredList?.filter {
+                    it.startDate.after(calendarStartDate) && it.endRepetitionDate.before(
+                        calendarEndDate
+                    )
+                }
             }
 
             if (startTime != "hh:mm" && endTime != "hh:mm") {
-                filteredList?.filter { it.startHour >= startTime!! && it.endHour <= endTime!! }
+                filteredList =
+                    filteredList?.filter { it.startHour >= startTime!! && it.endHour <= endTime!! }
             }
 
             if (minDuration != "--h --m" && maxDuration != "--h --m") {
+                filteredList = filteredList?.filter {
+                    val duration = Utils.getDuration(it.startHour, it.endHour)
+                    val durationList = duration.split(" ")
+                    val hours = durationList[0].dropLast(1).toInt()
+                    val minutes = durationList[1].dropLast(1).toInt()
 
+                    val minDurationList = minDuration.toString().split(" ")
+                    val minHours = minDurationList[0].dropLast(1).toInt()
+                    val minMinutes =
+                        if (minDurationList.size == 2) minDurationList[1].dropLast(1).toInt()
+                        else 0
+
+                    val maxDurationList = maxDuration.toString().split(" ")
+                    val maxHours = maxDurationList[0].dropLast(1).toInt()
+                    val maxMinutes =
+                        if (maxDurationList.size == 2) maxDurationList[1].dropLast(1).toInt()
+                        else 0
+
+                    (hours in (minHours + 1) until maxHours) ||
+                            ( (hours== minHours || hours==maxHours) && (minutes in minMinutes..maxMinutes))
+                }
             }
 
             adapter!!.filterList(filteredList!!)
