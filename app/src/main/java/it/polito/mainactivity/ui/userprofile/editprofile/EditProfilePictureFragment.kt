@@ -36,34 +36,10 @@ class EditProfilePictureFragment : Fragment() {
     private val takeCameraPicture =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
-                binding.profilePictureEditable.setImageBitmap(bitmap)
-                //val d: Drawable = BitmapDrawable(resources, bitmap)
-                //TODO: implement this with new vm
-                //vm.setPicture(d)
-
-                // upload new picture to db and change the saved url
-                val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                val data = baos.toByteArray()
-
-                val path = "profilePictures/" + UUID.randomUUID() + ".png"
-                val profilePictures = storage.getReference(path)
-
-                val metadata =
-                    StorageMetadata.Builder().setCustomMetadata("uid", vm.uId.value).build()
-                profilePictures.putBytes(data, metadata).addOnSuccessListener {
-                    profilePictures.downloadUrl.addOnCompleteListener {
-                        vm.updateTimeslotField(
-                            vm.uId.value,
-                            "profilePictureUrl",
-                            it.result.toString()
-                        )
-                        it.result.toString()
-                    }
+                if(loadPictureToDb(bitmap)){
+                    // change the message for the show profile fragment
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
-
-                // change the message for the show profile fragment
-                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
 
             }
         }
@@ -75,36 +51,36 @@ class EditProfilePictureFragment : Fragment() {
                 val inputStream = activity?.contentResolver?.openInputStream(uri)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
 
-                // upload new picture to db and change the saved url
-                val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                val data = baos.toByteArray()
-
-                val path = "profilePictures/" + UUID.randomUUID() + ".png"
-                val profilePictures = storage.getReference(path)
-
-                val metadata =
-                    StorageMetadata.Builder().setCustomMetadata("uid", vm.uId.value).build()
-                profilePictures.putBytes(data, metadata).addOnSuccessListener {
-                    profilePictures.downloadUrl.addOnCompleteListener {
-                        vm.updateTimeslotField(
-                            vm.uId.value,
-                            "profilePictureUrl",
-                            it.result.toString()
-                        )
-                        it.result.toString()
-                    }
+                if(loadPictureToDb(bitmap)){
+                    // change the message for the show profile fragment
+                    (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
-
-                // change the message for the show profile fragment
-                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
-
-                //TODO: implement this with new vm
-                //vm.setPicture(d)
-                // upload new picture to db and change the saved url
             }
         }
 
+    private fun loadPictureToDb(bitmap: Bitmap): Boolean{
+        // upload new picture to db and change the saved url
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val data = baos.toByteArray()
+
+        val path = "profilePictures/" + UUID.randomUUID() + ".png"
+        val profilePictures = storage.getReference(path)
+
+        val metadata =
+            StorageMetadata.Builder().setCustomMetadata("uid", vm.uId.value).build()
+        profilePictures.putBytes(data, metadata).addOnSuccessListener {
+            profilePictures.downloadUrl.addOnCompleteListener {
+                vm.updateTimeslotField(
+                    vm.uId.value,
+                    "profilePictureUrl",
+                    it.result.toString()
+                )
+                it.result.toString()
+            }
+        }
+        return true
+    }
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
