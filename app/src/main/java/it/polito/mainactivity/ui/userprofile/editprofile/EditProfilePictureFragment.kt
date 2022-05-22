@@ -1,17 +1,27 @@
 package it.polito.mainactivity.ui.userprofile.editprofile
 
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
+import com.squareup.picasso.Picasso
+import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfilePictureBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 class EditProfilePictureFragment : Fragment() {
 
@@ -19,16 +29,36 @@ class EditProfilePictureFragment : Fragment() {
 
     private var _binding: FragmentEditProfilePictureBinding? = null
 
+    private val storage = FirebaseStorage.getInstance()
+
     // take picture from camera
     private val takeCameraPicture =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
                 binding.profilePictureEditable.setImageBitmap(bitmap)
-                val d: Drawable = BitmapDrawable(resources, bitmap)
-                // change the message for the show profile fragment
-                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
+                //val d: Drawable = BitmapDrawable(resources, bitmap)
                 //TODO: implement this with new vm
                 //vm.setPicture(d)
+
+                // upload new picture to db and change the saved url
+                val baos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG,100, baos )
+                val data = baos.toByteArray()
+
+                val path = "profilePictures/" + UUID.randomUUID() + ".png"
+                val profilePictures = storage.getReference(path)
+
+                val metadata = StorageMetadata.Builder().setCustomMetadata("uid", vm.uId.value).build()
+                profilePictures.putBytes(data, metadata).addOnSuccessListener{
+                    profilePictures.downloadUrl.addOnCompleteListener{
+                        vm.updateTimeslotField(vm.uId.value, "profilePicture",it.result.toString() )
+                        it.result.toString()
+                    }
+                }
+
+                // change the message for the show profile fragment
+                (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
+
             }
         }
 
@@ -44,6 +74,7 @@ class EditProfilePictureFragment : Fragment() {
 
                 //TODO: implement this with new vm
                 //vm.setPicture(d)
+                // upload new picture to db and change the saved url
             }
         }
 
@@ -65,10 +96,7 @@ class EditProfilePictureFragment : Fragment() {
         /* if the profile picture changes set it inside the imageview */
         vm.user.observe(viewLifecycleOwner)
         {
-            if (it?.profilePictureUrl != null) {
-                //binding.profilePictureEditable.setImageDrawable(it.profilePicture)
-                // TODO: !!
-            }
+                it?.profilePictureUrl?.apply { Picasso.get().load(this).into(binding.profilePictureEditable)}
         }
 
         val addPhotoButton = binding.imageAddIcon
