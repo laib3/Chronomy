@@ -1,17 +1,23 @@
 package it.polito.mainactivity
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.android.gms.common.api.internal.ActivityLifecycleObserver
 import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.databinding.FragmentLoginBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
@@ -28,6 +34,8 @@ class LoginFragment: Fragment() {
         registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
         res -> onSignInResult(res)
     }
+
+
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult){
         val response = result.idpResponse
@@ -78,6 +86,13 @@ class LoginFragment: Fragment() {
 
     private fun login(){
         signInLauncher.launch(signInIntent)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity?.lifecycleScope?.launchWhenCreated {
+            (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        }
     }
 
 }

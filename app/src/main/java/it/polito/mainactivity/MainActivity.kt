@@ -1,35 +1,21 @@
 package it.polito.mainactivity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.material.internal.NavigationMenuItemView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
@@ -75,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             navHeaderSurname.text = it?.surname ?: "null"
             // TODO error
             navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
-            // TODO: profile picture
+            // TODO: profile picturec
             //if (it.profilePicture != null) navProfilePicture.setImageDrawable(it)
         }
 
@@ -84,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_list, R.id.nav_show_profile, R.id.nav_home
+                R.id.nav_list, R.id.nav_show_profile, R.id.nav_home, R.id.nav_login_fragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -114,6 +100,7 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
