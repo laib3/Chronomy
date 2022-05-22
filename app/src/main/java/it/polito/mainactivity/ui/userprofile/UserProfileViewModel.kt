@@ -22,6 +22,8 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     val user: LiveData<User?> = _user
     private val _uId = MutableLiveData<String?>()
     val uId: LiveData<String?> = _uId
+    private val _newUser = MutableLiveData<Boolean?>(null)
+    val newUser: LiveData<Boolean?> = _newUser
 
     private lateinit var userListenerRegistration : ListenerRegistration
 
@@ -31,32 +33,39 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
             if(userId != null){
                 val userRef: DocumentReference = db.collection("users").document(userId)
                 userRef.get().addOnSuccessListener {
-                    if(!it.exists()){
+                    // document doesn't exist
+                    if(!it.exists()) {
                         userRef.set(emptyUser()).addOnSuccessListener {
                             Log.d("UserProfileViewModel", "user creation ok with id ${userId}")
                             userListenerRegistration = userRef.addSnapshotListener { value, error ->
-                                if(value != null){
+                                if (value != null) {
                                     _user.value = value.toUser()
                                     _uId.value = value.id
+                                    _newUser.value = true
                                     Log.d("UserProfileViewModel", "logged in as ${value.id}")
                                 } else {
                                     Log.d("UserProfileViewModel", "error during log in")
                                     _user.value = null
                                     _uId.value = null
+                                    _newUser.value = null
                                 }
                             }
-                        }.addOnFailureListener { Log.d("UserProfileViewModel",  "user not created") }
+                        }.addOnFailureListener { Log.d("UserProfileViewModel", "user not created") }
                     }
-                    // if document exists
-                    userListenerRegistration = userRef.addSnapshotListener { value, error ->
-                        if(value != null){
-                            _user.value = value.toUser()
-                            _uId.value = value.id
-                            Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
-                        } else {
-                            Log.d("UserProfileViewModel", "error during (existing) log in")
-                            _user.value = null
-                            _uId.value = null
+                    else {
+                        // if document exists
+                        userListenerRegistration = userRef.addSnapshotListener { value, error ->
+                            if(value != null){
+                                _user.value = value.toUser()
+                                _uId.value = value.id
+                                _newUser.value = false
+                                Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
+                            } else {
+                                Log.d("UserProfileViewModel", "error during (existing) log in")
+                                _user.value = null
+                                _uId.value = null
+                                _newUser.value = null
+                            }
                         }
                     }
                 }.addOnFailureListener {
@@ -68,6 +77,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 Log.d("UserProfileViewModel", "user log out")
                 _user.value = null
                 _uId.value = null
+                _newUser.value = null
             }
         }
     }
