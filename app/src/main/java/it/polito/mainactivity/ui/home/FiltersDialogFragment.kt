@@ -128,7 +128,7 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
         val maxDurationsArrayList =
             (anyObject as Array<*>).map { it.toString() }.filter { it != "30m" }
 
-        val minDurationsArray = durations.filter { it != "4h" }
+        val minDurationsArray = durations.filter { it != "6h" }
 
         val minDurationsArrayAdapter =
             ArrayAdapter(requireContext(), R.layout.list_item, minDurationsArray)
