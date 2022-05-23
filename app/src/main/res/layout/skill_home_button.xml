@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="4dp">
+    android:layout_marginStart="@dimen/small_distance"
+    android:layout_marginTop="@dimen/small_distance"
+    android:layout_marginEnd="@dimen/small_distance"
+    android:layout_marginBottom="@dimen/small_distance">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="@dimen/side_of_square"
         android:layout_height="@dimen/side_of_square"
-        android:layout_marginStart="@dimen/big_distance"
-        android:layout_marginTop="@dimen/big_distance"
-        android:layout_marginEnd="@dimen/big_distance"
-        android:layout_marginBottom="@dimen/big_distance"
+        android:layout_marginStart="@dimen/medium_distance"
+        android:layout_marginTop="@dimen/medium_distance"
+        android:layout_marginEnd="@dimen/medium_distance"
+        android:layout_marginBottom="@dimen/medium_distance"
         android:elevation="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="10pt"
         app:cardElevation="10dp"
         app:cardPreventCornerOverlap="true"
@@ -25,8 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:foreground="?android:attr/selectableItemBackground">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/skillCardInnerLayout"
@@ -39,12 +39,14 @@
                 android:id="@+id/skillIcon"
                 android:layout_width="@dimen/skill_icon_size"
                 android:layout_height="@dimen/skill_icon_size"
+                android:layout_marginBottom="@dimen/medium_distance"
                 android:contentDescription="Gardening icon"
                 android:src="@drawable/ic_skill_gardening"
                 app:layout_constraintBottom_toTopOf="@+id/skillTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
                 app:srcCompat="@drawable/ic_skill_gardening" />
 
             <TextView
@@ -53,12 +55,25 @@
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:textColor="@color/purple_500"
-                android:textSize="16sp"
+                android:textSize="@dimen/profile_text_size_medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvSkillNumber"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/skillIcon" />
+
+            <TextView
+                android:id="@+id/tvSkillNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(0)"
+                android:textColor="@color/purple_500"
+                android:textSize="@dimen/profile_text_size_small"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skillIcon" />
+                app:layout_constraintTop_toBottomOf="@+id/skillTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

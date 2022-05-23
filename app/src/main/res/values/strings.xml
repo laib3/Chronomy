@@ -29,6 +29,7 @@
     <string name="user_profile_nickname_placeholder">\@%1$s</string>
     <string name="user_profile_balance_placeholder">%1$s TCU</string>
     <string name="user_profile_bio_placeholder">«%1$s»</string>
+    <string name="home_skill_number_placeholder">(%1$s)</string>
 
     <!-- labels -->
     <string name="user_profile_balance_label">Balance</string>

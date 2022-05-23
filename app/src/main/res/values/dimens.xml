@@ -22,7 +22,9 @@
     <dimen name="add_button_size">32dp</dimen>
 
     <!-- text size in show profile -->
+    <dimen name="profile_text_size_tiny">12sp</dimen>
     <dimen name="profile_text_size_small">14sp</dimen>
+    <dimen name="profile_text_size_medium">16sp</dimen>
     <dimen name="profile_text_size_normal">20sp</dimen>
     <dimen name="profile_text_size_big">24sp</dimen>
 
@@ -30,7 +32,7 @@
     <dimen name="switch_size">48sp</dimen>
 
     <!-- skill home buttons dimension -->
-    <dimen name="side_of_square">110dp</dimen>
+    <dimen name="side_of_square">128dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
