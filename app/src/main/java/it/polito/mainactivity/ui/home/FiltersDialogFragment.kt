@@ -29,6 +29,7 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
 
     private var selectedMinDuration: Int = 0
 
+    @SuppressLint("CutPasteId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,6 +40,15 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
         val expandableDate = binding.expandableDate
         val expandableHour = binding.expandableHour
         val expandableDuration = binding.expandableDuration
+
+        val bundle = this.arguments
+
+        bundle?.getString("startDate")?.let{expandableDate.secondLayout.findViewById<TextView>(R.id.tvStartDate)?.text = it}
+        bundle?.getString("endDate")?.let{expandableDate.secondLayout.findViewById<TextView>(R.id.tvEndDate)?.text = it}
+        bundle?.getString("startTime")?.let{expandableHour.secondLayout.findViewById<TextView>(R.id.tvStartTime)?.text = it}
+        bundle?.getString("endTime")?.let{expandableHour.secondLayout.findViewById<TextView>(R.id.tvEndTime)?.text = it}
+        bundle?.getString("minDuration")?.let{expandableDuration.secondLayout.findViewById<TextView>(R.id.tvMinDuration)?.text = it}
+        bundle?.getString("maxDuration")?.let{expandableDuration.secondLayout.findViewById<TextView>(R.id.tvMaxDuration)?.text = it}
 
         expandableDate.parentLayout.setOnClickListener { toggleExpandable(expandableDate) }
         expandableHour.parentLayout.setOnClickListener { toggleExpandable(expandableHour) }

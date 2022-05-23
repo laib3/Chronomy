@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
@@ -72,6 +73,12 @@ class FilteredTimeslotListFragment : Fragment() {
         }
 
         setFragmentResultListener("cleanFilters") { _, _ ->
+            startDate = "dd/mm/yyyy"
+            endDate = "dd/mm/yyyy"
+            startTime = "hh:mm"
+            endTime = "hh:mm"
+            minDuration = "--h --m"
+            maxDuration = "--h --m"
             adapter!!.filterList(loadedList!!)
             binding.filterButton.setBackgroundColor(Color.TRANSPARENT)
             Snackbar.make(binding.root, "Filters has been cleaned", Snackbar.LENGTH_LONG)
@@ -97,6 +104,15 @@ class FilteredTimeslotListFragment : Fragment() {
         val filterButton = binding.filterButton
         filterButton.setOnClickListener {
             var bottomFragment = FiltersDialogFragment()
+            var bundle = bundleOf(
+                "startDate" to startDate,
+                "endDate" to endDate,
+                "startTime" to startTime,
+                "endTime" to endTime,
+                "minDuration" to minDuration,
+                "maxDuration" to maxDuration
+            )
+            bottomFragment.arguments = bundle
             fragmentManager?.let { bottomFragment.show(it, "") }
         }
 
