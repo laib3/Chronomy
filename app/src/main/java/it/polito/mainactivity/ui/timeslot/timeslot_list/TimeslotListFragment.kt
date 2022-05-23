@@ -1,11 +1,14 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_list
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -41,6 +44,10 @@ class TimeslotListFragment : Fragment() {
         val rv: RecyclerView = binding.timeslotListRv
         rv.layoutManager = LinearLayoutManager(root.context)
 
+        (activity as MainActivity).onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(R.id.action_nav_list_to_nav_home)
+        }
+
         vm.timeslots.observe(viewLifecycleOwner) {
             val timeslots = vm.timeslots.value!!.filter{ t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
             val adapter = TimeslotAdapter(timeslots, this, vm)
@@ -63,6 +70,10 @@ class TimeslotListFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_list_to_nav_edit)
         }
         return root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     override fun onDestroyView() {
