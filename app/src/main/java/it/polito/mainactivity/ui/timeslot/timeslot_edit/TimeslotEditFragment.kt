@@ -33,7 +33,12 @@ import kotlin.math.max
 class TimeslotEditFragment : Fragment() {
 
     // Extending DialogFragment for a time picker
-    class TimePickerFragment(private val tiTime: TextView?,private val vm: TimeslotViewModel,private val type: Type,private val tId: Int? = null) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+    class TimePickerFragment(
+        private val tiTime: TextView?,
+        private val vm: TimeslotViewModel,
+        private val type: Type,
+        private val tId: Int? = null
+    ) : DialogFragment(), TimePickerDialog.OnTimeSetListener {
         enum class Type {
             START, END
         }
@@ -248,7 +253,11 @@ class TimeslotEditFragment : Fragment() {
     private val binding get() = _binding!!
     private var tId: Int? = null
 
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentTimeslotEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -345,7 +354,7 @@ class TimeslotEditFragment : Fragment() {
                 OnItemClickListener { _, _, idx, _ -> vm.setSubmitTimeslotFields(repetition = repetitions[idx]) }
             binding.bSubmit.apply { visibility = View.VISIBLE }
 
-            val oldDays = vm.submitTimeslot.value?.days?.toMutableList()
+            val oldDays = vm.submitTimeslot.value?.days?.toMutableSet()
             chips.forEachIndexed { idx, chip ->
                 chip.setOnClickListener {
                     if (oldDays?.contains(idx + 1) == true && oldDays.size > 1)
@@ -410,7 +419,7 @@ class TimeslotEditFragment : Fragment() {
         // OBSERVE
         // edit existing timeslot
         if (tId != null) {
-            vm.timeslots.observe(viewLifecycleOwner) {
+            vm.timeslots.observe(viewLifecycleOwner) { it ->
                 val t: Timeslot = it.elementAt(tId!!)
                 binding.tilTitle.editText?.setText(t.title)
                 binding.tilDescription.editText?.setText(t.description)
@@ -432,10 +441,7 @@ class TimeslotEditFragment : Fragment() {
                     repetitionsArrayAdapter.getItem(positionRepetition).toString(), false
                 )
                 binding.swRepetition.isChecked = t.repetition != null
-                chips.forEachIndexed{ idx, chip -> Log.d("TimeslotEditFragment", t.days.toString() + " contains " + (idx+1) + " = " + t.days.find { it == idx + 1 }) }
-                // chips.forEachIndexed{ idx, chip -> Log.d("TimeslotEditFragment", t.days.toString() + " contains " + (idx+1) + " = " + t.days.contains(idx+1))}
-                // chips.forEachIndexed { idx, chip -> chip.isChecked = t.days.toSet().contains(idx + 1) }
-                // chips.forEachIndexed{ i, c -> c.isChecked = true }
+                chips.forEachIndexed { idx, chip -> chip.isChecked = t.days.contains(idx + 1) }
                 if (vm.isValid(t))
                     notifySuccess(true)
                 else
@@ -458,7 +464,7 @@ class TimeslotEditFragment : Fragment() {
                 binding.tvCategory.setText(
                     categoryArrayAdapter.getItem(positionCategory).toString(), false
                 )
-                chips.forEachIndexed { idx, chip -> chip.isChecked = (idx + 1) in it.days }
+                chips.forEachIndexed { idx, chip -> chip.isChecked = it.days.contains(idx + 1) }
                 setRepetitionComponentsVisibility(it.repetition)
                 binding.bSubmit
                     .apply { isEnabled = vm.isValid(it) }
