@@ -5,7 +5,9 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mainactivity.R
+import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.data.User
 import org.json.JSONArray
 import org.json.JSONObject
@@ -136,6 +138,30 @@ class Utils {
         fun getSnackbarColor(msg: String): Int =
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
+
+        fun toTimeslot(d: DocumentSnapshot?, user: User): Timeslot? {
+            if(d == null)
+                return null
+            return try {
+                Timeslot(
+                    d.id,
+                    d.get("title") as String,
+                    d.get("description") as String,
+                    Utils.formatStringToDate(d.get("startDate") as String),
+                    d.get("startHour") as String,
+                    d.get("endHour") as String,
+                    d.get("location") as String,
+                    d.get("category") as String,
+                    d.get("repetition") as String?,
+                    (d.get("days") as List<Number>).map{it.toInt()},
+                    Utils.formatStringToDate(d.get("endRepetitionDate") as String),
+                    user
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
 
         fun toUser(d: DocumentSnapshot?): User? {
             if(d == null)

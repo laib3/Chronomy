@@ -93,7 +93,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextName.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.name.toString() != binding.textInputEditTextName.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "name", binding.textInputEditTextName.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "name", binding.textInputEditTextName.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -102,7 +102,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextSurname.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.surname.toString() != binding.textInputEditTextSurname.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "surname", binding.textInputEditTextSurname.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "surname", binding.textInputEditTextSurname.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -111,7 +111,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextNickname.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.nickname.toString() != binding.textInputEditTextNickname.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "nickname", binding.textInputEditTextNickname.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "nickname", binding.textInputEditTextNickname.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -120,7 +120,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextBio.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.bio.toString() != binding.textInputEditTextBio.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "bio", binding.textInputEditTextBio.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "bio", binding.textInputEditTextBio.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -129,7 +129,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextPhone.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.phone.toString() != binding.textInputEditTextPhone.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "phone", binding.textInputEditTextPhone.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "phone", binding.textInputEditTextPhone.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -138,7 +138,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextEmail.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.email.toString() != binding.textInputEditTextEmail.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "email", binding.textInputEditTextEmail.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "email", binding.textInputEditTextEmail.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 
@@ -147,7 +147,7 @@ class EditProfileFieldsFragment : Fragment() {
         binding.textInputEditTextLocation.setOnFocusChangeListener { _, focused ->
             if (!focused) {
                 if (vm.user.value?.location.toString() != binding.textInputEditTextLocation.text.toString()) {
-                    vm.user.value?.let { vm.updateTimeslotField(vm.user.value!!.userId, "location", binding.textInputEditTextLocation.text.toString())}
+                    vm.user.value?.let { vm.updateUserField(vm.user.value!!.userId, "location", binding.textInputEditTextLocation.text.toString())}
                     (parentFragment as EditProfileFragment).notifyMessageEditedProfile()
                 }
 

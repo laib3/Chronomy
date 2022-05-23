@@ -82,32 +82,30 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         userListenerRegistration.remove()
     }
 
-    fun updateTimeslotField(userId: String?, field: String, newValue: Any?): Boolean {
+    // update user field and user inside the timeslots
+    fun updateUserField(userId: String?, field: String, newValue: Any?): Boolean {
         //var returnValue = false
         if(userId == null || newValue == null)
             return false
         val userRef = db.collection("users").document(userId)
         val tsRef = db.collection("timeslots")
 
-        tsRef.whereEqualTo("user.userId", userId).get().addOnSuccessListener {
-            Log.d("UserProfileViewModel", it.toString())
-        }
-
-        /*
-        db.runBatch { batch ->
-            // update user
-            batch.update(userRef, field, newValue)
-            // update timeslots
-            tsRef.whereEqualTo("user.userId", userId).get().addOnSuccessListener { timeslots ->
-                for(t in timeslots){
-                    batch.update(db.collection("timeslots").document(t.id), "user." + field, newValue)
+        tsRef.whereEqualTo("user.userId", userId).get().addOnSuccessListener { result ->
+            val tsRefs = result.documents.map{ it.reference }
+            userRef.update(field, newValue)
+                .addOnSuccessListener {
+                    userRef.get().addOnSuccessListener { userSnapshot ->
+                        val user = Utils.toUser(userSnapshot)
+                        tsRefs.forEach{ tsRef -> tsRef.update("user", user)
+                            .addOnSuccessListener { Log.d("UserProfileViewModel", "timeslot updated successfully with user: " + user.toString()) }
+                            .addOnFailureListener { Log.d("UserProfileViewModel", "update timeslot failure: " + it.message) }
+                        }
+                    }.addOnFailureListener { Log.d("UserProfileViewModel", "get user failure: " + it.message ) }
                 }
-            }
-            batch.commit().addOnSuccessListener {
-                Log.d("UserProfileViewModel", "Updated successfully!")
-            }
+                .addOnFailureListener { exception ->
+                    Log.d("UserProfileViewModel", "update user failure: " + exception.message)
+                }
         }
-        */
 
         return true
 

@@ -2,23 +2,17 @@ package it.polito.mainactivity.ui.userprofile.editprofile
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.squareup.picasso.Picasso
-import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.databinding.FragmentEditProfilePictureBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 import java.io.ByteArrayOutputStream
@@ -71,7 +65,7 @@ class EditProfilePictureFragment : Fragment() {
             StorageMetadata.Builder().setCustomMetadata("uid", vm.user.value!!.userId).build()
         profilePictures.putBytes(data, metadata).addOnSuccessListener {
             profilePictures.downloadUrl.addOnCompleteListener {
-                vm.updateTimeslotField(
+                vm.updateUserField(
                     vm.user.value!!.userId,
                     "profilePictureUrl",
                     it.result.toString()

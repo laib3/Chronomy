@@ -78,7 +78,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-
     fun updateTimeslotField(id: String, field: String, newValue: Any?): Boolean {
        // var returnValue = false
         db
