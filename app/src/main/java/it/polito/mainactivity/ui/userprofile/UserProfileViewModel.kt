@@ -49,7 +49,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                     }
                     else {
                         // if document exists
-                        userListenerRegistration = userRef.addSnapshotListener { value, error ->
+                        userListenerRegistration = userRef.addSnapshotListener { value, _ ->
                             if(value != null){
                                 _user.value = Utils.toUser(value)
                                 _newUser.value = false
@@ -62,7 +62,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                         }
                     }
                 }.addOnFailureListener {
-                    Log.d("UserProfileViewModel", "error db: cannot retrieve document with id ${userId}")
+                    Log.d("UserProfileViewModel", "error db: cannot retrieve document with id $userId")
                 }
             }
             else { // log out
