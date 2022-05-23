@@ -3,6 +3,7 @@ package it.polito.mainactivity.ui.userprofile.showprofile
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -32,13 +33,9 @@ class ShowProfileFragment : Fragment() {
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        root.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if(keyCode == KeyEvent.KEYCODE_BACK){
-                Log.d("back pressed", "back")
-                true
-            }
-            false
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(R.id.nav_home)
+        }
 
         return root
     }
@@ -71,6 +68,5 @@ class ShowProfileFragment : Fragment() {
             (activity as MainActivity).snackBarMessage = null
         }
     }
-
 
 }
