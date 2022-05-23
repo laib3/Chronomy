@@ -56,7 +56,6 @@ class TimeslotDetailsFragment : Fragment() {
 
             val dateString = SpannableStringBuilder()
 
-
             when {
                 ts.repetition?.lowercase() == "weekly" -> {
                     dateString

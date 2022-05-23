@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_home">
-  
+    app:startDestination="@id/nav_login_fragment">
+
     <fragment
         android:id="@+id/nav_list"
         android:name="it.polito.mainactivity.ui.timeslot.timeslot_list.TimeslotListFragment"
@@ -72,12 +72,15 @@
         android:name="it.polito.mainactivity.ui.userprofile.editprofile.EditProfileFragment"
         android:label="Edit Profile"/>
     <fragment
-        android:id="@+id/loginFragment"
+        android:id="@+id/nav_login_fragment"
         android:name="it.polito.mainactivity.LoginFragment"
-        android:label="LoginFragment" >
+        android:label="Login" >
         <action
-            android:id="@+id/action_loginFragment_to_nav_list"
-            app:destination="@id/nav_list" />
+            android:id="@+id/action_nav_login_fragment_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
+        <action
+            android:id="@+id/action_nav_login_fragment_to_nav_home"
+            app:destination="@id/nav_home" />
   </fragment>
   <fragment
         android:id="@+id/nav_home"
@@ -109,5 +112,4 @@
         android:name="it.polito.mainactivity.ui.home.FiltersDialogFragment"
         android:label="fragment_filters_bottom_dialog"
         tools:layout="@layout/fragment_filters_bottom_dialog" />
-
 </navigation>

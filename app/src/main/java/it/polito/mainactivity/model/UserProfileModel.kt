@@ -1,5 +1,5 @@
 package it.polito.mainactivity.model
-
+/*
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
@@ -158,3 +158,4 @@ class UserProfileModel(val application: Application) {
     }
 
 }
+*/

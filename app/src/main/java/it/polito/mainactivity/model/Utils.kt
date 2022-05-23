@@ -1,8 +1,12 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
-import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import it.polito.mainactivity.R
+import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.data.User
+import it.polito.mainactivity.data.emptyUser
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.DateFormat
@@ -131,6 +135,83 @@ class Utils {
         fun getSnackbarColor(msg: String): Int =
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
+
+        fun toTimeslot(d: DocumentSnapshot?, user: User): Timeslot? {
+            if(d == null)
+                return null
+            return try {
+                Timeslot(
+                    d.id,
+                    d.get("title") as String,
+                    d.get("description") as String,
+                    Utils.formatStringToDate(d.get("startDate") as String),
+                    d.get("startHour") as String,
+                    d.get("endHour") as String,
+                    d.get("location") as String,
+                    d.get("category") as String,
+                    d.get("repetition") as String?,
+                    (d.get("days") as List<Number>).map{it.toInt()},
+                    Utils.formatStringToDate(d.get("endRepetitionDate") as String),
+                    user
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        fun toUser(d: DocumentSnapshot?): User? {
+            if(d == null)
+                return null
+            return try {
+                User(
+                    d.get("userId") as String,
+                    d.get("name") as String,
+                    d.get("surname") as String,
+                    d.get("nickname") as String,
+                    d.get("bio") as String,
+                    d.get("email") as String,
+                    d.get("location") as String,
+                    d.get("phone") as String,
+                    //get("skills") as List<Skill>,
+                    (d.get("skills") as List<Map<Any?,Any?>>).map{s -> Skill(s["category"] as String, s["description"] as String, s["active"] as Boolean)},
+                    (d.get("balance") as Long).toInt(),
+                    d.get("profilePictureUrl") as String?
+                    // TODO: update with real values
+                    //get("timeslots") as List<String>,
+                    //get("profilePicture") as String
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        fun anyToUser(any: Any?): User {
+            // this should never happen
+            if (any == null)
+                return emptyUser()
+            val map = any as Map<String, Any?>
+            return User(
+                map["userId"] as String,
+                map["name"] as String,
+                map["surname"] as String,
+                map["nickname"] as String,
+                map["bio"] as String,
+                map["email"] as String,
+                map["location"] as String,
+                map["phone"] as String,
+                (map["skills"] as List<Map<Any?, Any?>>).map { s ->
+                    Skill(
+                        s["category"] as String,
+                        s["description"] as String,
+                        s["active"] as Boolean
+                    )
+                },
+                (map["balance"] as Long).toInt(),
+                map["profilePictureUrl"] as String?
+            )
+        }
 
     }
 

@@ -6,13 +6,17 @@
     android:layout_height="match_parent">
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/bSignIn"
+        android:id="@+id/bLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/huge_distance"
+        android:layout_margin="@dimen/medium_distance"
+        android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></com.google.android.gms.common.SignInButton>
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.google.android.gms.common.SignInButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -100,9 +100,13 @@
 
             <ImageView
                 android:id="@+id/ivProfilePic"
-                android:layout_width="79dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/profile_picture_small_size"
+                android:layout_height="@dimen/profile_picture_small_size"
                 android:layout_marginTop="@dimen/small_distance"
+                android:background="@drawable/white_circle_bg"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/user_profile_picture_label"
                 app:layout_constraintBottom_toTopOf="@+id/nickname"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

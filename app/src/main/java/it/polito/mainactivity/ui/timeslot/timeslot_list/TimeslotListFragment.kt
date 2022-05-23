@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
@@ -41,7 +42,8 @@ class TimeslotListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val adapter = TimeslotAdapter(vm, this)
+            val timeslots = vm.timeslots.value!!.filter{ t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
+            val adapter = TimeslotAdapter(timeslots, this, vm)
             rv.adapter = adapter
             // If the list of timeslots is empty, show a message
             val tv: TextView = binding.emptyTimeslotListMessage

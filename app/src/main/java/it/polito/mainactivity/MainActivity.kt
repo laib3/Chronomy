@@ -1,27 +1,22 @@
 package it.polito.mainactivity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
@@ -39,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     var snackBarMessage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -61,46 +57,55 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this).get(UserProfileViewModel::class.java)
 
         // observe viewModel changes
-        userProfileViewModel.name.observe(this) { navHeaderName.text = it }
-        userProfileViewModel.surname.observe(this) { navHeaderSurname.text = it }
-        userProfileViewModel.balance.observe(this) {
-            navHeaderBalance.text =
-                String.format(getString(R.string.user_profile_balance_placeholder), it)
+        userProfileViewModel.user.observe(this) {
+            navHeaderName.text = it?.name ?: "null"
+            navHeaderSurname.text = it?.surname ?: "null"
+            // TODO error
+            navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
+            it?.profilePictureUrl?.apply { Picasso.get().load(this).into(navProfilePicture)}
         }
-        userProfileViewModel.picture.observe(this) {
-            if (it != null) navProfilePicture.setImageDrawable(it)
-        }
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_list, R.id.nav_show_profile, R.id.nav_home
+                R.id.nav_list, R.id.nav_show_profile, R.id.nav_home, R.id.nav_login_fragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        auth = Firebase.auth
-        auth.addAuthStateListener { state ->
-            userState = state.currentUser
-            if (userState == null) {
-                Log.d("Auth error", "user is null")
-            } else {
-                TODO("retrieve data")
+        navView.menu.findItem(R.id.bGotoTimeslotList).setOnMenuItemClickListener {
+            drawerLayout.closeDrawers()
+            navController.popBackStack()
+            navController.navigate(R.id.nav_list)
+            true
+        }
 
+        navView.menu.findItem(R.id.bGotoShowProfile).setOnMenuItemClickListener {
+            drawerLayout.closeDrawers()
+            navController.popBackStack()
+            navController.navigate(R.id.nav_show_profile)
+            true
+        }
+
+        // when logout is clicked
+        navView.menu.findItem(R.id.bLogout).setOnMenuItemClickListener {
+            // when logout is clicked -> go to login screen
+            AuthUI.getInstance().signOut(this).addOnCompleteListener {
+                drawerLayout.closeDrawers()
+                navController.popBackStack()
+                navController.navigate(R.id.nav_login_fragment)
             }
+            true
         }
 
     }
-
-    private fun populateHeader(navigationView: NavigationView) {
-        val headerView: View = navigationView.getHeaderView(0)
-    }
-
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
 }

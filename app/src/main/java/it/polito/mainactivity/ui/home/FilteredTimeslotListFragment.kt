@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
@@ -104,6 +105,7 @@ class FilteredTimeslotListFragment : Fragment() {
         vm.timeslots.observe(viewLifecycleOwner) {
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category }
+                .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
                 .sortedBy { it.startDate }
 
             loadedList = applyFilters(
