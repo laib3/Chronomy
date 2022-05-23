@@ -58,6 +58,7 @@ class TimeslotsRecyclerViewAdapter (
                 Utils.getDuration(item.startHour ?: "0:0", item.endHour ?: "0:0")
             )
 
+        holder.ivProfilePic.clipToOutline = true
         item.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic)}
         holder.tvNickname.text = item.user.nickname
         // holder.tvNickname.text = "@provaProva"
