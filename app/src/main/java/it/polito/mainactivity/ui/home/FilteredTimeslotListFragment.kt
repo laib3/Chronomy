@@ -118,7 +118,7 @@ class FilteredTimeslotListFragment : Fragment() {
 
         vm.timeslots.observe(viewLifecycleOwner) {
             loadedList = vm.timeslots.value!!
-                .filter { it.category.lowercase() == category }
+                .filter { it.category.lowercase() == category.lowercase() }
                 .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
                 .sortedBy { it.startDate }
 
