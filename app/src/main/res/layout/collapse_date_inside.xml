@@ -8,7 +8,7 @@
         android:id="@+id/lStartDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start date:"
+        android:text="@string/filter_min_date"
         app:layout_constraintBottom_toBottomOf="@+id/cvStartDate"
         app:layout_constraintEnd_toStartOf="@+id/cvStartDate"
         app:layout_constraintHorizontal_chainStyle="spread"

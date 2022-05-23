@@ -19,8 +19,6 @@ import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
-import java.util.*
-import kotlin.math.max
 
 class FilteredTimeslotListFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
@@ -153,63 +151,62 @@ class FilteredTimeslotListFragment : Fragment() {
     }
 
     private fun applyFilters(
-        startDate: String?, endDate: String?,
-        startTime: String?, endTime: String?,
+        minStartDate: String?, maxStartDate: String?,
+        minStartTime: String?, maxEndTime: String?,
         minDuration: String?, maxDuration: String?,
         filteredList: List<Timeslot>?
     ): List<Timeslot> {
         var result = filteredList
 
-        if (startDate != null && startDate != "dd/mm/yyyy" && endDate != null && endDate != "dd/mm/yyyy") {
-            val calendarStartDate = Calendar.getInstance()
-            val startList = startDate.toString().split("/")
-            val ys = startList[2].toInt()
-            val ms = startList[1].toInt() - 1
-            val ds = startList[0].toInt()
-            calendarStartDate.set(ys, ms, ds)
-
-            val calendarEndDate = Calendar.getInstance()
-            val endList = endDate.toString().split("/")
-            val ye = endList[2].toInt()
-            val me = endList[1].toInt() - 1
-            val de = endList[0].toInt()
-            calendarEndDate.set(ye, me, de)
-
-            result = result?.filter {
-                it.startDate.after(calendarStartDate) && it.endRepetitionDate.before(
-                    calendarEndDate
-                )
-            }
+        if (minStartDate != null && minStartDate != "dd/mm/yyyy") {
+            val calendarStartDate = Utils.formatStringToDate(minStartDate)
+            result = result?.filter { !it.startDate.before(calendarStartDate) }
         }
 
-        if (startTime != null && endTime != null && startTime != "hh:mm" && endTime != "hh:mm") {
+        if (maxStartDate != null && maxStartDate != "dd/mm/yyyy") {
+            val calendarEndDate = Utils.formatStringToDate(maxStartDate)
+            result = result?.filter { !it.startDate.after(calendarEndDate) }
+        }
+
+
+        if (minStartTime != null && minStartTime != "hh:mm") {
             result =
-                result?.filter { it.startHour >= startTime!! && it.endHour <= endTime!! }
+                result?.filter {
+                    it.startHour >= Utils.formatTime(
+                        minStartTime.split(":")[0].toInt(),
+                        minStartTime.split(":")[1].toInt()
+                    )
+                }
+        }
+        if (maxEndTime != null && maxEndTime != "hh:mm") {
+            result =
+                result?.filter {
+                    it.endHour <= Utils.formatTime(
+                        maxEndTime.split(":")[0].toInt(),
+                        maxEndTime.split(":")[1].toInt()
+                    )
+                }
         }
 
-        if (minDuration != null && maxDuration != null && minDuration != "--h --m" && maxDuration != "--h --m") {
+        if (minDuration != null && minDuration != "--h --m") {
+            val minDurationInMinutes = Utils.durationInMinutes(minDuration)
+
             result = result?.filter {
                 val duration = Utils.getDuration(it.startHour, it.endHour)
-                val durationList = duration.split(" ")
-                val hours = durationList[0].dropLast(1).toInt()
-                val minutes = durationList[1].dropLast(1).toInt()
-
-                val minDurationList = minDuration.toString().split(" ")
-                val minHours = minDurationList[0].dropLast(1).toInt()
-                val minMinutes =
-                    if (minDurationList.size == 2) minDurationList[1].dropLast(1).toInt()
-                    else 0
-
-                val maxDurationList = maxDuration.toString().split(" ")
-                val maxHours = maxDurationList[0].dropLast(1).toInt()
-                val maxMinutes =
-                    if (maxDurationList.size == 2) maxDurationList[1].dropLast(1).toInt()
-                    else 0
-
-                (hours in (minHours + 1) until maxHours) ||
-                        ((hours == minHours || hours == maxHours) && (minutes in minMinutes..maxMinutes))
+                val durationInMinutes = Utils.durationInMinutes(duration)
+                durationInMinutes >= minDurationInMinutes
             }
         }
+        if (maxDuration != null && maxDuration != "--h --m") {
+            val maxDurationInMinutes = Utils.durationInMinutes(maxDuration)
+
+            result = result?.filter {
+                val duration = Utils.getDuration(it.startHour, it.endHour)
+                val durationInMinutes = Utils.durationInMinutes(duration)
+                durationInMinutes <= maxDurationInMinutes
+            }
+        }
+
         return result!!
     }
 }

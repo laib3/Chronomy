@@ -64,7 +64,9 @@ class Utils {
             // TODO: improve using dateFormat
             val day = strDate.split("/")[0]
             val month = strDate.split("/")[1]
-            val year = strDate.split("/")[2]
+            var year = strDate.split("/")[2]
+
+            if (year.length==2) year ="20" + year
 
             // TODO: Check why this -1 is needed
             return GregorianCalendar(year.toInt(), month.toInt() - 1, day.toInt())
@@ -113,7 +115,13 @@ class Utils {
                 durationH -= 1
                 startM + 60 - endM
             }
-            return "%dh %02dm".format(durationH, durationM)
+            return "%dh:%02dm".format(durationH, durationM)
+        }
+
+        fun durationInMinutes(duration: String): Int{
+            val hours = duration.split(":")[0].dropLast(1).toInt()
+            val minutes = duration.split(":")[1].dropLast(1).toInt()
+            return minutes + hours * 60
         }
 
         fun getDayName(num: Int): String = when (num) {

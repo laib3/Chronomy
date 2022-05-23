@@ -42,6 +42,12 @@
     <string name="user_profile_save_label">Save</string>
     <string name="user_profile_active_label">Active</string>
     <string name="filers_apply">Apply filters</string>
+    <string name="filter_min_duration">Min:</string>
+    <string name="filter_max_duration">Max:</string>
+    <string name="filter_min_date">Min:</string>
+    <string name="filter_max_date">Max:</string>
+    <string name="filter_min_time">From:</string>
+    <string name="filter_max_time">To:</string>
 
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
