@@ -16,6 +16,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
@@ -61,8 +62,7 @@ class MainActivity : AppCompatActivity() {
             navHeaderSurname.text = it?.surname ?: "null"
             // TODO error
             navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
-            // TODO: profile picturec
-            //if (it.profilePicture != null) navProfilePicture.setImageDrawable(it)
+            it?.profilePictureUrl?.apply { Picasso.get().load(this).into(navProfilePicture)}
         }
 
 

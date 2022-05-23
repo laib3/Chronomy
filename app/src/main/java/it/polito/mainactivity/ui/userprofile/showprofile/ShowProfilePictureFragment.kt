@@ -8,11 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfilePictureBinding
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
-class ShowProfilePictureFragment: Fragment() {
+class ShowProfilePictureFragment : Fragment() {
 
     private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfilePictureBinding? = null
@@ -35,12 +36,14 @@ class ShowProfilePictureFragment: Fragment() {
         profilePicture.clipToOutline = true
 
         // observe viewModel changes
-        vm.user.observe(viewLifecycleOwner){
+        vm.user.observe(viewLifecycleOwner) {
             nameTextView.text = it?.name ?: "null"
             surnameTextView.text = it?.surname ?: "null"
-            nicknameTextView.text = String.format(getString(R.string.user_profile_nickname_placeholder), it?.nickname)
+            nicknameTextView.text =
+                String.format(getString(R.string.user_profile_nickname_placeholder), it?.nickname)
             //TODO: observe also picture
-            //if(it.picture != null) profilePicture.setImageDrawable(it.picture)
+            //if(it?.profilePicture != null) profilePicture.setImageDrawable(it.picture)
+            it?.profilePictureUrl?.apply { Picasso.get().load(this).into(profilePicture)}
 
         }
         return root

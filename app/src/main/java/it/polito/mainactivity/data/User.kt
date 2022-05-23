@@ -15,7 +15,7 @@ data class User(
     var skills: List<Skill>,
     var balance: Int,
     var timeslots: List<String>,
-    var profilePicture: Drawable?
+    var profilePictureUrl: String?
 ) {
     override fun toString() =
         """{ "userId": "$userId", "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
@@ -32,9 +32,24 @@ fun emptyUser(): User {
         "email",
         "location",
         "phone",
-        listOf(),
+        createEmptySkills(),
         0,
         listOf(),
         null
+    )
+}
+
+fun createEmptySkills(): List<Skill> {
+    return listOf(
+        Skill("Gardening"),
+        Skill("Tutoring"),
+        Skill("Child Care"),
+        Skill("Odd Jobs"),
+        Skill("Home Repair"),
+        Skill("Wellness"),
+        Skill("Delivery"),
+        Skill("Transportation"),
+        Skill("Companionship"),
+        Skill("Other")
     )
 }
