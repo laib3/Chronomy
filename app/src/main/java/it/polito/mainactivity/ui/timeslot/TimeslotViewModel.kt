@@ -5,34 +5,47 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.data.User
 import it.polito.mainactivity.model.Utils
+import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 import java.util.*
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
 
     private val TIME_LENGTH: Int = 5
 
+    private val _user = MutableLiveData<User?>()
+    val user: LiveData<User?> = _user
     private val _timeslots = MutableLiveData<List<Timeslot>>()
     val timeslots: LiveData<List<Timeslot>> = _timeslots
 
-    private val _submitTimeslot: MutableLiveData<Timeslot> =
-        MutableLiveData<Timeslot>().apply { value = Timeslot.emptyTimeslot() }
+    private val _submitTimeslot: MutableLiveData<Timeslot> = MutableLiveData<Timeslot>()
+            // .apply { value = Timeslot(_user.value!!) }
     val submitTimeslot: LiveData<Timeslot> = _submitTimeslot
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var lTimeslots: ListenerRegistration
 
     init {
+
+        val uId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        db.collection("users").document(uId).addSnapshotListener { value, error ->
+            _user.value = Utils.toUser(value)
+            _submitTimeslot.value = Timeslot(_user.value!!)
+        }
+
         lTimeslots = db.collection("timeslots")
             .addSnapshotListener { v, e ->
                 if (e == null) {
                     _timeslots.value = v!!.mapNotNull { d -> d.toTimeslot() }
-                    Log.d("TIMESLOT", _timeslots.value.toString())
+                    Log.d("TIMESLOTS", _timeslots.value.toString())
                 } // TODO: CHOOSE WHAT TO DO else _timeslots.value = emptyList()
             }
 
@@ -56,7 +69,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 get("category") as String,
                 get("repetition") as String?,
                 get("days") as List<Int>,
-                Utils.formatStringToDate(get("endRepetitionDate") as String)
+                Utils.formatStringToDate(get("endRepetitionDate") as String),
+                _user.value!!
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -86,34 +100,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
-    /*
-    // NOT USED
-    fun updateTimeslot(t: Timeslot): Boolean{
-        var returnValue = false
-        val id = t.tid
-        val ts = hashMapOf(
-            "title" to t.title,
-            "description" to t.description,
-            "startHour" to t.startHour,
-            "endHour" to t.endHour,
-            "location" to t.location,
-            "category" to t.category,
-            "repetition" to t.repetition,
-            "days" to t.days,
-            "startDate" to Utils.formatDateToString(t.startDate),
-            "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate)
-        )
-        db
-            .collection("timeslots")
-            .document(id)
-            .set(ts)
-            .addOnSuccessListener { Log.d("Firebase", "Timeslot updated successfully"); returnValue = true}
-            .addOnFailureListener{ Log.d("Firebase", "Error: timeslot not updated correctly"); returnValue = false}
-
-        return returnValue
-
-    }
-     */
 
     private fun addTimeslot(t: Timeslot?): Boolean {
         //var success = false;
@@ -129,7 +115,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 "repetition" to t.repetition,
                 "days" to t.days,
                 "startDate" to Utils.formatDateToString(t.startDate),
-                "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate)
+                "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate),
+                "user" to t.user
             );
             db
                 .collection("timeslots")
@@ -137,7 +124,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 .set(ts)
                 .addOnSuccessListener {
                     Log.d(
-                        "Firebase",
+                        "TimeslotViewModel",
                         "New timeslot successfully saved "
                     ); //success = true
                 }
@@ -193,7 +180,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun resetSubmitTimeslot() {
-        _submitTimeslot.value = Timeslot.emptyTimeslot()
+        _submitTimeslot.value = Timeslot(_user.value!!)
     }
 
     fun setSubmitTimeslotFields(

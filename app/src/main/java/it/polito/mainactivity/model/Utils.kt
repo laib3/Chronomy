@@ -2,9 +2,14 @@ package it.polito.mainactivity.model
 
 import android.graphics.Color
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import it.polito.mainactivity.R
+import it.polito.mainactivity.data.User
 import org.json.JSONArray
 import org.json.JSONObject
+import org.w3c.dom.Document
 import java.text.DateFormat
 import java.util.*
 
@@ -131,6 +136,35 @@ class Utils {
         fun getSnackbarColor(msg: String): Int =
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
+
+        fun toUser(d: DocumentSnapshot?): User? {
+            if(d == null)
+                return null
+            return try {
+                User(
+                    FirebaseAuth.getInstance().currentUser!!.uid,
+                    d.get("name") as String,
+                    d.get("surname") as String,
+                    d.get("nickname") as String,
+                    d.get("bio") as String,
+                    d.get("email") as String,
+                    d.get("location") as String,
+                    d.get("phone") as String,
+                    //get("skills") as List<Skill>,
+                    listOf(),
+                    (d.get("balance") as Long).toInt(),
+                    listOf(),
+                    null
+                    // TODO: update with real values
+                    //get("timeslots") as List<String>,
+                    //get("profilePicture") as String
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
 
     }
 

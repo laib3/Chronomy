@@ -20,8 +20,6 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
 
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user
-    private val _uId = MutableLiveData<String?>()
-    val uId: LiveData<String?> = _uId
     private val _newUser = MutableLiveData<Boolean?>(null)
     val newUser: LiveData<Boolean?> = _newUser
 
@@ -40,13 +38,11 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                             userListenerRegistration = userRef.addSnapshotListener { value, error ->
                                 if (value != null) {
                                     _user.value = value.toUser()
-                                    _uId.value = value.id
                                     _newUser.value = true
                                     Log.d("UserProfileViewModel", "logged in as ${value.id}")
                                 } else {
                                     Log.d("UserProfileViewModel", "error during log in")
                                     _user.value = null
-                                    _uId.value = null
                                     _newUser.value = null
                                 }
                             }
@@ -57,13 +53,11 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                         userListenerRegistration = userRef.addSnapshotListener { value, error ->
                             if(value != null){
                                 _user.value = value.toUser()
-                                _uId.value = value.id
                                 _newUser.value = false
                                 Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
                             } else {
                                 Log.d("UserProfileViewModel", "error during (existing) log in")
                                 _user.value = null
-                                _uId.value = null
                                 _newUser.value = null
                             }
                         }
@@ -76,19 +70,10 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 // TODO signal log out
                 Log.d("UserProfileViewModel", "user log out")
                 _user.value = null
-                _uId.value = null
                 _newUser.value = null
             }
         }
     }
-
-    fun userIsRegistered(): Boolean{
-        return uId.value != null
-    }
-
-    // fun isLoggedIn(userId: String): Boolean{
-    //     return FirebaseAuth.getInstance().currentUser != null
-    // }
 
     override fun onCleared() {
         super.onCleared()
@@ -98,6 +83,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private fun DocumentSnapshot.toUser(): User? {
         return try {
             User(
+                FirebaseAuth.getInstance().currentUser!!.uid,
                 get("name") as String,
                 get("surname") as String,
                 get("nickname") as String,
