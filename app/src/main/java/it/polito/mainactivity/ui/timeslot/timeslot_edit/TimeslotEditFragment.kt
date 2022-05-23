@@ -478,10 +478,10 @@ class TimeslotEditFragment : Fragment() {
     }
 
     private fun setRepetitionComponentsVisibility(repetition: String?) {
-        binding.lEndDate.visibility = if (repetition != null) View.VISIBLE else View.INVISIBLE
-        binding.cvEndDate.visibility = if (repetition != null) View.VISIBLE else View.INVISIBLE
-        binding.lRepeat.visibility = if (repetition != null) View.VISIBLE else View.GONE
-        binding.dmRepetition.visibility = if (repetition != null) View.VISIBLE else View.GONE
+        binding.lEndDate.visibility = if (repetition != "" && repetition != null) View.VISIBLE else View.INVISIBLE
+        binding.cvEndDate.visibility = if (repetition != "" && repetition != null) View.VISIBLE else View.INVISIBLE
+        binding.lRepeat.visibility = if (repetition != "" && repetition != null) View.VISIBLE else View.GONE
+        binding.dmRepetition.visibility = if (repetition != "" && repetition != null) View.VISIBLE else View.GONE
         binding.cgDays.visibility = if (repetition == "Weekly") View.VISIBLE else View.GONE
     }
 

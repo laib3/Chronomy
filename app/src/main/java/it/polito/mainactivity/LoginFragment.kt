@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -62,6 +63,10 @@ class LoginFragment: Fragment() {
         // super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        (activity as MainActivity).onBackPressedDispatcher.addCallback(this) {
+            Log.d("LoginFragment", "back pressed")
+        }
 
         vm.newUser.observe(viewLifecycleOwner) {
             if(it == true) {
