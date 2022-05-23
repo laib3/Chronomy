@@ -264,7 +264,7 @@ class TimeslotEditFragment : Fragment() {
         return root
     }
 
-    override fun onResume() {
+    override fun onResume() { // set click listeners
         // check https://www.youtube.com/watch?v=741l_fPKL3Y
         super.onResume()
 
@@ -417,7 +417,7 @@ class TimeslotEditFragment : Fragment() {
         }
 
         // OBSERVE
-        // edit existing timeslot
+        // observe existing timeslot
         if (tId != null) {
             vm.timeslots.observe(viewLifecycleOwner) { it ->
                 val t: Timeslot = it.elementAt(tId!!)
@@ -449,7 +449,7 @@ class TimeslotEditFragment : Fragment() {
                 setRepetitionComponentsVisibility(t.repetition)
             }
         }
-        // add new timeslot
+        // observe new timeslot
         else {
             vm.submitTimeslot.observe(viewLifecycleOwner) {
                 binding.tvStartDate.text = Utils.formatDateToString(it.startDate)
@@ -463,6 +463,10 @@ class TimeslotEditFragment : Fragment() {
                 val positionCategory = categoryArrayAdapter.getPosition(it.category)
                 binding.tvCategory.setText(
                     categoryArrayAdapter.getItem(positionCategory).toString(), false
+                )
+                val positionRepetition = max(repetitionsArrayAdapter.getPosition(it.repetition), 0)
+                binding.tvRepetition.setText(
+                    repetitionsArrayAdapter.getItem(positionRepetition).toString(), false
                 )
                 chips.forEachIndexed { idx, chip -> chip.isChecked = it.days.contains(idx + 1) }
                 setRepetitionComponentsVisibility(it.repetition)
