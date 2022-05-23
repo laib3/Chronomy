@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_list">
+    app:startDestination="@id/nav_login_fragment">
 
     <fragment
         android:id="@+id/nav_list"
@@ -71,5 +71,45 @@
         android:id="@+id/nav_edit_profile"
         android:name="it.polito.mainactivity.ui.userprofile.editprofile.EditProfileFragment"
         android:label="Edit Profile"/>
-
+    <fragment
+        android:id="@+id/nav_login_fragment"
+        android:name="it.polito.mainactivity.LoginFragment"
+        android:label="Login" >
+        <action
+            android:id="@+id/action_nav_login_fragment_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
+        <action
+            android:id="@+id/action_nav_login_fragment_to_nav_home"
+            app:destination="@id/nav_home" />
+  </fragment>
+  <fragment
+        android:id="@+id/nav_home"
+        android:name="it.polito.mainactivity.ui.home.HomeFragment"
+        android:label=" @string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_filteredTimeslotListFragment"
+            app:destination="@id/nav_filtered" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_details"
+            app:destination="@id/nav_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_filtered"
+        android:name="it.polito.mainactivity.ui.home.FilteredTimeslotListFragment"
+        android:label="@string/nav_filtered_label"
+        tools:layout="@layout/fragment_filtered_timeslot_list" >
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue="Timeslots" />
+        <action
+            android:id="@+id/action_nav_filtered_to_nav_filters"
+            app:destination="@id/nav_filters" />
+    </fragment>
+    <dialog
+        android:id="@+id/nav_filters"
+        android:name="it.polito.mainactivity.ui.home.FiltersDialogFragment"
+        android:label="fragment_filters_bottom_dialog"
+        tools:layout="@layout/fragment_filters_bottom_dialog" />
 </navigation>

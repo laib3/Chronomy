@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:id="@+id/group1">
         <item
-            android:id="@+id/nav_list"
+           android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/bGotoTimeslotList"
             android:icon="@drawable/ic_menu_list"
             android:title="@string/menu_timeslot_list" />
         <item
-            android:id="@+id/nav_show_profile"
+            android:id="@+id/bGotoShowProfile"
             android:icon="@drawable/ic_menu_profile"
             android:title="@string/menu_show_profile" />
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/group2">
+        <item
+            android:id="@+id/bLogout"
+            android:icon="@drawable/ic_baseline_logout_24"
+            android:title="Logout">
+        </item>
     </group>
 </menu>

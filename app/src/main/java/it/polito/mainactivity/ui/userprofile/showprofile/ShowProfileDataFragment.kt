@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
+import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.ui.userprofile.SkillCard
 import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
@@ -34,16 +35,17 @@ class ShowProfileDataFragment: Fragment() {
         val skillsLayout = binding.skillsLayout
 
         // observe viewModel changes
-        vm.balance.observe(viewLifecycleOwner) { balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), it) }
-        vm.bio.observe(viewLifecycleOwner) { bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), it) }
-        vm.phone.observe(viewLifecycleOwner) { phoneTextView.text = it }
-        vm.location.observe(viewLifecycleOwner) { locationTextView.text = it }
-        vm.email.observe(viewLifecycleOwner) { emailTextView.text = it }
-        vm.skills.observe(viewLifecycleOwner){
+        vm.user.observe(viewLifecycleOwner) {
+            balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
+            bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), it?.bio ?: "null")
+            phoneTextView.text = it?.phone ?: "null"
+            locationTextView.text = it?.location ?: "null"
+            emailTextView.text = it?.email ?: "null"
             skillsLayout.removeAllViews()
-            it
-                .map{ s -> SkillCard(requireContext(), s, vm, false) }
-                .forEach{ sc: SkillCard -> skillsLayout.addView(sc) }
+            it?.apply{
+                skills.map{ s -> SkillCard(requireContext(), s, vm, false) }
+                    .forEach{ sc: SkillCard -> skillsLayout.addView(sc) }
+            }
         }
 
         return root

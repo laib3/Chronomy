@@ -13,7 +13,12 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.model.Utils
 
-class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, val editable: Boolean): CardView(c){
+class SkillCard(
+    val c: Context,
+    val skill: Skill,
+    val vm: UserProfileViewModel,
+    val editable: Boolean
+) : CardView(c) {
 
     init {
         LayoutInflater.from(c).inflate(R.layout.skillcard, this, true)
@@ -22,31 +27,35 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
         val ivSkillIcon = findViewById<ImageView>(R.id.skillIcon)
         // set the icon
         val imgRes = Utils.getSkillImgRes(skill.category)
-        if(imgRes != null)
+        if (imgRes != null)
             ivSkillIcon.setImageResource(imgRes)
         tvTitle.text = skill.category
         tvDescription.text = skill.description
         val iconEye = findViewById<ImageView>(R.id.eyeSlashedIcon)
 
         // hide if not active
-        if(!editable && !skill.active)
+        if (!editable && !skill.active)
             this.visibility = GONE
 
-        if(editable){
+        if (editable) {
             enableEdit()
-            if(!skill.active){
+            if (!skill.active) {
                 iconEye.visibility = VISIBLE
-                findViewById<ConstraintLayout>(R.id.skillCardInnerLayout).setBackgroundColor(resources.getColor(R.color.light_grey))
+                findViewById<ConstraintLayout>(R.id.skillCardInnerLayout).setBackgroundColor(
+                    resources.getColor(R.color.light_grey)
+                )
             }
         }
     }
 
-    private fun enableEdit(){
+    private fun enableEdit() {
         this.setOnClickListener {
-            val modalView = LayoutInflater.from(this.context).inflate(R.layout.skill_edit_modal, null)
+            val modalView =
+                LayoutInflater.from(this.context).inflate(R.layout.skill_edit_modal, null)
             val modalTitle = modalView.findViewById<TextView>(R.id.modalTitle)
             val modalChecked = modalView.findViewById<SwitchCompat>(R.id.skillActiveSwitch)
-            val modalDescription = modalView.findViewById<TextInputEditText>(R.id.textInputEditTextSkillDescription)
+            val modalDescription =
+                modalView.findViewById<TextInputEditText>(R.id.textInputEditTextSkillDescription)
             val mBuilder = android.app.AlertDialog.Builder(this.context).setView(modalView)
             val alertDialog = mBuilder.show()
             val closeButton = modalView.findViewById<ImageView>(R.id.modalCloseButton)
@@ -56,18 +65,24 @@ class SkillCard(val c: Context, val skill: Skill, val vm: UserProfileViewModel, 
             modalDescription.setText(skill.description)
             modalChecked.isChecked = skill.active
             // add click listeners
-            closeButton.setOnClickListener{
+            closeButton.setOnClickListener {
                 alertDialog.dismiss()
             }
             /* submit only when you click on save */
-            saveButton.setOnClickListener{
+            saveButton.setOnClickListener {
                 alertDialog.dismiss()
                 val checked: Boolean = modalChecked.isChecked
                 val desc: String = modalDescription.text.toString()
 
-                if(skill.description != desc || skill.active != checked){
+                if (skill.description != desc || skill.active != checked) {
                     val newSkill = skill.copy().apply { active = checked; description = desc }
-                    vm.setUpdated(newSkill)
+                    // TODO: FIX THIS
+                    // vm.setUpdated(newSkill)
+                    val oldSkills = vm.user.value?.skills
+                    vm.updateUserField(
+                        vm.user.value!!.userId,
+                        "skills",
+                        oldSkills?.map { s -> if (s.category == skill.category) newSkill else s })
                 }
             }
         }

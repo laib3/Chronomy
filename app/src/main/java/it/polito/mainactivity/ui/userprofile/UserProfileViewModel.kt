@@ -1,53 +1,109 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.app.Application
-import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import it.polito.mainactivity.model.Field
-import it.polito.mainactivity.model.Skill
-import it.polito.mainactivity.model.UserProfileModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import it.polito.mainactivity.data.User
+import it.polito.mainactivity.data.emptyUser
+import it.polito.mainactivity.model.Utils
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    // instantiate user profile model - it will be a repository in future (?)
-    private val model: UserProfileModel = UserProfileModel(application)
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private val _name: MutableLiveData<String> = model.getData(Field.NAME)
-    private val _surname: MutableLiveData<String> = model.getData(Field.SURNAME)
-    private val _nickname: MutableLiveData<String> = model.getData(Field.NICKNAME)
-    private val _bio: MutableLiveData<String> = model.getData(Field.BIO)
-    private val _email: MutableLiveData<String> = model.getData(Field.EMAIL)
-    private val _phone: MutableLiveData<String> = model.getData(Field.PHONE)
-    private val _location: MutableLiveData<String> = model.getData(Field.LOCATION)
-    private val _balance: MutableLiveData<String> = model.getData(Field.BALANCE)
-    private val _skills: MutableLiveData<List<Skill>> = model.getSkills()
-    private val _picture: MutableLiveData<Drawable> = model.getPicture()
-    private val _updated: MutableLiveData<Skill?> = MutableLiveData<Skill?>().apply{ value = null }
+    private val _user = MutableLiveData<User?>()
+    val user: LiveData<User?> = _user
+    private val _newUser = MutableLiveData<Boolean?>(null)
+    val newUser: LiveData<Boolean?> = _newUser
 
-    val name: LiveData<String> = _name
-    val surname: LiveData<String> = _surname
-    val nickname: LiveData<String> = _nickname
-    val bio: LiveData<String> = _bio
-    val email: LiveData<String> = _email
-    val phone: LiveData<String> = _phone
-    val location: LiveData<String> = _location
-    val balance: LiveData<String> = _balance
-    val skills: LiveData<List<Skill>> = _skills
-    val picture: LiveData<Drawable> = _picture
-    val updated: MutableLiveData<Skill?> = _updated
+    private lateinit var userListenerRegistration : ListenerRegistration
 
-    fun setName(s:String){ _name.value = s; model.setData(s, Field.NAME) }
-    fun setSurname(s: String){ _surname.value = s; model.setData(s, Field.SURNAME) }
-    fun setNickname(s:String) { _nickname.value = s; model.setData(s, Field.NICKNAME) }
-    fun setBio(s:String) { _bio.value = s; model.setData(s, Field.BIO) }
-    fun setEmail(s:String) { _email.value = s; model.setData(s, Field.EMAIL) }
-    fun setPhone(s:String) { _phone.value = s; model.setData(s, Field.PHONE) }
-    fun setLocation(s:String) { _location.value = s; model.setData(s, Field.LOCATION) }
-    fun setPicture(d: Drawable) { _picture.value = d; model.setPicture(d) }
-    fun setUpdated(s: Skill) { _updated.value = s }
-    fun resetUpdated() { _updated.value = null }
-    fun setSkills(s: List<Skill>?) { if(s != null) { _skills.value = s!!; model.setSkills(s) } }
+    init {
+        FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
+            val userId = fAuth.currentUser?.uid
+            if(userId != null){
+                val userRef: DocumentReference = db.collection("users").document(userId)
+                userRef.get().addOnSuccessListener {
+                    // document doesn't exist
+                    if(!it.exists()) {
+                        userRef.set(emptyUser()).addOnSuccessListener {
+                            Log.d("UserProfileViewModel", "user creation ok with id $userId")
+                            userListenerRegistration = userRef.addSnapshotListener { value, _ ->
+                                if (value != null) {
+                                    _user.value = Utils.toUser(value)
+                                    _newUser.value = true
+                                    Log.d("UserProfileViewModel", "logged in as ${value.id}")
+                                } else {
+                                    Log.d("UserProfileViewModel", "error during log in")
+                                    _user.value = null
+                                    _newUser.value = null
+                                }
+                            }
+                        }.addOnFailureListener { Log.d("UserProfileViewModel", "user not created") }
+                    }
+                    else {
+                        // if document exists
+                        userListenerRegistration = userRef.addSnapshotListener { value, error ->
+                            if(value != null){
+                                _user.value = Utils.toUser(value)
+                                _newUser.value = false
+                                Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
+                            } else {
+                                Log.d("UserProfileViewModel", "error during (existing) log in")
+                                _user.value = null
+                                _newUser.value = null
+                            }
+                        }
+                    }
+                }.addOnFailureListener {
+                    Log.d("UserProfileViewModel", "error db: cannot retrieve document with id ${userId}")
+                }
+            }
+            else { // log out
+                // TODO signal log out
+                Log.d("UserProfileViewModel", "user log out")
+                _user.value = null
+                _newUser.value = null
+            }
+        }
+    }
 
+    override fun onCleared() {
+        super.onCleared()
+        userListenerRegistration.remove()
+    }
+
+    // update user field and user inside the timeslots
+    fun updateUserField(userId: String?, field: String, newValue: Any?): Boolean {
+        //var returnValue = false
+        if(userId == null || newValue == null)
+            return false
+        val userRef = db.collection("users").document(userId)
+        val tsRef = db.collection("timeslots")
+
+        tsRef.whereEqualTo("user.userId", userId).get().addOnSuccessListener { result ->
+            val tsRefs = result.documents.map{ it.reference }
+            userRef.update(field, newValue)
+                .addOnSuccessListener {
+                    userRef.get().addOnSuccessListener { userSnapshot ->
+                        val user = Utils.toUser(userSnapshot)
+                        tsRefs.forEach{ tsRef -> tsRef.update("user", user)
+                            .addOnSuccessListener { Log.d("UserProfileViewModel", "timeslot updated successfully with user: " + user.toString()) }
+                            .addOnFailureListener { Log.d("UserProfileViewModel", "update timeslot failure: " + it.message) }
+                        }
+                    }.addOnFailureListener { Log.d("UserProfileViewModel", "get user failure: " + it.message ) }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("UserProfileViewModel", "update user failure: " + exception.message)
+                }
+        }
+
+        return true
+    }
 }
