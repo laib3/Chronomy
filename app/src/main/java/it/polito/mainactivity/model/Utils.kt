@@ -1,17 +1,14 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.data.User
+import it.polito.mainactivity.data.emptyUser
 import org.json.JSONArray
 import org.json.JSONObject
-import org.w3c.dom.Document
 import java.text.DateFormat
 import java.util.*
 
@@ -168,7 +165,7 @@ class Utils {
                 return null
             return try {
                 User(
-                    FirebaseAuth.getInstance().currentUser!!.uid,
+                    d.get("userId") as String,
                     d.get("name") as String,
                     d.get("surname") as String,
                     d.get("nickname") as String,
@@ -179,7 +176,6 @@ class Utils {
                     //get("skills") as List<Skill>,
                     (d.get("skills") as List<Map<Any?,Any?>>).map{s -> Skill(s["category"] as String, s["description"] as String, s["active"] as Boolean)},
                     (d.get("balance") as Long).toInt(),
-                    listOf(),
                     d.get("profilePictureUrl") as String?
                     // TODO: update with real values
                     //get("timeslots") as List<String>,
@@ -191,6 +187,31 @@ class Utils {
             }
         }
 
+        fun anyToUser(any: Any?): User {
+            // this should never happen
+            if (any == null)
+                return emptyUser()
+            val map = any as Map<String, Any?>
+            return User(
+                map["userId"] as String,
+                map["name"] as String,
+                map["surname"] as String,
+                map["nickname"] as String,
+                map["bio"] as String,
+                map["email"] as String,
+                map["location"] as String,
+                map["phone"] as String,
+                (map["skills"] as List<Map<Any?, Any?>>).map { s ->
+                    Skill(
+                        s["category"] as String,
+                        s["description"] as String,
+                        s["active"] as Boolean
+                    )
+                },
+                (map["balance"] as Long).toInt(),
+                map["profilePictureUrl"] as String?
+            )
+        }
 
     }
 

@@ -70,7 +70,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 get("repetition") as String?,
                 (get("days") as List<Number>).map{it.toInt()},
                 Utils.formatStringToDate(get("endRepetitionDate") as String),
-                _user.value!!
+                Utils.anyToUser(get("user"))
             )
         } catch (e: Exception) {
             e.printStackTrace()

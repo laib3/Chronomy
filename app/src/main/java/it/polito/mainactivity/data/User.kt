@@ -14,7 +14,6 @@ data class User(
     var phone: String,
     var skills: List<Skill>,
     var balance: Int,
-    var timeslots: List<String>,
     var profilePictureUrl: String?
 ) {
     override fun toString() =
@@ -34,7 +33,6 @@ fun emptyUser(): User {
         "phone",
         createEmptySkills(),
         5,
-        listOf(),
         null
     )
 }

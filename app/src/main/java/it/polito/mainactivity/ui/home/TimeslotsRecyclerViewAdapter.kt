@@ -60,7 +60,8 @@ class TimeslotsRecyclerViewAdapter (
 
         holder.ivProfilePic.clipToOutline = true
         item.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic)}
-        holder.tvNickname.text = item.user.nickname
+        val placeholder = parentFragment.resources.getString(R.string.user_profile_nickname_placeholder)
+        holder.tvNickname.text = String.format(placeholder, item.user.nickname)
         // holder.tvNickname.text = "@provaProva"
 
         /* FIXME NOT WORKING

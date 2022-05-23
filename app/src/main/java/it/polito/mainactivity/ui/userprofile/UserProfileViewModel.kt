@@ -8,17 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.data.User
 import it.polito.mainactivity.data.emptyUser
-import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.model.Utils
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val fAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user
@@ -28,16 +25,16 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private lateinit var userListenerRegistration : ListenerRegistration
 
     init {
-        FirebaseAuth.getInstance().addAuthStateListener {
-            val userId = it.currentUser?.uid
+        FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
+            val userId = fAuth.currentUser?.uid
             if(userId != null){
                 val userRef: DocumentReference = db.collection("users").document(userId)
                 userRef.get().addOnSuccessListener {
                     // document doesn't exist
                     if(!it.exists()) {
                         userRef.set(emptyUser()).addOnSuccessListener {
-                            Log.d("UserProfileViewModel", "user creation ok with id ${userId}")
-                            userListenerRegistration = userRef.addSnapshotListener { value, error ->
+                            Log.d("UserProfileViewModel", "user creation ok with id $userId")
+                            userListenerRegistration = userRef.addSnapshotListener { value, _ ->
                                 if (value != null) {
                                     _user.value = Utils.toUser(value)
                                     _newUser.value = true
