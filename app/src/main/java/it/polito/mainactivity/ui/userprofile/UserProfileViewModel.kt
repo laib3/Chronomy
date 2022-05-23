@@ -108,22 +108,5 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         }
 
         return true
-
-        // db
-        //     .collection("users")
-        //     .document(userId)
-        //     .update(field, newValue)
-        //     .addOnSuccessListener {
-        //         Log.d(
-        //             "Firebase",
-        //             "User updated successfully"
-        //         ); //returnValue = true;
-        //     }
-        //     .addOnFailureListener {
-        //         Log.d(
-        //             "Firebase",
-        //             "Error: user not updated correctly"
-        //         ); //returnValue = false;
-        //     }
     }
 }

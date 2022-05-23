@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.card.MaterialCardView
+import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
 import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.model.Utils
@@ -57,10 +58,9 @@ class TimeslotsRecyclerViewAdapter (
                 Utils.getDuration(item.startHour ?: "0:0", item.endHour ?: "0:0")
             )
 
-        //holder.ivProfilePic.setImageBitmap(item.second.profilePicture)
-
-        //holder.tvNickname.text = item.user.nickname
-        holder.tvNickname.text = "@provaProva"
+        item.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic)}
+        holder.tvNickname.text = item.user.nickname
+        // holder.tvNickname.text = "@provaProva"
 
         /* FIXME NOT WORKING
         // Pass through bundle the id of the item in the list
