@@ -80,7 +80,7 @@ class SkillCard(
                     // vm.setUpdated(newSkill)
                     val oldSkills = vm.user.value?.skills
                     vm.updateTimeslotField(
-                        vm.uId.value,
+                        vm.user.value!!.userId,
                         "skills",
                         oldSkills?.map { s -> if (s.category == skill.category) newSkill else s })
                 }

@@ -1,5 +1,5 @@
 package it.polito.mainactivity.data
-import android.graphics.drawable.Drawable
+
 import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.model.Skill
 
@@ -33,7 +33,7 @@ fun emptyUser(): User {
         "location",
         "phone",
         createEmptySkills(),
-        0,
+        5,
         listOf(),
         null
     )

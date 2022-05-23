@@ -68,11 +68,11 @@ class EditProfilePictureFragment : Fragment() {
         val profilePictures = storage.getReference(path)
 
         val metadata =
-            StorageMetadata.Builder().setCustomMetadata("uid", vm.uId.value).build()
+            StorageMetadata.Builder().setCustomMetadata("uid", vm.user.value!!.userId).build()
         profilePictures.putBytes(data, metadata).addOnSuccessListener {
             profilePictures.downloadUrl.addOnCompleteListener {
                 vm.updateTimeslotField(
-                    vm.uId.value,
+                    vm.user.value!!.userId,
                     "profilePictureUrl",
                     it.result.toString()
                 )

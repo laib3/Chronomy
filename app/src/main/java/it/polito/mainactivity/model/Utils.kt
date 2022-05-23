@@ -151,10 +151,10 @@ class Utils {
                     d.get("location") as String,
                     d.get("phone") as String,
                     //get("skills") as List<Skill>,
-                    listOf(),
+                    (d.get("skills") as List<Map<Any?,Any?>>).map{s -> Skill(s["category"] as String, s["description"] as String, s["active"] as Boolean)},
                     (d.get("balance") as Long).toInt(),
                     listOf(),
-                    null
+                    d.get("profilePictureUrl") as String?
                     // TODO: update with real values
                     //get("timeslots") as List<String>,
                     //get("profilePicture") as String
