@@ -64,7 +64,7 @@ class TimeslotsRecyclerViewAdapter (
         holder.tvNickname.text = String.format(placeholder, item.user.nickname)
         // holder.tvNickname.text = "@provaProva"
 
-        /* FIXME NOT WORKING
+        /* TODO: LATER IMPROVEMENT
         // Pass through bundle the id of the item in the list
         val bundle = Bundle()
         bundle.putInt("id", position)

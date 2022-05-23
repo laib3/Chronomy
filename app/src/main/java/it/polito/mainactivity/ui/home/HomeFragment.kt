@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
                 .forEach{ button: SkillHomeButton ->
                     gridLayout.addView(button)
                     button.setOnClickListener{
-                        val action = HomeFragmentDirections.actionNavHomeToFilteredTimeslotListFragment(button.category.lowercase())
+                        val action = HomeFragmentDirections.actionNavHomeToFilteredTimeslotListFragment(button.category)
                         parentFragment?.findNavController()?.navigate(action)
                     }
                 }

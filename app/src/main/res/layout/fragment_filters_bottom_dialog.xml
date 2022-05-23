@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/big_distance"
     tools:context=".ui.home.FiltersDialogFragment">
 
     <TextView
@@ -17,6 +18,7 @@
         android:text="Filter results"
         android:textColor="@color/purple_500"
         android:textSize="@dimen/profile_text_size_normal"
+        app:layout_constraintBottom_toTopOf="@+id/expandableDate"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,10 +40,12 @@
         app:expandable_spinner_gravity="end"
         app:expandable_spinner_margin="14dp"
         app:expandable_spinner_size="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/expandableHour"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/modalTitle"
         app:layout_constraintTop_toBottomOf="@+id/modalTitle"
-        />
+        android:background="@drawable/searchview_background"/>
 
     <com.skydoves.expandablelayout.ExpandableLayout
         android:id="@+id/expandableHour"
@@ -59,16 +63,19 @@
         app:expandable_spinner_gravity="end"
         app:expandable_spinner_margin="14dp"
         app:expandable_spinner_size="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/expandableDuration"
         app:layout_constraintEnd_toEndOf="@+id/expandableDate"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/expandableDate"
-        app:layout_constraintTop_toBottomOf="@+id/expandableDate" />
+        app:layout_constraintTop_toBottomOf="@+id/expandableDate"
+        android:background="@drawable/searchview_background"/>
 
     <com.skydoves.expandablelayout.ExpandableLayout
         android:id="@+id/expandableDuration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:expandable_duration="300"
         android:layout_marginTop="@dimen/medium_distance"
+        app:expandable_duration="300"
         app:expandable_isExpanded="false"
         app:expandable_parentLayout="@layout/collapse_duration"
         app:expandable_secondLayout="@layout/collapse_duration_inside"
@@ -79,19 +86,32 @@
         app:expandable_spinner_gravity="end"
         app:expandable_spinner_margin="14dp"
         app:expandable_spinner_size="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnApplyFilters"
         app:layout_constraintEnd_toEndOf="@+id/expandableHour"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/expandableHour"
-        app:layout_constraintTop_toBottomOf="@+id/expandableHour" />
-
+        app:layout_constraintTop_toBottomOf="@+id/expandableHour"
+        android:background="@drawable/searchview_background"/>
 
     <Button
-        android:id="@+id/modalSaveButton"
+        android:id="@+id/btnApplyFilters"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/big_distance"
-        android:text="@string/user_profile_save_label"
+        android:text="@string/filers_apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/expandableDuration"
         app:layout_constraintTop_toBottomOf="@+id/expandableDuration" />
+
+    <Button
+        android:id="@+id/btnClearFilters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clean filters"
+        style="?attr/materialButtonOutlinedStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/btnApplyFilters"
+        app:layout_constraintStart_toStartOf="@+id/expandableDuration"
+        app:layout_constraintTop_toTopOf="@+id/btnApplyFilters" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

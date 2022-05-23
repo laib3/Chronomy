@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="durations_array">
+    <item name="0h30m">0h:30m</item>
+    <item name="1h00m">1h:00m</item>
+    <item name="1h30m">1h:30m</item>
+    <item name="2h00m">2h:00m</item>
+    <item name="2h30m">2h:30m</item>
+    <item name="3h00m">3h:00m</item>
+    <item name="4h00m">4h:00m</item>
+    <item name="5h00m">5h:00m</item>
+    <item name="6h00m">6h:00m</item>
+</string-array>
+</resources>

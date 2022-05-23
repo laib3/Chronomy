@@ -2,61 +2,58 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/expandable_child_background">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <TextView
-            android:id="@+id/lStartTime"
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:text="Start hour:"
-            app:layout_constraintBottom_toBottomOf="@+id/cvStartTime"
-            app:layout_constraintEnd_toStartOf="@+id/cvStartTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cvStartTime"
-            />
+    <TextView
+        android:id="@+id/lStartTime"
+        android:layout_width="0dp"
+        android:layout_height="19dp"
+        android:text="@string/filter_min_time"
+        app:layout_constraintBottom_toBottomOf="@+id/cvStartTime"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/cvStartTime" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvStartTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="50dp"
-            app:cardElevation="@dimen/medium_distance"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/lStartTime"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread">
-
-            <TextView
-                android:id="@+id/tvStartTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:freezesText="true"
-                android:padding="@dimen/big_distance"
-                android:text="hh:mm"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold" />
-
-        </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="@dimen/medium_distance"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/lStartTime"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread">
 
         <TextView
-            android:id="@+id/lEndTime"
+            android:id="@+id/tvStartTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="End hour:"
-            app:layout_constraintBottom_toBottomOf="@+id/cvEndTime"
-            app:layout_constraintEnd_toStartOf="@+id/cvEndTime"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cvEndTime" />
+            android:layout_gravity="center"
+            android:freezesText="true"
+            android:padding="@dimen/big_distance"
+            android:text="@string/hour_placeholder"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/lEndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/filter_max_time"
+        app:layout_constraintBottom_toBottomOf="@+id/cvEndTime"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/cvEndTime" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvEndTime"
@@ -78,11 +75,33 @@
                 android:layout_gravity="center"
                 android:freezesText="true"
                 android:padding="@dimen/big_distance"
-                android:text="hh:mm"
+                android:text="@string/hour_placeholder"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textStyle="bold" />
 
         </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/enormous_distance" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/enormous_distance" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="197dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
