@@ -4,23 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/small_distance"
-    android:layout_marginTop="@dimen/small_distance"
-    android:layout_marginEnd="@dimen/small_distance"
-    android:layout_marginBottom="@dimen/small_distance">
+    android:layout_margin="@dimen/big_distance">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="@dimen/side_of_square"
         android:layout_height="@dimen/side_of_square"
-        android:layout_marginStart="@dimen/medium_distance"
-        android:layout_marginTop="@dimen/medium_distance"
-        android:layout_marginEnd="@dimen/medium_distance"
-        android:layout_marginBottom="@dimen/medium_distance"
-        android:elevation="8dp"
+        android:elevation="0dp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="10pt"
-        app:cardElevation="10dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"

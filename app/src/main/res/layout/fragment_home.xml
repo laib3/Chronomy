@@ -42,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/huge_distance"
+        android:contentDescription="home buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/message">
@@ -53,9 +54,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/small_distance"
             android:columnCount="2"
-            android:paddingBottom="@dimen/big_distance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/scrollView"/>
+            app:layout_constraintTop_toTopOf="@+id/scrollView" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
