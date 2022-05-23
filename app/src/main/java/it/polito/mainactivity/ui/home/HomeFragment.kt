@@ -10,6 +10,7 @@ import android.widget.GridLayout
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
@@ -32,7 +33,7 @@ class HomeFragment : Fragment() {
         gridLayout.rowCount = 5;
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val presentSkills = it.map{el-> el.category}
+            val presentSkills = it.filter{ t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }.map{ el-> el.category }
             gridLayout.removeAllViews()
             //remove duplicates and show the buttons
             presentSkills.toSet()

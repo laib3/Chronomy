@@ -13,12 +13,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import it.polito.mainactivity.R
+import it.polito.mainactivity.data.Timeslot
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 
-
-class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragment: Fragment) :
-//class TimeslotAdapter(private val vm: MainViewModel, private val parentFragment: Fragment) :
+class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val parentFragment: Fragment, private val vm: TimeslotViewModel) :
     RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
 
     class TimeslotViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -40,18 +39,17 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
     }
 
     override fun onBindViewHolder(holder: TimeslotViewHolder, position: Int) {
-        val ts = vm.timeslots.value?.get(position)
-        holder.tvTitle.text = ts?.title
-        holder.tvLocation.text = ts?.location
-
-        holder.tvDate.text = when (ts?.repetition) {
+        val ts = myTimeslots.get(position)
+        holder.tvTitle.text = ts.title
+        holder.tvLocation.text = ts.location
+        holder.tvDate.text = when (ts.repetition) {
             "Weekly" -> "from " + Utils.formatDateToString(ts.startDate) +
                     " until " + Utils.formatDateToString(ts.endRepetitionDate) +
                     "\nevery week"
             "Monthly" -> "from " + Utils.formatDateToString(ts.startDate) +
                     " until " + Utils.formatDateToString(ts.endRepetitionDate) +
                     "\nevery month"
-            else -> Utils.formatDateToString(vm.timeslots.value?.get(position)?.startDate)
+            else -> Utils.formatDateToString(ts.startDate)
         }
 
         holder.tvHour.text =
@@ -63,7 +61,7 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
             )
 
         // Change the image icon of the skill with the correct one
-        Utils.getSkillImgRes(vm.timeslots.value?.get(position)!!.category)
+        Utils.getSkillImgRes(ts.category)
             ?.also { it -> holder.ivCategory.setImageResource(it) }
 
         // Pass through bundle the id of the item in the list
@@ -84,11 +82,11 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
                 .setTitle("Delete Timeslot")
                 .setMessage(
                     "Are you sure you want to delete this timeslot?\n\n" +
-                            "\'${ts?.title}\'\n"
+                            "\'${ts.title}\'\n"
                 )
                 .setPositiveButton("Delete", DialogInterface.OnClickListener(
                     fun(_, _) {
-                        vm.removeTimeslot(ts?.tid)
+                        vm.removeTimeslot(ts.tid)
                     }
 
                 ))
@@ -98,6 +96,6 @@ class TimeslotAdapter(private val vm: TimeslotViewModel, private val parentFragm
         }
     }
 
-    override fun getItemCount(): Int = vm.timeslots.value?.size ?: 0
+    override fun getItemCount(): Int = myTimeslots.size
 
 }

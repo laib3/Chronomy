@@ -55,8 +55,7 @@
                 android:id="@+id/textBalance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/medium_distance"
-                android:paddingEnd="@dimen/medium_distance"
+                android:layout_marginStart="@dimen/medium_distance"
                 android:text="@string/user_profile_balance"
                 android:textSize="@dimen/profile_text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewBalanceIcon"
@@ -101,12 +100,13 @@
                 android:id="@+id/textPhone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
                 android:text="@string/user_profile_phone"
                 android:textSize="@dimen/profile_text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewPhoneIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewPhoneIcon"
-                app:layout_constraintTop_toBottomOf="@+id/textBio" />
+                app:layout_constraintTop_toTopOf="@+id/imageViewPhoneIcon" />
 
             <ImageView
                 android:id="@+id/imageViewEmailIcon"
@@ -122,12 +122,13 @@
                 android:id="@+id/textEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
                 android:text="@string/user_profile_email"
                 android:textSize="@dimen/profile_text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewEmailIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewEmailIcon"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewPhoneIcon" />
+                app:layout_constraintTop_toTopOf="@+id/imageViewEmailIcon" />
 
             <ImageView
                 android:id="@+id/imageViewLocationIcon"
@@ -143,12 +144,13 @@
                 android:id="@+id/textLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
                 android:text="@string/user_profile_location"
                 android:textSize="@dimen/profile_text_size_small"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewLocationIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewLocationIcon"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon" />
+                app:layout_constraintTop_toTopOf="@+id/imageViewLocationIcon" />
 
             <TextView
                 android:id="@+id/textSkillsLabel"
