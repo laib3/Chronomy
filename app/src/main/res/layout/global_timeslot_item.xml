@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/big_distance"
     android:paddingStart="8dp"
     android:paddingEnd="8dp">
 
@@ -30,7 +31,7 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout6"
+                android:id="@+id/clTimeslotInfo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +100,7 @@
                     android:layout_marginStart="@dimen/big_distance"
                     android:layout_marginEnd="@dimen/big_distance"
                     android:layout_marginBottom="@dimen/small_distance"
-                    android:text="@string/date_placeholder"
+                    android:text="@string/timeslot_date"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toTopOf="@+id/tvHour"
@@ -116,13 +117,13 @@
                 android:background="@color/purple_500"
 
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout5"
+                app:layout_constraintEnd_toStartOf="@+id/clProfileInfo"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
+                app:layout_constraintStart_toEndOf="@+id/clTimeslotInfo"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout5"
+                android:id="@+id/clProfileInfo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
