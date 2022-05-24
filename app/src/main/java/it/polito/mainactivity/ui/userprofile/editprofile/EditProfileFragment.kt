@@ -31,7 +31,7 @@ class EditProfileFragment: Fragment() {
 
     fun notifyMessageEditedProfile() {
         // message to display in the snackbar in the showProfileFragment if the profile was changed
-        (activity as MainActivity).snackBarMessage = "ERROR: End time must be after start time!"
+        (activity as MainActivity).snackBarMessage = "Profile edited successfully"
     }
 
 }

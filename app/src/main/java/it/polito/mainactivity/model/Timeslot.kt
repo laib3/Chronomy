@@ -40,7 +40,20 @@ data class Timeslot(
         // createDates()
     }
 
-    constructor(_tid: String, _title: String, _description: String, _startDate: Calendar, _startHour: String, _endHour: String, _location: String, _category: String, _repetition: String?, _days: List<Int>, _endRepetitionDate: Calendar, _user: User): this(_user) {
+    constructor(
+        _tid: String,
+        _title: String,
+        _description: String,
+        _startDate: Calendar,
+        _startHour: String,
+        _endHour: String,
+        _location: String,
+        _category: String,
+        _repetition: String?,
+        _days: List<Int>,
+        _endRepetitionDate: Calendar,
+        _user: User
+    ) : this(_user) {
         tid = _tid
         title = _title
         description = _description
@@ -61,7 +74,7 @@ data class Timeslot(
     }
 
     override fun toString(): String {
-        val _sRepetition = if (repetition == null) "null" else "\"$repetition\""
+        val sRepetition = if (repetition == null) "null" else "\"$repetition\""
         return """
         {
         "user": ${user},
@@ -76,7 +89,7 @@ data class Timeslot(
         "endHour": "$endHour", 
         "location": "$location", 
         "category": "$category", 
-        "repetition": $_sRepetition,
+        "repetition": $sRepetition,
         "days": $days,
         "endRepetitionDate": 
             {"year": ${endRepetitionDate.get(Calendar.YEAR)},

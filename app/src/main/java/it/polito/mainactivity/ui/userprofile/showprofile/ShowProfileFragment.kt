@@ -11,14 +11,8 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 import it.polito.mainactivity.model.Utils
 
-
 class ShowProfileFragment : Fragment() {
-
-    //private val userProfileViewModel: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentShowProfileBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -27,7 +21,7 @@ class ShowProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val showOnly : Boolean = arguments?.getBoolean("showOnly")?: false
+        val showOnly: Boolean = arguments?.getBoolean("showOnly") ?: false
         setHasOptionsMenu(!showOnly)
 
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
@@ -45,8 +39,8 @@ class ShowProfileFragment : Fragment() {
         inflater.inflate(R.menu.showprofile_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem):Boolean {
-        if(item.itemId == R.id.action_nav_show_profile_to_nav_edit_profile) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_nav_show_profile_to_nav_edit_profile) {
             findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile)
             return true
         }

@@ -25,7 +25,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val timeslots: LiveData<List<Timeslot>> = _timeslots
 
     private val _submitTimeslot: MutableLiveData<Timeslot> = MutableLiveData<Timeslot>()
-            // .apply { value = Timeslot(_user.value!!) }
+
+    // .apply { value = Timeslot(_user.value!!) }
     val submitTimeslot: LiveData<Timeslot> = _submitTimeslot
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -35,7 +36,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
         val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        db.collection("users").document(uId).addSnapshotListener { value, error ->
+        db.collection("users").document(uId).addSnapshotListener { value, _ ->
             _user.value = Utils.toUser(value)
             _submitTimeslot.value = Timeslot(_user.value!!)
         }
@@ -45,7 +46,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (e == null) {
                     _timeslots.value = v!!.mapNotNull { d -> d.toTimeslot() }
                     Log.d("TIMESLOTS", _timeslots.value.toString())
-                } // TODO: CHOOSE WHAT TO DO else _timeslots.value = emptyList()
+                } // TODO: choose how to handle => else _timeslots.value = emptyList()
             }
 
     }
@@ -67,7 +68,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 get("location") as String,
                 get("category") as String,
                 get("repetition") as String?,
-                (get("days") as List<Number>).map{it.toInt()},
+                (get("days") as List<Number>).map { it.toInt() },
                 Utils.formatStringToDate(get("endRepetitionDate") as String),
                 Utils.anyToUser(get("user"))
             )
@@ -78,7 +79,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun updateTimeslotField(id: String, field: String, newValue: Any?): Boolean {
-       // var returnValue = false
+        // var returnValue = false
         db
             .collection("timeslots")
             .document(id)
@@ -87,13 +88,13 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 Log.d(
                     "Firebase",
                     "Timeslot updated successfully"
-                ); //returnValue = true;
+                ) //returnValue = true
             }
             .addOnFailureListener {
                 Log.d(
                     "Firebase",
                     "Error: timeslot not updated correctly"
-                ); //returnValue = false;
+                ) //returnValue = false
             }
         return true
     }
@@ -115,7 +116,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 "startDate" to Utils.formatDateToString(t.startDate),
                 "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate),
                 "user" to t.user
-            );
+            )
             db
                 .collection("timeslots")
                 .document()
@@ -124,13 +125,13 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     Log.d(
                         "TimeslotViewModel",
                         "New timeslot successfully saved "
-                    ); //success = true
+                    ) //success = true
                 }
                 .addOnFailureListener {
                     Log.d(
                         "Firebase",
                         "Error: timeslot not saved correctly"
-                    ); //success = false
+                    ) //success = false
                 }
         }
         return true
@@ -160,10 +161,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     Log.d(
                         "Firebase",
                         "Timeslot successfully deleted!"
-                    ); //success = true;
+                    ) //success = true;
                 }
                 .addOnFailureListener {
-                    Log.d("Firebase", "Error: deleting timeslot"); //success = false;
+                    Log.d("Firebase", "Error: deleting timeslot") //success = false;
                 }
         }
         return true

@@ -22,16 +22,16 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private val _newUser = MutableLiveData<Boolean?>(null)
     val newUser: LiveData<Boolean?> = _newUser
 
-    private lateinit var userListenerRegistration : ListenerRegistration
+    private lateinit var userListenerRegistration: ListenerRegistration
 
     init {
         FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
             val userId = fAuth.currentUser?.uid
-            if(userId != null){
+            if (userId != null) {
                 val userRef: DocumentReference = db.collection("users").document(userId)
                 userRef.get().addOnSuccessListener {
                     // document doesn't exist
-                    if(!it.exists()) {
+                    if (!it.exists()) {
                         userRef.set(emptyUser()).addOnSuccessListener {
                             Log.d("UserProfileViewModel", "user creation ok with id $userId")
                             userListenerRegistration = userRef.addSnapshotListener { value, _ ->
@@ -46,11 +46,10 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                                 }
                             }
                         }.addOnFailureListener { Log.d("UserProfileViewModel", "user not created") }
-                    }
-                    else {
+                    } else {
                         // if document exists
                         userListenerRegistration = userRef.addSnapshotListener { value, _ ->
-                            if(value != null){
+                            if (value != null) {
                                 _user.value = Utils.toUser(value)
                                 _newUser.value = false
                                 Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
@@ -62,10 +61,12 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                         }
                     }
                 }.addOnFailureListener {
-                    Log.d("UserProfileViewModel", "error db: cannot retrieve document with id $userId")
+                    Log.d(
+                        "UserProfileViewModel",
+                        "error db: cannot retrieve document with id $userId"
+                    )
                 }
-            }
-            else { // log out
+            } else { // log out
                 // TODO signal log out
                 Log.d("UserProfileViewModel", "user log out")
                 _user.value = null
@@ -82,22 +83,38 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     // update user field and user inside the timeslots
     fun updateUserField(userId: String?, field: String, newValue: Any?): Boolean {
         //var returnValue = false
-        if(userId == null || newValue == null)
+        if (userId == null || newValue == null)
             return false
         val userRef = db.collection("users").document(userId)
         val tsRef = db.collection("timeslots")
 
         tsRef.whereEqualTo("user.userId", userId).get().addOnSuccessListener { result ->
-            val tsRefs = result.documents.map{ it.reference }
+            val tsRefs = result.documents.map { it.reference }
             userRef.update(field, newValue)
                 .addOnSuccessListener {
                     userRef.get().addOnSuccessListener { userSnapshot ->
                         val user = Utils.toUser(userSnapshot)
-                        tsRefs.forEach{ tsRef -> tsRef.update("user", user)
-                            .addOnSuccessListener { Log.d("UserProfileViewModel", "timeslot updated successfully with user: " + user.toString()) }
-                            .addOnFailureListener { Log.d("UserProfileViewModel", "update timeslot failure: " + it.message) }
+                        tsRefs.forEach { tsRef ->
+                            tsRef.update("user", user)
+                                .addOnSuccessListener {
+                                    Log.d(
+                                        "UserProfileViewModel",
+                                        "timeslot updated successfully with user: " + user.toString()
+                                    )
+                                }
+                                .addOnFailureListener {
+                                    Log.d(
+                                        "UserProfileViewModel",
+                                        "update timeslot failure: " + it.message
+                                    )
+                                }
                         }
-                    }.addOnFailureListener { Log.d("UserProfileViewModel", "get user failure: " + it.message ) }
+                    }.addOnFailureListener {
+                        Log.d(
+                            "UserProfileViewModel",
+                            "get user failure: " + it.message
+                        )
+                    }
                 }
                 .addOnFailureListener { exception ->
                     Log.d("UserProfileViewModel", "update user failure: " + exception.message)

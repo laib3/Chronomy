@@ -17,7 +17,11 @@ import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 
-class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val parentFragment: Fragment, private val vm: TimeslotViewModel) :
+class TimeslotAdapter(
+    private val myTimeslots: List<Timeslot>,
+    private val parentFragment: Fragment,
+    private val vm: TimeslotViewModel
+) :
     RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
 
     class TimeslotViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -39,7 +43,7 @@ class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val paren
     }
 
     override fun onBindViewHolder(holder: TimeslotViewHolder, position: Int) {
-        val ts = myTimeslots.get(position)
+        val ts = myTimeslots[position]
         holder.tvTitle.text = ts.title
         holder.tvLocation.text = ts.location
         holder.tvDate.text = when (ts.repetition) {
@@ -55,9 +59,9 @@ class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val paren
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,
-                ts?.startHour,
-                ts?.endHour,
-                Utils.getDuration(ts?.startHour?:"0:0", ts?.endHour?:"0:0")
+                ts.startHour,
+                ts.endHour,
+                Utils.getDuration(ts.startHour, ts.endHour)
             )
 
         // Change the image icon of the skill with the correct one

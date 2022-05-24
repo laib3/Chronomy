@@ -24,7 +24,7 @@ class ShowProfileDataFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentShowProfileDataBinding.inflate(inflater, container, false)
         val root: View = binding.root

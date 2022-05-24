@@ -41,7 +41,7 @@ class TimeslotDetailsFragment : Fragment() {
         val root: View = binding.root
 
         val id = arguments?.getString("id")
-        val showOnly : Boolean = arguments?.getBoolean("showOnly")?: false
+        val showOnly: Boolean = arguments?.getBoolean("showOnly") ?: false
         setHasOptionsMenu(!showOnly)
 
         vm.timeslots.observe(viewLifecycleOwner) {

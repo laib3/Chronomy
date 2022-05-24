@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 
@@ -18,32 +17,24 @@ import it.polito.mainactivity.viewModel.TimeslotViewModel
 class HomeFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val gridLayout: GridLayout = binding.gridLayout
-        gridLayout.columnCount = 2;
-        gridLayout.rowCount = 5;
-
-        val tvSkillNumber = requireActivity().findViewById<TextView>(R.id.tvSkillNumber)
+        gridLayout.columnCount = 2
+        gridLayout.rowCount = 5
 
         vm.timeslots.observe(viewLifecycleOwner) {
             val categoryNumbers: MutableMap<String, Int> = mutableMapOf()
 
             it.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
                 .forEach { t ->
-                    categoryNumbers.set(
-                        t.category,
-                        categoryNumbers.get(t.category)?.plus(1) ?: 1
-                    )
+                    categoryNumbers[t.category] = categoryNumbers[t.category]?.plus(1) ?: 1
                 }
 
             gridLayout.removeAllViews()

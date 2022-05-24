@@ -16,17 +16,17 @@ class LoginActivity : AppCompatActivity() {
         .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         .build()
     private val signInLauncher =
-        registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
-        res -> this.onSignInResult(res)
-    }
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res ->
+            this.onSignInResult(res)
+        }
 
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult){
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
-        if(result.resultCode == RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val user = FirebaseAuth.getInstance().currentUser
         } else {
             Log.d("LoginFragment", "sign in failed")
-            if(response == null)
+            if (response == null)
                 Log.d("LoginFragment", "canceled by user")
             else
                 Log.d("LoginFragment", "error:" + response.error?.errorCode)
@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser != null){
+        if (currentUser != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

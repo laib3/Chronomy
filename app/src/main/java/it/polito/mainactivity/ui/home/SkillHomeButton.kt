@@ -8,7 +8,12 @@ import androidx.cardview.widget.CardView
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Utils
 
-internal class SkillHomeButton (private val c: Context, val category:String, val number: Int): CardView(c){
+internal class SkillHomeButton(
+    private val c: Context,
+    val category: String,
+    private val number: Int
+) :
+    CardView(c) {
 
     init {
         LayoutInflater.from(c).inflate(R.layout.skill_home_button, this, true)
@@ -18,10 +23,13 @@ internal class SkillHomeButton (private val c: Context, val category:String, val
 
         // set the icon
         val imgRes = Utils.getSkillImgRes(category)
-        if(imgRes != null)
+        if (imgRes != null)
             ivSkillIcon.setImageResource(imgRes)
         //set title
         tvTitle.text = category
-        tvSkillNumber.text = String.format(resources.getString(R.string.home_skill_number_placeholder), number.toString())
-     }
+        tvSkillNumber.text = String.format(
+            resources.getString(R.string.home_skill_number_placeholder),
+            number.toString()
+        )
+    }
 }

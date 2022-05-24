@@ -43,10 +43,9 @@ class FilteredTimeslotListFragment : Fragment() {
 
     private var category: String = ""
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener("applyFilters") { requestKey, bundle ->
+        setFragmentResultListener("applyFilters") { _, bundle ->
             startDate = bundle.getString("startDate")
             endDate = bundle.getString("endDate")
             startTime = bundle.getString("startTime")
@@ -65,9 +64,6 @@ class FilteredTimeslotListFragment : Fragment() {
                 maxDuration,
                 filteredList
             )
-
-
-
             adapter!!.filterList(filteredList)
 
             binding.filterButton.setBackgroundColor(resources.getColor(R.color.not_so_dark_slate_blue))
@@ -95,7 +91,7 @@ class FilteredTimeslotListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFilteredTimeslotListBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -105,7 +101,8 @@ class FilteredTimeslotListFragment : Fragment() {
 
         category = args.category
 
-        val sortingKeys = listOf("Date",  "Title (A-Z)", "Title (Z-A)", "Duration (ASC)", "Duration (DES)")
+        val sortingKeys =
+            listOf("Date", "Title (A-Z)", "Title (Z-A)", "Duration (ASC)", "Duration (DES)")
         val sortingKeysArrayAdapter =
             ArrayAdapter(requireContext(), R.layout.list_item, sortingKeys)
         binding.tvSortBy.setAdapter(sortingKeysArrayAdapter)
@@ -153,7 +150,7 @@ class FilteredTimeslotListFragment : Fragment() {
             rv.adapter = adapter
         }
 
-        vm.timeslots.observe(viewLifecycleOwner){
+        vm.timeslots.observe(viewLifecycleOwner) {
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category.lowercase() }
                 .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
@@ -207,7 +204,7 @@ class FilteredTimeslotListFragment : Fragment() {
     private fun applySorting(
         timeslotList: List<Timeslot>?,
         sortingKey: String
-    ): List<Timeslot>? {
+    ): List<Timeslot> {
         return when (sortingKey) {
             "Date" -> {
                 timeslotList!!.sortedBy { it.startDate }
@@ -242,7 +239,6 @@ class FilteredTimeslotListFragment : Fragment() {
                 timeslotList!!.sortedBy { it.startDate }
             }
         }
-
     }
 
     private fun applyFilters(
@@ -301,7 +297,6 @@ class FilteredTimeslotListFragment : Fragment() {
                 durationInMinutes <= maxDurationInMinutes
             }
         }
-
         return result!!
     }
 }

@@ -16,7 +16,7 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 
-class TimeslotsRecyclerViewAdapter (
+class TimeslotsRecyclerViewAdapter(
     private var values: List<Timeslot>,
     private val parentFragment: Fragment
 ) : RecyclerView.Adapter<TimeslotsRecyclerViewAdapter.TimeslotViewHolder>() {
@@ -59,12 +59,13 @@ class TimeslotsRecyclerViewAdapter (
                 R.string.starting_hour_dash_ending_hour,
                 ts.startHour,
                 ts.endHour,
-                Utils.getDuration(ts.startHour ?: "0:0", ts.endHour ?: "0:0")
+                Utils.getDuration(ts.startHour, ts.endHour)
             )
 
         holder.ivProfilePic.clipToOutline = true
-        ts.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic)}
-        val placeholder = parentFragment.resources.getString(R.string.user_profile_nickname_placeholder)
+        ts.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic) }
+        val placeholder =
+            parentFragment.resources.getString(R.string.user_profile_nickname_placeholder)
         holder.tvNickname.text = String.format(placeholder, ts.user.nickname)
 
         // Pass through bundle the id of the timeslot in the list
@@ -74,18 +75,20 @@ class TimeslotsRecyclerViewAdapter (
 
         // click on card in the timeslot part, show details of that timeslot
         holder.clTimeslotInfo.setOnClickListener {
-            parentFragment.findNavController().navigate(R.id.action_nav_filtered_to_nav_details, bundle)
+            parentFragment.findNavController()
+                .navigate(R.id.action_nav_filtered_to_nav_details, bundle)
         }
 
         // click on card in the user profile part, show details of that profile
         holder.cvTimeslotCard.setOnClickListener {
-            parentFragment.findNavController().navigate(R.id.action_nav_filtered_to_nav_show_profile, bundle)
+            parentFragment.findNavController()
+                .navigate(R.id.action_nav_filtered_to_nav_show_profile, bundle)
         }
     }
 
     override fun getItemCount(): Int = values.size
 
-    fun filterList(filteredList: List<Timeslot>){
+    fun filterList(filteredList: List<Timeslot>) {
         values = filteredList
         notifyDataSetChanged()
     }

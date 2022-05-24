@@ -61,7 +61,7 @@ class Utils {
             val month = strDate.split("/")[1]
             var year = strDate.split("/")[2]
 
-            if (year.length==2) year ="20" + year
+            if (year.length == 2) year = "20${year}"
 
             // -1 is needed because months start from 0
             return GregorianCalendar(year.toInt(), month.toInt() - 1, day.toInt())
@@ -106,14 +106,14 @@ class Utils {
             val startM: Int = endHourMinutes.split(":")[1].toInt()
 
             var durationH: Int = startH - endH
-            var durationM: Int = if (startM >= endM) startM - endM else {
+            val durationM: Int = if (startM >= endM) startM - endM else {
                 durationH -= 1
                 startM + 60 - endM
             }
             return "%dh:%02dm".format(durationH, durationM)
         }
 
-        fun durationInMinutes(duration: String): Int{
+        fun durationInMinutes(duration: String): Int {
             val hours = duration.split(":")[0].dropLast(1).toInt()
             val minutes = duration.split(":")[1].dropLast(1).toInt()
             return minutes + hours * 60
@@ -140,7 +140,7 @@ class Utils {
             else Color.parseColor("#55ff55")
 
         fun toTimeslot(d: DocumentSnapshot?, user: User): Timeslot? {
-            if(d == null)
+            if (d == null)
                 return null
             return try {
                 Timeslot(
@@ -153,7 +153,7 @@ class Utils {
                     d.get("location") as String,
                     d.get("category") as String,
                     d.get("repetition") as String?,
-                    (d.get("days") as List<Number>).map{it.toInt()},
+                    (d.get("days") as List<Number>).map { it.toInt() },
                     formatStringToDate(d.get("endRepetitionDate") as String),
                     user
                 )
@@ -164,7 +164,7 @@ class Utils {
         }
 
         fun toUser(d: DocumentSnapshot?): User? {
-            if(d == null)
+            if (d == null)
                 return null
             return try {
                 User(
@@ -177,7 +177,13 @@ class Utils {
                     d.get("location") as String,
                     d.get("phone") as String,
                     //get("skills") as List<Skill>,
-                    (d.get("skills") as List<Map<Any?,Any?>>).map{s -> Skill(s["category"] as String, s["description"] as String, s["active"] as Boolean)},
+                    (d.get("skills") as List<Map<Any?, Any?>>).map { s ->
+                        Skill(
+                            s["category"] as String,
+                            s["description"] as String,
+                            s["active"] as Boolean
+                        )
+                    },
                     (d.get("balance") as Long).toInt(),
                     d.get("profilePictureUrl") as String?
                     // TODO: update with real values

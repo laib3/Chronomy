@@ -23,7 +23,7 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentLoginBinding
 import it.polito.mainactivity.viewModel.UserProfileViewModel
 
-class LoginFragment: Fragment() {
+class LoginFragment : Fragment() {
 
     private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentLoginBinding? = null
@@ -32,26 +32,22 @@ class LoginFragment: Fragment() {
         .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         .build()
     private val signInLauncher =
-        registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
-        res -> onSignInResult(res)
-    }
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()) { res ->
+            onSignInResult(res)
+        }
 
 
-
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult){
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
-        if(result.resultCode == RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
         } else {
             Log.d("LoginFragment", "sign in failed")
-            if(response == null)
+            if (response == null)
                 Log.d("LoginFragment", "canceled by user")
             else
                 Log.d("LoginFragment", "error:" + response.error?.errorCode)
         }
-    }
-
-    init {
     }
 
     override fun onCreateView(
@@ -74,12 +70,11 @@ class LoginFragment: Fragment() {
         }
 
         vm.newUser.observe(viewLifecycleOwner) {
-            if(it == true) {
+            if (it == true) {
                 Log.d("LoginFragment", "newUser == true")
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_edit_profile)
-            }
-            else if (it == false){
+            } else if (it == false) {
                 Log.d("LoginFragment", "newUser == false")
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.nav_home)
@@ -94,7 +89,7 @@ class LoginFragment: Fragment() {
         return root
     }
 
-    private fun login(){
+    private fun login() {
         signInLauncher.launch(signInIntent)
     }
 

@@ -1,6 +1,5 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_list
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +21,8 @@ import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 
 class TimeslotListFragment : Fragment() {
-
     private val vm: TimeslotViewModel by activityViewModels()
-    //private val vm: MainViewModel by activityViewModels()
     private var _binding: FragmentTimeslotListBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -67,10 +61,6 @@ class TimeslotListFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_list_to_nav_edit)
         }
         return root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 
     override fun onDestroyView() {

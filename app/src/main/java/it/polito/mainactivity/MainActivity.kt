@@ -14,22 +14,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
-import it.polito.mainactivity.model.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
 import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var auth: FirebaseAuth
-    private lateinit var currentUser: User
-    private var userState: FirebaseUser? = null
-    private var RC_SIGN_IN: Int = 5
-    // private val vm: MainViewModel by viewModels()
-
     private lateinit var binding: ActivityMainBinding
     var snackBarMessage: String? = null
 
@@ -54,15 +45,16 @@ class MainActivity : AppCompatActivity() {
 
         //val userProfileViewModel = UserProfileViewModel(application)
         val userProfileViewModel =
-            ViewModelProvider(this).get(UserProfileViewModel::class.java)
+            ViewModelProvider(this)[UserProfileViewModel::class.java]
 
         // observe viewModel changes
         userProfileViewModel.user.observe(this) {
             navHeaderName.text = it?.name ?: "null"
             navHeaderSurname.text = it?.surname ?: "null"
-            navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
+            navHeaderBalance.text =
+                String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
             // TODO error
-            it?.profilePictureUrl?.apply { Picasso.get().load(this).into(navProfilePicture)}
+            it?.profilePictureUrl?.apply { Picasso.get().load(this).into(navProfilePicture) }
         }
 
 

@@ -15,10 +15,10 @@ import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class SkillCard(
-    val c: Context,
-    val skill: Skill,
+    private val c: Context,
+    private val skill: Skill,
     val vm: UserProfileViewModel,
-    val editable: Boolean
+    private val editable: Boolean
 ) : CardView(c) {
 
     init {
@@ -77,8 +77,6 @@ class SkillCard(
 
                 if (skill.description != desc || skill.active != checked) {
                     val newSkill = skill.copy().apply { active = checked; description = desc }
-                    // TODO: FIX THIS
-                    // vm.setUpdated(newSkill)
                     val oldSkills = vm.user.value?.skills
                     vm.updateUserField(
                         vm.user.value!!.userId,

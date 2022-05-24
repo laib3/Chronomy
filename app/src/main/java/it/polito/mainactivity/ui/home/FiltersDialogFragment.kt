@@ -43,18 +43,28 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
 
         val bundle = this.arguments
 
-        bundle?.getString("startDate")?.let{expandableDate.secondLayout.findViewById<TextView>(R.id.tvStartDate)?.text = it}
-        bundle?.getString("endDate")?.let{expandableDate.secondLayout.findViewById<TextView>(R.id.tvEndDate)?.text = it}
-        bundle?.getString("startTime")?.let{expandableHour.secondLayout.findViewById<TextView>(R.id.tvStartTime)?.text = it}
-        bundle?.getString("endTime")?.let{expandableHour.secondLayout.findViewById<TextView>(R.id.tvEndTime)?.text = it}
-        bundle?.getString("minDuration")?.let{expandableDuration.secondLayout.findViewById<TextView>(R.id.tvMinDuration)?.text = it}
-        bundle?.getString("maxDuration")?.let{expandableDuration.secondLayout.findViewById<TextView>(R.id.tvMaxDuration)?.text = it}
+        bundle?.getString("startDate")?.let {
+            expandableDate.secondLayout.findViewById<TextView>(R.id.tvStartDate)?.text = it
+        }
+        bundle?.getString("endDate")
+            ?.let { expandableDate.secondLayout.findViewById<TextView>(R.id.tvEndDate)?.text = it }
+        bundle?.getString("startTime")?.let {
+            expandableHour.secondLayout.findViewById<TextView>(R.id.tvStartTime)?.text = it
+        }
+        bundle?.getString("endTime")
+            ?.let { expandableHour.secondLayout.findViewById<TextView>(R.id.tvEndTime)?.text = it }
+        bundle?.getString("minDuration")?.let {
+            expandableDuration.secondLayout.findViewById<TextView>(R.id.tvMinDuration)?.text = it
+        }
+        bundle?.getString("maxDuration")?.let {
+            expandableDuration.secondLayout.findViewById<TextView>(R.id.tvMaxDuration)?.text = it
+        }
 
         expandableDate.parentLayout.setOnClickListener { toggleExpandable(expandableDate) }
         expandableHour.parentLayout.setOnClickListener { toggleExpandable(expandableHour) }
         expandableDuration.parentLayout.setOnClickListener { toggleExpandable(expandableDuration) }
 
-        binding.btnApplyFilters.setOnClickListener{
+        binding.btnApplyFilters.setOnClickListener {
             //put values of the filters in the bundle and give them back to filteredTimeslotListFragment
             val bundle = bundleOf(
                 "startDate" to expandableDate.secondLayout.findViewById<TextView>(R.id.tvStartDate).text.toString(),
@@ -63,15 +73,19 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
                 "startTime" to expandableHour.secondLayout.findViewById<TextView>(R.id.tvStartTime).text.toString(),
                 "endTime" to expandableHour.secondLayout.findViewById<TextView>(R.id.tvEndTime).text.toString(),
 
-                "minDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(R.id.tvMinDuration).text.toString(),
-                "maxDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration).text.toString(),
+                "minDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(
+                    R.id.tvMinDuration
+                ).text.toString(),
+                "maxDuration" to expandableDuration.secondLayout.findViewById<AutoCompleteTextView>(
+                    R.id.tvMaxDuration
+                ).text.toString(),
             )
             setFragmentResult("applyFilters", bundle)
 
             fragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
 
-        binding.btnClearFilters.setOnClickListener{
+        binding.btnClearFilters.setOnClickListener {
             val bundle = bundleOf("result" to true)
             setFragmentResult("cleanFilters", bundle)
             fragmentManager?.beginTransaction()?.remove(this)?.commit()
@@ -130,8 +144,10 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
         }
 
         val secondLayoutDuration = binding.expandableDuration.secondLayout
-        val tvMinDuration = secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMinDuration)
-        val tvMaxDuration = secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration)
+        val tvMinDuration =
+            secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMinDuration)
+        val tvMaxDuration =
+            secondLayoutDuration.findViewById<AutoCompleteTextView>(R.id.tvMaxDuration)
 
         val durations = resources.getStringArray(R.array.durations_array)
         val anyObject: Any = durations
@@ -177,9 +193,9 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current date as the default date in the picker only if it's the first time opening
-            var year: Int
-            var month: Int
-            var day: Int
+            val year: Int
+            val month: Int
+            val day: Int
             val c = Calendar.getInstance()
             if (tvDate.text != "dd/mm/yyyy") {
                 val list = tvDate.text.toString().split("/")
@@ -191,13 +207,11 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
             year = c.get(Calendar.YEAR)
             month = c.get(Calendar.MONTH)
             day = c.get(Calendar.DAY_OF_MONTH)
-
-
+            
             // Create a new instance of DatePickerDialog and return it
             dialog = DatePickerDialog(requireContext(), this, year, month, day)
-            //if (type == DType.START)
-              //  dialog.datePicker.minDate = c.timeInMillis
-            if(type == DType.END)
+
+            if (type == DType.END)
                 dialog.datePicker.minDate = minDate!!
             return dialog
         }
@@ -257,7 +271,6 @@ class FiltersDialogFragment() : BottomSheetDialogFragment() {
             }
         }
     }
-
 }
 
 
