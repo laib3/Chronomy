@@ -24,6 +24,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_nav_list_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 
     <fragment
@@ -31,10 +34,6 @@
         android:name="it.polito.mainactivity.ui.timeslot.timeslot_details.TimeslotDetailsFragment"
         android:label="@string/menu_timeslot_details"
         tools:layout="@layout/fragment_timeslot_details" >
-        <argument
-            android:name="id"
-            app:argType="integer"
-            android:defaultValue="-1" />
         <action
             android:id="@+id/action_nav_details_to_nav_edit"
             app:destination="@id/nav_edit"
@@ -49,10 +48,6 @@
         android:name="it.polito.mainactivity.ui.timeslot.timeslot_edit.TimeslotEditFragment"
         android:label="@string/menu_timeslot_edit"
         tools:layout="@layout/fragment_timeslot_edit" >
-        <argument
-            android:name="id"
-            app:argType="integer"
-            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/nav_show_profile"

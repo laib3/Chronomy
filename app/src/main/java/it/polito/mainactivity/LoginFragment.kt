@@ -2,6 +2,8 @@ package it.polito.mainactivity
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,8 +66,13 @@ class LoginFragment: Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // if back pressed on login screen exit the application
         (activity as MainActivity).onBackPressedDispatcher.addCallback(this) {
-            Log.d("LoginFragment", "back pressed")
+            val i = Intent(ACTION_MAIN)
+            i.addCategory(CATEGORY_HOME)
+            i.flags = FLAG_ACTIVITY_NEW_TASK
+            startActivity(i)
+            // (activity as MainActivity).finish()
         }
 
         vm.newUser.observe(viewLifecycleOwner) {
