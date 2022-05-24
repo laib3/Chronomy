@@ -67,6 +67,7 @@ class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val paren
         // Pass through bundle the id of the item in the list
         val bundle = Bundle()
         bundle.putString("id", ts.tid)
+        bundle.putBoolean("showOnly", false)
 
         // click on card, show details of that item
         holder.cvTimeslotCard.setOnClickListener {

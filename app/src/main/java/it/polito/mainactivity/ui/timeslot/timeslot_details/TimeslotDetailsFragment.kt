@@ -36,12 +36,13 @@ class TimeslotDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        setHasOptionsMenu(true)
 
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val id = arguments?.getString("id")
+        val showOnly : Boolean = arguments?.getBoolean("showOnly")?: false
+        setHasOptionsMenu(!showOnly)
 
         vm.timeslots.observe(viewLifecycleOwner) {
             val ts = it.find { t -> t.tid == id }
@@ -126,7 +127,7 @@ class TimeslotDetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.nav_edit) {
             val bundle = Bundle()
-            arguments?.getInt("id")?.let { bundle.putInt("id", it) }
+            arguments?.getString("id")?.let { bundle.putString("id", it) }
             findNavController().navigate(R.id.action_nav_details_to_nav_edit, bundle)
             return true
         }
