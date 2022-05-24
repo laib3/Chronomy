@@ -116,7 +116,7 @@ class FilteredTimeslotListFragment : Fragment() {
 
         val filterButton = binding.filterButton
         filterButton.setOnClickListener {
-            var bottomFragment = FiltersDialogFragment()
+            val bottomFragment = FiltersDialogFragment()
             val bundle = bundleOf(
                 "startDate" to startDate,
                 "endDate" to endDate,
@@ -153,7 +153,7 @@ class FilteredTimeslotListFragment : Fragment() {
             rv.adapter = adapter
         }
 
-        vm.timeslots.observe(viewLifecycleOwner) {
+        vm.timeslots.observe(viewLifecycleOwner){
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category.lowercase() }
                 .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
