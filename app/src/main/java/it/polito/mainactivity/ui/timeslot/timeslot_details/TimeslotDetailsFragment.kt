@@ -18,9 +18,7 @@ import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
 import java.util.*
 
 class TimeslotDetailsFragment : Fragment() {
-
     private val vm: TimeslotViewModel by activityViewModels()
-    //private val vm: MainViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotDetailsBinding? = null
 
@@ -30,7 +28,6 @@ class TimeslotDetailsFragment : Fragment() {
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: TextInputLayout? = null
 
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -44,68 +41,65 @@ class TimeslotDetailsFragment : Fragment() {
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // TODO remove in favour of null
-        val id = arguments?.getInt("id") ?: -1
+        val id = arguments?.getString("id")
 
         vm.timeslots.observe(viewLifecycleOwner) {
+            val ts = it.find { t -> t.tid == id }
 
-            val ts = it.elementAt(id)
-
-            tiTitle?.editText?.setText(ts.title)
-            tiDescription?.editText?.setText(ts.description)
+            tiTitle?.editText?.setText(ts?.title)
+            tiDescription?.editText?.setText(ts?.description)
 
             val dateString = SpannableStringBuilder()
 
-            when {
-                ts.repetition?.lowercase() == "weekly" -> {
-                    dateString
-                        .append("This timeslots repeats ")
-                        .bold { append("weekly") }
-                        .append(".\n\nStarting on ")
-                        .italic { append(Utils.formatDateToString(ts.startDate)) }
-                        .append(" until ")
-                        .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
-                        .append("\nevery ")
-                        .italic { append("${Utils.getDaysOfRepetition(ts.days)}\n") }
-                        .append("from ")
-                        .italic { append(ts.startHour) }
-                        .append(" to ")
-                        .italic { append(ts.endHour) }
-                        .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
+            if (ts != null) {
+                when {
+                    ts.repetition?.lowercase() == "weekly" -> {
+                        dateString
+                            .append("This timeslots repeats ")
+                            .bold { append("weekly") }
+                            .append(".\n\nStarting on ")
+                            .italic { append(Utils.formatDateToString(ts.startDate)) }
+                            .append(" until ")
+                            .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
+                            .append("\nevery ")
+                            .italic { append("${Utils.getDaysOfRepetition(ts.days)}\n") }
+                            .append("from ")
+                            .italic { append(ts.startHour) }
+                            .append(" to ")
+                            .italic { append(ts.endHour) }
+                            .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
+                    }
+                    ts.repetition?.lowercase() == "monthly" -> { //monthly
+                        dateString
+                            .append("This timeslots repeats ")
+                            .bold { append("Monthly") }
+                            .append(".\n\nStarting on ")
+                            .italic { append(Utils.formatDateToString(ts.startDate)) }
+                            .append(" until ")
+                            .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
+                            .append("\nevery ")
+                            .italic { append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}") }
+                            .append(" of the month\n")
+                            .append("from ")
+                            .italic { append(ts.startHour) }
+                            .append(" to ")
+                            .italic { append(ts.endHour) }
+                            .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
+                    }
+                    else -> {  // No repetition
+                        dateString
+                            .italic { append(Utils.formatDateToString(ts.startDate)) }
+                            .append("\nfrom ")
+                            .italic { append(ts.startHour) }
+                            .append(" to ")
+                            .italic { append(ts.endHour) }
+                            .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
+                    }
                 }
-                ts.repetition?.lowercase() == "monthly" -> { //monthly
-                    dateString
-                        .append("This timeslots repeats ")
-                        .bold { append("Monthly") }
-                        .append(".\n\nStarting on ")
-                        .italic { append(Utils.formatDateToString(ts.startDate)) }
-                        .append(" until ")
-                        .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
-                        .append("\nevery ")
-                        .italic { append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}") }
-                        .append(" of the month\n")
-                        .append("from ")
-                        .italic { append(ts.startHour) }
-                        .append(" to ")
-                        .italic { append(ts.endHour) }
-                        .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
-                }
-                else -> {  // No repetition
-                    dateString
-                        .italic { append(Utils.formatDateToString(ts.startDate)) }
-                        .append("\nfrom ")
-                        .italic { append(ts.startHour) }
-                        .append(" to ")
-                        .italic { append(ts.endHour) }
-                        .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
-
-
-                }
+                tiAvailability?.editText?.text = dateString
+                tiLocation?.editText?.setText(ts.location)
+                tiCategory?.editText?.setText(ts.category)
             }
-
-            tiAvailability?.editText?.text = dateString
-            tiLocation?.editText?.setText(ts.location)
-            tiCategory?.editText?.setText(ts.category)
         }
         return root
     }
