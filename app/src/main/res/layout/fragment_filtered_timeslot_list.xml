@@ -28,16 +28,49 @@
     <Button
         android:id="@+id/filterButton"
         style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="filter"
         android:focusable="true"
+        android:gravity="center"
         app:icon="@drawable/ic_filter"
         app:layout_constraintBottom_toBottomOf="@+id/lSortBy"
         app:layout_constraintEnd_toEndOf="@+id/searchView"
         app:layout_constraintTop_toTopOf="@+id/lSortBy"
         app:strokeColor="#C0BEBE"
         app:strokeWidth="2dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dmSortBy"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/medium_distance"
+        android:gravity="center_horizontal|center_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/lSortBy"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/lSortBy"
+        app:layout_constraintTop_toTopOf="@id/lSortBy">
+
+        <AutoCompleteTextView
+            android:id="@+id/tvSortBy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_vertical"
+            android:inputType="none"
+            android:padding="8dp"
+            android:paddingStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/sort_by_hint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/lSortBy"
@@ -57,29 +90,6 @@
         app:layout_constraintHorizontal_weight="0.5"
         app:layout_constraintStart_toStartOf="@+id/searchView"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dmSortBy"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_distance"
-        android:gravity="center_horizontal|center_vertical"
-        app:layout_constraintBottom_toBottomOf="@id/lSortBy"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/lSortBy"
-        app:layout_constraintTop_toTopOf="@id/lSortBy">
-
-        <AutoCompleteTextView
-            android:id="@+id/tvSortBy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:inputType="none"
-            android:padding="@dimen/big_distance"
-            android:text="@string/sort_by_hint" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeslot_list_rv"
