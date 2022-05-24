@@ -11,8 +11,8 @@ import androidx.fragment.app.activityViewModels
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfilePictureBinding
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class ShowProfilePictureFragment : Fragment() {
 

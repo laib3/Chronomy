@@ -1,7 +1,6 @@
-package it.polito.mainactivity.data
+package it.polito.mainactivity.model
 
 import com.google.firebase.auth.FirebaseAuth
-import it.polito.mainactivity.model.Skill
 
 data class User(
     val userId: String,
@@ -24,13 +23,13 @@ data class User(
 fun emptyUser(): User {
     return User(
         FirebaseAuth.getInstance().currentUser!!.uid,
-        "name",
-        "surname",
-        "nickname",
-        "bio",
-        "email",
-        "location",
-        "phone",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         createEmptySkills(),
         5,
         null

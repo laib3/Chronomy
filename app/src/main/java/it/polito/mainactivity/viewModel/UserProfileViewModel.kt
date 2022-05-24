@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.userprofile
+package it.polito.mainactivity.viewModel
 
 import android.app.Application
 import android.util.Log
@@ -9,8 +9,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import it.polito.mainactivity.data.User
-import it.polito.mainactivity.data.emptyUser
+import it.polito.mainactivity.model.User
+import it.polito.mainactivity.model.emptyUser
 import it.polito.mainactivity.model.Utils
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
 import it.polito.mainactivity.ui.userprofile.SkillCard
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 
 class EditProfileFieldsFragment : Fragment() {

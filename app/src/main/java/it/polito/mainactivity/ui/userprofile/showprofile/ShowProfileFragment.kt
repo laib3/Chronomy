@@ -1,18 +1,15 @@
 package it.polito.mainactivity.ui.userprofile.showprofile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileBinding
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 
 
 class ShowProfileFragment : Fragment() {

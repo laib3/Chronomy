@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.navOptions
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,9 +17,9 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
-import it.polito.mainactivity.data.User
+import it.polito.mainactivity.model.User
 import it.polito.mainactivity.databinding.ActivityMainBinding
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,8 +60,8 @@ class MainActivity : AppCompatActivity() {
         userProfileViewModel.user.observe(this) {
             navHeaderName.text = it?.name ?: "null"
             navHeaderSurname.text = it?.surname ?: "null"
-            // TODO error
             navHeaderBalance.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
+            // TODO error
             it?.profilePictureUrl?.apply { Picasso.get().load(this).into(navProfilePicture)}
         }
 

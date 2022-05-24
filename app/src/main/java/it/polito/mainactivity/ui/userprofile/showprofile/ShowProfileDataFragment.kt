@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.ui.userprofile.SkillCard
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class ShowProfileDataFragment : Fragment() {
 

@@ -16,10 +16,10 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 
 class FilteredTimeslotListFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()

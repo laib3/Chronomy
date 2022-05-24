@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.model.Utils
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class SkillCard(
     val c: Context,

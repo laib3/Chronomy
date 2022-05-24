@@ -23,10 +23,10 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.databinding.FragmentTimeslotEditBinding
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 import kotlin.math.max
 
 class TimeslotEditFragment : Fragment() {

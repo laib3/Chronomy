@@ -1,6 +1,5 @@
-package it.polito.mainactivity.data
+package it.polito.mainactivity.model
 
-import it.polito.mainactivity.model.Utils
 import java.util.*
 
 data class Timeslot(
@@ -88,7 +87,7 @@ data class Timeslot(
         """.replace("\n", "").trimIndent()
     }
 
-    // TODO remove because it's wrong
+    // TODO remove because it's wrong and not used
     /*
     private fun createDates() {
         val tmp = Calendar.getInstance()

@@ -68,7 +68,7 @@
         android:label="Edit Profile"/>
     <fragment
         android:id="@+id/nav_login_fragment"
-        android:name="it.polito.mainactivity.LoginFragment"
+        android:name="it.polito.mainactivity.ui.login.LoginFragment"
         android:label="Login" >
         <action
             android:id="@+id/action_nav_login_fragment_to_nav_edit_profile"

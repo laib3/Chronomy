@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 
 class TimeslotsRecyclerViewAdapter (
