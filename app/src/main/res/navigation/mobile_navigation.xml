@@ -85,10 +85,7 @@
         <action
             android:id="@+id/action_nav_home_to_filteredTimeslotListFragment"
             app:destination="@id/nav_filtered" />
-        <action
-            android:id="@+id/action_nav_home_to_nav_details"
-            app:destination="@id/nav_details" />
-    </fragment>
+  </fragment>
     <fragment
         android:id="@+id/nav_filtered"
         android:name="it.polito.mainactivity.ui.home.FilteredTimeslotListFragment"
@@ -101,6 +98,12 @@
         <action
             android:id="@+id/action_nav_filtered_to_nav_filters"
             app:destination="@id/nav_filters" />
+        <action
+            android:id="@+id/action_nav_filtered_to_nav_details"
+            app:destination="@id/nav_details" />
+        <action
+            android:id="@+id/action_nav_filtered_to_nav_show_profile"
+            app:destination="@id/nav_show_profile" />
     </fragment>
     <dialog
         android:id="@+id/nav_filters"
