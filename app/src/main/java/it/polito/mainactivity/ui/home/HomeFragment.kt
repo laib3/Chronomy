@@ -1,6 +1,5 @@
 package it.polito.mainactivity.ui.home
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,13 +9,10 @@ import android.widget.GridLayout
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
-import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
-import java.util.Map
 
 class HomeFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
