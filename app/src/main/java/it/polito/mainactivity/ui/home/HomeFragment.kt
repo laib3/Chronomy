@@ -12,7 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
+
 
 class HomeFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
@@ -22,12 +23,13 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val gridLayout:GridLayout = binding.gridLayout
+        val gridLayout: GridLayout = binding.gridLayout
         gridLayout.columnCount = 2;
         gridLayout.rowCount = 5;
 
@@ -35,21 +37,48 @@ class HomeFragment : Fragment() {
 
         vm.timeslots.observe(viewLifecycleOwner) {
             val categoryNumbers: MutableMap<String, Int> = mutableMapOf()
-            val presentSkills = it.filter{ t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
-                .forEach{ t -> categoryNumbers.set(t.category, categoryNumbers.get(t.category)?.plus(1) ?: 1) }
+            it.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
+                .forEach { t ->
+                    categoryNumbers.set(
+                        t.category,
+                        categoryNumbers.get(t.category)?.plus(1) ?: 1
+                    )
+                }
 
             gridLayout.removeAllViews()
-            //remove duplicates and show the buttons
+            val tvHello: TextView = binding.tvHello
+            val tvMessage: TextView = binding.tvMessage
+            val tvEmptyMessage: TextView = binding.tvEmptyMessage
 
-            categoryNumbers
-                .map{ (cat, num) -> SkillHomeButton(requireContext(), cat, num) }
-                .forEach{ button: SkillHomeButton ->
-                    gridLayout.addView(button)
-                    button.setOnClickListener{
-                        val action = HomeFragmentDirections.actionNavHomeToFilteredTimeslotListFragment(button.category)
-                        parentFragment?.findNavController()?.navigate(action)
+            if (categoryNumbers.isEmpty()) {
+                // Show the empty message
+                tvEmptyMessage.visibility = View.VISIBLE
+
+                // Don't show the other messages
+                tvHello.visibility = View.INVISIBLE
+                tvMessage.visibility = View.INVISIBLE
+            } else {
+                // Don't show the empty message
+                tvEmptyMessage.visibility = View.INVISIBLE
+
+                // Show the other messages
+                tvHello.visibility = View.VISIBLE
+                tvMessage.visibility = View.VISIBLE
+
+                // Show the buttons
+                categoryNumbers
+                    .map { (cat, num) -> SkillHomeButton(requireContext(), cat, num) }
+                    .forEach { button: SkillHomeButton ->
+                        gridLayout.addView(button)
+                        button.setOnClickListener {
+                            val action =
+                                HomeFragmentDirections.actionNavHomeToFilteredTimeslotListFragment(
+                                    button.category
+                                )
+                            parentFragment?.findNavController()?.navigate(action)
+                        }
                     }
-                }
+            }
         }
         return root
     }

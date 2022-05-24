@@ -41,6 +41,12 @@
     <string name="user_profile_picture_label">Location</string>
     <string name="user_profile_save_label">Save</string>
     <string name="user_profile_active_label">Active</string>
+
+    <string name="timeslot_title">Title</string>
+    <string name="timeslot_location">Location</string>
+    <string name="timeslot_date">Date</string>
+    <string name="timeslot_hour">Hour</string>
+
     <string name="filers_apply">Apply filters</string>
     <string name="filter_min_duration">Min:</string>
     <string name="filter_max_duration">Max:</string>
@@ -48,6 +54,8 @@
     <string name="filter_max_date">Max:</string>
     <string name="filter_min_time">From:</string>
     <string name="filter_max_time">To:</string>
+
+    <string name="sort_by_label">Sort by:</string>
 
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
@@ -58,6 +66,7 @@
     <string name="user_profile_hint_phone">Phone</string>
     <string name="user_profile_hint_location">Location</string>
     <string name="user_skill_hint_description">Description</string>
+    <string name="sort_by_hint">sortingField</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>
@@ -66,7 +75,8 @@
     <string name="profile_pic_path">images</string>
     <string name="profile_pic_name">profile.jpg</string>
 
-    <string name="empty_timeslot_list_message">The list of timeslots is empty, press the button below to add one</string>
+    <string name="empty_timeslot_list_message">The list of your timeslots is empty, press the button below to add one.</string>
+    <string name="empty_category_map_message">There are no timeslot from other users yet. </string>
 
     <!-- separators -->
     <string name="starting_hour_dash_ending_hour">%s - %s  (%s)</string>

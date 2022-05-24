@@ -1,12 +1,8 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
-import it.polito.mainactivity.data.User
-import it.polito.mainactivity.data.emptyUser
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.DateFormat
@@ -61,14 +57,13 @@ class Utils {
         */
 
         fun formatStringToDate(strDate: String): Calendar {
-            // TODO: improve using dateFormat
             val day = strDate.split("/")[0]
             val month = strDate.split("/")[1]
             var year = strDate.split("/")[2]
 
             if (year.length==2) year ="20" + year
 
-            // TODO: Check why this -1 is needed
+            // -1 is needed because months start from 0
             return GregorianCalendar(year.toInt(), month.toInt() - 1, day.toInt())
         }
 
@@ -152,14 +147,14 @@ class Utils {
                     d.id,
                     d.get("title") as String,
                     d.get("description") as String,
-                    Utils.formatStringToDate(d.get("startDate") as String),
+                    formatStringToDate(d.get("startDate") as String),
                     d.get("startHour") as String,
                     d.get("endHour") as String,
                     d.get("location") as String,
                     d.get("category") as String,
                     d.get("repetition") as String?,
                     (d.get("days") as List<Number>).map{it.toInt()},
-                    Utils.formatStringToDate(d.get("endRepetitionDate") as String),
+                    formatStringToDate(d.get("endRepetitionDate") as String),
                     user
                 )
             } catch (e: Exception) {

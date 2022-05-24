@@ -13,9 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 
 class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val parentFragment: Fragment, private val vm: TimeslotViewModel) :
     RecyclerView.Adapter<TimeslotAdapter.TimeslotViewHolder>() {
@@ -67,6 +67,7 @@ class TimeslotAdapter(private val myTimeslots: List<Timeslot>, private val paren
         // Pass through bundle the id of the item in the list
         val bundle = Bundle()
         bundle.putString("id", ts.tid)
+        bundle.putBoolean("showOnly", false)
 
         // click on card, show details of that item
         holder.cvTimeslotCard.setOnClickListener {

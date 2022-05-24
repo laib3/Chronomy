@@ -1,16 +1,19 @@
 package it.polito.mainactivity.ui.home
 
+import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 
 class TimeslotsRecyclerViewAdapter (
@@ -27,6 +30,7 @@ class TimeslotsRecyclerViewAdapter (
         val tvNickname: TextView = v.findViewById(R.id.nickname)
 
         val cvTimeslotCard: MaterialCardView = v.findViewById(R.id.cvTimeslotCard)
+        val clTimeslotInfo: ConstraintLayout = v.findViewById(R.id.clTimeslotInfo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeslotViewHolder {
@@ -37,43 +41,46 @@ class TimeslotsRecyclerViewAdapter (
     }
 
     override fun onBindViewHolder(holder: TimeslotViewHolder, position: Int) {
-        val item = values[position]
+        val ts = values[position]
         //NB first is the timeslot!
-        holder.tvTitle.text = item.title
-        holder.tvLocation.text = item.location
-        holder.tvDate.text = when (item.repetition) {
-            "Weekly" -> "from " + Utils.formatDateToString(item.startDate) +
-                    " until " + Utils.formatDateToString(item.endRepetitionDate) +
+        holder.tvTitle.text = ts.title
+        holder.tvLocation.text = ts.location
+        holder.tvDate.text = when (ts.repetition) {
+            "Weekly" -> "from " + Utils.formatDateToString(ts.startDate) +
+                    " until " + Utils.formatDateToString(ts.endRepetitionDate) +
                     "\nevery week"
-            "Monthly" -> "from " + Utils.formatDateToString(item.startDate) +
-                    " until " + Utils.formatDateToString(item.endRepetitionDate) +
+            "Monthly" -> "from " + Utils.formatDateToString(ts.startDate) +
+                    " until " + Utils.formatDateToString(ts.endRepetitionDate) +
                     "\nevery month"
-            else -> Utils.formatDateToString(item.startDate)
+            else -> Utils.formatDateToString(ts.startDate)
         }
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,
-                item.startHour,
-                item.endHour,
-                Utils.getDuration(item.startHour ?: "0:0", item.endHour ?: "0:0")
+                ts.startHour,
+                ts.endHour,
+                Utils.getDuration(ts.startHour ?: "0:0", ts.endHour ?: "0:0")
             )
 
         holder.ivProfilePic.clipToOutline = true
-        item.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic)}
+        ts.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic)}
         val placeholder = parentFragment.resources.getString(R.string.user_profile_nickname_placeholder)
-        holder.tvNickname.text = String.format(placeholder, item.user.nickname)
-        // holder.tvNickname.text = "@provaProva"
+        holder.tvNickname.text = String.format(placeholder, ts.user.nickname)
 
-        /* TODO: LATER IMPROVEMENT
-        // Pass through bundle the id of the item in the list
+        // Pass through bundle the id of the timeslot in the list
         val bundle = Bundle()
-        bundle.putInt("id", position)
+        bundle.putString("id", ts.tid)
+        bundle.putBoolean("showOnly", true)
 
-        // click on card, show details of that item
-        holder.cvTimeslotCard.setOnClickListener {
-            parentFragment.findNavController().navigate(R.id.action_nav_home_to_nav_details, bundle)
+        // click on card in the timeslot part, show details of that timeslot
+        holder.clTimeslotInfo.setOnClickListener {
+            parentFragment.findNavController().navigate(R.id.action_nav_filtered_to_nav_details, bundle)
         }
-         */
+
+        // click on card in the user profile part, show details of that profile
+        holder.cvTimeslotCard.setOnClickListener {
+            parentFragment.findNavController().navigate(R.id.action_nav_filtered_to_nav_show_profile, bundle)
+        }
     }
 
     override fun getItemCount(): Int = values.size

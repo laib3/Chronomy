@@ -1,4 +1,4 @@
-package it.polito.mainactivity
+package it.polito.mainactivity.ui.login
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
@@ -10,20 +10,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.gms.common.api.internal.ActivityLifecycleObserver
 import com.google.firebase.auth.FirebaseAuth
+import it.polito.mainactivity.MainActivity
+import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentLoginBinding
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class LoginFragment: Fragment() {
 

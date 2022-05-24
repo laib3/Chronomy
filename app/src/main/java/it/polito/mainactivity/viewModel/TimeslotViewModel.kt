@@ -1,4 +1,4 @@
-package it.polito.mainactivity.ui.timeslot
+package it.polito.mainactivity.viewModel
 
 import android.app.Application
 import android.util.Log
@@ -10,10 +10,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.R
-import it.polito.mainactivity.data.Timeslot
-import it.polito.mainactivity.data.User
+import it.polito.mainactivity.model.Timeslot
+import it.polito.mainactivity.model.User
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
 import java.util.*
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
@@ -178,7 +177,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return false
     }
 
-    private fun resetSubmitTimeslot() {
+    fun resetSubmitTimeslot() {
         _submitTimeslot.value = Timeslot(_user.value!!)
     }
 

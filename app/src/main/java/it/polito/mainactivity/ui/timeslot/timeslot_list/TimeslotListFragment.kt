@@ -1,8 +1,6 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_list
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +19,7 @@ import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotListBinding
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.timeslot.TimeslotViewModel
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 
 class TimeslotListFragment : Fragment() {
 
@@ -52,6 +50,7 @@ class TimeslotListFragment : Fragment() {
             val timeslots = vm.timeslots.value!!.filter{ t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
             val adapter = TimeslotAdapter(timeslots, this, vm)
             rv.adapter = adapter
+
             // If the list of timeslots is empty, show a message
             val tv: TextView = binding.emptyTimeslotListMessage
             tv.visibility = if (adapter.itemCount == 0)
@@ -62,11 +61,9 @@ class TimeslotListFragment : Fragment() {
 
         // If click on fab, go to Edit timeslot
         val fab: FloatingActionButton = binding.fab
-        val bundle = Bundle()
 
         fab.setOnClickListener {
-            // TODO:FIX THIS
-            // vm.resetSubmitTimeslot()
+            vm.resetSubmitTimeslot()
             findNavController().navigate(R.id.action_nav_list_to_nav_edit)
         }
         return root

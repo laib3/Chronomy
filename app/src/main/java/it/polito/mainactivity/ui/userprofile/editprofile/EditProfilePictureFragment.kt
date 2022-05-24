@@ -14,7 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.databinding.FragmentEditProfilePictureBinding
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
 

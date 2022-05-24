@@ -9,13 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
-import it.polito.mainactivity.model.Skill
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.ui.userprofile.SkillCard
-import it.polito.mainactivity.ui.userprofile.UserProfileViewModel
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 
-class ShowProfileDataFragment: Fragment() {
+class ShowProfileDataFragment : Fragment() {
 
-    private val vm: UserProfileViewModel by activityViewModels()
+    private val vmUser: UserProfileViewModel by activityViewModels()
+    private val vmTimeslots: TimeslotViewModel by activityViewModels()
     private var _binding: FragmentShowProfileDataBinding? = null
     private val binding get() = _binding!!
 
@@ -34,17 +35,42 @@ class ShowProfileDataFragment: Fragment() {
         val emailTextView: TextView = binding.textEmail
         val skillsLayout = binding.skillsLayout
 
-        // observe viewModel changes
-        vm.user.observe(viewLifecycleOwner) {
-            balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
-            bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), it?.bio ?: "null")
-            phoneTextView.text = it?.phone ?: "null"
-            locationTextView.text = it?.location ?: "null"
-            emailTextView.text = it?.email ?: "null"
+        val id = parentFragment?.arguments?.getString("id")
+
+        // If show profile of other users
+        if (id != null) {
+            val user = vmTimeslots.timeslots.value?.find { t -> t.tid == id }?.user
+            balanceTextView.text =
+                String.format(getString(R.string.user_profile_balance_placeholder), user?.balance)
+            bioTextView.text = String.format(
+                getString(R.string.user_profile_bio_placeholder),
+                user?.bio ?: "null"
+            )
+            phoneTextView.text = user?.phone ?: "null"
+            locationTextView.text = user?.location ?: "null"
+            emailTextView.text = user?.email ?: "null"
             skillsLayout.removeAllViews()
-            it?.apply{
-                skills.map{ s -> SkillCard(requireContext(), s, vm, false) }
-                    .forEach{ sc: SkillCard -> skillsLayout.addView(sc) }
+            user?.apply {
+                skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
+                    .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
+            }
+        } else { // if show profile of the current user
+            // observe viewModel changes
+            vmUser.user.observe(viewLifecycleOwner) {
+                balanceTextView.text =
+                    String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
+                bioTextView.text = String.format(
+                    getString(R.string.user_profile_bio_placeholder),
+                    it?.bio ?: "null"
+                )
+                phoneTextView.text = it?.phone ?: "null"
+                locationTextView.text = it?.location ?: "null"
+                emailTextView.text = it?.email ?: "null"
+                skillsLayout.removeAllViews()
+                it?.apply {
+                    skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
+                        .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
+                }
             }
         }
 
