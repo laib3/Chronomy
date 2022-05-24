@@ -29,7 +29,10 @@ class ShowProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
+
+        val showOnly : Boolean = arguments?.getBoolean("showOnly")?: false
+        setHasOptionsMenu(!showOnly)
+
         _binding = FragmentShowProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
