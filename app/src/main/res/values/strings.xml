@@ -41,6 +41,12 @@
     <string name="user_profile_picture_label">Location</string>
     <string name="user_profile_save_label">Save</string>
     <string name="user_profile_active_label">Active</string>
+
+    <string name="timeslot_title">Title</string>
+    <string name="timeslot_location">Location</string>
+    <string name="timeslot_date">Date</string>
+    <string name="timeslot_hour">Hour</string>
+
     <string name="filers_apply">Apply filters</string>
     <string name="filter_min_duration">Min:</string>
     <string name="filter_max_duration">Max:</string>

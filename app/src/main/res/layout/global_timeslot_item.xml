@@ -12,13 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
-        android:padding="@dimen/medium_distance"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:cardMaxElevation="0dp"
         app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
+        app:cardUseCompatPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,61 +29,85 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvTitle"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout6"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/big_distance"
-                android:layout_marginTop="@dimen/big_distance"
-                android:layout_marginEnd="@dimen/big_distance"
-                android:gravity="center_vertical"
-                android:text="Title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/divider2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big_distance"
-                android:text="Location"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
-                app:layout_constraintStart_toStartOf="@+id/tvTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
-
-            <TextView
-                android:id="@+id/tvHour"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/big_distance"
-                android:text="Hour"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tvLocation"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tvLocation"
-                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+                app:layout_constraintEnd_toStartOf="@+id/divider2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/tvHour"
-                app:layout_constraintEnd_toEndOf="@+id/tvLocation"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tvLocation"
-                app:layout_constraintTop_toBottomOf="@+id/tvLocation"
-                />
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/big_distance"
+                    android:layout_marginTop="@dimen/medium_distance"
+                    android:layout_marginEnd="@dimen/big_distance"
+                    android:layout_marginBottom="@dimen/medium_distance"
+                    android:gravity="center_vertical"
+                    android:text="@string/timeslot_title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/tvLocation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/tvHour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/big_distance"
+                    android:layout_marginEnd="@dimen/big_distance"
+                    android:layout_marginBottom="@dimen/medium_distance"
+                    android:text="@string/timeslot_hour"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/big_distance"
+                    android:layout_marginEnd="@dimen/big_distance"
+                    android:layout_marginBottom="@dimen/small_distance"
+                    android:text="@string/timeslot_location"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/tvDate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/big_distance"
+                    android:layout_marginEnd="@dimen/big_distance"
+                    android:layout_marginBottom="@dimen/small_distance"
+                    android:text="@string/date_placeholder"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/tvHour"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/divider2"
@@ -93,40 +116,51 @@
                 android:background="@color/purple_500"
 
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.70"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/ivProfilePic"
-                android:layout_width="@dimen/profile_picture_small_size"
-                android:layout_height="@dimen/profile_picture_small_size"
-                android:layout_marginTop="@dimen/small_distance"
-                android:background="@drawable/white_circle_bg"
-                android:backgroundTint="@android:color/transparent"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/user_profile_picture_label"
-                app:layout_constraintBottom_toTopOf="@+id/nickname"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/divider2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:srcCompat="@drawable/profile_pic_1" />
-
-            <TextView
-                android:id="@+id/nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_distance"
-                android:text="@string/user_profile_nickname"
-                android:textSize="12dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/ivProfilePic"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/ivProfilePic"
-                app:layout_constraintTop_toBottomOf="@+id/ivProfilePic" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/divider2"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivProfilePic"
+                    android:layout_width="@dimen/profile_picture_small_size"
+                    android:layout_height="@dimen/profile_picture_small_size"
+                    android:layout_marginTop="@dimen/big_distance"
+                    android:layout_marginBottom="@dimen/medium_distance"
+                    android:background="@drawable/white_circle_bg"
+                    android:backgroundTint="@android:color/transparent"
+                    android:contentDescription="@string/user_profile_picture_label"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toTopOf="@+id/nickname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/profile_pic_1"
+                    tools:ignore="ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/big_distance"
+                    android:text="@string/user_profile_nickname"
+                    android:textSize="@dimen/profile_text_size_small"
+                    app:layout_constraintBottom_toTopOf="@+id/ivProfilePic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ivProfilePic" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
