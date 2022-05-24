@@ -5,8 +5,6 @@
       <map>
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/drawable/rectangle.xml" value="0.198" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_filtered_timeslot_list.xml" value="0.1" />
-        <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_details.xml" value="0.2" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/layout/fragment_timeslot_list.xml" value="0.176" />
@@ -31,33 +29,43 @@
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.1215" />
+        <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/white_circle_bg.xml" value="0.3565" />
         <entry key="app/src/main/res/layout-land/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout-land/fragment_timeslot_details.xml" value="0.27395833333333336" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.35" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.15185185185185185" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/fragment_filtered_timeslot_list.xml" value="0.21145833333333333" />
+        <entry key="app/src/main/res/layout/fragment_filters_bottom_dialog.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_data.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_picture.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_details.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_timeslot_list.xml" value="0.3655316191799861" />
+        <entry key="app/src/main/res/layout/global_timeslot_item.xml" value="0.9" />
         <entry key="app/src/main/res/layout/list_item.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/modal_repetition.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.6274216595818015" />
+        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/skill_card.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/skill_edit_modal.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/skill_home_button.xml" value="0.75" />
         <entry key="app/src/main/res/layout/skillcard.xml" value="0.67" />
         <entry key="app/src/main/res/layout/skillcard_tmp.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/skillcardtmp.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/timeslot_item.xml" value="0.44686648501362397" />
-        <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.5" />
         <entry key="app/src/main/res/menu/main.xml" value="0.2375" />
         <entry key="app/src/main/res/menu/showprofile_menu.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/menu/timeslot_details_menu.xml" value="0.35104166666666664" />
