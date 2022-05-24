@@ -55,6 +55,8 @@
     <string name="filter_min_time">From:</string>
     <string name="filter_max_time">To:</string>
 
+    <string name="sort_by_label">Sort by:</string>
+
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
     <string name="user_profile_hint_surname">Surname</string>
@@ -64,6 +66,7 @@
     <string name="user_profile_hint_phone">Phone</string>
     <string name="user_profile_hint_location">Location</string>
     <string name="user_skill_hint_description">Description</string>
+    <string name="sort_by_hint">sortingField</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -64,6 +66,8 @@ class FilteredTimeslotListFragment : Fragment() {
                 filteredList
             )
 
+
+
             adapter!!.filterList(filteredList)
 
             binding.filterButton.setBackgroundColor(resources.getColor(R.color.not_so_dark_slate_blue))
@@ -101,10 +105,19 @@ class FilteredTimeslotListFragment : Fragment() {
 
         category = args.category
 
+        val sortingKeys = listOf("Date",  "Title (A-Z)", "Title (Z-A)", "Duration (ASC)", "Duration (DES)")
+        val sortingKeysArrayAdapter =
+            ArrayAdapter(requireContext(), R.layout.list_item, sortingKeys)
+        binding.tvSortBy.setAdapter(sortingKeysArrayAdapter)
+
+        binding.tvSortBy.setText(
+            sortingKeysArrayAdapter.getItem(0).toString(), false
+        )
+
         val filterButton = binding.filterButton
         filterButton.setOnClickListener {
             var bottomFragment = FiltersDialogFragment()
-            var bundle = bundleOf(
+            val bundle = bundleOf(
                 "startDate" to startDate,
                 "endDate" to endDate,
                 "startTime" to startTime,
@@ -116,11 +129,10 @@ class FilteredTimeslotListFragment : Fragment() {
             fragmentManager?.let { bottomFragment.show(it, "") }
         }
 
-        vm.timeslots.observe(viewLifecycleOwner) {
+        binding.tvSortBy.onItemClickListener = AdapterView.OnItemClickListener { _, _, idx, _ ->
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category.lowercase() }
                 .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
-                .sortedBy { it.startDate }
 
             loadedList = applyFilters(
                 startDate,
@@ -132,9 +144,35 @@ class FilteredTimeslotListFragment : Fragment() {
                 loadedList
             )
 
+            loadedList = applySorting(loadedList, sortingKeys[idx])
+
             adapter = TimeslotsRecyclerViewAdapter(
                 loadedList!!,
-                this
+                this,
+            )
+            rv.adapter = adapter
+        }
+
+        vm.timeslots.observe(viewLifecycleOwner) {
+            loadedList = vm.timeslots.value!!
+                .filter { it.category.lowercase() == category.lowercase() }
+                .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
+
+            loadedList = applyFilters(
+                startDate,
+                endDate,
+                startTime,
+                endTime,
+                minDuration,
+                maxDuration,
+                loadedList
+            )
+
+            loadedList = applySorting(loadedList, binding.tvSortBy.text.toString())
+
+            adapter = TimeslotsRecyclerViewAdapter(
+                loadedList!!,
+                this,
             )
             rv.adapter = adapter
         }
@@ -164,6 +202,47 @@ class FilteredTimeslotListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun applySorting(
+        timeslotList: List<Timeslot>?,
+        sortingKey: String
+    ): List<Timeslot>? {
+        return when (sortingKey) {
+            "Date" -> {
+                timeslotList!!.sortedBy { it.startDate }
+            }
+            "Title (A-Z)" -> {
+                timeslotList!!.sortedBy { it.title }
+            }
+            "Title (Z-A)" -> {
+                timeslotList!!.sortedByDescending { it.title }
+            }
+            "Duration (ASC)" -> {
+                timeslotList!!.sortedBy {
+                    Utils.durationInMinutes(
+                        Utils.getDuration(
+                            it.startHour,
+                            it.endHour
+                        )
+                    )
+                }
+            }
+            "Duration (DES)" -> {
+                timeslotList!!.sortedByDescending {
+                    Utils.durationInMinutes(
+                        Utils.getDuration(
+                            it.startHour,
+                            it.endHour
+                        )
+                    )
+                }
+            }
+            else -> {
+                timeslotList!!.sortedBy { it.startDate }
+            }
+        }
+
     }
 
     private fun applyFilters(

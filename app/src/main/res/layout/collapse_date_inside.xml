@@ -47,7 +47,7 @@
         android:id="@+id/lEndDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="End date:"
+        android:text="@string/filter_max_date"
         app:layout_constraintBottom_toBottomOf="@+id/cvEndDate"
         app:layout_constraintEnd_toStartOf="@+id/cvEndDate"
         app:layout_constraintHorizontal_bias="0.5"
