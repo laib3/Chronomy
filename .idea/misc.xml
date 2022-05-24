@@ -39,10 +39,6 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.35" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
-        <entry key="app/src/main/res/layout/collapse_date_inside.xml" value="0.42294791892722805" />
-        <entry key="app/src/main/res/layout/collapse_duration.xml" value="0.10925925925925926" />
-        <entry key="app/src/main/res/layout/collapse_duration_inside.xml" value="0.43003104881004056" />
-        <entry key="app/src/main/res/layout/collapse_hour_inside.xml" value="0.42574257425742573" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.15185185185185185" />
@@ -50,7 +46,7 @@
         <entry key="app/src/main/res/layout/fragment_filtered_timeslot_list.xml" value="0.8216831169204559" />
         <entry key="app/src/main/res/layout/fragment_filters_bottom_dialog.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3442288049029622" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3113456464379947" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.3113456464379947" />
         <entry key="app/src/main/res/layout/fragment_show_profile_data.xml" value="0.5" />
@@ -65,7 +61,7 @@
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/skill_card.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/skill_edit_modal.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/skill_home_button.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/skill_home_button.xml" value="0.75" />
         <entry key="app/src/main/res/layout/skillcard.xml" value="0.67" />
         <entry key="app/src/main/res/layout/skillcard_tmp.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/layout/skillcardtmp.xml" value="0.35052083333333334" />

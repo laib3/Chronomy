@@ -14,6 +14,7 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentHomeBinding
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 
+
 class HomeFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
