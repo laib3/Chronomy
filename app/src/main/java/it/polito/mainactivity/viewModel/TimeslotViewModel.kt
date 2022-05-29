@@ -161,7 +161,19 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
-    private fun checkSubmitValid(): Boolean {
+    /** check validity of a given timeslot **/
+    fun isValid(t: Timeslot?): Boolean {
+        val app = getApplication<Application>()
+        return t != null &&
+                t.title.isNotBlank() &&
+                t.location.isNotBlank() &&
+                t.startHour.length == TIME_LENGTH &&
+                t.endHour.length == TIME_LENGTH &&
+                t.startHour <= t.endHour &&
+                t.category in app.resources.getStringArray(R.array.skills_array)
+    }
+
+    fun checkSubmitValid(): Boolean {
         val app = getApplication<Application>()
         return submitTimeslot.value!!.title.isNotBlank() &&
                 submitTimeslot.value!!.location.isNotBlank() &&
