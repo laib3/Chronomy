@@ -1,6 +1,7 @@
 package it.polito.mainactivity.ui.request
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,55 +9,89 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
+import it.polito.mainactivity.databinding.FragmentFilteredTimeslotListBinding
+import it.polito.mainactivity.databinding.FragmentRequestsListBinding
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.placeholder.PlaceholderContent
+import it.polito.mainactivity.ui.home.TimeslotsRecyclerViewAdapter
+import it.polito.mainactivity.viewModel.TimeslotViewModel
 
-/**
- * A fragment representing a list of Items.
- */
 class RequestsFragment : Fragment() {
+    private val vm: TimeslotViewModel by activityViewModels()
+    private var _binding: FragmentRequestsListBinding? = null
+    private var loadedList: List<Timeslot>? = null
+    private var shownList: List<Timeslot>? = null
 
-    private var columnCount = 1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
+    private val binding get() = _binding!!
+    var adapter: RequestRecyclerViewAdapter? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_requests_list, container, false)
+        _binding = FragmentRequestsListBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = RequestRecyclerViewAdapter(PlaceholderContent.ITEMS)
+        val rv: RecyclerView = binding.list
+        rv.layoutManager = LinearLayoutManager(root.context)
+
+        val tabLayout: TabLayout = binding.tabLayout
+
+        vm.timeslots.observe(viewLifecycleOwner) {
+            loadedList = vm.timeslots.value!!
+
+            //selected tab is "request received"
+            shownList = if (tabLayout.getTabAt(0)!!.isSelected){
+                loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
+            }else{
+                //fixme: if "request sent" is selected, get all the timeslots
+                // + have a chat "that i made"
+                // + are not "mine"
+                loadedList!!.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
             }
+
+            adapter = RequestRecyclerViewAdapter(
+                shownList!!,
+                this,
+            )
+            rv.adapter = adapter
         }
-        return view
-    }
 
-    companion object {
 
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            RequestsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                Log.d("TAG", "SELECTED: ${tab?.text}")
+                shownList =
+                    if(tab!!.text == R.string.tab_requests_for_my_timeslots.toString()){
+                    loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
+                }else{
+                    //FIXME
+                    loadedList!!.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
                 }
+                adapter?.filterList(shownList!!)
             }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                Log.d("TAG", "RESELECTED: ${tab?.text}")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                Log.d("TAG", "UNSELECTED: ${tab?.text}")
+            }
+        })
+
+        return root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
