@@ -57,7 +57,7 @@ class TimeslotListFragment : Fragment() {
         val fab: FloatingActionButton = binding.fab
 
         fab.setOnClickListener {
-            vm.resetSubmitTimeslot()
+            vm.resetSubmitFields()
             findNavController().navigate(R.id.action_nav_list_to_nav_edit)
         }
         return root

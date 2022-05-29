@@ -91,7 +91,7 @@ class TimeslotAdapter(
                 )
                 .setPositiveButton("Delete", DialogInterface.OnClickListener(
                     fun(_, _) {
-                        vm.removeTimeslot(ts.tid)
+                        vm.deleteTimeslot(ts.tid)
                     }
 
                 ))

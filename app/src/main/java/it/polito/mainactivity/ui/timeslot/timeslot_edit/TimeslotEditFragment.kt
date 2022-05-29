@@ -111,14 +111,14 @@ class TimeslotEditFragment : Fragment() {
             else {
                 if (vm.submitTimeslot.value != null) {
                     if (type == Type.START) {
-                        vm.setSubmitTimeslotFields(startHour = timeText)
+                        vm.setSubmitFields(startHour = timeText)
                         // if start hour is after end hour, set end hour to start hour
                         if (timeText > vm.submitTimeslot.value!!.endHour) {
-                            vm.setSubmitTimeslotFields(endHour = timeText)
+                            vm.setSubmitFields(endHour = timeText)
                         }
                     } else if (type == Type.END) {
                         if (timeText >= vm.submitTimeslot.value!!.startHour)
-                            vm.setSubmitTimeslotFields(endHour = timeText)
+                            vm.setSubmitFields(endHour = timeText)
                         else {
                             // display SnackBar when end time is before start time
                             val s: Snackbar = Snackbar.make(
@@ -214,7 +214,7 @@ class TimeslotEditFragment : Fragment() {
                         if (this.endRepetitionDate.before(date))
                             vm?.updateTimeslotField(
                                 this.tid,
-                                "endRepetitionDate",
+                                "submitEndRepetitionDate",
                                 Utils.formatDateToString(date)
                             )
                     } ?: apply {
@@ -224,7 +224,7 @@ class TimeslotEditFragment : Fragment() {
                     vm?.timeslots?.value!!.find { t -> t.tid == tId }?.apply {
                         vm?.updateTimeslotField(
                             this.tid,
-                            "endRepetitionDate",
+                            "submitEndRepetitionDate",
                             Utils.formatDateToString(date)
                         )
                     } ?: apply {
@@ -235,11 +235,11 @@ class TimeslotEditFragment : Fragment() {
             // if new timeslot
             else {
                 if (type == DType.START) {
-                    vm?.setSubmitTimeslotFields(date = date)
+                    vm?.setSubmitFields(date = date)
                     if (vm?.submitTimeslot?.value?.endRepetitionDate?.before(date) == true)
-                        vm?.setSubmitTimeslotFields(endRepetitionDate = date)
+                        vm?.setSubmitFields(endRepetitionDate = date)
                 } else if (type == DType.END) {
-                    vm?.setSubmitTimeslotFields(endRepetitionDate = date)
+                    vm?.setSubmitFields(endRepetitionDate = date)
                 }
             }
         }
@@ -342,14 +342,14 @@ class TimeslotEditFragment : Fragment() {
                 false
             )
             binding.tvCategory.onItemClickListener =
-                OnItemClickListener { _, _, idx, _ -> vm.setSubmitTimeslotFields(category = categories[idx]) }
+                OnItemClickListener { _, _, idx, _ -> vm.setSubmitFields(category = categories[idx]) }
             // dropdown menu
             binding.tvRepetition.setText(
                 repetitionsArrayAdapter.getItem(positionRepetition).toString(), false
             )
             // dropdown menu
             binding.tvRepetition.onItemClickListener =
-                OnItemClickListener { _, _, idx, _ -> vm.setSubmitTimeslotFields(repetition = repetitions[idx]) }
+                OnItemClickListener { _, _, idx, _ -> vm.setSubmitFields(repetitionType = repetitions[idx]) }
             binding.bSubmit.apply { visibility = View.VISIBLE }
 
             val oldDays = vm.submitTimeslot.value?.days?.toMutableSet()
@@ -359,7 +359,7 @@ class TimeslotEditFragment : Fragment() {
                         oldDays.remove(idx + 1)
                     else
                         oldDays?.add(idx + 1)
-                    vm.setSubmitTimeslotFields(days = oldDays?.toList())
+                    vm.setSubmitFields(daysOfWeek = oldDays?.toList())
                 }
             }
         }
@@ -398,7 +398,7 @@ class TimeslotEditFragment : Fragment() {
                 // if the switch is checked, set repetition to weekly
                 // to set repetition to null in submitTimeslot you need to pass empty string
                 val repetition = if (binding.swRepetition.isChecked) "Weekly" else ""
-                vm.setSubmitTimeslotFields(repetition = repetition)
+                vm.setSubmitFields(repetitionType = repetition)
             }
         }
 
@@ -541,7 +541,7 @@ class TimeslotEditFragment : Fragment() {
         binding.teTitle.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                vm.setSubmitTimeslotFields(title = s.toString())
+                vm.setSubmitFields(title = s.toString())
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -549,7 +549,7 @@ class TimeslotEditFragment : Fragment() {
         binding.teDescription.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                vm.setSubmitTimeslotFields(description = p0.toString())
+                vm.setSubmitFields(description = p0.toString())
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -557,7 +557,7 @@ class TimeslotEditFragment : Fragment() {
         binding.teLocation.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                vm.setSubmitTimeslotFields(location = p0.toString())
+                vm.setSubmitFields(location = p0.toString())
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
