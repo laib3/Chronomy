@@ -8,6 +8,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DiffUtil.calculateDiff
 import com.google.android.material.card.MaterialCardView
 import it.polito.mainactivity.R
 
@@ -72,7 +74,10 @@ class RequestRecyclerViewAdapter(
     override fun getItemCount(): Int = values.size
 
     fun filterList(filteredList: List<Timeslot>) {
+        val diffUtil = RequestDiffUtil(values, filteredList)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
         values = filteredList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+
     }
 }
