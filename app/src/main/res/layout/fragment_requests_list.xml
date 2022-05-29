@@ -21,12 +21,14 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_requests_for_my_timeslots" />
+            android:text="@string/tab_requests_for_my_timeslots"
+            android:contentDescription="@string/tab_requests_for_my_timeslots"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tab_requests_i_made" />
+            android:text="@string/tab_requests_i_made"
+            android:contentDescription="@string/tab_requests_i_made"/>
 
     </com.google.android.material.tabs.TabLayout>
 

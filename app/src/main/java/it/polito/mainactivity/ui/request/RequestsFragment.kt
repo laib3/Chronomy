@@ -46,9 +46,9 @@ class RequestsFragment : Fragment() {
             loadedList = vm.timeslots.value!!
 
             //selected tab is "request received"
-            shownList = if (tabLayout.getTabAt(0)!!.isSelected){
+            shownList = if (tabLayout.getTabAt(0)!!.isSelected) {
                 loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
-            }else{
+            } else {
                 //fixme: if "request sent" is selected, get all the timeslots
                 // + have a chat "that i made"
                 // + are not "mine"
@@ -62,27 +62,23 @@ class RequestsFragment : Fragment() {
             rv.adapter = adapter
         }
 
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Log.d("TAG", "SELECTED: ${tab?.text}")
                 shownList =
-                    if(tab!!.text == R.string.tab_requests_for_my_timeslots.toString()){
-                    loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
-                }else{
-                    //FIXME
-                    loadedList!!.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
-                }
+                    if (tab?.position == 0) {
+                        loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
+                    } else {
+                        //FIXME
+                        loadedList!!.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
+                    }
                 adapter?.filterList(shownList!!)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                Log.d("TAG", "RESELECTED: ${tab?.text}")
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                Log.d("TAG", "UNSELECTED: ${tab?.text}")
             }
         })
 
