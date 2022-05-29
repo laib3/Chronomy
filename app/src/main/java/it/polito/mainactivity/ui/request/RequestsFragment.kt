@@ -75,11 +75,9 @@ class RequestsFragment : Fragment() {
                 adapter?.filterList(shownList!!)
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
         })
 
         return root
