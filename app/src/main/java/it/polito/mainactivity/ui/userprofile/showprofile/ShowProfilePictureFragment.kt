@@ -40,7 +40,7 @@ class ShowProfilePictureFragment : Fragment() {
 
         // If show profile of other users
         if (id != null) {
-            val user = vmTimeslots.timeslots.value?.find { t -> t.tid == id }?.user
+            val user = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.user
             nameTextView.text = user?.name ?: "null"
             surnameTextView.text = user?.surname ?: "null"
             nicknameTextView.text =

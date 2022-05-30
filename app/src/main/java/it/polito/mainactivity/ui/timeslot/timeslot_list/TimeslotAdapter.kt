@@ -46,15 +46,7 @@ class TimeslotAdapter(
         val ts = myTimeslots[position]
         holder.tvTitle.text = ts.title
         holder.tvLocation.text = ts.location
-        holder.tvDate.text = when (ts.repetition) {
-            "Weekly" -> "from " + Utils.formatDateToString(ts.startDate) +
-                    " until " + Utils.formatDateToString(ts.endRepetitionDate) +
-                    "\nevery week"
-            "Monthly" -> "from " + Utils.formatDateToString(ts.startDate) +
-                    " until " + Utils.formatDateToString(ts.endRepetitionDate) +
-                    "\nevery month"
-            else -> Utils.formatDateToString(ts.startDate)
-        }
+        holder.tvDate.text = Utils.formatDateToString(ts.date)
 
         holder.tvHour.text =
             parentFragment.activity?.getString(
@@ -70,7 +62,7 @@ class TimeslotAdapter(
 
         // Pass through bundle the id of the item in the list
         val bundle = Bundle()
-        bundle.putString("id", ts.tid)
+        bundle.putString("id", ts.timeslotId)
         bundle.putBoolean("showOnly", false)
 
         // click on card, show details of that item
@@ -91,7 +83,7 @@ class TimeslotAdapter(
                 )
                 .setPositiveButton("Delete", DialogInterface.OnClickListener(
                     fun(_, _) {
-                        vm.deleteTimeslot(ts.tid)
+                        vm.deleteTimeslot(ts.timeslotId)
                     }
 
                 ))

@@ -39,7 +39,7 @@ class ShowProfileDataFragment : Fragment() {
 
         // If show profile of other users
         if (id != null) {
-            val user = vmTimeslots.timeslots.value?.find { t -> t.tid == id }?.user
+            val user = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.user
             balanceTextView.text =
                 String.format(getString(R.string.user_profile_balance_placeholder), user?.balance)
             bioTextView.text = String.format(

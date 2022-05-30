@@ -1,6 +1,7 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import it.polito.mainactivity.R
 import org.json.JSONArray
@@ -143,6 +144,10 @@ class Utils {
             if (d == null)
                 return null
             return try {
+
+                val user = anyToUser(d.get("user"))
+
+                val t =
                 Timeslot(
                     d.get("timeslotId") as String,
                     d.get("title") as String,
@@ -154,7 +159,10 @@ class Utils {
                     d.get("category") as String,
                     anyToUser(d.get("user"))
                 )
+                Log.d("Utils: timeslot:", t.toString())
+                t
             } catch (e: Exception) {
+                e.message?.let { Log.d("Utils: exception", it) }
                 e.printStackTrace()
                 null
             }

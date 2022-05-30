@@ -45,7 +45,7 @@ class TimeslotDetailsFragment : Fragment() {
         setHasOptionsMenu(!showOnly)
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val ts = it.find { t -> t.tid == id }
+            val ts = it.find { t -> t.timeslotId == id }
 
             tiTitle?.editText?.setText(ts?.title)
             tiDescription?.editText?.setText(ts?.description)
@@ -53,50 +53,13 @@ class TimeslotDetailsFragment : Fragment() {
             val dateString = SpannableStringBuilder()
 
             if (ts != null) {
-                when {
-                    ts.repetition?.lowercase() == "weekly" -> {
-                        dateString
-                            .append("This timeslots repeats ")
-                            .bold { append("weekly") }
-                            .append(".\n\nStarting on ")
-                            .italic { append(Utils.formatDateToString(ts.startDate)) }
-                            .append(" until ")
-                            .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
-                            .append("\nevery ")
-                            .italic { append("${Utils.getDaysOfRepetition(ts.days)}\n") }
-                            .append("from ")
-                            .italic { append(ts.startHour) }
-                            .append(" to ")
-                            .italic { append(ts.endHour) }
-                            .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
-                    }
-                    ts.repetition?.lowercase() == "monthly" -> { //monthly
-                        dateString
-                            .append("This timeslots repeats ")
-                            .bold { append("Monthly") }
-                            .append(".\n\nStarting on ")
-                            .italic { append(Utils.formatDateToString(ts.startDate)) }
-                            .append(" until ")
-                            .italic { append(Utils.formatDateToString(ts.endRepetitionDate)) }
-                            .append("\nevery ")
-                            .italic { append("${ts.startDate.get(Calendar.DAY_OF_MONTH)}") }
-                            .append(" of the month\n")
-                            .append("from ")
-                            .italic { append(ts.startHour) }
-                            .append(" to ")
-                            .italic { append(ts.endHour) }
-                            .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
-                    }
-                    else -> {  // No repetition
-                        dateString
-                            .italic { append(Utils.formatDateToString(ts.startDate)) }
-                            .append("\nfrom ")
-                            .italic { append(ts.startHour) }
-                            .append(" to ")
-                            .italic { append(ts.endHour) }
-                            .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
-                    }
-                }
+                dateString
+                    .italic { append(Utils.formatDateToString(ts.date)) }
+                    .append("\nfrom ")
+                    .italic { append(ts.startHour) }
+                    .append(" to ")
+                    .italic { append(ts.endHour) }
+                    .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
                 tiAvailability?.editText?.text = dateString
                 tiLocation?.editText?.setText(ts.location)
                 tiCategory?.editText?.setText(ts.category)

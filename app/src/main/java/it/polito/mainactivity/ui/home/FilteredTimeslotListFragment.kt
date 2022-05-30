@@ -207,7 +207,7 @@ class FilteredTimeslotListFragment : Fragment() {
     ): List<Timeslot> {
         return when (sortingKey) {
             "Date" -> {
-                timeslotList!!.sortedBy { it.startDate }
+                timeslotList!!.sortedBy { it.date }
             }
             "Title (A-Z)" -> {
                 timeslotList!!.sortedBy { it.title }
@@ -236,7 +236,7 @@ class FilteredTimeslotListFragment : Fragment() {
                 }
             }
             else -> {
-                timeslotList!!.sortedBy { it.startDate }
+                timeslotList!!.sortedBy { it.date }
             }
         }
     }
@@ -251,12 +251,12 @@ class FilteredTimeslotListFragment : Fragment() {
 
         if (minStartDate != null && minStartDate != "dd/mm/yyyy") {
             val calendarStartDate = Utils.formatStringToDate(minStartDate)
-            result = result?.filter { !it.startDate.before(calendarStartDate) }
+            result = result?.filter { !it.date.before(calendarStartDate) }
         }
 
         if (maxStartDate != null && maxStartDate != "dd/mm/yyyy") {
             val calendarEndDate = Utils.formatStringToDate(maxStartDate)
-            result = result?.filter { !it.startDate.after(calendarEndDate) }
+            result = result?.filter { !it.date.after(calendarEndDate) }
         }
 
 

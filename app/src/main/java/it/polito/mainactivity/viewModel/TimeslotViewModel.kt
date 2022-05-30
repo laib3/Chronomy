@@ -45,13 +45,19 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             _submitTimeslot.value = Timeslot(_user.value!!)
         }
 
-        lTimeslots = db.collection("timeslots")
-            .addSnapshotListener { v, e ->
+        lTimeslots =
+            db
+                .collection("timeslots")
+                .addSnapshotListener { v, e ->
                 if (e == null) {
                     _timeslots.value = v!!.mapNotNull { d -> Utils.toTimeslot(d) }
-                    Log.d("TIMESLOTS", _timeslots.value.toString())
+                    // Log.d("TimeslotViewModel", v.toString())
                 }
-                // TODO: choose how to handle => else _timeslots.value = emptyList()
+                // TODO choose how to handle empty timeslots
+                else {
+                    _timeslots.value = emptyList()
+                    Log.d("TimeslotViewModel", "error " + e.message)
+                }
             }
 
     }
@@ -135,8 +141,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 "endHour" to t.endHour,
                 "location" to t.location,
                 "category" to t.category,
-                "date" to date,
-                "user" to user
+                "date" to Utils.formatDateToString(date),
+                "user" to user.value
             )
         }.forEach{ tMap ->
             db
