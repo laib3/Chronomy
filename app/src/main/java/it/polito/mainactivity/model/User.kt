@@ -13,11 +13,14 @@ data class User(
     var phone: String,
     var skills: List<Skill>,
     var balance: Int,
-    var profilePictureUrl: String?
+    var profilePictureUrl: String?,
+    var offers: MutableList<Timeslot>,
+    var requests: MutableList<Timeslot>
 ) {
     override fun toString() =
         """{ "userId": "$userId", "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
-                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills }"""
+                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills,""" +
+               """ "offers":${offers}, "requests":${requests} """ .trimMargin()
 }
 
 fun emptyUser(): User {
@@ -32,7 +35,9 @@ fun emptyUser(): User {
         "",
         createEmptySkills(),
         5,
-        null
+        null,
+        mutableListOf(),
+        mutableListOf()
     )
 }
 

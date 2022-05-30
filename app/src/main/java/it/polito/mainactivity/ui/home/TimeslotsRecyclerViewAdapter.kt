@@ -55,10 +55,10 @@ class TimeslotsRecyclerViewAdapter(
             )
 
         holder.ivProfilePic.clipToOutline = true
-        ts.user.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic) }
+        ts.publisher.profilePictureUrl?.apply { Picasso.get().load(this).into(holder.ivProfilePic) }
         val placeholder =
             parentFragment.resources.getString(R.string.user_profile_nickname_placeholder)
-        holder.tvNickname.text = String.format(placeholder, ts.user.nickname)
+        holder.tvNickname.text = String.format(placeholder, ts.publisher.nickname)
 
         // Pass through bundle the id of the timeslot in the list
         val bundle = Bundle()
@@ -71,7 +71,7 @@ class TimeslotsRecyclerViewAdapter(
                 .navigate(R.id.action_nav_filtered_to_nav_details, bundle)
         }
 
-        // click on card in the user profile part, show details of that profile
+        // click on card in the publisher profile part, show details of that profile
         holder.cvTimeslotCard.setOnClickListener {
             parentFragment.findNavController()
                 .navigate(R.id.action_nav_filtered_to_nav_show_profile, bundle)

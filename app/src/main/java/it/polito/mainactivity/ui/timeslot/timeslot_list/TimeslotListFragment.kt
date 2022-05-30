@@ -41,7 +41,7 @@ class TimeslotListFragment : Fragment() {
         }
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val timeslots = vm.timeslots.value!!.filter{ t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }.sortedBy { t -> t.date }
+            val timeslots = vm.timeslots.value!!.filter{ t -> t.publisher.userId == FirebaseAuth.getInstance().currentUser!!.uid }.sortedBy { t -> t.date }
             val adapter = TimeslotAdapter(timeslots, this, vm)
             rv.adapter = adapter
 

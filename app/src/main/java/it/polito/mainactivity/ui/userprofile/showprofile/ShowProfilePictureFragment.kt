@@ -40,7 +40,7 @@ class ShowProfilePictureFragment : Fragment() {
 
         // If show profile of other users
         if (id != null) {
-            val user = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.user
+            val user = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.publisher
             nameTextView.text = user?.name ?: "null"
             surnameTextView.text = user?.surname ?: "null"
             nicknameTextView.text =
@@ -50,7 +50,7 @@ class ShowProfilePictureFragment : Fragment() {
                 )
             user?.profilePictureUrl?.apply { Picasso.get().load(this).into(profilePicture) }
 
-        } else { // if show profile of the current user
+        } else { // if show profile of the current publisher
             // observe viewModel changes
             vmUser.user.observe(viewLifecycleOwner) {
                 nameTextView.text = it?.name ?: "null"

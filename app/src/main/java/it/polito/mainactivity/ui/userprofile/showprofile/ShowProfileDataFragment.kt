@@ -39,7 +39,7 @@ class ShowProfileDataFragment : Fragment() {
 
         // If show profile of other users
         if (id != null) {
-            val user = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.user
+            val user = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.publisher
             balanceTextView.text =
                 String.format(getString(R.string.user_profile_balance_placeholder), user?.balance)
             bioTextView.text = String.format(
@@ -54,7 +54,7 @@ class ShowProfileDataFragment : Fragment() {
                 skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
                     .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
             }
-        } else { // if show profile of the current user
+        } else { // if show profile of the current publisher
             // observe viewModel changes
             vmUser.user.observe(viewLifecycleOwner) {
                 balanceTextView.text =

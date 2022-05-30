@@ -3,8 +3,10 @@ package it.polito.mainactivity.model
 import java.util.*
 
 data class Timeslot(
-    var user: User
+    var publisher: User
 ) {
+
+    enum class Status {PUBLISHED, ASSIGNED, COMPLETED}
 
     var timeslotId: String
     var title: String
@@ -14,11 +16,9 @@ data class Timeslot(
     var endHour: String
     var location: String
     var category: String
-    // var repetition: String? = null
-    // var days: List<Int>
-    // var submitEndRepetitionDate: Calendar
-
-    // private var dates: MutableList<Calendar> = mutableListOf()
+    var status: Status
+    val chats: MutableList<Chat>
+    val ratings: MutableMap<String, Rating>
 
     init {
         val hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -33,11 +33,9 @@ data class Timeslot(
         endHour = timeText
         location = ""
         category = "Other"
-        // val currentDay = currentDate.get(Calendar.DAY_OF_WEEK)
-        // repetition = null
-        // days = listOf(currentDay)
-        // submitEndRepetitionDate = currentDate
-        // createDates()
+        status = Status.PUBLISHED
+        chats = mutableListOf()
+        ratings = mutableMapOf() // map is empty, gets populated later
     }
 
     /* 2nd constructor */
@@ -50,8 +48,8 @@ data class Timeslot(
         _endHour: String,
         _location: String,
         _category: String,
-        _user: User
-    ) : this(_user) {
+        _publisher: User,
+    ) : this(_publisher) {
         timeslotId = _timeslotId
         title = _title
         description = _description
@@ -67,7 +65,7 @@ data class Timeslot(
         return """
         {
         "timeslotId": "$timeslotId",
-        "user": ${user},
+        "publisher": ${publisher},
         "title": "$title", 
         "description": "$description",
         "date": 

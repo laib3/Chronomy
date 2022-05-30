@@ -44,7 +44,7 @@ class LoginFragment : Fragment() {
         } else {
             Log.d("LoginFragment", "sign in failed")
             if (response == null)
-                Log.d("LoginFragment", "canceled by user")
+                Log.d("LoginFragment", "canceled by publisher")
             else
                 Log.d("LoginFragment", "error:" + response.error?.errorCode)
         }

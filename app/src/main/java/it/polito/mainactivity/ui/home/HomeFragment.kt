@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         vm.timeslots.observe(viewLifecycleOwner) {
             val categoryNumbers: MutableMap<String, Int> = mutableMapOf()
 
-            it.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
+            it.filter { t -> t.publisher.userId != FirebaseAuth.getInstance().currentUser!!.uid }
                 .forEach { t ->
                     categoryNumbers[t.category] = categoryNumbers[t.category]?.plus(1) ?: 1
                 }

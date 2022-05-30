@@ -33,7 +33,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                     // document doesn't exist
                     if (!it.exists()) {
                         userRef.set(emptyUser()).addOnSuccessListener {
-                            Log.d("UserProfileViewModel", "user creation ok with id $userId")
+                            Log.d("UserProfileViewModel", "publisher creation ok with id $userId")
                             userListenerRegistration = userRef.addSnapshotListener { value, _ ->
                                 if (value != null) {
                                     _user.value = Utils.toUser(value)
@@ -45,7 +45,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                                     _newUser.value = null
                                 }
                             }
-                        }.addOnFailureListener { Log.d("UserProfileViewModel", "user not created") }
+                        }.addOnFailureListener { Log.d("UserProfileViewModel", "publisher not created") }
                     } else {
                         // if document exists
                         userListenerRegistration = userRef.addSnapshotListener { value, _ ->
@@ -68,7 +68,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 }
             } else { // log out
                 // TODO signal log out
-                Log.d("UserProfileViewModel", "user log out")
+                Log.d("UserProfileViewModel", "publisher log out")
                 _user.value = null
                 _newUser.value = null
             }
@@ -80,7 +80,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         userListenerRegistration.remove()
     }
 
-    // update user field and user inside the timeslots
+    // update publisher field and publisher inside the timeslots
     fun updateUserField(userId: String?, field: String, newValue: Any?): Boolean {
         //var returnValue = false
         if (userId == null || newValue == null)
@@ -88,18 +88,18 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         val userRef = db.collection("users").document(userId)
         val tsRef = db.collection("timeslots")
 
-        tsRef.whereEqualTo("user.userId", userId).get().addOnSuccessListener { result ->
+        tsRef.whereEqualTo("publisher.userId", userId).get().addOnSuccessListener { result ->
             val tsRefs = result.documents.map { it.reference }
             userRef.update(field, newValue)
                 .addOnSuccessListener {
                     userRef.get().addOnSuccessListener { userSnapshot ->
                         val user = Utils.toUser(userSnapshot)
                         tsRefs.forEach { tsRef ->
-                            tsRef.update("user", user)
+                            tsRef.update("publisher", user)
                                 .addOnSuccessListener {
                                     Log.d(
                                         "UserProfileViewModel",
-                                        "timeslot updated successfully with user: " + user.toString()
+                                        "timeslot updated successfully with publisher: " + user.toString()
                                     )
                                 }
                                 .addOnFailureListener {
@@ -112,12 +112,12 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                     }.addOnFailureListener {
                         Log.d(
                             "UserProfileViewModel",
-                            "get user failure: " + it.message
+                            "get publisher failure: " + it.message
                         )
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.d("UserProfileViewModel", "update user failure: " + exception.message)
+                    Log.d("UserProfileViewModel", "update publisher failure: " + exception.message)
                 }
         }
 

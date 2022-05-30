@@ -142,7 +142,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 "location" to t.location,
                 "category" to t.category,
                 "date" to Utils.formatDateToString(date),
-                "user" to user.value
+                "publisher" to user.value
             )
         }.forEach{ tMap ->
             db

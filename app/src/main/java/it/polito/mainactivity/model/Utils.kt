@@ -145,7 +145,7 @@ class Utils {
                 return null
             return try {
 
-                val user = anyToUser(d.get("user"))
+                val user = anyToUser(d.get("publisher"))
 
                 val t =
                 Timeslot(
@@ -157,7 +157,7 @@ class Utils {
                     d.get("endHour") as String,
                     d.get("location") as String,
                     d.get("category") as String,
-                    anyToUser(d.get("user"))
+                    anyToUser(d.get("publisher"))
                 )
                 Log.d("Utils: timeslot:", t.toString())
                 t
@@ -190,10 +190,10 @@ class Utils {
                         )
                     },
                     (d.get("balance") as Long).toInt(),
-                    d.get("profilePictureUrl") as String?
-                    // TODO: update with real values
-                    //get("timeslots") as List<String>,
-                    //get("profilePicture") as String
+                    d.get("profilePictureUrl") as String?,
+                    // TODO update with real values
+                    mutableListOf(),
+                    mutableListOf()
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -223,7 +223,10 @@ class Utils {
                     )
                 },
                 (map["balance"] as Long).toInt(),
-                map["profilePictureUrl"] as String?
+                map["profilePictureUrl"] as String?,
+                // TODO update with real values
+                mutableListOf(),
+                mutableListOf()
             )
         }
 
