@@ -276,6 +276,13 @@ class TimeslotEditFragment : Fragment() {
             binding.S6
         )
 
+        if(timeslotId != null){
+            binding.lStartDate.text = "Date:"
+        }
+        else {
+            binding.lStartDate.text = "Start date:"
+        }
+
         // set listeners
         if (timeslotId != null)
             addFocusChangeListeners()
@@ -484,8 +491,8 @@ class TimeslotEditFragment : Fragment() {
 
     private fun hideRepetitionComponents(){
         binding.swRepetition.visibility = View.GONE
-        binding.lEndDate.visibility = View.INVISIBLE
-        binding.cvEndDate.visibility = View.INVISIBLE
+        binding.lEndDate.visibility = View.GONE
+        binding.cvEndDate.visibility = View.GONE
         binding.lRepeat.visibility = View.GONE
         binding.dmRepetition.visibility = View.GONE
         binding.cgDays.visibility = View.GONE
