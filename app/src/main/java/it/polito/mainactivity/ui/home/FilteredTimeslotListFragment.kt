@@ -87,19 +87,9 @@ class FilteredTimeslotListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = FragmentFilteredTimeslotListBinding.inflate(inflater, container, false)
+    override fun onResume() {
+        super.onResume()
         val root: View = binding.root
-
-        val rv: RecyclerView = binding.timeslotListRv
-        rv.layoutManager = LinearLayoutManager(root.context)
-
-        category = args.category
 
         val sortingKeys =
             listOf("Date", "Title (A-Z)", "Title (Z-A)", "Duration (ASC)", "Duration (DES)")
@@ -107,9 +97,15 @@ class FilteredTimeslotListFragment : Fragment() {
             ArrayAdapter(requireContext(), R.layout.list_item, sortingKeys)
         binding.tvSortBy.setAdapter(sortingKeysArrayAdapter)
 
+        // TODO store position in a variable
         binding.tvSortBy.setText(
             sortingKeysArrayAdapter.getItem(0).toString(), false
         )
+
+        val rv: RecyclerView = binding.timeslotListRv
+        rv.layoutManager = LinearLayoutManager(root.context)
+
+        category = args.category
 
         val filterButton = binding.filterButton
         filterButton.setOnClickListener {
@@ -193,6 +189,16 @@ class FilteredTimeslotListFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentFilteredTimeslotListBinding.inflate(inflater, container, false)
+        val root: View = binding.root
         return root
     }
 
