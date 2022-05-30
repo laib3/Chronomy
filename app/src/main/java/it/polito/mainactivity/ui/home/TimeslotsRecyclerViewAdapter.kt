@@ -45,15 +45,7 @@ class TimeslotsRecyclerViewAdapter(
         //NB first is the timeslot!
         holder.tvTitle.text = ts.title
         holder.tvLocation.text = ts.location
-        holder.tvDate.text = when (ts.repetition) {
-            "Weekly" -> "from " + Utils.formatDateToString(ts.startDate) +
-                    " until " + Utils.formatDateToString(ts.endRepetitionDate) +
-                    "\nevery week"
-            "Monthly" -> "from " + Utils.formatDateToString(ts.startDate) +
-                    " until " + Utils.formatDateToString(ts.endRepetitionDate) +
-                    "\nevery month"
-            else -> Utils.formatDateToString(ts.startDate)
-        }
+        holder.tvDate.text = Utils.formatDateToString(ts.date)
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,
@@ -70,7 +62,7 @@ class TimeslotsRecyclerViewAdapter(
 
         // Pass through bundle the id of the timeslot in the list
         val bundle = Bundle()
-        bundle.putString("id", ts.tid)
+        bundle.putString("id", ts.timeslotId)
         bundle.putBoolean("showOnly", true)
 
         // click on card in the timeslot part, show details of that timeslot

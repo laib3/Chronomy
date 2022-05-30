@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.R
@@ -24,10 +23,15 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private val _timeslots = MutableLiveData<List<Timeslot>>()
     val timeslots: LiveData<List<Timeslot>> = _timeslots
 
+    /* following attributes are meaningful only if a new timeslot is being created */
     private val _submitTimeslot: MutableLiveData<Timeslot> = MutableLiveData<Timeslot>()
-
-    // .apply { value = Timeslot(_user.value!!) }
     val submitTimeslot: LiveData<Timeslot> = _submitTimeslot
+    private val _submitRepetitionType: MutableLiveData<String?> = MutableLiveData<String?>().apply{ value = null }
+    val submitRepetitionType: LiveData<String?> = _submitRepetitionType
+    private val _submitDaysOfWeek: MutableLiveData<List<Int>> = MutableLiveData<List<Int>>().apply{ value = listOf(GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK)) }
+    val submitDaysOfWeek: LiveData<List<Int>> = _submitDaysOfWeek
+    private val _submitEndRepetitionDate: MutableLiveData<Calendar> = MutableLiveData<Calendar>().apply{ value = GregorianCalendar.getInstance() }
+    val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var lTimeslots: ListenerRegistration
@@ -41,12 +45,19 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             _submitTimeslot.value = Timeslot(_user.value!!)
         }
 
-        lTimeslots = db.collection("timeslots")
-            .addSnapshotListener { v, e ->
+        lTimeslots =
+            db
+                .collection("timeslots")
+                .addSnapshotListener { v, e ->
                 if (e == null) {
-                    _timeslots.value = v!!.mapNotNull { d -> d.toTimeslot() }
-                    Log.d("TIMESLOTS", _timeslots.value.toString())
-                } // TODO: choose how to handle => else _timeslots.value = emptyList()
+                    _timeslots.value = v!!.mapNotNull { d -> Utils.toTimeslot(d) }
+                    // Log.d("TimeslotViewModel", v.toString())
+                }
+                // TODO choose how to handle empty timeslots
+                else {
+                    _timeslots.value = emptyList()
+                    Log.d("TimeslotViewModel", "error " + e.message)
+                }
             }
 
     }
@@ -54,28 +65,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     override fun onCleared() {
         super.onCleared()
         lTimeslots.remove()
-    }
-
-    private fun DocumentSnapshot.toTimeslot(): Timeslot? {
-        return try {
-            Timeslot(
-                id,
-                get("title") as String,
-                get("description") as String,
-                Utils.formatStringToDate(get("startDate") as String),
-                get("startHour") as String,
-                get("endHour") as String,
-                get("location") as String,
-                get("category") as String,
-                get("repetition") as String?,
-                (get("days") as List<Number>).map { it.toInt() },
-                Utils.formatStringToDate(get("endRepetitionDate") as String),
-                Utils.anyToUser(get("user"))
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
     }
 
     fun updateTimeslotField(id: String, field: String, newValue: Any?): Boolean {
@@ -99,33 +88,74 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
+    /* set current submitTimeslot to a empty timeslot */
+    fun resetSubmitFields() {
+        _submitTimeslot.value = Timeslot(_user.value!!) // default constructor
+        _submitRepetitionType.value = null
+        _submitDaysOfWeek.value = listOf(GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        _submitEndRepetitionDate.value = GregorianCalendar.getInstance()
+    }
 
-    private fun addTimeslot(t: Timeslot?): Boolean {
-        //var success = false;
+    fun setSubmitFields(
+        title: String? = null,
+        description: String? = null,
+        date: Calendar? = null,
+        startHour: String? = null,
+        endHour: String? = null,
+        location: String? = null,
+        category: String? = null,
+        repetitionType: String? = null,
+        daysOfWeek: List<Int>? = null,
+        endRepetitionDate: Calendar? = null
+    ) {
+        val sTs = _submitTimeslot.value
+        title?.let { sTs?.title = it }
+        description?.let { sTs?.description = it }
+        date?.let { sTs?.date = it }
+        startHour?.let { sTs?.startHour = it }
+        endHour?.let { sTs?.endHour = it }
+        location?.let { sTs?.location = it }
+        category?.let { sTs?.category = it }
+        // if you pass an empty string then it means that you want it to be null
+        repetitionType?.let { _submitRepetitionType.value = if(it != "") it else null }
+        daysOfWeek?.let { _submitDaysOfWeek.value = it }
+        endRepetitionDate?.let { _submitEndRepetitionDate.value = it }
+        _submitTimeslot.value = sTs!!
+    }
 
-        if (t != null && isValid(t)) {
-            val ts = hashMapOf(
+    // TODO do not return a value to check if submission correct, but set a vm attribute
+    /* submit current timeslot */
+    fun submitTimeslot(): Boolean {
+        /* check validity of submit fields */
+        if(!checkSubmitValid())
+            return false
+        val t = _submitTimeslot.value
+        val dates: List<Calendar> = Utils.createDates(t!!.date, submitRepetitionType.value, submitEndRepetitionDate.value!!, submitDaysOfWeek.value!!)
+        dates.map{ date ->
+            val id = db.collection("timeslots").document().id
+            hashMapOf(
+                "timeslotId" to id,
                 "title" to t.title,
                 "description" to t.description,
                 "startHour" to t.startHour,
                 "endHour" to t.endHour,
                 "location" to t.location,
                 "category" to t.category,
-                "repetition" to t.repetition,
-                "days" to t.days,
-                "startDate" to Utils.formatDateToString(t.startDate),
-                "endRepetitionDate" to Utils.formatDateToString(t.endRepetitionDate),
-                "user" to t.user
+                "date" to Utils.formatDateToString(date),
+                "user" to user.value
             )
+        }.forEach{ tMap ->
             db
                 .collection("timeslots")
-                .document()
-                .set(ts)
+                .document(tMap["timeslotId"] as String)
+                .set(tMap)
                 .addOnSuccessListener {
                     Log.d(
-                        "TimeslotViewModel",
+                        "Firebase",
                         "New timeslot successfully saved "
                     ) //success = true
+                    // TODO check if it works
+                    resetSubmitFields()
                 }
                 .addOnFailureListener {
                     Log.d(
@@ -137,21 +167,34 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
-    fun isValid(t: Timeslot): Boolean {
+    /** check validity of a given timeslot **/
+    fun isValid(t: Timeslot?): Boolean {
         val app = getApplication<Application>()
-        return t.title.isNotBlank() &&
+        return t != null &&
+                t.title.isNotBlank() &&
                 t.location.isNotBlank() &&
                 t.startHour.length == TIME_LENGTH &&
                 t.endHour.length == TIME_LENGTH &&
                 t.startHour <= t.endHour &&
-                t.category in app.resources.getStringArray(R.array.skills_array) &&
-                (t.repetition == null || (
-                        t.repetition in app.resources.getStringArray(R.array.repetitionMw) &&
-                                t.days.isNotEmpty() &&
-                                (t.endRepetitionDate.after(t.startDate) || t.endRepetitionDate == t.startDate)))
+                t.category in app.resources.getStringArray(R.array.skills_array)
     }
 
-    fun removeTimeslot(id: String?): Boolean {
+    fun checkSubmitValid(): Boolean {
+        val app = getApplication<Application>()
+        return submitTimeslot.value!!.title.isNotBlank() &&
+                submitTimeslot.value!!.location.isNotBlank() &&
+                submitTimeslot.value!!.startHour.length == TIME_LENGTH &&
+                submitTimeslot.value!!.endHour.length == TIME_LENGTH &&
+                submitTimeslot.value!!.startHour <= submitTimeslot.value!!.endHour &&
+                submitTimeslot.value!!.category in app.resources.getStringArray(R.array.skills_array) &&
+                (submitRepetitionType.value == null || (
+                        submitRepetitionType.value in app.resources.getStringArray(R.array.repetitionMw) &&
+                                submitDaysOfWeek.value!!.isNotEmpty() &&
+                                (!submitEndRepetitionDate.value!!.before(submitTimeslot.value!!.date))) /* end repetition date must not be before start date */
+                        )
+    }
+
+    fun deleteTimeslot(id: String?): Boolean {
         //var success: Boolean = false;
         id?.apply {
             db.collection("timeslots")
@@ -170,43 +213,5 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
-    fun submitTimeslot(): Boolean {
-        if (addTimeslot(_submitTimeslot.value)) {
-            resetSubmitTimeslot()
-            return true
-        }
-        return false
-    }
-
-    fun resetSubmitTimeslot() {
-        _submitTimeslot.value = Timeslot(_user.value!!)
-    }
-
-    fun setSubmitTimeslotFields(
-        title: String? = null,
-        description: String? = null,
-        date: Calendar? = null,
-        startHour: String? = null,
-        endHour: String? = null,
-        location: String? = null,
-        category: String? = null,
-        repetition: String? = null,
-        days: List<Int>? = null,
-        endRepetitionDate: Calendar? = null
-    ) {
-        val sTs = submitTimeslot.value
-        title?.let { sTs?.title = it }
-        description?.let { sTs?.description = it }
-        date?.let { sTs?.startDate = it }
-        startHour?.let { sTs?.startHour = it }
-        endHour?.let { sTs?.endHour = it }
-        location?.let { sTs?.location = it }
-        category?.let { sTs?.category = it }
-        // if you pass an empty string then it means that you want it to be null
-        repetition?.let { sTs?.repetition = if (it == "") null else it }
-        days?.let { sTs?.days = it }
-        endRepetitionDate?.let { sTs?.endRepetitionDate = it }
-        _submitTimeslot.value = sTs!!
-    }
 
 }

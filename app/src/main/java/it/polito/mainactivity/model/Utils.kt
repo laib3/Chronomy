@@ -1,6 +1,7 @@
 package it.polito.mainactivity.model
 
 import android.graphics.Color
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import it.polito.mainactivity.R
 import org.json.JSONArray
@@ -46,10 +47,10 @@ class Utils {
                     repetition = null
                 val JSONDays: JSONArray = jo.getJSONArray("days")
                 val days: MutableList<Int> = JSONArrayToIntList(JSONDays)
-                val endRepetitionDate: JSONObject = jo.getJSONObject("endRepetitionDate")
-                val erYear: Int = endRepetitionDate.getInt("year")
-                val erMonth: Int = endRepetitionDate.getInt("month")
-                val erDay: Int = endRepetitionDate.getInt("day")
+                val submitEndRepetitionDate: JSONObject = jo.getJSONObject("submitEndRepetitionDate")
+                val erYear: Int = submitEndRepetitionDate.getInt("year")
+                val erMonth: Int = submitEndRepetitionDate.getInt("month")
+                val erDay: Int = submitEndRepetitionDate.getInt("day")
                 return Timeslot(title, description, GregorianCalendar(dYear, dMonth, dDay),
                     startHour, endHour, location, category, repetition,
                     days, GregorianCalendar(erYear, erMonth, erDay))
@@ -139,25 +140,29 @@ class Utils {
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
 
-        fun toTimeslot(d: DocumentSnapshot?, user: User): Timeslot? {
+        fun toTimeslot(d: DocumentSnapshot?): Timeslot? {
             if (d == null)
                 return null
             return try {
+
+                val user = anyToUser(d.get("user"))
+
+                val t =
                 Timeslot(
-                    d.id,
+                    d.get("timeslotId") as String,
                     d.get("title") as String,
                     d.get("description") as String,
-                    formatStringToDate(d.get("startDate") as String),
+                    formatStringToDate(d.get("date") as String),
                     d.get("startHour") as String,
                     d.get("endHour") as String,
                     d.get("location") as String,
                     d.get("category") as String,
-                    d.get("repetition") as String?,
-                    (d.get("days") as List<Number>).map { it.toInt() },
-                    formatStringToDate(d.get("endRepetitionDate") as String),
-                    user
+                    anyToUser(d.get("user"))
                 )
+                Log.d("Utils: timeslot:", t.toString())
+                t
             } catch (e: Exception) {
+                e.message?.let { Log.d("Utils: exception", it) }
                 e.printStackTrace()
                 null
             }
@@ -222,6 +227,35 @@ class Utils {
             )
         }
 
+        /** create a list of dates (Calendar) starting from the parameters; if repetitionType is null,
+        * then the only present date will be `date`, otherwise it will find all the dates within the interval
+        * date - endRepetitionDate **/
+        fun createDates(date: Calendar, repetitionType: String?, endRepetitionDate: Calendar, daysOfWeek: List<Int>): List<Calendar> {
+            val tmp: Calendar = date.clone() as Calendar
+            val list: MutableList<Calendar> = mutableListOf()
+            when {
+                repetitionType?.lowercase() == "weekly" -> {
+                    while (tmp.before(endRepetitionDate)) {
+                        if (daysOfWeek.contains(tmp.get(Calendar.DAY_OF_WEEK))) {
+                            list.add(tmp.clone() as Calendar)
+                        }
+                        // increment tmp by one day
+                        tmp.add(Calendar.DATE, 1)
+                    }
+                }
+                repetitionType?.lowercase() == "monthly" -> { //monthly
+                    while (tmp.before(endRepetitionDate)) {
+                        list.add(tmp)
+                        // increment tmp by one month
+                        tmp.add(Calendar.MONTH, 1)
+                    }
+                }
+                else -> list.add(date)
+            }
+            return list
+        }
+
     }
+
 
 }
