@@ -9,13 +9,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.User
 import it.polito.mainactivity.model.emptyUser
 import it.polito.mainactivity.model.Utils
+import kotlinx.coroutines.runBlocking
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user
@@ -81,9 +84,10 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     // update publisher field and publisher inside the timeslots
-    fun updateUserField(userId: String?, field: String, newValue: Any?): Boolean {
+    fun updateUserField(field: String, newValue: Any?): Boolean{
         //var returnValue = false
-        if (userId == null || newValue == null)
+        val userId = auth.currentUser?.uid!!
+        if (newValue == null)
             return false
         val userRef = db.collection("users").document(userId)
         val tsRef = db.collection("timeslots")
@@ -120,7 +124,45 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                     Log.d("UserProfileViewModel", "update publisher failure: " + exception.message)
                 }
         }
-
         return true
     }
+
+    /** if timeslot is present in offers update, otherwise add it to the list **/
+    fun updateOffers(timeslot: Timeslot){
+        val offers = user.value?.offers
+        var offer = offers?.find{ o -> o.timeslotId == timeslot.timeslotId }
+        if(offer != null) { // update existing offer
+            offer = timeslot.copy()
+        }
+        else { // not existing, add offer to offers
+            offers?.add(timeslot.copy())
+        }
+        updateUserField("offers", offers)
+    }
+
+    /** remove offer from timeslots **/
+    fun deleteOffer(timeslotId: String): Boolean{
+        val offers = user.value?.offers?.filter{ o -> o.timeslotId != timeslotId }
+        return updateUserField("offers", offers)
+    }
+
+    /** if timeslot is present in requests update, otherwise add it to the list **/
+    fun updateRequests(timeslot: Timeslot){
+        val requests = user.value?.requests
+        var request = requests?.find{ r -> r.timeslotId == timeslot.timeslotId }
+        if(request != null) { // update existing offer
+            request = timeslot.copy()
+        }
+        else { // not existing, add offer to offers
+            requests?.add(timeslot.copy())
+        }
+        updateUserField("requests", requests)
+    }
+
+    /** remove offer from timeslots **/
+    fun deleteRequest(timeslotId: String): Boolean{
+        val requests = user.value?.requests?.filter{ o -> o.timeslotId != timeslotId }
+        return updateUserField("requests", requests)
+    }
+
 }
