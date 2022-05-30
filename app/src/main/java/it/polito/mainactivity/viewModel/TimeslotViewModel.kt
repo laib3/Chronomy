@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.R
+import it.polito.mainactivity.model.Chat
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.User
 import it.polito.mainactivity.model.Utils
@@ -67,11 +68,11 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         lTimeslots.remove()
     }
 
-    fun updateTimeslotField(id: String, field: String, newValue: Any?): Boolean {
+    fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
         // var returnValue = false
         db
             .collection("timeslots")
-            .document(id)
+            .document(timeslotId)
             .update(field, newValue)
             .addOnSuccessListener {
                 Log.d(
@@ -86,6 +87,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 ) //returnValue = false
             }
         return true
+
     }
 
     /* set current submitTimeslot to a empty timeslot */
@@ -135,15 +137,20 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             val id = db.collection("timeslots").document().id
             hashMapOf(
                 "timeslotId" to id,
+                "publisher" to user.value,
                 "title" to t.title,
                 "description" to t.description,
+                "date" to Utils.formatDateToString(date),
                 "startHour" to t.startHour,
                 "endHour" to t.endHour,
                 "location" to t.location,
                 "category" to t.category,
-                "date" to Utils.formatDateToString(date),
-                "publisher" to user.value
+                "status" to t.status,
+                "chats" to t.chats,
+                "ratings" to t.ratings
             )
+            // TODO: check if lists and maps are correctly saved on the db
+            // TODO: check how the enum is saved on the db, if badly, replace it with string
         }.forEach{ tMap ->
             db
                 .collection("timeslots")
@@ -194,11 +201,11 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         )
     }
 
-    fun deleteTimeslot(id: String?): Boolean {
+    fun deleteTimeslot(timeslotId: String?): Boolean {
         //var success: Boolean = false;
-        id?.apply {
+        timeslotId?.apply {
             db.collection("timeslots")
-                .document(id)
+                .document(timeslotId)
                 .delete()
                 .addOnSuccessListener {
                     Log.d(
@@ -213,5 +220,29 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
+    /**
+     * Add chat between the owner of the timeslot with the given id and the current user
+     */
+    fun addChat(timeslotId: String): Boolean {
+        val newChat = Chat(user.value!!, false, mutableListOf())
+        val chats = timeslots.value?.find{ t -> t.timeslotId == timeslotId}?.chats
+        chats?.add(newChat)
+
+        return updateTimeslotField(timeslotId, "chats", chats)
+    }
+    fun setChatAssigned(assigned: Boolean): Boolean {
+        // TODO:
+       return true
+    }
+
+    fun addMessage(text: String): Boolean {
+        // TODO:
+        return true
+    }
+
+    fun updateRating(): Boolean {
+        // TODO:
+        return true
+    }
 
 }

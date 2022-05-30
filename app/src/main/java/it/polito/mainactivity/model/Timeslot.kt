@@ -17,8 +17,8 @@ data class Timeslot(
     var location: String
     var category: String
     var status: Status
-    val chats: MutableList<Chat>
-    val ratings: MutableMap<String, Rating>
+    var chats: MutableList<Chat>
+    var ratings: MutableMap<String, Rating>
 
     init {
         val hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -49,6 +49,9 @@ data class Timeslot(
         _location: String,
         _category: String,
         _publisher: User,
+        _status: Status,
+        _chats: MutableList<Chat>,
+        _ratings: MutableMap<String, Rating>
     ) : this(_publisher) {
         timeslotId = _timeslotId
         title = _title
@@ -58,7 +61,10 @@ data class Timeslot(
         endHour = _endHour
         location = _location
         category = _category
-        // createDates()
+        publisher = _publisher
+        status = _status
+        chats = _chats
+        ratings = _ratings
     }
 
     override fun toString(): String {
@@ -68,14 +74,14 @@ data class Timeslot(
         "publisher": ${publisher},
         "title": "$title", 
         "description": "$description",
-        "date": 
-            {"year": ${date.get(Calendar.YEAR)}, 
-            "month": ${date.get(Calendar.MONTH)}, 
-            "day": ${date.get(Calendar.DAY_OF_MONTH)}},
+        "date": "${Utils.formatDateToString(date)}",
         "startHour": "$startHour", 
         "endHour": "$endHour", 
         "location": "$location", 
         "category": "$category", 
+        "status": "$status",
+        "chats": "$chats",
+        "ratings": "$ratings"
         },
         """.replace("\n", "").trimIndent()
     }
