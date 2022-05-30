@@ -88,7 +88,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.name.toString() != binding.textInputEditTextName.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "name",
                             binding.textInputEditTextName.text.toString()
                         )
@@ -103,7 +102,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.surname.toString() != binding.textInputEditTextSurname.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "surname",
                             binding.textInputEditTextSurname.text.toString()
                         )
@@ -118,7 +116,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.nickname.toString() != binding.textInputEditTextNickname.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "nickname",
                             binding.textInputEditTextNickname.text.toString()
                         )
@@ -133,7 +130,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.bio.toString() != binding.textInputEditTextBio.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "bio",
                             binding.textInputEditTextBio.text.toString()
                         )
@@ -148,7 +144,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.phone.toString() != binding.textInputEditTextPhone.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "phone",
                             binding.textInputEditTextPhone.text.toString()
                         )
@@ -163,7 +158,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.email.toString() != binding.textInputEditTextEmail.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "email",
                             binding.textInputEditTextEmail.text.toString()
                         )
@@ -178,7 +172,6 @@ class EditProfileFieldsFragment : Fragment() {
                 if (vm.user.value?.location.toString() != binding.textInputEditTextLocation.text.toString()) {
                     vm.user.value?.let {
                         vm.updateUserField(
-                            vm.user.value!!.userId,
                             "location",
                             binding.textInputEditTextLocation.text.toString()
                         )

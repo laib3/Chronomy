@@ -157,7 +157,10 @@ class Utils {
                     d.get("endHour") as String,
                     d.get("location") as String,
                     d.get("category") as String,
-                    anyToUser(d.get("publisher"))
+                    anyToUser(d.get("publisher")),
+                    d.get("status") as Timeslot.Status,
+                    (d.get("chats") as List<Any?>).map{ c -> c as Chat }.toMutableList(),
+                    (d.get("ratings") as List<Any?>).map{ r -> r as Rating }.toMutableList()
                 )
                 Log.d("Utils: timeslot:", t.toString())
                 t

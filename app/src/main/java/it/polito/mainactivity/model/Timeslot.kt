@@ -18,7 +18,7 @@ data class Timeslot(
     var category: String
     var status: Status
     var chats: MutableList<Chat>
-    var ratings: MutableMap<String, Rating>
+    var ratings: MutableList<Rating>
 
     init {
         val hour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -35,7 +35,7 @@ data class Timeslot(
         category = "Other"
         status = Status.PUBLISHED
         chats = mutableListOf()
-        ratings = mutableMapOf() // map is empty, gets populated later
+        ratings = mutableListOf() // map is empty, gets populated later
     }
 
     /* 2nd constructor */
@@ -51,7 +51,7 @@ data class Timeslot(
         _publisher: User,
         _status: Status,
         _chats: MutableList<Chat>,
-        _ratings: MutableMap<String, Rating>
+        _ratings: MutableList<Rating>
     ) : this(_publisher) {
         timeslotId = _timeslotId
         title = _title

@@ -66,7 +66,6 @@ class EditProfilePictureFragment : Fragment() {
         profilePictures.putBytes(data, metadata).addOnSuccessListener {
             profilePictures.downloadUrl.addOnCompleteListener {
                 vm.updateUserField(
-                    vm.user.value!!.userId,
                     "profilePictureUrl",
                     it.result.toString()
                 )

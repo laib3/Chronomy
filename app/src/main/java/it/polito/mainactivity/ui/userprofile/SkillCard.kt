@@ -79,7 +79,6 @@ class SkillCard(
                     val newSkill = skill.copy().apply { active = checked; description = desc }
                     val oldSkills = vm.user.value?.skills
                     vm.updateUserField(
-                        vm.user.value!!.userId,
                         "skills",
                         oldSkills?.map { s -> if (s.category == skill.category) newSkill else s })
                 }

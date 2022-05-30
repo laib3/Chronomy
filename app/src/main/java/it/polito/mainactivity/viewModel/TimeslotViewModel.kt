@@ -79,6 +79,20 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     "Firebase",
                     "Timeslot updated successfully"
                 ) //returnValue = true
+                // TODO update requests
+                // update offers of current user
+                db
+                    .collection("users")
+                    .document(FirebaseAuth.getInstance().currentUser?.uid!!)
+                    .collection("offers")
+                    .document(timeslotId)
+                    .update(field, newValue)
+                    .addOnSuccessListener {
+                        // update requests
+                        db.collectionGroup("requests").whereEqualTo("timeslotId", timeslotId).get().addOnSuccessListener {
+                            it.documents.forEach{ d -> d.reference.update(field, newValue) }
+                        }
+                    }
             }
             .addOnFailureListener {
                 Log.d(
@@ -161,7 +175,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         "Firebase",
                         "New timeslot successfully saved "
                     ) //success = true
-                    // TODO check if it works
+                    db.collection("users").document(FirebaseAuth.getInstance().currentUser?.uid!!)
+                        .collection("offers").document().set(tMap).addOnSuccessListener {
+                            Log.d("Firebase", "New offer added")
+                        }
                     resetSubmitFields()
                 }
                 .addOnFailureListener {
