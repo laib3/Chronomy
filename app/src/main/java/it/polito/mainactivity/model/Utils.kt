@@ -245,7 +245,7 @@ class Utils {
                 }
                 repetitionType?.lowercase() == "monthly" -> { //monthly
                     while (tmp.before(endRepetitionDate)) {
-                        list.add(tmp)
+                        list.add(tmp.clone() as Calendar)
                         // increment tmp by one month
                         tmp.add(Calendar.MONTH, 1)
                     }

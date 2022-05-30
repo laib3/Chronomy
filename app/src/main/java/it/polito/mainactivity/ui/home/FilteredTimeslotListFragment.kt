@@ -41,6 +41,8 @@ class FilteredTimeslotListFragment : Fragment() {
     private var minDuration: String? = null
     private var maxDuration: String? = null
 
+    private var sortingKeyPosition: Int = 0
+
     private var category: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,19 +89,9 @@ class FilteredTimeslotListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        _binding = FragmentFilteredTimeslotListBinding.inflate(inflater, container, false)
+    override fun onResume() {
+        super.onResume()
         val root: View = binding.root
-
-        val rv: RecyclerView = binding.timeslotListRv
-        rv.layoutManager = LinearLayoutManager(root.context)
-
-        category = args.category
 
         val sortingKeys =
             listOf("Date", "Title (A-Z)", "Title (Z-A)", "Duration (ASC)", "Duration (DES)")
@@ -107,9 +99,15 @@ class FilteredTimeslotListFragment : Fragment() {
             ArrayAdapter(requireContext(), R.layout.list_item, sortingKeys)
         binding.tvSortBy.setAdapter(sortingKeysArrayAdapter)
 
+        // TODO store position in a variable
         binding.tvSortBy.setText(
-            sortingKeysArrayAdapter.getItem(0).toString(), false
+            sortingKeysArrayAdapter.getItem(sortingKeyPosition).toString(), false
         )
+
+        val rv: RecyclerView = binding.timeslotListRv
+        rv.layoutManager = LinearLayoutManager(root.context)
+
+        category = args.category
 
         val filterButton = binding.filterButton
         filterButton.setOnClickListener {
@@ -141,7 +139,8 @@ class FilteredTimeslotListFragment : Fragment() {
                 loadedList
             )
 
-            loadedList = applySorting(loadedList, sortingKeys[idx])
+            sortingKeyPosition = idx
+            loadedList = applySorting(loadedList, sortingKeys[sortingKeyPosition])
 
             adapter = TimeslotsRecyclerViewAdapter(
                 loadedList!!,
@@ -193,6 +192,16 @@ class FilteredTimeslotListFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        _binding = FragmentFilteredTimeslotListBinding.inflate(inflater, container, false)
+        val root: View = binding.root
         return root
     }
 
