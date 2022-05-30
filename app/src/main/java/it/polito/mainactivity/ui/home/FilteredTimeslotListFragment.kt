@@ -41,6 +41,8 @@ class FilteredTimeslotListFragment : Fragment() {
     private var minDuration: String? = null
     private var maxDuration: String? = null
 
+    private var sortingKeyPosition: Int = 0
+
     private var category: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +101,7 @@ class FilteredTimeslotListFragment : Fragment() {
 
         // TODO store position in a variable
         binding.tvSortBy.setText(
-            sortingKeysArrayAdapter.getItem(0).toString(), false
+            sortingKeysArrayAdapter.getItem(sortingKeyPosition).toString(), false
         )
 
         val rv: RecyclerView = binding.timeslotListRv
@@ -137,7 +139,8 @@ class FilteredTimeslotListFragment : Fragment() {
                 loadedList
             )
 
-            loadedList = applySorting(loadedList, sortingKeys[idx])
+            sortingKeyPosition = idx
+            loadedList = applySorting(loadedList, sortingKeys[sortingKeyPosition])
 
             adapter = TimeslotsRecyclerViewAdapter(
                 loadedList!!,
