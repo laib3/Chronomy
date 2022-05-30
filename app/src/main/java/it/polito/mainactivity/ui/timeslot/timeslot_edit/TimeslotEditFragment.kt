@@ -212,17 +212,6 @@ class TimeslotEditFragment : Fragment() {
                     }
                 }
             }
-                // else if (type == DType.END && oldDateText != newDateText) {
-                //    vm?.timeslots?.value!!.find { t -> t.timeslotId == timeslotId }?.apply {
-                //        vm?.updateTimeslotField(
-                //            this.timeslotId,
-                //            "submitEndRepetitionDate",
-                //            Utils.formatDateToString(date)
-                //        )
-                //    } ?: apply {
-                //        // TODO: Show error message
-                //    }
-                //}
             // if new timeslot
             else {
                 if (type == DType.START) {
@@ -298,9 +287,6 @@ class TimeslotEditFragment : Fragment() {
                 categoryArrayAdapter.getItem(positionCategory).toString(),
                 false
             )
-            // binding.tvRepetition.setText(
-            //     repetitionsArrayAdapter.getItem(positionRepetition).toString(), false
-            // )
             binding.tvCategory.onItemClickListener = OnItemClickListener { _, _, idx, _ ->
                 vm.timeslots.value!!.find { t -> t.timeslotId == timeslotId }?.apply {
                     vm.updateTimeslotField(this.timeslotId, "category", categories[idx])
@@ -308,28 +294,6 @@ class TimeslotEditFragment : Fragment() {
                     // TODO: Show error message
                 }
             }
-            // binding.tvRepetition.onItemClickListener = OnItemClickListener { _, _, idx, _ ->
-            //     vm.timeslots.value!!.find { t -> t.timeslotId == timeslotId }?.apply {
-            //         vm.updateTimeslotField(this.timeslotId, "repetition", repetitions[idx])
-            //     } ?: apply {
-            //         // TODO: Show error message
-            //     }
-            // }
-            // chips.forEachIndexed { index, chip ->
-            //     chip.setOnClickListener {
-            //         val oldDays =
-            //             vm.timeslots.value!!.find { t -> t.timeslotId == timeslotId }?.days?.toMutableSet()
-            //         if (oldDays?.contains(index + 1) == true && oldDays.size > 1)
-            //             oldDays.remove(index + 1)
-            //         else
-            //             oldDays?.add(index + 1)
-            //         vm.timeslots.value!!.find { t -> t.timeslotId == timeslotId }?.apply {
-            //             vm.updateTimeslotField(this.timeslotId, "days", oldDays!!.toList())
-            //         } ?: apply {
-            //             // TODO: Show error message
-            //         }
-            //     }
-            // }
         } else { // submit timeslot
             val positionCategory =
                 categoryArrayAdapter.getPosition(vm.submitTimeslot.value?.category)
@@ -426,21 +390,10 @@ class TimeslotEditFragment : Fragment() {
                 binding.tvStartDate.text = Utils.formatDateToString(t?.date)
                 binding.tvStartTime.text = t?.startHour
                 binding.tvEndTime.text = t?.endHour
-                // binding.tvEndDate.text =
-                //     if (t?.startDate!!.before(t.endRepetitionDate) || t.startDate == t.endRepetitionDate)
-                //         Utils.formatDateToString(t.endRepetitionDate)
-                //     else
-                //         Utils.formatDateToString(t.startDate)
                 val positionCategory = categoryArrayAdapter.getPosition(t?.category)
-                // val positionRepetition = max(repetitionsArrayAdapter.getPosition(t.repetition), 0)
                 binding.tvCategory.setText(
                     categoryArrayAdapter.getItem(positionCategory).toString(), false
                 )
-                // binding.tvRepetition.setText(
-                //     repetitionsArrayAdapter.getItem(positionRepetition).toString(), false
-                // )
-                // binding.swRepetition.isChecked = t.repetition != null
-                // chips.forEachIndexed { idx, chip -> chip.isChecked = t.days.contains(idx + 1) }
                 if (vm.isValid(t))
                     notifySuccess(true)
                 else
