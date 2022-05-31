@@ -14,13 +14,30 @@ data class User(
     var skills: List<Skill>,
     var balance: Int,
     var profilePictureUrl: String?,
-    var offers: MutableList<Timeslot>,
-    var requests: MutableList<Timeslot>
+    var offers: MutableList<HashMap<String, Any>>,
+    var requests: MutableList<HashMap<String, Any>>
 ) {
     override fun toString() =
         """{ "userId": "$userId", "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
                 """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills,""" +
                """ "offers":${offers}, "requests":${requests} """ .trimMargin()
+
+    fun toMap(): HashMap<String, Any?>{
+        return hashMapOf(
+            "userId" to userId,
+            "name" to name,
+            "surname" to surname,
+            "nickname" to nickname,
+            "bio" to bio,
+            "email" to email,
+            "location" to location,
+            "phone" to phone,
+            "profilePictureUrl" to profilePictureUrl
+            // no skills
+        )
+    }
+
+
 }
 
 fun emptyUser(): User {
@@ -55,3 +72,4 @@ fun createEmptySkills(): List<Skill> {
         Skill("Other")
     )
 }
+

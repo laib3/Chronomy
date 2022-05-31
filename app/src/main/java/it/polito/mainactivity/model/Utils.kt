@@ -171,6 +171,44 @@ class Utils {
             }
         }
 
+        fun toUser(d: DocumentSnapshot?): HashMap<String, Any>? {
+            if(d == null)
+                return null
+            return try {
+                hashMapOf(
+                    "userId" to d.get("userId") as String,
+                    "name" to d.get("name") as String,
+                    "surname" to d.get("surname") as String,
+                    "nickname" to d.get("nickname") as String,
+                    "bio" to d.get("bio") as String,
+                    "email" to d.get("email") as String,
+                    "location" to d.get("location") as String,
+                    "phone" to d.get("phone") as String,
+
+                )
+            } catch(e: Exception){
+                e.printStackTrace()
+                null
+            }
+        }
+
+        fun toSkill(d: DocumentSnapshot?): HashMap<String, Any>?{
+            if(d == null)
+                return null
+            return try {
+                hashMapOf(
+                    "category" to d.get("category") as String,
+                    "description" to d.get("description") as String,
+                    // TODO change to Boolean
+                    "active" to d.get("active") as String
+                )
+            } catch(e: Exception){
+                e.printStackTrace()
+                null
+            }
+        }
+
+        /*
         fun toUser(d: DocumentSnapshot?): User? {
             if (d == null)
                 return null
@@ -203,6 +241,7 @@ class Utils {
                 null
             }
         }
+         */
 
         fun anyToUser(any: Any?): User {
             // this should never happen
@@ -261,6 +300,65 @@ class Utils {
             return list
         }
 
+    }
+
+    /** return a hashmap representation of a offer --
+     * IMPORTANT: a Offer map should also have chats and ratings inside, but here
+     * we populate only `flat` fields **/
+    fun toOffer(d: DocumentSnapshot): HashMap<String, Any>{
+        return hashMapOf(
+            "timeslotId" to d.get("timeslotId") as String,
+            "title" to d.get("title") as String,
+            "description" to d.get("description") as String,
+            "category" to d.get("category") as String,
+            "startHour" to d.get("startHour") as String,
+            "endHour" to d.get("endHour") as String,
+            "location" to d.get("location") as String,
+            "date" to d.get("date") as String,
+            "status" to d.get("status") as String,
+        )
+    }
+
+    /** return a hashmap representation of a request to be stored into a user --
+     * IMPORTANT: a Request should also have chats and ratings inside, but here
+     * we populate only `flat` fields **/
+    fun toRequest(d: DocumentSnapshot): HashMap<String, Any>{
+        return hashMapOf(
+            "timeslotId" to d.get("timeslotId") as String,
+            "title" to d.get("title") as String,
+            "description" to d.get("description") as String,
+            "category" to d.get("category") as String,
+            "startHour" to d.get("startHour") as String,
+            "endHour" to d.get("endHour") as String,
+            "location" to d.get("location") as String,
+            "date" to d.get("date") as String,
+            "status" to d.get("status") as String,
+        )
+    }
+
+    fun toRating(d: DocumentSnapshot): HashMap<String, Any>{
+        return hashMapOf(
+            "sender" to d.get("sender") as String,
+            "value" to d.get("value").toString() as String,
+            "comment" to d.get("comment") as String
+        )
+    }
+
+    fun toChat(d: DocumentSnapshot): HashMap<String, Any>{
+        return hashMapOf(
+            // TODO change to boolean
+            "assigned" to d.get("assigned") as String
+        )
+    }
+
+    fun toMessage(d: DocumentSnapshot): HashMap<String, Any>{
+        return hashMapOf(
+            "text" to d.get("text") as String,
+            // TODO change to boolean
+            "assigned" to d.get("assigned") as String,
+            // TODO change to enum
+            "sender" to d.get("sender") as String
+        )
     }
 
 

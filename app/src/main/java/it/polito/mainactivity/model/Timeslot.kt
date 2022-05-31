@@ -86,4 +86,19 @@ data class Timeslot(
         """.replace("\n", "").trimIndent()
     }
 
+    fun toMap(): HashMap<String, Any>{
+        return hashMapOf(
+                    "timeslotId" to timeslotId,
+                    "title" to title,
+                    "description" to description,
+                    "date" to date,
+                    "startHour" to startHour,
+                    "endHour" to endHour,
+                    "location" to location,
+                    "category" to category,
+                    "status" to status,
+                    "chats" to chats.forEach{ it.toMap() },
+        )
+    }
+
 }

@@ -9,10 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import it.polito.mainactivity.model.Timeslot
-import it.polito.mainactivity.model.User
-import it.polito.mainactivity.model.emptyUser
-import it.polito.mainactivity.model.Utils
+import it.polito.mainactivity.model.*
 import kotlinx.coroutines.runBlocking
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
@@ -34,13 +31,22 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 val userRef: DocumentReference = db.collection("users").document(userId)
                 userRef.get().addOnSuccessListener {
                     // document doesn't exist
-                    if (!it.exists()) {
+                    if (!it.exists()) { // add new user
                         userRef.set(emptyUser()).addOnSuccessListener {
-                            Log.d("UserProfileViewModel", "publisher creation ok with id $userId")
+                            Log.d("UserProfileViewModel", "user creation ok with id $userId")
                             userListenerRegistration = userRef.addSnapshotListener { value, _ ->
                                 if (value != null) {
-                                    _user.value = Utils.toUser(value)
-                                    _newUser.value = true
+                                    val userMap = Utils.toUser(value)
+                                    userMap?.put("skills", listOf<Skill>())
+                                    // get skills
+                                    value.reference.collection("skills").get().addOnSuccessListener { it ->
+                                        it.documents
+                                            .map{ d -> Utils.toSkill(d) }
+                                            .forEach{ skillMap -> Skill(skillMap) }
+                                                //.add(skillMap!!) }
+                                    }
+                                    // _user.value = Utils.toUser(value)
+                                    // _newUser.value = true
                                     Log.d("UserProfileViewModel", "logged in as ${value.id}")
                                 } else {
                                     Log.d("UserProfileViewModel", "error during log in")
@@ -56,6 +62,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                                 _user.value = Utils.toUser(value)
                                 _newUser.value = false
                                 Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
+                                // get offers
                             } else {
                                 Log.d("UserProfileViewModel", "error during (existing) log in")
                                 _user.value = null
@@ -76,6 +83,17 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 _newUser.value = null
             }
         }
+    }
+
+    fun getOffers(){
+        db.collection("users").document(FirebaseAuth.getInstance().currentUser?.uid!!)
+            .collection("offers").get().addOnSuccessListener {
+                it.documents.forEach{  }
+            }
+    }
+
+    fun getRequests(){
+
     }
 
     override fun onCleared() {
@@ -130,39 +148,43 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     /** if timeslot is present in offers update, otherwise add it to the list **/
     fun updateOffers(timeslot: Timeslot){
         val offers = user.value?.offers
-        var offer = offers?.find{ o -> o.timeslotId == timeslot.timeslotId }
+        var offer = offers?.find{ o -> o.get("timeslotId") == timeslot.timeslotId }
         if(offer != null) { // update existing offer
-            offer = timeslot.copy()
+            offer = timeslot.toMap()
         }
         else { // not existing, add offer to offers
-            offers?.add(timeslot.copy())
+            offers?.add(timeslot.toMap())
         }
-        updateUserField("offers", offers)
+        db
+            .collection("users")
+            .document(FirebaseAuth.getInstance().currentUser?.uid!!)
+            .collection("offers")
+            .whereEqualTo("timeslotId", timeslot.timeslotId)
     }
 
-    /** remove offer from timeslots **/
-    fun deleteOffer(timeslotId: String): Boolean{
-        val offers = user.value?.offers?.filter{ o -> o.timeslotId != timeslotId }
-        return updateUserField("offers", offers)
-    }
+    // /** remove offer from timeslots **/
+    // fun deleteOffer(timeslotId: String): Boolean{
+    //     val offers = user.value?.offers?.filter{ o -> o.timeslotId != timeslotId }
+    //     return updateUserField("offers", offers)
+    // }
 
-    /** if timeslot is present in requests update, otherwise add it to the list **/
-    fun updateRequests(timeslot: Timeslot){
-        val requests = user.value?.requests
-        var request = requests?.find{ r -> r.timeslotId == timeslot.timeslotId }
-        if(request != null) { // update existing offer
-            request = timeslot.copy()
-        }
-        else { // not existing, add offer to offers
-            requests?.add(timeslot.copy())
-        }
-        updateUserField("requests", requests)
-    }
+    // /** if timeslot is present in requests update, otherwise add it to the list **/
+    // fun updateRequests(timeslot: Timeslot){
+    //     val requests = user.value?.requests
+    //     var request = requests?.find{ r -> r.timeslotId == timeslot.timeslotId }
+    //     if(request != null) { // update existing offer
+    //         request = timeslot.copy()
+    //     }
+    //     else { // not existing, add offer to offers
+    //         requests?.add(timeslot.copy())
+    //     }
+    //     updateUserField("requests", requests)
+    // }
 
-    /** remove offer from timeslots **/
-    fun deleteRequest(timeslotId: String): Boolean{
-        val requests = user.value?.requests?.filter{ o -> o.timeslotId != timeslotId }
-        return updateUserField("requests", requests)
-    }
+    // /** remove offer from timeslots **/
+    // fun deleteRequest(timeslotId: String): Boolean{
+    //     val requests = user.value?.requests?.filter{ o -> o.timeslotId != timeslotId }
+    //     return updateUserField("requests", requests)
+    // }
 
 }
