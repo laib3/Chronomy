@@ -63,7 +63,7 @@
         <item id="isWeekly">Weekly</item>
         <item id="isMonthly">Monthly</item>
     </string-array>
-    
+
     <string name="tab_requests_for_my_timeslots">Requests received</string>
     <string name="tab_requests_i_made">Requests sent</string>
 
@@ -84,7 +84,7 @@
     <string name="timeslots_tag">timeslots</string>
     <string name="profile_pic_path">images</string>
     <string name="profile_pic_name">profile.jpg</string>
-    
+
     <!-- separators -->
     <string name="starting_hour_dash_ending_hour">%s - %s  (%s)</string>
 
@@ -95,11 +95,11 @@
     <!-- messages -->
     <string name="welcome_string1">Hello!</string>
     <string name="welcome_string2">What do you need today?</string>
-    
+
     <string name="empty_timeslot_list_message">The list of your timeslots is empty, press the button below to add one.</string>
     <string name="empty_category_map_message">There are no timeslot from other users yet. </string>
 
     <!-- category in filtered list -->
     <string name="nav_filtered_label">Browsing: {category}</string>
- 
+
 </resources>

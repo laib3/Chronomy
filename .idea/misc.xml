@@ -46,20 +46,25 @@
         <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/phone.xml" value="0.3425" />
         <entry key="app/src/main/res/drawable/rectangle.xml" value="0.1215" />
+        <entry key="app/src/main/res/drawable/rounded_editMsg.xml" value="0.197" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/side_nav_bar.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/white_circle_bg.xml" value="0.3565" />
         <entry key="app/src/main/res/layout-land/fragment_edit_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout-land/fragment_show_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout-land/fragment_timeslot_details.xml" value="0.27395833333333336" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.35" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/chat_from_row.xml" value="0.196875" />
+        <entry key="app/src/main/res/layout/chat_to_row.xml" value="0.196875" />
         <entry key="app/src/main/res/layout/collapse_date_inside.xml" value="0.42294791892722805" />
         <entry key="app/src/main/res/layout/collapse_duration.xml" value="0.10925925925925926" />
         <entry key="app/src/main/res/layout/collapse_duration_inside.xml" value="0.43003104881004056" />
         <entry key="app/src/main/res/layout/collapse_hour_inside.xml" value="0.42574257425742573" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.1890625" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_fields.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/fragment_edit_profile_picture.xml" value="0.35104166666666664" />
