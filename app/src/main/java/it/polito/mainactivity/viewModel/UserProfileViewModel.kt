@@ -34,7 +34,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                     if (!it.exists()) { // add new user
                         userRef.set(emptyUser()).addOnSuccessListener {
                             Log.d("UserProfileViewModel", "user creation ok with id $userId")
-                            userListenerRegistration = userRef.addSnapshotListener { value, _ ->
+                            userListenerRegistration = userRef.addSnapshotListener { value, _ -> // on change
                                 if (value != null) {
                                     val userMap = Utils.toUser(value)
                                     userMap?.put("skills", listOf<Skill>())

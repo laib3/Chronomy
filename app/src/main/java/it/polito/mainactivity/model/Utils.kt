@@ -140,6 +140,7 @@ class Utils {
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
 
+
         fun toTimeslot(d: DocumentSnapshot?): Timeslot? {
             if (d == null)
                 return null
@@ -208,70 +209,6 @@ class Utils {
             }
         }
 
-        /*
-        fun toUser(d: DocumentSnapshot?): User? {
-            if (d == null)
-                return null
-            return try {
-                User(
-                    d.get("userId") as String,
-                    d.get("name") as String,
-                    d.get("surname") as String,
-                    d.get("nickname") as String,
-                    d.get("bio") as String,
-                    d.get("email") as String,
-                    d.get("location") as String,
-                    d.get("phone") as String,
-                    //get("skills") as List<Skill>,
-                    (d.get("skills") as List<Map<Any?, Any?>>).map { s ->
-                        Skill(
-                            s["category"] as String,
-                            s["description"] as String,
-                            s["active"] as Boolean
-                        )
-                    },
-                    (d.get("balance") as Long).toInt(),
-                    d.get("profilePictureUrl") as String?,
-                    // TODO update with real values
-                    mutableListOf(),
-                    mutableListOf()
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
-        }
-         */
-
-        fun anyToUser(any: Any?): User {
-            // this should never happen
-            if (any == null)
-                return emptyUser()
-            val map = any as Map<String, Any?>
-            return User(
-                map["userId"] as String,
-                map["name"] as String,
-                map["surname"] as String,
-                map["nickname"] as String,
-                map["bio"] as String,
-                map["email"] as String,
-                map["location"] as String,
-                map["phone"] as String,
-                (map["skills"] as List<Map<Any?, Any?>>).map { s ->
-                    Skill(
-                        s["category"] as String,
-                        s["description"] as String,
-                        s["active"] as Boolean
-                    )
-                },
-                (map["balance"] as Long).toInt(),
-                map["profilePictureUrl"] as String?,
-                // TODO update with real values
-                mutableListOf(),
-                mutableListOf()
-            )
-        }
-
         /** create a list of dates (Calendar) starting from the parameters; if repetitionType is null,
         * then the only present date will be `date`, otherwise it will find all the dates within the interval
         * date - endRepetitionDate **/
@@ -302,64 +239,77 @@ class Utils {
 
     }
 
-    /** return a hashmap representation of a offer --
-     * IMPORTANT: a Offer map should also have chats and ratings inside, but here
-     * we populate only `flat` fields **/
-    fun toOffer(d: DocumentSnapshot): HashMap<String, Any>{
-        return hashMapOf(
-            "timeslotId" to d.get("timeslotId") as String,
-            "title" to d.get("title") as String,
-            "description" to d.get("description") as String,
-            "category" to d.get("category") as String,
-            "startHour" to d.get("startHour") as String,
-            "endHour" to d.get("endHour") as String,
-            "location" to d.get("location") as String,
-            "date" to d.get("date") as String,
-            "status" to d.get("status") as String,
-        )
+    fun toRating(d: DocumentSnapshot?): HashMap<String, String>?{
+        if(d == null)
+            return null
+        return try {
+            hashMapOf(
+                "sender" to d.get("sender") as String,
+                "value" to d.get("value").toString(),
+                "comment" to d.get("comment") as String
+            )
+        } catch(e: Exception){
+            e.printStackTrace()
+            null
+        }
     }
 
-    /** return a hashmap representation of a request to be stored into a user --
-     * IMPORTANT: a Request should also have chats and ratings inside, but here
-     * we populate only `flat` fields **/
-    fun toRequest(d: DocumentSnapshot): HashMap<String, Any>{
-        return hashMapOf(
-            "timeslotId" to d.get("timeslotId") as String,
-            "title" to d.get("title") as String,
-            "description" to d.get("description") as String,
-            "category" to d.get("category") as String,
-            "startHour" to d.get("startHour") as String,
-            "endHour" to d.get("endHour") as String,
-            "location" to d.get("location") as String,
-            "date" to d.get("date") as String,
-            "status" to d.get("status") as String,
-        )
+    fun toChat(d: DocumentSnapshot?): HashMap<String, String>?{
+        if(d == null)
+            return null
+        return try {
+            hashMapOf(
+                "assigned" to d.get("assigned") as String
+            )
+        } catch(e: Exception){
+            e.printStackTrace()
+            null
+        }
     }
 
-    fun toRating(d: DocumentSnapshot): HashMap<String, Any>{
-        return hashMapOf(
-            "sender" to d.get("sender") as String,
-            "value" to d.get("value").toString() as String,
-            "comment" to d.get("comment") as String
-        )
-    }
-
-    fun toChat(d: DocumentSnapshot): HashMap<String, Any>{
-        return hashMapOf(
-            // TODO change to boolean
-            "assigned" to d.get("assigned") as String
-        )
-    }
-
-    fun toMessage(d: DocumentSnapshot): HashMap<String, Any>{
-        return hashMapOf(
-            "text" to d.get("text") as String,
-            // TODO change to boolean
-            "assigned" to d.get("assigned") as String,
-            // TODO change to enum
-            "sender" to d.get("sender") as String
-        )
+    // TODO check if string
+    fun toMessage(d: DocumentSnapshot?): HashMap<String, String>?{
+        if(d == null)
+            return null
+        return try {
+            hashMapOf(
+                "text" to d.get("text") as String,
+                "assigned" to d.get("assigned") as String,
+                "sender" to d.get("sender") as String
+            )
+        } catch(e: Exception){
+            e.printStackTrace()
+            null
+        }
     }
 
 
 }
+// fun anyToUser(any: Any?): User {
+//     // this should never happen
+//     if (any == null)
+//         return emptyUser()
+//     val map = any as Map<String, Any?>
+//     return User(
+//         map["userId"] as String,
+//         map["name"] as String,
+//         map["surname"] as String,
+//         map["nickname"] as String,
+//         map["bio"] as String,
+//         map["email"] as String,
+//         map["location"] as String,
+//         map["phone"] as String,
+//         (map["skills"] as List<Map<Any?, Any?>>).map { s ->
+//             Skill(
+//                 s["category"] as String,
+//                 s["description"] as String,
+//                 s["active"] as Boolean
+//             )
+//         },
+//         (map["balance"] as Long).toInt(),
+//         map["profilePictureUrl"] as String?,
+//         // TODO update with real values
+//         mutableListOf(),
+//         mutableListOf()
+//     )
+// }
