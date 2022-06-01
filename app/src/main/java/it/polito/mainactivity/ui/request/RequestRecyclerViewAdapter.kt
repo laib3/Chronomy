@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.request
 
+import android.os.Bundle
 import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil.calculateDiff
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
@@ -79,6 +81,17 @@ class RequestRecyclerViewAdapter(
             chatCard.findViewById<TextView>(R.id.tvMsg).apply {
                 this.text = chat.msg
             }
+
+            // Pass through bundle the id of the item in the list
+            val bundle = Bundle()
+            bundle.putString("id", ts.tid)
+            bundle.putBoolean("showOnly", false)
+
+            chatCard.setOnClickListener{
+                /* TODO: modify navigation*/
+                parentFragment.findNavController().navigate(R.id.action_nav_list_to_nav_details, bundle)
+            }
+
             holder.hiddenView.addView(chatCard)
         }
 
