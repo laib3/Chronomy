@@ -1,7 +1,7 @@
 package it.polito.mainactivity.ui.request
 
+import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +9,13 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil.calculateDiff
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.chip.Chip
+import it.polito.mainactivity.MessageActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
@@ -81,17 +81,20 @@ class RequestRecyclerViewAdapter(
             chatCard.findViewById<TextView>(R.id.tvMsg).apply {
                 this.text = chat.msg
             }
-
+/* TODO: modify navigation
             // Pass through bundle the id of the item in the list
             val bundle = Bundle()
             bundle.putString("id", ts.tid)
             bundle.putBoolean("showOnly", false)
 
             chatCard.setOnClickListener{
-                /* TODO: modify navigation*/
-                parentFragment.findNavController().navigate(R.id.action_nav_list_to_nav_details, bundle)
-            }
 
+                activity?.let{
+                    val intent = Intent (it, MessageActivity::class.java)
+                    it.startActivity(intent)
+                }
+            }
+*/
             holder.hiddenView.addView(chatCard)
         }
 

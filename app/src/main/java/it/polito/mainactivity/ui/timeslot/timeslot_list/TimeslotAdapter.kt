@@ -72,6 +72,7 @@ class TimeslotAdapter(
         val bundle = Bundle()
         bundle.putString("id", ts.tid)
         bundle.putBoolean("showOnly", false)
+        bundle.putBoolean("startChat", false)
 
         // click on card, show details of that item
         holder.cvTimeslotCard.setOnClickListener {

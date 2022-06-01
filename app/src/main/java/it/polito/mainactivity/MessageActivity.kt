@@ -2,32 +2,36 @@ package it.polito.mainactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import it.polito.mainactivity.ui.request.Message
 
 class MessageActivity : AppCompatActivity() {
 
-    private val btnSend = findViewById<ImageButton>(R.id.btnSendMsg)
-    private val textSend = findViewById<EditText>(R.id.textMsg)
+    private lateinit var btnSend:ImageButton
+    private lateinit var  textSend: EditText
 
-    private var databaseReference: DatabaseReference = Firebase.database.reference
+    private val databaseReference: FirebaseFirestore = FirebaseFirestore.getInstance()
+ //   private var databaseReference: DatabaseReference = Firebase.database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message)
+        btnSend = findViewById(R.id.btnSendMsg)
+        textSend = findViewById(R.id.textMsg)
 
+        btnSend.setOnClickListener { sendMessage() }
 
     }
 
     private fun sendMessage() {
         btnSend.setOnClickListener {
             if (!textSend.text.toString().isEmpty()){
-                sendData()
+                sendData(textSend.text.toString())
             }else{
                 Toast.makeText(this, "Please enter a message", Toast.LENGTH_SHORT).show()
             }
@@ -35,9 +39,26 @@ class MessageActivity : AppCompatActivity() {
     }
 
     /* Send data to firebase */
-    private fun sendData(){
-        databaseReference.child("messages").child(java.lang.String.valueOf(System.currentTimeMillis()))
-            .setValue(Message(textSend.text.toString()))
+    private fun sendData(text : String){
+        val msg = hashMapOf(
+            "timestamp" to java.lang.String.valueOf(System.currentTimeMillis()),
+            "message" to text
+        )
+        databaseReference.collection("chat")
+            .document()
+            .set(msg)
+            .addOnSuccessListener {
+                Log.d(
+                    "TimeslotViewModel",
+                    "New timeslot successfully saved "
+                ) //success = true
+            }
+            .addOnFailureListener {
+                Log.d(
+                    "Firebase",
+                    "Error: timeslot not saved correctly"
+                ) //success = false
+            }
 
         //clear the text
         textSend.setText("")
