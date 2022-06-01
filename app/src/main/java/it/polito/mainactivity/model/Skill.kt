@@ -9,8 +9,9 @@ data class Skill(val category: String) {
         this.active = active
     }
 
-    constructor(skillMap: HashMap<String, Any>): this(skillMap.get("category") as String){
-        this.description = skillMap["description"] as String
+    /** create Skill object from HashMap **/
+    constructor(skillMap: Map<String, String>): this(skillMap["category"] ?: "category"){
+        this.description = skillMap["description"] ?: "description"
         this.active = (skillMap["active"] as String) == "true"
     }
 

@@ -35,37 +35,37 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private var lTimeslots: ListenerRegistration
+    // private var lTimeslots: ListenerRegistration
 
     init {
 
-        val uId = FirebaseAuth.getInstance().currentUser!!.uid
+        // val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        db.collection("users").document(uId).addSnapshotListener { value, _ ->
-            _user.value = Utils.toUser(value)
-            _submitTimeslot.value = Timeslot(_user.value!!)
-        }
+        // db.collection("users").document(uId).addSnapshotListener { value, _ ->
+        //     _user.value = Utils.toUser(value)
+        //     _submitTimeslot.value = Timeslot(_user.value!!)
+        // }
 
-        lTimeslots =
-            db
-                .collection("timeslots")
-                .addSnapshotListener { v, e ->
-                if (e == null) {
-                    _timeslots.value = v!!.mapNotNull { d -> Utils.toTimeslot(d) }
-                    // Log.d("TimeslotViewModel", v.toString())
-                }
-                // TODO choose how to handle empty timeslots
-                else {
-                    _timeslots.value = emptyList()
-                    Log.d("TimeslotViewModel", "error " + e.message)
-                }
-            }
+        // lTimeslots =
+        //     db
+        //         .collection("timeslots")
+        //         .addSnapshotListener { v, e ->
+        //         if (e == null) {
+        //             _timeslots.value = v!!.mapNotNull { d -> Utils.toTimeslot(d) }
+        //             // Log.d("TimeslotViewModel", v.toString())
+        //         }
+        //         // TODO choose how to handle empty timeslots
+        //         else {
+        //             _timeslots.value = emptyList()
+        //             Log.d("TimeslotViewModel", "error " + e.message)
+        //         }
+        //     }
 
     }
 
     override fun onCleared() {
         super.onCleared()
-        lTimeslots.remove()
+        // lTimeslots.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
@@ -106,7 +106,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     /* set current submitTimeslot to a empty timeslot */
     fun resetSubmitFields() {
-        _submitTimeslot.value = Timeslot(_user.value!!) // default constructor
+        // _submitTimeslot.value = Timeslot(_user.value!!) // default constructor
         _submitRepetitionType.value = null
         _submitDaysOfWeek.value = listOf(GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK))
         _submitEndRepetitionDate.value = GregorianCalendar.getInstance()
@@ -241,9 +241,9 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
      * Add chat between the owner of the timeslot with the given id and the current user
      */
     fun addChat(timeslotId: String): Boolean {
-        val newChat = Chat(user.value!!, false, mutableListOf())
+        // val newChat = Chat(user.value!!, false, mutableListOf())
         val chats = timeslots.value?.find{ t -> t.timeslotId == timeslotId}?.chats
-        chats?.add(newChat)
+        // chats?.add(newChat)
 
         return updateTimeslotField(timeslotId, "chats", chats)
     }

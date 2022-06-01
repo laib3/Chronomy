@@ -141,38 +141,38 @@ class Utils {
             else Color.parseColor("#55ff55")
 
 
-        fun toTimeslot(d: DocumentSnapshot?): Timeslot? {
-            if (d == null)
-                return null
-            return try {
+        // fun toTimeslot(d: DocumentSnapshot?): Timeslot? {
+        //     if (d == null)
+        //         return null
+        //     return try {
 
-                val user = anyToUser(d.get("publisher"))
+        //         val user = anyToUser(d.get("publisher"))
 
-                val t =
-                Timeslot(
-                    d.get("timeslotId") as String,
-                    d.get("title") as String,
-                    d.get("description") as String,
-                    formatStringToDate(d.get("date") as String),
-                    d.get("startHour") as String,
-                    d.get("endHour") as String,
-                    d.get("location") as String,
-                    d.get("category") as String,
-                    anyToUser(d.get("publisher")),
-                    d.get("status") as Timeslot.Status,
-                    (d.get("chats") as List<Any?>).map{ c -> c as Chat }.toMutableList(),
-                    (d.get("ratings") as List<Any?>).map{ r -> r as Rating }.toMutableList()
-                )
-                Log.d("Utils: timeslot:", t.toString())
-                t
-            } catch (e: Exception) {
-                e.message?.let { Log.d("Utils: exception", it) }
-                e.printStackTrace()
-                null
-            }
-        }
+        //         val t =
+        //         Timeslot(
+        //             d.get("timeslotId") as String,
+        //             d.get("title") as String,
+        //             d.get("description") as String,
+        //             formatStringToDate(d.get("date") as String),
+        //             d.get("startHour") as String,
+        //             d.get("endHour") as String,
+        //             d.get("location") as String,
+        //             d.get("category") as String,
+        //             anyToUser(d.get("publisher")),
+        //             d.get("status") as Timeslot.Status,
+        //             (d.get("chats") as List<Any?>).map{ c -> c as Chat }.toMutableList(),
+        //             (d.get("ratings") as List<Any?>).map{ r -> r as Rating }.toMutableList()
+        //         )
+        //         Log.d("Utils: timeslot:", t.toString())
+        //         t
+        //     } catch (e: Exception) {
+        //         e.message?.let { Log.d("Utils: exception", it) }
+        //         e.printStackTrace()
+        //         null
+        //     }
+        // }
 
-        fun toUser(d: DocumentSnapshot?): HashMap<String, Any>? {
+        fun toUser(d: DocumentSnapshot?): Map<String, String>? {
             if(d == null)
                 return null
             return try {
@@ -185,7 +185,6 @@ class Utils {
                     "email" to d.get("email") as String,
                     "location" to d.get("location") as String,
                     "phone" to d.get("phone") as String,
-
                 )
             } catch(e: Exception){
                 e.printStackTrace()
@@ -193,7 +192,7 @@ class Utils {
             }
         }
 
-        fun toSkill(d: DocumentSnapshot?): HashMap<String, Any>?{
+        fun toSkill(d: DocumentSnapshot?): Map<String, String>?{
             if(d == null)
                 return null
             return try {
@@ -239,7 +238,7 @@ class Utils {
 
     }
 
-    fun toRating(d: DocumentSnapshot?): HashMap<String, String>?{
+    fun toRating(d: DocumentSnapshot?): Map<String, String>?{
         if(d == null)
             return null
         return try {
@@ -254,7 +253,7 @@ class Utils {
         }
     }
 
-    fun toChat(d: DocumentSnapshot?): HashMap<String, String>?{
+    fun toChat(d: DocumentSnapshot?): Map<String, String>?{
         if(d == null)
             return null
         return try {
@@ -268,7 +267,7 @@ class Utils {
     }
 
     // TODO check if string
-    fun toMessage(d: DocumentSnapshot?): HashMap<String, String>?{
+    fun toMessage(d: DocumentSnapshot?): Map<String, String>?{
         if(d == null)
             return null
         return try {

@@ -5,12 +5,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.model.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 
 class UserProfileViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -28,26 +29,47 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
             val userId = fAuth.currentUser?.uid
             if (userId != null) {
-                val userRef: DocumentReference = db.collection("users").document(userId)
-                userRef.get().addOnSuccessListener {
+                viewModelScope.launch {
+                    val u = getUserById(userId)
+                    if(u == null){ // user doesn't exist
+                        val userRef = db.collection("users").document(userId)
+                        userRef.set(emptyUser().toMap()).await() // add user
+                        val skillsSnapshot = userRef.collection("skills").get().await()
+                        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkill(ss) }.forEach{ sm ->
+                            userRef.collection("skills").add(sm).await() // add skills to db
+                        }
+                    }
+                    else {
+                    }
+                }
+
+                db.collection("users").document(userId).get().addOnSuccessListener { userSnapshot ->
                     // document doesn't exist
-                    if (!it.exists()) { // add new user
-                        userRef.set(emptyUser()).addOnSuccessListener {
-                            Log.d("UserProfileViewModel", "user creation ok with id $userId")
-                            userListenerRegistration = userRef.addSnapshotListener { value, _ -> // on change
+                    if (!userSnapshot.exists()) {
+                        userSnapshot.reference.set(emptyUser().toMap()) // create new user in db
+                            .addOnSuccessListener {
+                            // add skills to user
+                            db.runBatch { batch ->
+                                createEmptySkills().map{ s -> s.toMap() }.forEach{ sm ->
+                                    batch.set(userSnapshot.reference.collection("skills").document(), sm) // add skills to user
+                                }
+                            }.addOnCompleteListener { // skills added
+                                Log.d("UserProfileViewModel", "skills added")
+                            }
+                            userListenerRegistration = userSnapshot.reference.addSnapshotListener { value, _ -> // on change
                                 if (value != null) {
                                     val userMap = Utils.toUser(value)
-                                    userMap?.put("skills", listOf<Skill>())
                                     // get skills
-                                    value.reference.collection("skills").get().addOnSuccessListener { it ->
-                                        it.documents
-                                            .map{ d -> Utils.toSkill(d) }
-                                            .forEach{ skillMap -> Skill(skillMap) }
-                                                //.add(skillMap!!) }
+                                    if(userMap != null){
+                                        value.reference.collection("skills").get().addOnSuccessListener { skillsSnapshots ->
+                                            // TODO modify, skills should exist always
+                                            val skillsMaps = skillsSnapshots.documents
+                                                .mapNotNull{ ss -> Utils.toSkill(ss) }
+                                            _user.value = User(userMap, skillsMaps)
+                                            _newUser.value = true
+                                            Log.d("UserProfileViewModel", "logged in as ${value.id}")
+                                        }
                                     }
-                                    // _user.value = Utils.toUser(value)
-                                    // _newUser.value = true
-                                    Log.d("UserProfileViewModel", "logged in as ${value.id}")
                                 } else {
                                     Log.d("UserProfileViewModel", "error during log in")
                                     _user.value = null
@@ -55,16 +77,20 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                                 }
                             }
                         }.addOnFailureListener { Log.d("UserProfileViewModel", "publisher not created") }
-                    } else {
-                        // if document exists
-                        userListenerRegistration = userRef.addSnapshotListener { value, _ ->
-                            if (value != null) {
-                                _user.value = Utils.toUser(value)
-                                _newUser.value = false
-                                Log.d("UserProfileViewModel", "logged in as (existing) ${value.id}")
-                                // get offers
+                    } else { // user already exists
+                        userListenerRegistration = userSnapshot.reference.addSnapshotListener { us, _ ->
+                            if (us != null) {
+                                val userMap = Utils.toUser(us)
+                                if(userMap != null){
+                                    us.reference.collection("skills").get().addOnSuccessListener { skillsSnapshot ->
+                                        val skillsMap = skillsSnapshot.documents
+                                            .mapNotNull{ ss -> Utils.toSkill(ss) }
+                                        _user.value = User(userMap, skillsMap)
+                                        Log.d("UserProfileViewModel", "logged in as (existing) ${us.id}")
+                                    }
+                                }
                             } else {
-                                Log.d("UserProfileViewModel", "error during (existing) log in")
+                                Log.d("UserProfileViewModel", "error during (existing user) log in")
                                 _user.value = null
                                 _newUser.value = null
                             }
@@ -85,24 +111,14 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    fun getOffers(){
-        db.collection("users").document(FirebaseAuth.getInstance().currentUser?.uid!!)
-            .collection("offers").get().addOnSuccessListener {
-                it.documents.forEach{  }
-            }
-    }
-
-    fun getRequests(){
-
-    }
-
     override fun onCleared() {
         super.onCleared()
         userListenerRegistration.remove()
     }
 
-    // update publisher field and publisher inside the timeslots
-    fun updateUserField(field: String, newValue: Any?): Boolean{
+    // TODO update fields
+    // update publisher inside the timeslots and client inside chats
+    fun updateUserField(field: String, newValue: Any?): Boolean {
         //var returnValue = false
         val userId = auth.currentUser?.uid!!
         if (newValue == null)
@@ -145,46 +161,23 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         return true
     }
 
-    /** if timeslot is present in offers update, otherwise add it to the list **/
-    fun updateOffers(timeslot: Timeslot){
-        val offers = user.value?.offers
-        var offer = offers?.find{ o -> o.get("timeslotId") == timeslot.timeslotId }
-        if(offer != null) { // update existing offer
-            offer = timeslot.toMap()
+    suspend fun addNewUser(userId: String){
+        val userRef = db.collection("users").document(userId)
+        userRef.set(emptyUser().toMap()).await() // add user
+        val skillsSnapshot = userRef.collection("skills").get().await()
+        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkill(ss) }.forEach{ sm ->
+            userRef.collection("skills").add(sm).await() // add skills to db
         }
-        else { // not existing, add offer to offers
-            offers?.add(timeslot.toMap())
-        }
-        db
-            .collection("users")
-            .document(FirebaseAuth.getInstance().currentUser?.uid!!)
-            .collection("offers")
-            .whereEqualTo("timeslotId", timeslot.timeslotId)
     }
 
-    // /** remove offer from timeslots **/
-    // fun deleteOffer(timeslotId: String): Boolean{
-    //     val offers = user.value?.offers?.filter{ o -> o.timeslotId != timeslotId }
-    //     return updateUserField("offers", offers)
-    // }
-
-    // /** if timeslot is present in requests update, otherwise add it to the list **/
-    // fun updateRequests(timeslot: Timeslot){
-    //     val requests = user.value?.requests
-    //     var request = requests?.find{ r -> r.timeslotId == timeslot.timeslotId }
-    //     if(request != null) { // update existing offer
-    //         request = timeslot.copy()
-    //     }
-    //     else { // not existing, add offer to offers
-    //         requests?.add(timeslot.copy())
-    //     }
-    //     updateUserField("requests", requests)
-    // }
-
-    // /** remove offer from timeslots **/
-    // fun deleteRequest(timeslotId: String): Boolean{
-    //     val requests = user.value?.requests?.filter{ o -> o.timeslotId != timeslotId }
-    //     return updateUserField("requests", requests)
-    // }
+    suspend fun getUserById(id: String): User? {
+        val userSnapshot = db.collection("users").document(id).get().await()
+        if(!userSnapshot.exists())
+            return null
+        val userMap = Utils.toUser(userSnapshot) ?: return null
+        val skillsSnapshot = userSnapshot.reference.collection("skills").get().await()
+        val skillsMaps = skillsSnapshot.mapNotNull { ss -> Utils.toSkill(ss) }
+        return User(userMap, skillsMaps)
+    }
 
 }

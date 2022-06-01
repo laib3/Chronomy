@@ -13,14 +13,11 @@ data class User(
     var phone: String,
     var skills: List<Skill>,
     var balance: Int,
-    var profilePictureUrl: String?,
-    var offers: MutableList<HashMap<String, Any>>,
-    var requests: MutableList<HashMap<String, Any>>
+    var profilePictureUrl: String?
 ) {
     override fun toString() =
         """{ "userId": "$userId", "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
-                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills,""" +
-               """ "offers":${offers}, "requests":${requests} """ .trimMargin()
+                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills,""".trimMargin()
 
     fun toMap(): HashMap<String, Any?>{
         return hashMapOf(
@@ -30,12 +27,27 @@ data class User(
             "nickname" to nickname,
             "bio" to bio,
             "email" to email,
-            "location" to location,
             "phone" to phone,
+            "location" to location,
+            "balance" to balance,
             "profilePictureUrl" to profilePictureUrl
-            // no skills
+            // no skills, only top-level fields
         )
     }
+
+    constructor(userMap: Map<String, String>, skillMap: List<Map<String, String>>): this(
+        userMap["userId"] ?: "null",
+        userMap["name"] ?: "null",
+        userMap["surname"] ?: "null",
+        userMap["nickname"] ?: "null",
+        userMap["bio"] ?: "null",
+        userMap["email"] ?: "null",
+        userMap["location"] ?: "null",
+        userMap["phone"] ?: "null",
+        skillMap.map{ sm -> Skill(sm) },
+        userMap["balance"]?.toInt() ?: 0,
+        userMap["profilePictureUrl"]
+    )
 
 
 }
@@ -52,11 +64,10 @@ fun emptyUser(): User {
         "",
         createEmptySkills(),
         5,
-        null,
-        mutableListOf(),
-        mutableListOf()
+        null
     )
 }
+
 
 fun createEmptySkills(): List<Skill> {
     return listOf(
