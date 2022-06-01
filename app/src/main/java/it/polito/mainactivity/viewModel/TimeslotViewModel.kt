@@ -9,18 +9,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.R
-import it.polito.mainactivity.model.Chat
-import it.polito.mainactivity.model.Timeslot
-import it.polito.mainactivity.model.User
-import it.polito.mainactivity.model.Utils
+import it.polito.mainactivity.model.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
 
     private val TIME_LENGTH: Int = 5
 
-    private val _user = MutableLiveData<User?>()
-    val user: LiveData<User?> = _user
     private val _timeslots = MutableLiveData<List<Timeslot>>()
     val timeslots: LiveData<List<Timeslot>> = _timeslots
 
@@ -35,29 +31,65 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private var lTimeslots: ListenerRegistration
+    private var timeslotListenerRegistration: ListenerRegistration
 
     init {
 
         val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        db.collection("users").document(uId).addSnapshotListener { value, _ ->
-            _user.value = Utils.toUser(value)
-            _submitTimeslot.value = Timeslot(_user.value!!)
-        }
-
-        lTimeslots =
+        timeslotListenerRegistration =
             db
                 .collection("timeslots")
-                .addSnapshotListener { v, e ->
-                if (e == null) {
-                    _timeslots.value = v!!.mapNotNull { d -> Utils.toTimeslot(d) }
-                    // Log.d("TimeslotViewModel", v.toString())
+                .addSnapshotListener { query, error ->
+                if (error == null) {
+                    if (query != null){
+                        //_timeslots.value = query.mapNotNull { value ->
+                        query.forEach { value ->
+                            val timeslot = Utils.toTimeslot(value)
+                            val publisher = value.get("publisher") as HashMap<String, String>
+
+                                 value.reference.collection("chats").get().addOnSuccessListener{ chatsSnapshot->
+                                 val chats = chatsSnapshot.documents
+                                        .map {d -> Utils.toChat(d)}
+                                        .toMutableList()
+
+                                 val clients : MutableList<HashMap<String,String>> = mutableListOf()
+                                     chatsSnapshot.documents.forEach{
+                                         d -> clients.add(d.get("client") as HashMap<String, String>)
+                                 }
+
+                                 val chatsMessages : MutableList<MutableList<HashMap<String,String>?>> = mutableListOf()
+                                     chatsSnapshot.documents.forEach {
+                                         d -> d.reference.collection("messages").get().addOnSuccessListener { messagesSnapshot ->
+                                             val messages = messagesSnapshot.documents
+                                                 .map {m -> Utils.toMessage(m)}
+                                                 .toMutableList()
+                                         chatsMessages.add(messages)
+
+                                         value.reference.collection("ratings").get().addOnSuccessListener { ratingsSnapshot ->
+                                             val ratings = ratingsSnapshot.documents
+                                                 .map {d -> Utils.toRating(d)}
+                                                 .toMutableList()
+                                             Timeslot(timeslot, publisher, chats, clients, chatsMessages, ratings)
+                                         }
+                                         }
+                                     }
+
+
+                            }
+                        }
+                        // Log.d("TimeslotViewModel", v.toString())
+                        Log.d("TimeslotViewModel", "fetching timeslots from db")
+                    }
+                    else {
+                        Log.d("TimeslotViewModel", "error when fetching timeslots from db")
+
+                    }
                 }
                 // TODO choose how to handle empty timeslots
                 else {
                     _timeslots.value = emptyList()
-                    Log.d("TimeslotViewModel", "error " + e.message)
+                    Log.d("TimeslotViewModel", "error " + error.message)
                 }
             }
 
@@ -65,7 +97,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     override fun onCleared() {
         super.onCleared()
-        lTimeslots.remove()
+        timeslotListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
