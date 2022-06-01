@@ -8,54 +8,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class Utils {
 
     companion object {
-
-        fun JSONArrayToList(ja: JSONArray): MutableList<JSONObject> {
-            val list: MutableList<JSONObject> = mutableListOf()
-            for (i in 0 until ja.length()) {
-                list.add(ja.getJSONObject(i))
-            }
-            return list
-        }
-
-        fun JSONArrayToIntList(ja: JSONArray): MutableList<Int> {
-            val list: MutableList<Int> = mutableListOf()
-            for (i in 0 until ja.length()) {
-                list.add(ja.getInt(i))
-            }
-            return list
-        }
-
-        /*
-        fun JSONObjectToTimeslot(jo: JSONObject): Timeslot {
-                val title: String = jo.getString("title")
-                val description: String = jo.getString("description")
-                val date: JSONObject = jo.getJSONObject("startDate")
-                val dYear: Int = date.getInt("year")
-                val dMonth: Int = date.getInt("month")
-                val dDay: Int = date.getInt("day")
-                val startHour: String = jo.getString("startHour")
-                val endHour: String = jo.getString("endHour")
-                val location: String = jo.getString("location")
-                val category: String = jo.getString("category")
-                var repetition: String? = jo.getString("repetition")
-                // NOTE: no repetition is saved with null value, not null string like in json
-                if (repetition == "null" || repetition == "")
-                    repetition = null
-                val JSONDays: JSONArray = jo.getJSONArray("days")
-                val days: MutableList<Int> = JSONArrayToIntList(JSONDays)
-                val submitEndRepetitionDate: JSONObject = jo.getJSONObject("submitEndRepetitionDate")
-                val erYear: Int = submitEndRepetitionDate.getInt("year")
-                val erMonth: Int = submitEndRepetitionDate.getInt("month")
-                val erDay: Int = submitEndRepetitionDate.getInt("day")
-                return Timeslot(title, description, GregorianCalendar(dYear, dMonth, dDay),
-                    startHour, endHour, location, category, repetition,
-                    days, GregorianCalendar(erYear, erMonth, erDay))
-            }
-        */
 
         fun formatStringToDate(strDate: String): Calendar {
             val day = strDate.split("/")[0]
@@ -67,7 +24,6 @@ class Utils {
             // -1 is needed because months start from 0
             return GregorianCalendar(year.toInt(), month.toInt() - 1, day.toInt())
         }
-
 
         fun formatDateToString(date: Calendar?): String {
             if (date == null)
@@ -140,40 +96,28 @@ class Utils {
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
 
-
-        // fun toTimeslot(d: DocumentSnapshot?): Timeslot? {
-        //     if (d == null)
-        //         return null
-        //     return try {
-
-        //         val user = anyToUser(d.get("publisher"))
-
-        //         val t =
-        //         Timeslot(
-        //             d.get("timeslotId") as String,
-        //             d.get("title") as String,
-        //             d.get("description") as String,
-        //             formatStringToDate(d.get("date") as String),
-        //             d.get("startHour") as String,
-        //             d.get("endHour") as String,
-        //             d.get("location") as String,
-        //             d.get("category") as String,
-        //             anyToUser(d.get("publisher")),
-        //             d.get("status") as Timeslot.Status,
-        //             (d.get("chats") as List<Any?>).map{ c -> c as Chat }.toMutableList(),
-        //             (d.get("ratings") as List<Any?>).map{ r -> r as Rating }.toMutableList()
-        //         )
-        //         Log.d("Utils: timeslot:", t.toString())
-        //         t
-        //     } catch (e: Exception) {
-        //         e.message?.let { Log.d("Utils: exception", it) }
-        //         e.printStackTrace()
-        //         null
-        //     }
-        // }
+        fun toTimeslot(d: DocumentSnapshot?): HashMap<String, String>? {
+            if (d == null)
+                return null
+            return try {
+                hashMapOf(
+                    "timeslotId" to d.get("timeslotId") as String,
+                    "title" to d.get("title") as String,
+                    "description" to d.get("description") as String,
+                    "date" to d.get("date") as String,
+                    "startHour" to d.get("startHour") as String,
+                    "endHour" to d.get("endHour") as String,
+                    "location" to d.get("location") as String,
+                    "category" to d.get("category") as String
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
 
         fun toUserMap(d: DocumentSnapshot?): Map<String, String>? {
-            if(d == null)
+            if (d == null)
                 return null
             return try {
                 hashMapOf(
@@ -186,14 +130,14 @@ class Utils {
                     "location" to d.get("location") as String,
                     "phone" to d.get("phone") as String,
                 )
-            } catch(e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 null
             }
         }
 
-        fun toSkillMap(d: DocumentSnapshot?): Map<String, String>?{
-            if(d == null)
+        fun toSkillMap(d: DocumentSnapshot?): Map<String, String>? {
+            if (d == null)
                 return null
             return try {
                 hashMapOf(
@@ -202,16 +146,21 @@ class Utils {
                     // TODO change to Boolean
                     "active" to d.get("active") as String
                 )
-            } catch(e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 null
             }
         }
 
         /** create a list of dates (Calendar) starting from the parameters; if repetitionType is null,
-        * then the only present date will be `date`, otherwise it will find all the dates within the interval
-        * date - endRepetitionDate **/
-        fun createDates(date: Calendar, repetitionType: String?, endRepetitionDate: Calendar, daysOfWeek: List<Int>): List<Calendar> {
+         * then the only present date will be `date`, otherwise it will find all the dates within the interval
+         * date - endRepetitionDate **/
+        fun createDates(
+            date: Calendar,
+            repetitionType: String?,
+            endRepetitionDate: Calendar,
+            daysOfWeek: List<Int>
+        ): List<Calendar> {
             val tmp: Calendar = date.clone() as Calendar
             val list: MutableList<Calendar> = mutableListOf()
             when {
@@ -236,79 +185,49 @@ class Utils {
             return list
         }
 
-    }
 
-    fun toRatingMap(d: DocumentSnapshot?): Map<String, String>?{
-        if(d == null)
-            return null
-        return try {
-            hashMapOf(
-                "sender" to d.get("sender") as String,
-                "value" to d.get("value").toString(),
-                "comment" to d.get("comment") as String
-            )
-        } catch(e: Exception){
-            e.printStackTrace()
-            null
+        fun toRatingMap(d: DocumentSnapshot?): Map<String, String>? {
+            if (d == null)
+                return null
+            return try {
+                hashMapOf(
+                    "sender" to d.get("sender") as String,
+                    "value" to d.get("value").toString(),
+                    "comment" to d.get("comment") as String
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        fun toChatMap(d: DocumentSnapshot?): Map<String, String>? {
+            if (d == null)
+                return null
+            return try {
+                hashMapOf(
+                    "assigned" to d.get("assigned") as String
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        // TODO check if string
+        fun toMessageMap(d: DocumentSnapshot?): Map<String, String>? {
+            if (d == null)
+                return null
+            return try {
+                hashMapOf(
+                    "text" to d.get("text") as String,
+                    "assigned" to d.get("assigned") as String,
+                    "sender" to d.get("sender") as String
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
         }
     }
-
-    fun toChatMap(d: DocumentSnapshot?): Map<String, String>?{
-        if(d == null)
-            return null
-        return try {
-            hashMapOf(
-                "assigned" to d.get("assigned") as String
-            )
-        } catch(e: Exception){
-            e.printStackTrace()
-            null
-        }
-    }
-
-    // TODO check if string
-    fun toMessageMap(d: DocumentSnapshot?): Map<String, String>?{
-        if(d == null)
-            return null
-        return try {
-            hashMapOf(
-                "text" to d.get("text") as String,
-                "assigned" to d.get("assigned") as String,
-                "sender" to d.get("sender") as String
-            )
-        } catch(e: Exception){
-            e.printStackTrace()
-            null
-        }
-    }
-
-
 }
-// fun anyToUser(any: Any?): User {
-//     // this should never happen
-//     if (any == null)
-//         return emptyUser()
-//     val map = any as Map<String, Any?>
-//     return User(
-//         map["userId"] as String,
-//         map["name"] as String,
-//         map["surname"] as String,
-//         map["nickname"] as String,
-//         map["bio"] as String,
-//         map["email"] as String,
-//         map["location"] as String,
-//         map["phone"] as String,
-//         (map["skills"] as List<Map<Any?, Any?>>).map { s ->
-//             Skill(
-//                 s["category"] as String,
-//                 s["description"] as String,
-//                 s["active"] as Boolean
-//             )
-//         },
-//         (map["balance"] as Long).toInt(),
-//         map["profilePictureUrl"] as String?,
-//         // TODO update with real values
-//         mutableListOf(),
-//         mutableListOf()
-//     )
-// }
