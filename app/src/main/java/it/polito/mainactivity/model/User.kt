@@ -35,7 +35,7 @@ data class User(
         )
     }
 
-    constructor(userMap: Map<String, String>, skillMap: List<Map<String, String>>): this(
+    constructor(userMap: Map<String, String?>, skillMap: List<Map<String, Any>>): this(
         userMap["userId"] ?: "null",
         userMap["name"] ?: "null",
         userMap["surname"] ?: "null",

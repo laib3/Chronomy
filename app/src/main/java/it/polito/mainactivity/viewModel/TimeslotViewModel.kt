@@ -31,73 +31,73 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private var timeslotListenerRegistration: ListenerRegistration
+    // private var timeslotListenerRegistration: ListenerRegistration
 
     init {
 
         // val uId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        timeslotListenerRegistration =
-            db
-                .collection("timeslots")
-                .addSnapshotListener { query, error ->
-                if (error == null) {
-                    if (query != null){
-                        //_timeslots.value = query.mapNotNull { value ->
-                        query.forEach { value ->
-                            val timeslot = Utils.toTimeslot(value)
-                            val publisher = value.get("publisher") as HashMap<String, String>
+        // timeslotListenerRegistration =
+        //     db
+        //         .collection("timeslots")
+        //         .addSnapshotListener { query, error ->
+        //         if (error == null) {
+        //             if (query != null){
+        //                 //_timeslots.value = query.mapNotNull { value ->
+        //                 query.forEach { value ->
+        //                     val timeslot = Utils.toTimeslotMap(value)
+        //                     val publisher = value.get("publisher") as HashMap<String, String>
 
-                                 value.reference.collection("chats").get().addOnSuccessListener{ chatsSnapshot->
-                                 val chats = chatsSnapshot.documents
-                                        .map {d -> Utils.toChatMap(d)}
-                                        .toMutableList()
+        //                          value.reference.collection("chats").get().addOnSuccessListener{ chatsSnapshot->
+        //                          val chats = chatsSnapshot.documents
+        //                                 .map {d -> Utils.toChatMap(d)}
+        //                                 .toMutableList()
 
-                                 val clients : MutableList<HashMap<String,String>> = mutableListOf()
-                                     chatsSnapshot.documents.forEach{
-                                         d -> clients.add(d.get("client") as HashMap<String, String>)
-                                 }
+        //                          val clients : MutableList<HashMap<String,String>> = mutableListOf()
+        //                              chatsSnapshot.documents.forEach{
+        //                                  d -> clients.add(d.get("client") as HashMap<String, String>)
+        //                          }
 
-                                 val chatsMessages : MutableList<MutableList<HashMap<String,String>?>> = mutableListOf()
-                                     chatsSnapshot.documents.forEach {
-                                         d -> d.reference.collection("messages").get().addOnSuccessListener { messagesSnapshot ->
-                                             val messages = messagesSnapshot.documents
-                                                 .map {m -> Utils.toMessageMap(m)}
-                                                 .toMutableList()
-                                         chatsMessages.add(messages)
+        //                          val chatsMessages : MutableList<MutableList<HashMap<String,String>?>> = mutableListOf()
+        //                              chatsSnapshot.documents.forEach {
+        //                                  d -> d.reference.collection("messages").get().addOnSuccessListener { messagesSnapshot ->
+        //                                      val messages = messagesSnapshot.documents
+        //                                          .map {m -> Utils.toMessageMap(m)}
+        //                                          .toMutableList()
+        //                                  chatsMessages.add(messages)
 
-                                         value.reference.collection("ratings").get().addOnSuccessListener { ratingsSnapshot ->
-                                             val ratings = ratingsSnapshot.documents
-                                                 .map {d -> Utils.toRatingMap(d)}
-                                                 .toMutableList()
-                                             Timeslot(timeslot!!, publisher, chats, clients, chatsMessages, ratings)
-                                         }
-                                         }
-                                     }
+        //                                  value.reference.collection("ratings").get().addOnSuccessListener { ratingsSnapshot ->
+        //                                      val ratings = ratingsSnapshot.documents
+        //                                          .map {d -> Utils.toRatingMap(d)}
+        //                                          .toMutableList()
+        //                                      Timeslot(timeslot!!, publisher, chats, clients, chatsMessages, ratings)
+        //                                  }
+        //                                  }
+        //                              }
 
 
-                            }
-                        }
-                        // Log.d("TimeslotViewModel", v.toString())
-                        Log.d("TimeslotViewModel", "fetching timeslots from db")
-                    }
-                    else {
-                        Log.d("TimeslotViewModel", "error when fetching timeslots from db")
+        //                     }
+        //                 }
+        //                 // Log.d("TimeslotViewModel", v.toString())
+        //                 Log.d("TimeslotViewModel", "fetching timeslots from db")
+        //             }
+        //             else {
+        //                 Log.d("TimeslotViewModel", "error when fetching timeslots from db")
 
-                    }
-                }
-                // TODO choose how to handle empty timeslots
-                else {
-                    _timeslots.value = emptyList()
-                    Log.d("TimeslotViewModel", "error " + error.message)
-                }
-            }
+        //             }
+        //         }
+        //         // TODO choose how to handle empty timeslots
+        //         else {
+        //             _timeslots.value = emptyList()
+        //             Log.d("TimeslotViewModel", "error " + error.message)
+        //         }
+        //     }
 
     }
 
     override fun onCleared() {
         super.onCleared()
-        timeslotListenerRegistration.remove()
+        // timeslotListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
@@ -183,7 +183,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             val id = db.collection("timeslots").document().id
             hashMapOf(
                 "timeslotId" to id,
-                "publisher" to publisher.value,
+                "publisher" to t.publisher,
                 "title" to t.title,
                 "description" to t.description,
                 "date" to Utils.formatDateToString(date),

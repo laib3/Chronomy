@@ -7,7 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import it.polito.mainactivity.model.*
 import kotlinx.coroutines.*
@@ -28,83 +30,27 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     init {
         FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
             val userId = fAuth.currentUser?.uid
-            if (userId != null) {
+            if (userId != null) { // log in
                 viewModelScope.launch {
                     val u = getUserById(userId)
                     if(u == null){ // user doesn't exist
-                        val userRef = db.collection("users").document(userId)
-                        userRef.set(emptyUser().toMap()).await() // add user
-                        val skillsSnapshot = userRef.collection("skills").get().await()
-                        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkillMap(ss) }.forEach{ sm ->
-                            userRef.collection("skills").add(sm).await() // add skills to db
+                        if(addNewUser(userId)){
+                            Log.d("UserProfileViewModel", "new user created with id $userId")
+                            val userRef = db.collection("users").document(userId).get().await().reference
+                            addUserSnapshotListener(userRef, true) // watch for changes
+                        }
+                        else {
+                            Log.d("UserProfileViewModel", "user creation error with id $userId")
                         }
                     }
-                    else {
+                    else { // user exists
+                        val userRef = db.collection("users").document(userId).get().await().reference
+                        addUserSnapshotListener(userRef, false) // watch for changes
                     }
-                }
-
-                db.collection("users").document(userId).get().addOnSuccessListener { userSnapshot ->
-                    // document doesn't exist
-                    if (!userSnapshot.exists()) {
-                        userSnapshot.reference.set(emptyUser().toMap()) // create new user in db
-                            .addOnSuccessListener {
-                            // add skills to user
-                            db.runBatch { batch ->
-                                createEmptySkills().map{ s -> s.toMap() }.forEach{ sm ->
-                                    batch.set(userSnapshot.reference.collection("skills").document(), sm) // add skills to user
-                                }
-                            }.addOnCompleteListener { // skills added
-                                Log.d("UserProfileViewModel", "skills added")
-                            }
-                            userListenerRegistration = userSnapshot.reference.addSnapshotListener { value, _ -> // on change
-                                if (value != null) {
-                                    val userMap = Utils.toUserMap(value)
-                                    // get skills
-                                    if(userMap != null){
-                                        value.reference.collection("skills").get().addOnSuccessListener { skillsSnapshots ->
-                                            // TODO modify, skills should exist always
-                                            val skillsMaps = skillsSnapshots.documents
-                                                .mapNotNull{ ss -> Utils.toSkillMap(ss) }
-                                            _user.value = User(userMap, skillsMaps)
-                                            _newUser.value = true
-                                            Log.d("UserProfileViewModel", "logged in as ${value.id}")
-                                        }
-                                    }
-                                } else {
-                                    Log.d("UserProfileViewModel", "error during log in")
-                                    _user.value = null
-                                    _newUser.value = null
-                                }
-                            }
-                        }.addOnFailureListener { Log.d("UserProfileViewModel", "publisher not created") }
-                    } else { // user already exists
-                        userListenerRegistration = userSnapshot.reference.addSnapshotListener { us, _ ->
-                            if (us != null) {
-                                val userMap = Utils.toUserMap(us)
-                                if(userMap != null){
-                                    us.reference.collection("skills").get().addOnSuccessListener { skillsSnapshot ->
-                                        val skillsMap = skillsSnapshot.documents
-                                            .mapNotNull{ ss -> Utils.toSkillMap(ss) }
-                                        _user.value = User(userMap, skillsMap)
-                                        Log.d("UserProfileViewModel", "logged in as (existing) ${us.id}")
-                                    }
-                                }
-                            } else {
-                                Log.d("UserProfileViewModel", "error during (existing user) log in")
-                                _user.value = null
-                                _newUser.value = null
-                            }
-                        }
-                    }
-                }.addOnFailureListener {
-                    Log.d(
-                        "UserProfileViewModel",
-                        "error db: cannot retrieve document with id $userId"
-                    )
                 }
             } else { // log out
                 // TODO signal log out
-                Log.d("UserProfileViewModel", "publisher log out")
+                Log.d("UserProfileViewModel", "user log out")
                 _user.value = null
                 _newUser.value = null
             }
@@ -116,68 +62,115 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         userListenerRegistration.remove()
     }
 
-    // TODO update fields
+    fun updateUserSkill(category: String, active: Boolean, description: String){
+        viewModelScope.launch {
+            val userId = auth.currentUser?.uid!!
+            val skillSnapshot =
+                db
+                    .collection("users")
+                    .document(userId)
+                    .collection("skills")
+                    .whereEqualTo("category", category).get().await()
+            skillSnapshot.documents[0].reference.update("active", active, "description", description).await()
+        }
+    }
+
+    // Only first level fields, no skills
     // update publisher inside the timeslots and client inside chats
     fun updateUserField(field: String, newValue: Any?): Boolean {
         //var returnValue = false
+        if(field == "skills") throw Exception("cannot update skills with this function")
         val userId = auth.currentUser?.uid!!
         if (newValue == null)
             return false
-        val userRef = db.collection("users").document(userId)
-        val tsRef = db.collection("timeslots")
 
-        tsRef.whereEqualTo("publisher.userId", userId).get().addOnSuccessListener { result ->
-            val tsRefs = result.documents.map { it.reference }
-            userRef.update(field, newValue)
-                .addOnSuccessListener {
-                    userRef.get().addOnSuccessListener { userSnapshot ->
-                        val user = Utils.toUserMap(userSnapshot)
-                        tsRefs.forEach { tsRef ->
-                            tsRef.update("publisher", user)
-                                .addOnSuccessListener {
-                                    Log.d(
-                                        "UserProfileViewModel",
-                                        "timeslot updated successfully with publisher: " + user.toString()
-                                    )
-                                }
-                                .addOnFailureListener {
-                                    Log.d(
-                                        "UserProfileViewModel",
-                                        "update timeslot failure: " + it.message
-                                    )
-                                }
-                        }
-                    }.addOnFailureListener {
-                        Log.d(
-                            "UserProfileViewModel",
-                            "get publisher failure: " + it.message
-                        )
+        viewModelScope.launch {
+            try {
+                // update user in users collection
+                db.collection("users").document(userId).update(field, newValue).await()
+                // update publisher in timeslots if any
+                val timeslotsSnapshot = db.collection("timeslots").whereEqualTo("publisher.userId", userId).get().await()
+                timeslotsSnapshot.documents
+                    .forEach{ ts ->
+                        val publisherMap = Utils.toTimeslotMap(ts)?.get("publisher") as MutableMap<String, String>
+                        ts.reference.update("publisher", publisherMap).await()
                     }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("UserProfileViewModel", "update publisher failure: " + exception.message)
-                }
+                // update client in chats if any
+                val chatsSnapshots = db.collectionGroup("chats").whereEqualTo("client.userId", userId).get().await()
+                chatsSnapshots.documents
+                    .forEach { cs ->
+                        val clientMap = Utils.toChatMap(cs)?.get("client") as MutableMap<String, String>
+                        cs.reference.update("client", clientMap).await()
+                    }
+            } catch(e: FirebaseFirestoreException){
+                Log.d("UserProfileViewModel", "updateUserField: FirebaseFirestoreException: " + e.message)
+                e.printStackTrace()
+            } catch(e: Exception){
+                Log.d("UserProfileViewModel", "updateUserField: Exception: " + e.message)
+                e.printStackTrace()
+            }
         }
         return true
     }
 
-    suspend fun addNewUser(userId: String){
-        val userRef = db.collection("users").document(userId)
-        userRef.set(emptyUser().toMap()).await() // add user
-        val skillsSnapshot = userRef.collection("skills").get().await()
-        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkillMap(ss) }.forEach{ sm ->
-            userRef.collection("skills").add(sm).await() // add skills to db
+    private suspend fun addNewUser(userId: String): Boolean {
+        return try {
+            val userRef = db.collection("users").document(userId)
+            userRef.set(emptyUser().toMap()).await() // add user
+            createEmptySkills().map{ skill -> skill.toMap() }.forEach{ sm ->
+                userRef.collection("skills").add(sm).await()
+            }
+            true
+        } catch(e: FirebaseFirestoreException){
+            e.printStackTrace()
+            false
         }
     }
 
     suspend fun getUserById(id: String): User? {
-        val userSnapshot = db.collection("users").document(id).get().await()
-        if(!userSnapshot.exists())
+        try {
+            val userSnapshot = db.collection("users").document(id).get().await()
+            if(!userSnapshot.exists())
+                return null
+            val userMap = Utils.toUserMap(userSnapshot) ?: return null
+            val skillsSnapshot = userSnapshot.reference.collection("skills").get().await()
+            val skillsMaps = skillsSnapshot.mapNotNull { ss -> Utils.toSkillMap(ss) }
+            return User(userMap, skillsMaps)
+        } catch(e: FirebaseFirestoreException){
+            e.printStackTrace()
             return null
-        val userMap = Utils.toUserMap(userSnapshot) ?: return null
-        val skillsSnapshot = userSnapshot.reference.collection("skills").get().await()
-        val skillsMaps = skillsSnapshot.mapNotNull { ss -> Utils.toSkillMap(ss) }
-        return User(userMap, skillsMaps)
+        }
+    }
+
+    private fun addUserSnapshotListener(userRef: DocumentReference, isNewUser: Boolean){
+        userListenerRegistration = userRef.addSnapshotListener{ userSnapshot, _ ->
+            if (userSnapshot != null) {
+                viewModelScope.launch {
+                    val userMap = Utils.toUserMap(userSnapshot)
+                    if(userMap != null){
+                        val skillsSnapshots = userSnapshot.reference.collection("skills").get().await()
+                        val skillsMaps = skillsSnapshots.documents.map{ ss -> Utils.toSkillMap(ss)!! }
+                        _user.value = User(userMap, skillsMaps)
+                        _newUser.value = isNewUser
+                    }
+                }
+            } else {
+                Log.d("UserProfileViewModel", "error during log in")
+                _user.value = null
+                _newUser.value = null
+            }
+        }
+        userRef.collection("skills").addSnapshotListener { skillsCollectionSnapshot, _ ->
+            if(skillsCollectionSnapshot != null){
+                viewModelScope.launch {
+                    if(user.value != null){
+                        val updatedSkills = skillsCollectionSnapshot.documents.map{ ss -> Utils.toSkillMap(ss)!! }
+                            .map{ sm -> Skill(sm) }
+                        _user.value = _user.value.apply{ this!!.skills = updatedSkills }
+                    }
+                }
+            }
+        }
     }
 
 }

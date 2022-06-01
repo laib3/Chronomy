@@ -35,7 +35,7 @@ data class Timeslot(
         category = "Other"
         status = Status.PUBLISHED
         chats = mutableListOf()
-        ratings = mutableListOf() // map is empty, gets populated later
+        ratings = mutableListOf()
     }
 
     /* 2nd constructor */
@@ -100,6 +100,7 @@ data class Timeslot(
             "category" to category,
             "status" to status,
             "chats" to chats.forEach{ it.toMap() },
+            "publisher" to publisher
         )
     }
 

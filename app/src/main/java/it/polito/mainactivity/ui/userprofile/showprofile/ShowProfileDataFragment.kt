@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.firestore.FirebaseFirestoreException
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
 import it.polito.mainactivity.viewModel.TimeslotViewModel
@@ -41,9 +42,10 @@ class ShowProfileDataFragment : Fragment() {
         // If show profile of other users
         if (id != null) {
             val publisherId = vmTimeslots.timeslots.value?.find{ t -> t.timeslotId == id }?.publisher?.get("userId") ?: throw Exception("publisherId shouldn't be null")
-            // get publisher aysnchronously and update
+            // get publisher asynchronously and update
             MainScope().launch{
                 val publisher = vmUser.getUserById(publisherId)
+                    ?: throw FirebaseFirestoreException("publisher not found", FirebaseFirestoreException.Code.NOT_FOUND)
                 balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), publisher.balance)
                 bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), publisher.bio)
                 phoneTextView.text = publisher.phone

@@ -6,6 +6,7 @@ data class Chat(val client: Map<String, String>, var assigned: Boolean, val mess
 
     fun toMap(): HashMap<String, Any>{
         return hashMapOf(
+            "client" to client,
             "assigned" to assigned
         )
     }
@@ -34,7 +35,7 @@ data class Message(val text: String, val timestamp: Timestamp, val sender: Sende
     constructor(messageMap: Map<String, String>): this(
         messageMap["text"] ?: "null",
         // TODO fix - handle String to Timestamp conversion
-        Timestamp.now() ?: Timestamp.now(),
+        Timestamp.now(),
         messageMap["sender"]?.let{ Sender.valueOf(it) } ?: Sender.ERROR
     )
 

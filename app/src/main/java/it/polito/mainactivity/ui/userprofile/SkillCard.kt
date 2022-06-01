@@ -76,11 +76,7 @@ class SkillCard(
                 val desc: String = modalDescription.text.toString()
 
                 if (skill.description != desc || skill.active != checked) {
-                    val newSkill = skill.copy().apply { active = checked; description = desc }
-                    val oldSkills = vm.user.value?.skills
-                    vm.updateUserField(
-                        "skills",
-                        oldSkills?.map { s -> if (s.category == skill.category) newSkill else s })
+                    vm.updateUserSkill(skill.category, checked, desc)
                 }
             }
         }
