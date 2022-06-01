@@ -172,7 +172,7 @@ class Utils {
         //     }
         // }
 
-        fun toUser(d: DocumentSnapshot?): Map<String, String>? {
+        fun toUserMap(d: DocumentSnapshot?): Map<String, String>? {
             if(d == null)
                 return null
             return try {
@@ -192,7 +192,7 @@ class Utils {
             }
         }
 
-        fun toSkill(d: DocumentSnapshot?): Map<String, String>?{
+        fun toSkillMap(d: DocumentSnapshot?): Map<String, String>?{
             if(d == null)
                 return null
             return try {
@@ -238,7 +238,7 @@ class Utils {
 
     }
 
-    fun toRating(d: DocumentSnapshot?): Map<String, String>?{
+    fun toRatingMap(d: DocumentSnapshot?): Map<String, String>?{
         if(d == null)
             return null
         return try {
@@ -253,7 +253,7 @@ class Utils {
         }
     }
 
-    fun toChat(d: DocumentSnapshot?): Map<String, String>?{
+    fun toChatMap(d: DocumentSnapshot?): Map<String, String>?{
         if(d == null)
             return null
         return try {
@@ -267,7 +267,7 @@ class Utils {
     }
 
     // TODO check if string
-    fun toMessage(d: DocumentSnapshot?): Map<String, String>?{
+    fun toMessageMap(d: DocumentSnapshot?): Map<String, String>?{
         if(d == null)
             return null
         return try {

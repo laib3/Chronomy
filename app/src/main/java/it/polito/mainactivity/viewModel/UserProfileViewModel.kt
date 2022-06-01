@@ -35,7 +35,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                         val userRef = db.collection("users").document(userId)
                         userRef.set(emptyUser().toMap()).await() // add user
                         val skillsSnapshot = userRef.collection("skills").get().await()
-                        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkill(ss) }.forEach{ sm ->
+                        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkillMap(ss) }.forEach{ sm ->
                             userRef.collection("skills").add(sm).await() // add skills to db
                         }
                     }
@@ -58,13 +58,13 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                             }
                             userListenerRegistration = userSnapshot.reference.addSnapshotListener { value, _ -> // on change
                                 if (value != null) {
-                                    val userMap = Utils.toUser(value)
+                                    val userMap = Utils.toUserMap(value)
                                     // get skills
                                     if(userMap != null){
                                         value.reference.collection("skills").get().addOnSuccessListener { skillsSnapshots ->
                                             // TODO modify, skills should exist always
                                             val skillsMaps = skillsSnapshots.documents
-                                                .mapNotNull{ ss -> Utils.toSkill(ss) }
+                                                .mapNotNull{ ss -> Utils.toSkillMap(ss) }
                                             _user.value = User(userMap, skillsMaps)
                                             _newUser.value = true
                                             Log.d("UserProfileViewModel", "logged in as ${value.id}")
@@ -80,11 +80,11 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                     } else { // user already exists
                         userListenerRegistration = userSnapshot.reference.addSnapshotListener { us, _ ->
                             if (us != null) {
-                                val userMap = Utils.toUser(us)
+                                val userMap = Utils.toUserMap(us)
                                 if(userMap != null){
                                     us.reference.collection("skills").get().addOnSuccessListener { skillsSnapshot ->
                                         val skillsMap = skillsSnapshot.documents
-                                            .mapNotNull{ ss -> Utils.toSkill(ss) }
+                                            .mapNotNull{ ss -> Utils.toSkillMap(ss) }
                                         _user.value = User(userMap, skillsMap)
                                         Log.d("UserProfileViewModel", "logged in as (existing) ${us.id}")
                                     }
@@ -131,7 +131,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
             userRef.update(field, newValue)
                 .addOnSuccessListener {
                     userRef.get().addOnSuccessListener { userSnapshot ->
-                        val user = Utils.toUser(userSnapshot)
+                        val user = Utils.toUserMap(userSnapshot)
                         tsRefs.forEach { tsRef ->
                             tsRef.update("publisher", user)
                                 .addOnSuccessListener {
@@ -165,7 +165,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         val userRef = db.collection("users").document(userId)
         userRef.set(emptyUser().toMap()).await() // add user
         val skillsSnapshot = userRef.collection("skills").get().await()
-        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkill(ss) }.forEach{ sm ->
+        skillsSnapshot.documents.mapNotNull{ ss -> Utils.toSkillMap(ss) }.forEach{ sm ->
             userRef.collection("skills").add(sm).await() // add skills to db
         }
     }
@@ -174,9 +174,9 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         val userSnapshot = db.collection("users").document(id).get().await()
         if(!userSnapshot.exists())
             return null
-        val userMap = Utils.toUser(userSnapshot) ?: return null
+        val userMap = Utils.toUserMap(userSnapshot) ?: return null
         val skillsSnapshot = userSnapshot.reference.collection("skills").get().await()
-        val skillsMaps = skillsSnapshot.mapNotNull { ss -> Utils.toSkill(ss) }
+        val skillsMaps = skillsSnapshot.mapNotNull { ss -> Utils.toSkillMap(ss) }
         return User(userMap, skillsMaps)
     }
 
