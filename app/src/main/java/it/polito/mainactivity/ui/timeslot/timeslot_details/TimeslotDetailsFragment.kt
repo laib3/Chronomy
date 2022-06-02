@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_details
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.*
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mainactivity.MainActivity
+import it.polito.mainactivity.MessageActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.model.Utils
@@ -28,6 +30,8 @@ class TimeslotDetailsFragment : Fragment() {
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: TextInputLayout? = null
 
+    private var startChat:Boolean = false
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -43,6 +47,15 @@ class TimeslotDetailsFragment : Fragment() {
         val id = arguments?.getString("id")
         val showOnly: Boolean = arguments?.getBoolean("showOnly") ?: false
         setHasOptionsMenu(!showOnly)
+
+        startChat = arguments?.getBoolean("startChat") ?:false
+
+        if(startChat){
+            binding.extendedFab.visibility = View.VISIBLE
+        }else{
+            binding.extendedFab.visibility = View.INVISIBLE
+        }
+
 
         vm.timeslots.observe(viewLifecycleOwner) {
             val ts = it.find { t -> t.timeslotId == id }
@@ -65,6 +78,14 @@ class TimeslotDetailsFragment : Fragment() {
                 tiCategory?.editText?.setText(ts.category)
             }
         }
+
+        binding.extendedFab.setOnClickListener{
+            activity?.let{
+                val intent = Intent (it, MessageActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
         return root
     }
 

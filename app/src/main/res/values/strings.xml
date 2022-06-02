@@ -2,8 +2,6 @@
     <string name="app_name">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <!--    <string name="nav_header_title">Android Studio</string>-->
-    <!--    <string name="nav_header_subtitle">android.studio@android.com</string>-->
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -14,6 +12,7 @@
     <string name="menu_show_profile">Show profile</string>
     <string name="menu_edit_profile">Edit profile</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_requests">Requests</string>
 
     <!-- fake data -->
     <string name="user_profile_name">Name</string>
@@ -30,6 +29,9 @@
     <string name="user_profile_balance_placeholder">%1$s TCU</string>
     <string name="user_profile_bio_placeholder">«%1$s»</string>
     <string name="home_skill_number_placeholder">(%1$s)</string>
+    <string name="date_placeholder">dd/mm/yyyy</string>
+    <string name="hour_placeholder">hh:mm</string>
+    <string name="duration_placeholder">--h --m</string>
 
     <!-- labels -->
     <string name="user_profile_balance_label">Balance</string>
@@ -57,6 +59,14 @@
 
     <string name="sort_by_label">Sort by:</string>
 
+    <string-array name="repetitionMw">
+        <item id="isWeekly">Weekly</item>
+        <item id="isMonthly">Monthly</item>
+    </string-array>
+
+    <string name="tab_requests_for_my_timeslots">Requests received</string>
+    <string name="tab_requests_i_made">Requests sent</string>
+
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
     <string name="user_profile_hint_surname">Surname</string>
@@ -75,9 +85,6 @@
     <string name="profile_pic_path">images</string>
     <string name="profile_pic_name">profile.jpg</string>
 
-    <string name="empty_timeslot_list_message">The list of your timeslots is empty, press the button below to add one.</string>
-    <string name="empty_category_map_message">There are no timeslot from other users yet. </string>
-
     <!-- separators -->
     <string name="starting_hour_dash_ending_hour">%s - %s  (%s)</string>
 
@@ -85,21 +92,14 @@
         903427285285-pu25cc7cdjtrb0dbpj5lucdi8jalollk.apps.googleusercontent.com
     </string>
 
-    <string-array name="repetitionMw">
-        <item id="isWeekly">Weekly</item>
-        <item id="isMonthly">Monthly</item>
-    </string-array>
-
     <!-- messages -->
     <string name="welcome_string1">Hello!</string>
     <string name="welcome_string2">What do you need today?</string>
 
+    <string name="empty_timeslot_list_message">The list of your timeslots is empty, press the button below to add one.</string>
+    <string name="empty_category_map_message">There are no timeslot from other users yet. </string>
+
     <!-- category in filtered list -->
     <string name="nav_filtered_label">Browsing: {category}</string>
-
-    <!-- placeholders-->
-    <string name="date_placeholder">dd/mm/yyyy</string>
-    <string name="hour_placeholder">hh:mm</string>
-    <string name="duration_placeholder">--h --m</string>
 
 </resources>

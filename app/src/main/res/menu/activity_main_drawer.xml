@@ -18,6 +18,10 @@
             android:id="@+id/bGotoShowProfile"
             android:icon="@drawable/ic_menu_profile"
             android:title="@string/menu_show_profile" />
+        <item
+            android:id="@+id/nav_requests"
+            android:icon="@drawable/ic_menu_requests"
+            android:title="@string/menu_requests" />
     </group>
 
     <group android:checkableBehavior="single"
@@ -25,7 +29,7 @@
         <item
             android:id="@+id/bLogout"
             android:icon="@drawable/ic_baseline_logout_24"
-            android:title="Logout">
+            android:title="@string/menu_logout">
         </item>
     </group>
 </menu>

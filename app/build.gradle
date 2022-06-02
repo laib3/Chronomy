@@ -46,6 +46,7 @@ apply plugin: 'com.google.gms.google-services'
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
     platform('com.google.firebase:firebase-bom:30.0.2')
 
     implementation 'androidx.core:core-ktx:1.7.0'

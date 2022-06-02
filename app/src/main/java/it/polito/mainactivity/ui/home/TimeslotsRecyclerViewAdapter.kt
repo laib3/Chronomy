@@ -64,6 +64,7 @@ class TimeslotsRecyclerViewAdapter(
         val bundle = Bundle()
         bundle.putString("id", ts.timeslotId)
         bundle.putBoolean("showOnly", true)
+        bundle.putBoolean("startChat", true)
 
         // click on card in the timeslot part, show details of that timeslot
         holder.clTimeslotInfo.setOnClickListener {
