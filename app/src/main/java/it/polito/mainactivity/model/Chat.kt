@@ -2,7 +2,7 @@ package it.polito.mainactivity.model
 
 import com.google.firebase.Timestamp
 
-data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, val messages: MutableList<Message>){
+data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, var messages: MutableList<Message>){
 
     fun toMap(): HashMap<String, Any>{
         return hashMapOf(
@@ -20,9 +20,9 @@ data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: 
     )
 
     // Used only when you need to update the value of assigned
-    constructor(chatMap: Map<String, Any>, clientMap: Map<String, Any>): this(
+    constructor(chatMap: Map<String, Any>): this(
         chatMap["chatId"] as String,
-        clientMap,
+        hashMapOf(),
         chatMap["assigned"] as Boolean,
         mutableListOf()
     )
