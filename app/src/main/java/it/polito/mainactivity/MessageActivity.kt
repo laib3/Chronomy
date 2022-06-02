@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import it.polito.mainactivity.ui.request.Message
 
 class MessageActivity : AppCompatActivity() {
 
@@ -17,7 +16,7 @@ class MessageActivity : AppCompatActivity() {
 
     private val databaseReference: FirebaseFirestore = FirebaseFirestore.getInstance()
  //   private var databaseReference: DatabaseReference = Firebase.database.reference
-
+/*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message)
@@ -63,4 +62,6 @@ class MessageActivity : AppCompatActivity() {
         //clear the text
         textSend.setText("")
     }
+
+ */
 }

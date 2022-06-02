@@ -19,7 +19,7 @@ data class User(
         """{ "userId": "$userId", "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
                 """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills,""".trimMargin()
 
-    fun toMap(): HashMap<String, Any?>{
+    fun toMap(): HashMap<String, *>{
         return hashMapOf(
             "userId" to userId,
             "name" to name,

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_login_fragment">
+    app:startDestination="@id/nav_requests">
 
     <fragment
         android:id="@+id/nav_list"
@@ -124,7 +124,11 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="it.polito.mainactivity.ChatFragment"
+        android:name="it.polito.mainactivity.ui.chat.ChatFragment"
         android:label="fragment_chat_list"
-        tools:layout="@layout/fragment_chat_list" />
+        tools:layout="@layout/fragment_chat_list" >
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+    </fragment>
 </navigation>

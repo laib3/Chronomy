@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil.calculateDiff
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
@@ -19,12 +20,8 @@ import it.polito.mainactivity.MessageActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
+import it.polito.mainactivity.ui.home.HomeFragmentDirections
 import java.util.*
-
-
-class Chat(val nickname: String, val d: Calendar, val msg: String) {
-
-}
 
 class RequestRecyclerViewAdapter(
     private var values: List<Timeslot>,
@@ -55,46 +52,29 @@ class RequestRecyclerViewAdapter(
             ?.also { it -> holder.ivCategory.setImageResource(it) }
 
         holder.hiddenView.removeAllViews()
-        val chat_infos = listOf(
-            Chat(
-                "@utente1",
-                GregorianCalendar(2022, 4, 5),
-                "Ciao! Non sono sicuo di aver capito che cosa intendi con questo."
-            ),
-            Chat(
-                "@utente2",
-                GregorianCalendar(2022, 4, 6),
-                "Sei sicuro che la zona è quella giusta?"
-            ),
-            Chat("@utente3", GregorianCalendar(2022, 4, 7), "Sono molto interessato!")
-        )
         val inflater = LayoutInflater.from(parentFragment.context)
 
-        for (chat: Chat in chat_infos) {
+        for (chat: it.polito.mainactivity.model.Chat in ts.chats) {
+            chat.messages.sortBy { msg -> msg.timestamp }
             val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
             chatCard.findViewById<TextView>(R.id.tvNickname).apply {
-                this.text = chat.nickname
+                this.text = chat.client["nickname"].toString()
             }
             chatCard.findViewById<TextView>(R.id.tvDate).apply {
-                this.text = Utils.formatDateToString(chat.d)
+                val c = Calendar.getInstance()
+                c.time= chat.messages[0].timestamp.toDate()
+                this.text = Utils.formatDateToString(c)
             }
             chatCard.findViewById<TextView>(R.id.tvMsg).apply {
-                this.text = chat.msg
+                this.text = chat.messages[0].text
             }
-/* TODO: modify navigation
             // Pass through bundle the id of the item in the list
-            val bundle = Bundle()
-            bundle.putString("id", ts.tid)
-            bundle.putBoolean("showOnly", false)
-
             chatCard.setOnClickListener{
-
-                activity?.let{
-                    val intent = Intent (it, MessageActivity::class.java)
-                    it.startActivity(intent)
-                }
+                val action =
+                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId)
+                    parentFragment.findNavController().navigate(action)
             }
-*/
+
             holder.hiddenView.addView(chatCard)
         }
 
