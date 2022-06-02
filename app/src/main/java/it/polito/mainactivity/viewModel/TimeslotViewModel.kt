@@ -40,7 +40,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private var timeslotListenerRegistration: ListenerRegistration
+    // private var timeslotListenerRegistration: ListenerRegistration
 
     init {
 
@@ -95,7 +95,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     override fun onCleared() {
         super.onCleared()
-        timeslotListenerRegistration.remove()
+        // timeslotListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
@@ -187,8 +187,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             val id = db.collection("timeslots").document().id
             hashMapOf(
                 "timeslotId" to id,
-                // TODO: fix this with new constructors
-                "publisher" to emptyUser(),
+                "publisher" to t.publisher,
                 "title" to t.title,
                 "description" to t.description,
                 "date" to Utils.formatDateToString(date),

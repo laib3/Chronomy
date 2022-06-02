@@ -96,7 +96,7 @@ class Utils {
             if (msg.startsWith("ERROR:")) Color.parseColor("#ffff00")
             else Color.parseColor("#55ff55")
 
-        fun toTimeslot(d: DocumentSnapshot?): HashMap<String, String>? {
+        fun toTimeslotMap(d: DocumentSnapshot?): HashMap<String, Any>? {
             if (d == null)
                 return null
             return try {
@@ -108,7 +108,8 @@ class Utils {
                     "startHour" to d.get("startHour") as String,
                     "endHour" to d.get("endHour") as String,
                     "location" to d.get("location") as String,
-                    "category" to d.get("category") as String
+                    "category" to d.get("category") as String,
+                    "publisher" to d.get("publisher") as Map<String, String>
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -116,35 +117,47 @@ class Utils {
             }
         }
 
-        fun toUserMap(d: DocumentSnapshot?): Map<String, String>? {
+        fun toUserMap(d: DocumentSnapshot?): Map<String, String?>? {
             if (d == null)
                 return null
             return try {
-                hashMapOf(
-                    "userId" to d.get("userId") as String,
-                    "name" to d.get("name") as String,
-                    "surname" to d.get("surname") as String,
-                    "nickname" to d.get("nickname") as String,
-                    "bio" to d.get("bio") as String,
-                    "email" to d.get("email") as String,
-                    "location" to d.get("location") as String,
-                    "phone" to d.get("phone") as String,
-                )
+                if(d.get("profilePictureUrl") != null)
+                    hashMapOf(
+                        "userId" to d.get("userId") as String,
+                        "name" to d.get("name") as String,
+                        "surname" to d.get("surname") as String,
+                        "nickname" to d.get("nickname") as String,
+                        "bio" to d.get("bio") as String,
+                        "email" to d.get("email") as String,
+                        "location" to d.get("location") as String,
+                        "phone" to d.get("phone") as String,
+                        "profilePictureUrl" to d.get("profilePictureUrl") as String
+                    )
+                else
+                    hashMapOf(
+                        "userId" to d.get("userId") as String,
+                        "name" to d.get("name") as String,
+                        "surname" to d.get("surname") as String,
+                        "nickname" to d.get("nickname") as String,
+                        "bio" to d.get("bio") as String,
+                        "email" to d.get("email") as String,
+                        "location" to d.get("location") as String,
+                        "phone" to d.get("phone") as String,
+                    )
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
             }
         }
 
-        fun toSkillMap(d: DocumentSnapshot?): Map<String, String>? {
+        fun toSkillMap(d: DocumentSnapshot?): Map<String, Any>? {
             if (d == null)
                 return null
             return try {
                 hashMapOf(
                     "category" to d.get("category") as String,
                     "description" to d.get("description") as String,
-                    // TODO change to Boolean
-                    "active" to d.get("active") as String
+                    "active" to d.get("active") as Boolean
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -201,11 +214,12 @@ class Utils {
             }
         }
 
-        fun toChatMap(d: DocumentSnapshot?): Map<String, String>? {
+        fun toChatMap(d: DocumentSnapshot?): Map<String, Any>? {
             if (d == null)
                 return null
             return try {
                 hashMapOf(
+                    "client" to d.get("client") as Map<String, String>,
                     "assigned" to d.get("assigned") as String
                 )
             } catch (e: Exception) {

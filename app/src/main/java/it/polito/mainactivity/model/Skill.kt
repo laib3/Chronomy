@@ -10,9 +10,9 @@ data class Skill(val category: String) {
     }
 
     /** create Skill object from HashMap **/
-    constructor(skillMap: Map<String, String>): this(skillMap["category"] ?: "category"){
-        this.description = skillMap["description"] ?: "description"
-        this.active = (skillMap["active"] as String) == "true"
+    constructor(skillMap: Map<String, Any>): this(skillMap["category"] as String){
+        this.description = skillMap["description"] as String ?: "description"
+        this.active = skillMap["active"] as Boolean
     }
 
     override fun toString() =
