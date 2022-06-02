@@ -117,7 +117,7 @@ class Utils {
             }
         }
 
-        fun toUserMap(d: DocumentSnapshot?): Map<String, String?>? {
+        fun toUserMap(d: DocumentSnapshot?): Map<String, Any>? {
             if (d == null)
                 return null
             return try {
@@ -131,6 +131,7 @@ class Utils {
                         "email" to d.get("email") as String,
                         "location" to d.get("location") as String,
                         "phone" to d.get("phone") as String,
+                        "balance" to d.get("balance") as Int,
                         "profilePictureUrl" to d.get("profilePictureUrl") as String
                     )
                 else
@@ -142,6 +143,7 @@ class Utils {
                         "bio" to d.get("bio") as String,
                         "email" to d.get("email") as String,
                         "location" to d.get("location") as String,
+                        "balance" to d.get("balance") as Int,
                         "phone" to d.get("phone") as String,
                     )
             } catch (e: Exception) {

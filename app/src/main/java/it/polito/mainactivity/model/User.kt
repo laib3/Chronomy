@@ -35,20 +35,19 @@ data class User(
         )
     }
 
-    constructor(userMap: Map<String, String?>, skillMap: List<Map<String, Any>>): this(
-        userMap["userId"] ?: "null",
-        userMap["name"] ?: "null",
-        userMap["surname"] ?: "null",
-        userMap["nickname"] ?: "null",
-        userMap["bio"] ?: "null",
-        userMap["email"] ?: "null",
-        userMap["location"] ?: "null",
-        userMap["phone"] ?: "null",
+    constructor(userMap: Map<String, Any?>, skillMap: List<Map<String, Any>>): this(
+        userMap["userId"] as String,
+        userMap["name"] as String,
+        userMap["surname"] as String,
+        userMap["nickname"] as String,
+        userMap["bio"] as String,
+        userMap["email"] as String,
+        userMap["location"] as String,
+        userMap["phone"] as String,
         skillMap.map{ sm -> Skill(sm) },
-        userMap["balance"]?.toInt() ?: 0,
-        userMap["profilePictureUrl"]
+        userMap["balance"] as Int,
+        userMap["profilePictureUrl"] as String
     )
-
 
 }
 

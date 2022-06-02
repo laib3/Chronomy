@@ -38,6 +38,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var timeslotsListenerRegistration: ListenerRegistration
     private var ratingsListenerRegistration: ListenerRegistration
     private var chatsListenerRegistration: ListenerRegistration
@@ -321,38 +322,60 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun deleteTimeslot(timeslotId: String?): Boolean {
-        //var success: Boolean = false;
-        timeslotId?.apply {
-            db.collection("timeslots")
-                .document(timeslotId)
-                .delete()
-                .addOnSuccessListener {
-                    Log.d(
-                        "Firebase",
-                        "Timeslot successfully deleted!"
-                    ) //success = true;
+        if (timeslotId == null)
+            return false
+        // TODO update current LiveData
+        try {
+            viewModelScope.launch {
+                val tsRef = db.collection("timeslots").document(timeslotId)
+                val chatRefs = tsRef.collection("chats")
+                chatRefs.get().await().documents.forEach { cs ->
+                    val messages = cs.reference.collection("messages").get().await()
+                    messages.forEach { m -> m.reference.delete().await() } // delete messages
+                    cs.reference.delete().await() // delete chats
                 }
-                .addOnFailureListener {
-                    Log.d("Firebase", "Error: deleting timeslot") //success = false;
-                }
+                tsRef.delete().await()
+            }
+            return true
+        } catch(e: Exception){
+            e.printStackTrace()
+            return false
         }
-        return true
     }
 
     /**
-     * Add chat between the owner of the timeslot with the given id and the current user
-     */
+     * Add chat between the owner of the timeslot (PUBLISHER) with the given id and the current user (CLIENT)
+     **/
     fun addChat(timeslotId: String): Boolean {
-        // val newChat = Chat(user.value!!, false, mutableListOf())
-        val chats = timeslots.value?.find { t -> t.timeslotId == timeslotId }?.chats
-        // chats?.add(newChat)
-
-        return updateTimeslotField(timeslotId, "chats", chats)
+        return try {
+            viewModelScope.launch {
+                val userRef = db.collection("users").document(auth.currentUser!!.uid)
+                val clientMap = userRef.get().await().let{ Utils.toUserMap(it) } ?: throw Exception("clientMap shouldn't be null")
+                val chatRef = db.collection("timeslots").document(timeslotId).collection("chats").document()
+                val chatId = chatRef.id
+                val newChat = Chat(chatId, clientMap, false, mutableListOf())
+                // add chat to db with id chatId
+                db.collection("chats").document(chatId).set(newChat.toMap()).await()
+            }
+            true
+        } catch(e: Exception){
+            e.printStackTrace()
+            false
+        }
     }
 
-    fun setChatAssigned(assigned: Boolean): Boolean {
-        // TODO:
-        return true
+    fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
+        return try {
+            viewModelScope.launch {
+                val chat = db.collectionGroup("chats").whereEqualTo("chatId", chatId).get().await() ?: throw Exception("chatId ($chatId) not found")
+                if(chat.documents.size != 1) throw Exception("chatId ($chatId) should be unique")
+                chat.documents[0].reference.update("assigned", assigned).await()
+            }
+            true
+        } catch (e: Exception){
+            e.printStackTrace()
+            false
+        }
     }
 
     fun addMessage(text: String): Boolean {
