@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.FirebaseException
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -55,7 +57,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         if (tsQuery != null) {
                             viewModelScope.launch {
                                 _timeslots.value = tsQuery.mapNotNull { ts ->
-
                                     val timeslot = Utils.toTimeslotMap(ts)!!
                                     val publisher = ts.get("publisher") as Map<String, Any>
                                     val chatsQuery = ts.reference.collection("chats").get().await()
@@ -69,7 +70,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                     val ratingsQuery =
                                         ts.reference.collection("ratings").get().await()
                                     val ratings = getRatings(ratingsQuery)
-
                                     Timeslot(
                                         timeslot,
                                         publisher,
@@ -166,7 +166,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
-        // var returnValue = false
         db
             .collection("timeslots")
             .document(timeslotId)
@@ -237,61 +236,58 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         _submitTimeslot.value = sTs!!
     }
 
-    // TODO do not return a value to check if submission correct, but set a vm attribute
+    // TODO: check if lists and maps are correctly saved on the db
+    // TODO: check how the enum is saved on the db, if badly, replace it with string
+    private fun createSubmitTimeslotMap(t: Timeslot, date: Calendar, id: String): Map<String, Any> =
+        hashMapOf(
+            "timeslotId" to id,
+            "publisher" to t.publisher,
+            "title" to t.title,
+            "description" to t.description,
+            "date" to Utils.formatDateToString(date),
+            "startHour" to t.startHour,
+            "endHour" to t.endHour,
+            "location" to t.location,
+            "category" to t.category,
+            "status" to t.status,
+            "chats" to t.chats,
+        )
+
     /* submit current timeslot */
     fun submitTimeslot(): Boolean {
         /* check validity of submit fields */
         if (!checkSubmitValid())
             return false
-        val t = _submitTimeslot.value
-        val dates: List<Calendar> = Utils.createDates(
-            t!!.date,
-            submitRepetitionType.value,
-            submitEndRepetitionDate.value!!,
-            submitDaysOfWeek.value!!
-        )
-        dates.map { date ->
-            val id = db.collection("timeslots").document().id
-            hashMapOf(
-                "timeslotId" to id,
-                "publisher" to t.publisher,
-                "title" to t.title,
-                "description" to t.description,
-                "date" to Utils.formatDateToString(date),
-                "startHour" to t.startHour,
-                "endHour" to t.endHour,
-                "location" to t.location,
-                "category" to t.category,
-                "status" to t.status,
-                "chats" to t.chats,
-                "ratings" to t.ratings
+        return try {
+            val t = _submitTimeslot.value
+            val dates: List<Calendar> = Utils.createDates(
+                t!!.date,
+                submitRepetitionType.value,
+                submitEndRepetitionDate.value!!,
+                submitDaysOfWeek.value!!
             )
-            // TODO: check if lists and maps are correctly saved on the db
-            // TODO: check how the enum is saved on the db, if badly, replace it with string
-        }.forEach { tMap ->
-            db
-                .collection("timeslots")
-                .document(tMap["timeslotId"] as String)
-                .set(tMap)
-                .addOnSuccessListener {
-                    Log.d(
-                        "Firebase",
-                        "New timeslot successfully saved "
-                    ) //success = true
-                    db.collection("users").document(FirebaseAuth.getInstance().currentUser?.uid!!)
-                        .collection("offers").document().set(tMap).addOnSuccessListener {
-                            Log.d("Firebase", "New offer added")
-                        }
-                    resetSubmitFields()
+            viewModelScope.launch {
+                // create one timeslot for each date
+                dates.map { date ->
+                    val timeslotId = db.collection("timeslots").document().id
+                    createSubmitTimeslotMap(t, date, timeslotId)
+                }.forEach { tMap ->
+                    val tsRef = db.collection("timeslots").document(tMap["timeslotId"] as String)
+                    tsRef.set(tMap).await()
+                    // update blank ratings
+                    createBlankRatings(tMap["timeslotId"] as String).forEach{ r ->
+                        tsRef.collection("ratings").document().set(r.toMap()).await()
+                    }
                 }
-                .addOnFailureListener {
-                    Log.d(
-                        "Firebase",
-                        "Error: timeslot not saved correctly"
-                    ) //success = false
-                }
+            }
+            true
+        } catch(fe: FirebaseException){
+            fe.printStackTrace()
+            false
+        } catch(e: Exception){
+            e.printStackTrace()
+            false
         }
-        return true
     }
 
     /** check validity of a given timeslot **/
@@ -324,16 +320,20 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     fun deleteTimeslot(timeslotId: String?): Boolean {
         if (timeslotId == null)
             return false
-        // TODO update current LiveData
         try {
             viewModelScope.launch {
                 val tsRef = db.collection("timeslots").document(timeslotId)
+                // delete ratings
+                tsRef.collection("ratings").get().await().documents.forEach{ r -> r.reference.delete().await() }
                 val chatRefs = tsRef.collection("chats")
                 chatRefs.get().await().documents.forEach { cs ->
                     val messages = cs.reference.collection("messages").get().await()
+                    // delete messages
                     messages.forEach { m -> m.reference.delete().await() } // delete messages
+                    // delete chats
                     cs.reference.delete().await() // delete chats
                 }
+                // delete timeslot
                 tsRef.delete().await()
             }
             return true
@@ -378,14 +378,59 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun addMessage(text: String): Boolean {
-        // TODO:
-        return true
+    fun addMessage(chatId: String, text: String): Boolean {
+        return try {
+            viewModelScope.launch {
+                val userId = auth.currentUser!!.uid
+                val chats = db.collectionGroup("chats").whereEqualTo("chatId", chatId).get().await()
+                if(chats.documents.size != 1)
+                    throw Exception("only one chat should have chatId $chatId")
+                val chat = chats.documents[0]
+                val clientId = (chat["client"] as Map<String, Any>)["userId"] as String
+                val sender = when (clientId) {
+                    userId -> Message.Sender.CLIENT
+                    else -> Message.Sender.PUBLISHER
+                }
+                val ts = Timestamp.now()
+                val msgRef = chat.reference.collection("messages")
+                val msgId = msgRef.document().id
+                val newMessage = Message(msgId, text, ts, sender)
+                msgRef.document(msgId).set(newMessage).await()
+            }
+            true
+        } catch(e: Exception){
+            e.printStackTrace()
+            false
+        }
     }
 
-    fun updateRating(): Boolean {
-        // TODO:
-        return true
+    // update rating (Ratings are created at Timeslot creation, so they must exist here)
+    fun updateRating(timeslotId: String, rating: Int, comment: String): Boolean {
+        return try {
+            viewModelScope.launch {
+                val userId = auth.currentUser!!.uid
+                val ts = db.collection("timeslots").document(timeslotId).get().await()
+                val ratings = ts.reference.collection("ratings").get().await()
+                if(ratings.documents.size != 2)
+                    throw Exception("timeslot must contain exactly two ratings (${ratings.documents.size} found)")
+                val tsMap = Utils.toTimeslotMap(ts) ?: throw Exception("timeslot map creation failed")
+                val publisherId = (tsMap["publisher"] as Map<String, Any>)["userId"] as String
+                val by = when(publisherId) {
+                    userId -> Message.Sender.PUBLISHER
+                    else -> Message.Sender.CLIENT
+                }
+                ratings.documents.forEach { rs ->
+                    val ratingMap = Utils.toRatingMap(rs) ?: throw Exception("rating map creation failed")
+                    if(ratingMap["sender"] as Message.Sender == by){
+                        rs.reference.update("rating", rating, "comment", comment).await()
+                    }
+                }
+            }
+            true
+        } catch(e: Exception){
+            e.printStackTrace()
+            false
+        }
     }
 
     fun getChats(chatsQuery: QuerySnapshot): MutableList<Map<String, Any>> {

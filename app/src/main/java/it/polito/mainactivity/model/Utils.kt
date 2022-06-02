@@ -200,13 +200,13 @@ class Utils {
             return list
         }
 
-
-        fun toRatingMap(d: DocumentSnapshot?): Map<String, String>? {
+        fun toRatingMap(d: DocumentSnapshot?): Map<String, Any>? {
             if (d == null)
                 return null
             return try {
                 hashMapOf(
-                    "sender" to d.get("sender") as String,
+                    "timeslotId" to d.get("timeslotId") as String,
+                    "sender" to Message.Sender.valueOf(d.get("sender") as String),
                     "value" to d.get("value").toString(),
                     "comment" to d.get("comment") as String
                 )

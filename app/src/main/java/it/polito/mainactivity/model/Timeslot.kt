@@ -68,6 +68,7 @@ data class Timeslot(
         ratings = _ratings
     }
 
+    /* 3rd constructor */
     constructor(
         timeslotMap: HashMap<String, Any>, _publisher: Map<String, Any>, _ratings: MutableList<Map<String, Any>>,
         _chats: List<Map<String, Any>>, _clients: List<Map<String, Any>>,
