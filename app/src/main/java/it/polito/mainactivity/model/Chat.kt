@@ -11,7 +11,7 @@ data class Chat(val client: Map<String, String>, var assigned: Boolean, val mess
         )
     }
 
-    constructor(chatMap: Map<String, String>, messages: List<Map<String, String>>, clientMap: Map<String, String>): this(
+    constructor(chatMap: Map<String, Any>, messages: List<Map<String, String>>, clientMap: Map<String, String>): this(
         clientMap,
         chatMap["assigned"] == "true",
         messages.map{ mm -> Message(mm) }.toMutableList()

@@ -67,18 +67,18 @@ data class Timeslot(
         ratings = _ratings
     }
 
-    constructor(timeslotMap: Map<String, String>, _publisher: Map<String, String>, _ratings: List<Map<String, String>>,
-                _chats: List<Map<String, String>>, _clients: List<Map<String, String>>,
+    constructor(timeslotMap: Map<String, Any>, _publisher: Map<String, String>, _ratings: List<Map<String, String>>,
+                _chats: List<Map<String, Any>>, _clients: List<Map<String, String>>,
                 _messages: List<List<Map<String, String>>>): this(_publisher){
-        timeslotId = timeslotMap["timeslotId"] ?: "null"
-        title = timeslotMap["title"] ?: "null"
-        description = timeslotMap["description"] ?: "null"
-        date = timeslotMap["date"]?.let{ Utils.formatStringToDate(it) } ?: Calendar.getInstance()
-        startHour = timeslotMap["startHour"] ?: "null"
-        endHour = timeslotMap["endHour"] ?: "null"
-        location = timeslotMap["location"] ?: "null"
-        category = timeslotMap["category"] ?: "null"
-        timeslotMap["status"]?.let{ Status.valueOf(it) } ?: Status.ERROR
+        timeslotId = timeslotMap["timeslotId"] as String
+        title = timeslotMap["title"] as String
+        description = timeslotMap["description"] as String
+        date = timeslotMap["date"]?.let{ Utils.formatStringToDate(it as String) } ?: Calendar.getInstance()
+        startHour = timeslotMap["startHour"] as String
+        endHour = timeslotMap["endHour"] as String
+        location = timeslotMap["location"] as String
+        category = timeslotMap["category"] as String
+        timeslotMap["status"]?.let{ Status.valueOf(it as String) } ?: Status.ERROR
         if(_ratings.size != 2)
             throw Exception("Error: ratings lenght should be equal to 2")
         ratings = _ratings.map{ rm -> Rating(rm) }.toMutableList()
@@ -122,6 +122,5 @@ data class Timeslot(
         },
         """.replace("\n", "").trimIndent()
     }
-
 
 }

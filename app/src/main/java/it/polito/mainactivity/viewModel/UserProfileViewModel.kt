@@ -26,6 +26,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     val newUser: LiveData<Boolean?> = _newUser
 
     private lateinit var userListenerRegistration: ListenerRegistration
+    private lateinit var skillsListenerRegistration: ListenerRegistration
 
     init {
         FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
@@ -60,6 +61,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     override fun onCleared() {
         super.onCleared()
         userListenerRegistration.remove()
+        skillsListenerRegistration.remove()
     }
 
     fun updateUserSkill(category: String, active: Boolean, description: String){
@@ -160,7 +162,8 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
                 _newUser.value = null
             }
         }
-        userRef.collection("skills").addSnapshotListener { skillsCollectionSnapshot, _ ->
+        skillsListenerRegistration =
+            userRef.collection("skills").addSnapshotListener { skillsCollectionSnapshot, _ ->
             if(skillsCollectionSnapshot != null){
                 viewModelScope.launch {
                     if(user.value != null){

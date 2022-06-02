@@ -40,7 +40,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    // private var timeslotListenerRegistration: ListenerRegistration
+    private var timeslotListenerRegistration: ListenerRegistration
 
     init {
 
@@ -54,7 +54,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             viewModelScope.launch {
                                 _timeslots.value = tsQuery.mapNotNull { ts ->
 
-                                    val timeslot = Utils.toTimeslot(ts)!!
+                                    val timeslot = Utils.toTimeslotMap(ts)!!
                                     val publisher = ts.get("publisher") as Map<String, String>
                                     val chatsQuery = ts.reference.collection("chats").get().await()
                                     val chats = getChats(chatsQuery)
@@ -71,8 +71,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                     Timeslot(
                                         timeslot,
                                         publisher,
-                                        chats,
                                         ratings,
+                                        chats,
                                         clients,
                                         messages
                                     )
@@ -95,7 +95,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     override fun onCleared() {
         super.onCleared()
-        // timeslotListenerRegistration.remove()
+        timeslotListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
@@ -299,7 +299,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
-    fun getChats(chatsQuery: QuerySnapshot): MutableList<Map<String, String>> {
+    fun getChats(chatsQuery: QuerySnapshot): MutableList<Map<String, Any>> {
         return chatsQuery.documents
             .map { c -> Utils.toChatMap(c)!! }
             .toMutableList()
@@ -322,4 +322,19 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             .map { r -> Utils.toRatingMap(r)!! }
             .toMutableList()
     }
+
+    fun addSnapshotForMessages() {
+        db.collectionGroup("messages").addSnapshotListener { m, error ->
+            if( m == null ) throw Exception("E")
+            viewModelScope.launch {
+                m.forEach { ms ->
+                    val chat = ms.reference.parent.get().await()
+                    val tId = chat.documents.map{ cs -> cs.reference.parent.id }[0]
+                    timeslots.value?.find{ t -> t.timeslotId == tId }.apply{  }
+                    ms.id
+                }
+            }
+        }
+    }
+
 }
