@@ -20,9 +20,9 @@ data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: 
     )
 
     // Used only when you need to update the value of assigned
-    constructor(chatMap: Map<String, Any>, clientMap: Map<String, Any>): this(
+    constructor(chatMap: Map<String, Any>): this(
         chatMap["chatId"] as String,
-        clientMap,
+        hashMapOf(),
         chatMap["assigned"] as Boolean,
         mutableListOf()
     )

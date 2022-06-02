@@ -41,7 +41,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private var timeslotsListenerRegistration: ListenerRegistration
     private var ratingsListenerRegistration: ListenerRegistration
     private var chatsListenerRegistration: ListenerRegistration
-    private var messagesListenerRegistration: ListenerRegistration
+    //private var messagesListenerRegistration: ListenerRegistration
 
     init {
 
@@ -113,40 +113,48 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 }
             }
 
-        chatsListenerRegistration = db.collection("chats").addSnapshotListener { cQuery, error ->
-            if (cQuery == null) throw Exception("E")
-            cQuery.forEach { c ->
-                _timeslots.value
-                    // first parent is the collection of chats, second is the timeslot
-                    ?.find { t -> t.timeslotId == c.reference.parent.parent?.id }
-                    .apply {
-                        val newChat = Chat(Utils.toChatMap(c)!!, c.get("client") as Map<String, String>)
-                        val newChats = this?.chats?.map { oldC ->
-                            if (oldC.client["userId"] == newChat.client["userId"])
-                                oldC.apply {
-                                    assigned = newChat.assigned
-                                }
-                            else
-                                oldC
+        chatsListenerRegistration =
+            db.collectionGroup("chats").addSnapshotListener { cQuery, error ->
+                if (cQuery == null) throw Exception("E")
+                cQuery.forEach { c ->
+                    _timeslots.value
+                        // first parent is the collection of chats, second is the timeslot
+                        ?.find { t -> t.timeslotId == c.reference.parent.parent?.id }
+                        .apply {
+                            val newChat = Chat(Utils.toChatMap(c)!!)
+                            val newChats = this?.chats?.map { oldC ->
+                                if (oldC.chatId == newChat.chatId)
+                                    oldC.apply {
+                                        assigned = newChat.assigned
+                                    }
+                                else
+                                    oldC
+                            }
+                            this?.chats = newChats!!.toMutableList()
                         }
-                        this?.chats = newChats!!.toMutableList()
-                    }
+                }
             }
-        }
 
+        /*
         messagesListenerRegistration=
-            db.collection("messages").addSnapshotListener { mQuery, error ->
+            db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
                 if (mQuery == null) throw Exception("E")
                 viewModelScope.launch {
                     mQuery.forEach{ m ->
-                        val chat = m.reference.parent.parent?.get()?.await()
+                        val chatDoc = m.reference.parent.parent?.get()?.await()
+                        val oldChat = Chat(Utils.toChatMap(chatDoc)!!)
                         _timeslots.value
                             // first parent is the collection of messages, second parent is the chat document
                             // third parent is the collection of chats, fourth is the timeslot document
                             ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id}
                             .apply {
                                 val newMessage = Message(Utils.toMessageMap(m)!!)
-                                // TODO: val newMessages =
+                                val newMessages = this?.chats?.find{c -> c.chatId == oldChat.chatId}?.messages.map{ oldMessage ->
+                                    if (oldMessage.messageId == newMessage.messageId)
+                                        oldMessage.apply{
+
+                                        }
+                                }
                             }
 
 
@@ -154,6 +162,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     }
                 }
             }
+
+         */
     }
 
     override fun onCleared() {
@@ -161,7 +171,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         timeslotsListenerRegistration.remove()
         ratingsListenerRegistration.remove()
         chatsListenerRegistration.remove()
-        messagesListenerRegistration.remove()
+        //messagesListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
@@ -391,12 +401,12 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     fun addSnapshotForMessages() {
         db.collectionGroup("messages").addSnapshotListener { m, error ->
-            if( m == null ) throw Exception("E")
+            if (m == null) throw Exception("E")
             viewModelScope.launch {
                 m.forEach { ms ->
                     val chat = ms.reference.parent.get().await()
-                    val tId = chat.documents.map{ cs -> cs.reference.parent.id }[0]
-                    timeslots.value?.find{ t -> t.timeslotId == tId }.apply{  }
+                    val tId = chat.documents.map { cs -> cs.reference.parent.id }[0]
+                    timeslots.value?.find { t -> t.timeslotId == tId }.apply { }
                     ms.id
                 }
             }
