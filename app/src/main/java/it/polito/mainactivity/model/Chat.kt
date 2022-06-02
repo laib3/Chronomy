@@ -2,23 +2,33 @@ package it.polito.mainactivity.model
 
 import com.google.firebase.Timestamp
 
-data class Chat(val client: Map<String, String>, var assigned: Boolean, val messages: MutableList<Message>){
+data class Chat(val chatId: String, val client: Map<String, String>, var assigned: Boolean, val messages: MutableList<Message>){
 
     fun toMap(): HashMap<String, Any>{
         return hashMapOf(
+            "chatId" to chatId,
             "client" to client,
             "assigned" to assigned
         )
     }
 
-    constructor(chatMap: Map<String, String>, messages: List<Map<String, String>>, clientMap: Map<String, String>): this(
+    constructor(chatMap: Map<String, Any>, messages: List<Map<String, String>>, clientMap: Map<String, String>): this(
+        chatMap["chatId"] as String,
         clientMap,
-        chatMap["assigned"] == "true",
+        chatMap["assigned"] as Boolean,
         messages.map{ mm -> Message(mm) }.toMutableList()
+    )
+
+    // Used only when you need to update the value of assigned
+    constructor(chatMap: Map<String, Any>, clientMap: Map<String, String>): this(
+        chatMap["chatId"] as String,
+        clientMap,
+        chatMap["assigned"] as Boolean,
+        mutableListOf()
     )
 }
 
-data class Message(val text: String, val timestamp: Timestamp, val sender: Sender){
+data class Message(val messageId: String, val text: String, val timestamp: Timestamp, val sender: Sender){
 
     enum class Sender {
         PUBLISHER, CLIENT, ERROR
@@ -26,6 +36,7 @@ data class Message(val text: String, val timestamp: Timestamp, val sender: Sende
 
     fun toMap(): HashMap<String, Any>{
         return hashMapOf(
+            "messageId" to messageId,
             "text" to text,
             "timestamp" to timestamp,
             "sender" to sender
@@ -33,6 +44,7 @@ data class Message(val text: String, val timestamp: Timestamp, val sender: Sende
     }
 
     constructor(messageMap: Map<String, String>): this(
+        messageMap["messageId"] ?: "null",
         messageMap["text"] ?: "null",
         // TODO fix - handle String to Timestamp conversion
         Timestamp.now(),

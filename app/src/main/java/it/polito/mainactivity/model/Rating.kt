@@ -10,10 +10,10 @@ data class Rating(var rating: Int?, var comment: String?, var by: Message.Sender
         )
     }
 
-    constructor(ratingMap: Map<String, String>): this(
-        ratingMap["rating"]?.toInt() ?: 0,
-        ratingMap["comment"] ?: "null",
-        ratingMap["by"]?.let { Message.Sender.valueOf(it) } ?: Message.Sender.ERROR
+    constructor(ratingMap: Map<String, Any>): this(
+        ratingMap["rating"] as Int,
+        ratingMap["comment"] as String,
+        ratingMap["by"]?.let { Message.Sender.valueOf(it as String) } ?: Message.Sender.ERROR
     )
 
 }

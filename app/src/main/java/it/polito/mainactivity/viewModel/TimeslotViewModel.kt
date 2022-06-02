@@ -9,14 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
-import kotlin.collections.HashMap
 
 class TimeslotViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -40,12 +38,15 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     val submitEndRepetitionDate: LiveData<Calendar> = _submitEndRepetitionDate
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    // private var timeslotListenerRegistration: ListenerRegistration
+    private var timeslotsListenerRegistration: ListenerRegistration
+    private var ratingsListenerRegistration: ListenerRegistration
+    private var chatsListenerRegistration: ListenerRegistration
+    private var messagesListenerRegistration: ListenerRegistration
 
     init {
 
         // val uId = FirebaseAuth.getInstance().currentUser!!.uid
-        timeslotListenerRegistration =
+        timeslotsListenerRegistration =
             db
                 .collection("timeslots")
                 .addSnapshotListener { tsQuery, error ->
@@ -54,7 +55,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             viewModelScope.launch {
                                 _timeslots.value = tsQuery.mapNotNull { ts ->
 
-                                    val timeslot = Utils.toTimeslot(ts)!!
+                                    val timeslot = Utils.toTimeslotMap(ts)!!
                                     val publisher = ts.get("publisher") as Map<String, String>
                                     val chatsQuery = ts.reference.collection("chats").get().await()
                                     val chats = getChats(chatsQuery)
@@ -90,12 +91,77 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         Log.d("TimeslotViewModel", "error " + error.message)
                     }
                 }
+        ratingsListenerRegistration =
+            db.collectionGroup("ratings").addSnapshotListener { rQuery, error ->
+                if (rQuery == null) throw Exception("E")
+                rQuery.forEach { r ->
+                    _timeslots.value
+                        // first parent is the collection of ratings, second is the timeslot
+                        ?.find { t -> t.timeslotId == r.reference.parent.parent?.id }
+                        .apply {
+                            val newRating = Rating(Utils.toRatingMap(r)!!)
+                            val newRatings = this?.ratings?.map { oldR ->
+                                if (oldR.by == newRating.by)
+                                    oldR.apply {
+                                        rating = newRating.rating; comment = newRating.comment
+                                    }
+                                else
+                                    oldR
+                            }
+                            this?.ratings = newRatings!!.toMutableList()
+                        }
+                }
+            }
 
+        chatsListenerRegistration = db.collection("chats").addSnapshotListener { cQuery, error ->
+            if (cQuery == null) throw Exception("E")
+            cQuery.forEach { c ->
+                _timeslots.value
+                    // first parent is the collection of chats, second is the timeslot
+                    ?.find { t -> t.timeslotId == c.reference.parent.parent?.id }
+                    .apply {
+                        val newChat = Chat(Utils.toChatMap(c)!!, c.get("client") as Map<String, String>)
+                        val newChats = this?.chats?.map { oldC ->
+                            if (oldC.client["userId"] == newChat.client["userId"])
+                                oldC.apply {
+                                    assigned = newChat.assigned
+                                }
+                            else
+                                oldC
+                        }
+                        this?.chats = newChats!!.toMutableList()
+                    }
+            }
+        }
+
+        messagesListenerRegistration=
+            db.collection("messages").addSnapshotListener { mQuery, error ->
+                if (mQuery == null) throw Exception("E")
+                viewModelScope.launch {
+                    mQuery.forEach{ m ->
+                        val chat = m.reference.parent.parent?.get()?.await()
+                        _timeslots.value
+                            // first parent is the collection of messages, second parent is the chat document
+                            // third parent is the collection of chats, fourth is the timeslot document
+                            ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id}
+                            .apply {
+                                val newMessage = Message(Utils.toMessageMap(m)!!)
+                                val newMessages =
+                            }
+
+
+
+                    }
+                }
+            }
     }
 
     override fun onCleared() {
         super.onCleared()
-        // timeslotListenerRegistration.remove()
+        timeslotsListenerRegistration.remove()
+        ratingsListenerRegistration.remove()
+        chatsListenerRegistration.remove()
+        messagesListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
@@ -299,7 +365,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return true
     }
 
-    fun getChats(chatsQuery: QuerySnapshot): MutableList<Map<String, String>> {
+    fun getChats(chatsQuery: QuerySnapshot): MutableList<Map<String, Any>> {
         return chatsQuery.documents
             .map { c -> Utils.toChatMap(c)!! }
             .toMutableList()

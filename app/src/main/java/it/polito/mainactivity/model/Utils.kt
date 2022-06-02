@@ -219,6 +219,7 @@ class Utils {
                 return null
             return try {
                 hashMapOf(
+                    "chatId" to d.get("chatId") as String,
                     "client" to d.get("client") as Map<String, String>,
                     "assigned" to d.get("assigned") as String
                 )
@@ -234,6 +235,7 @@ class Utils {
                 return null
             return try {
                 hashMapOf(
+                    "messageId" to d.get("messageId") as String,
                     "text" to d.get("text") as String,
                     "assigned" to d.get("assigned") as String,
                     "sender" to d.get("sender") as String
