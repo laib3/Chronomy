@@ -13,9 +13,6 @@
             android:name=".MessageActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MainActivity.NoActionBar">

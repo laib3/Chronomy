@@ -17,12 +17,12 @@ class RequestDiffUtil(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].tid == newList[newItemPosition].tid
+        return oldList[oldItemPosition].timeslotId == newList[newItemPosition].timeslotId
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return when{
-            oldList[oldItemPosition].tid != newList[newItemPosition].tid ->{
+            oldList[oldItemPosition].timeslotId != newList[newItemPosition].timeslotId ->{
                 false
             }
             oldList[oldItemPosition].title != newList[newItemPosition].title ->{
@@ -31,7 +31,7 @@ class RequestDiffUtil(
             oldList[oldItemPosition].description != newList[newItemPosition].description ->{
                 false
             }
-            oldList[oldItemPosition].startDate != newList[newItemPosition].startDate ->{
+            oldList[oldItemPosition].date != newList[newItemPosition].date ->{
                 false
             }
             oldList[oldItemPosition].startHour != newList[newItemPosition].startHour ->{
@@ -44,12 +44,6 @@ class RequestDiffUtil(
                 false
             }
             oldList[oldItemPosition].category != newList[newItemPosition].category ->{
-                false
-            }
-            oldList[oldItemPosition].repetition != newList[newItemPosition].repetition ->{
-                false
-            }
-            oldList[oldItemPosition].endRepetitionDate != newList[newItemPosition].endRepetitionDate ->{
                 false
             }
             /*

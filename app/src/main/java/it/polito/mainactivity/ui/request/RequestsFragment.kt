@@ -26,6 +26,8 @@ class RequestsFragment : Fragment() {
     private var loadedList: List<Timeslot>? = null
     private var shownList: List<Timeslot>? = null
 
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     private val binding get() = _binding!!
     var adapter: RequestRecyclerViewAdapter? = null
 
@@ -47,12 +49,9 @@ class RequestsFragment : Fragment() {
 
             //selected tab is "request received"
             shownList = if (tabLayout.getTabAt(0)!!.isSelected) {
-                loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
+                loadedList!!.filter { t -> t.publisher["userId"] == auth.currentUser!!.uid && t.chats.size > 0 }
             } else {
-                //fixme: if "request sent" is selected, get all the timeslots
-                // + have a chat "that i made"
-                // + are not "mine"
-                loadedList!!.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
+                loadedList!!.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
             }
 
             adapter = RequestRecyclerViewAdapter(
@@ -67,10 +66,11 @@ class RequestsFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 shownList =
                     if (tab?.position == 0) {
-                        loadedList!!.filter { t -> t.user.userId == FirebaseAuth.getInstance().currentUser!!.uid }
+                        // show current user's timeslot received requests
+                        loadedList!!.filter { t -> t.publisher["userId"] == auth.currentUser!!.uid && t.chats.size > 0 }
                     } else {
-                        //FIXME
-                        loadedList!!.filter { t -> t.user.userId != FirebaseAuth.getInstance().currentUser!!.uid }
+                        // show current user's requests made to other users
+                        loadedList!!.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
                     }
                 adapter?.filterList(shownList!!)
             }
