@@ -1,8 +1,6 @@
 package it.polito.mainactivity
 
-import android.app.Application
 import it.polito.mainactivity.model.Timeslot
-import it.polito.mainactivity.model.UserProfileModel
 import org.junit.Test
 
 import org.junit.Assert.*

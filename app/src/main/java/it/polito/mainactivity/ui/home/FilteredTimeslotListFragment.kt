@@ -127,7 +127,7 @@ class FilteredTimeslotListFragment : Fragment() {
         binding.tvSortBy.onItemClickListener = AdapterView.OnItemClickListener { _, _, idx, _ ->
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category.lowercase() }
-                .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
+                .filter { it.publisher.get("userId") != FirebaseAuth.getInstance().uid } // display only other users' timeslots
 
             loadedList = applyFilters(
                 startDate,
@@ -152,7 +152,7 @@ class FilteredTimeslotListFragment : Fragment() {
         vm.timeslots.observe(viewLifecycleOwner) {
             loadedList = vm.timeslots.value!!
                 .filter { it.category.lowercase() == category.lowercase() }
-                .filter { it.user.userId != FirebaseAuth.getInstance().uid } // display only other users' timeslots
+                .filter { it.publisher.get("userId") != FirebaseAuth.getInstance().uid } // display only other users' timeslots
 
             loadedList = applyFilters(
                 startDate,

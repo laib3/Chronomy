@@ -17,7 +17,38 @@ data class User(
 ) {
     override fun toString() =
         """{ "userId": "$userId", "name": "$name", "surname": "$surname", "nickname": "$nickname", "bio": "$bio", """ +
-                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills }"""
+                """"email": "$email", "phone": "$phone", "location": "$location", "balance": $balance, "skills": $skills,""".trimMargin()
+
+    fun toMap(): HashMap<String, Any?>{
+        return hashMapOf(
+            "userId" to userId,
+            "name" to name,
+            "surname" to surname,
+            "nickname" to nickname,
+            "bio" to bio,
+            "email" to email,
+            "phone" to phone,
+            "location" to location,
+            "balance" to balance,
+            "profilePictureUrl" to profilePictureUrl
+            // no skills, only top-level fields
+        )
+    }
+
+    constructor(userMap: Map<String, Any?>, skillMap: List<Map<String, Any>>): this(
+        userMap["userId"] as String,
+        userMap["name"] as String,
+        userMap["surname"] as String,
+        userMap["nickname"] as String,
+        userMap["bio"] as String,
+        userMap["email"] as String,
+        userMap["location"] as String,
+        userMap["phone"] as String,
+        skillMap.map{ sm -> Skill(sm) },
+        (userMap["balance"] as Long).toInt(),
+        userMap["profilePictureUrl"]?.let{ it as String }
+    )
+
 }
 
 fun emptyUser(): User {
@@ -36,6 +67,7 @@ fun emptyUser(): User {
     )
 }
 
+
 fun createEmptySkills(): List<Skill> {
     return listOf(
         Skill("Gardening"),
@@ -50,3 +82,4 @@ fun createEmptySkills(): List<Skill> {
         Skill("Other")
     )
 }
+
