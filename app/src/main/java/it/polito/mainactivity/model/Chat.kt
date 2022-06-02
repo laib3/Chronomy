@@ -2,7 +2,7 @@ package it.polito.mainactivity.model
 
 import com.google.firebase.Timestamp
 
-data class Chat(val chatId: String, val client: Map<String, String>, var assigned: Boolean, val messages: MutableList<Message>){
+data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, val messages: MutableList<Message>){
 
     fun toMap(): HashMap<String, Any>{
         return hashMapOf(
@@ -12,7 +12,7 @@ data class Chat(val chatId: String, val client: Map<String, String>, var assigne
         )
     }
 
-    constructor(chatMap: Map<String, Any>, messages: List<Map<String, String>>, clientMap: Map<String, String>): this(
+    constructor(chatMap: Map<String, Any>, messages: List<Map<String, Any>>, clientMap: Map<String, Any>): this(
         chatMap["chatId"] as String,
         clientMap,
         chatMap["assigned"] as Boolean,
@@ -20,7 +20,7 @@ data class Chat(val chatId: String, val client: Map<String, String>, var assigne
     )
 
     // Used only when you need to update the value of assigned
-    constructor(chatMap: Map<String, Any>, clientMap: Map<String, String>): this(
+    constructor(chatMap: Map<String, Any>, clientMap: Map<String, Any>): this(
         chatMap["chatId"] as String,
         clientMap,
         chatMap["assigned"] as Boolean,
@@ -43,12 +43,12 @@ data class Message(val messageId: String, val text: String, val timestamp: Times
         )
     }
 
-    constructor(messageMap: Map<String, String>): this(
-        messageMap["messageId"] ?: "null",
-        messageMap["text"] ?: "null",
+    constructor(messageMap: Map<String, Any>): this(
+        messageMap["messageId"] as String,
+        messageMap["text"] as String,
         // TODO fix - handle String to Timestamp conversion
         Timestamp.now(),
-        messageMap["sender"]?.let{ Sender.valueOf(it) } ?: Sender.ERROR
+        messageMap["sender"]?.let{ Sender.valueOf(it as String) } ?: Sender.ERROR
     )
 
 }

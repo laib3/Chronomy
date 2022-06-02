@@ -4,7 +4,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 data class Timeslot(
-    var publisher: Map<String, String>
+    var publisher: Map<String, Any>
 ) {
 
     enum class Status {PUBLISHED, ASSIGNED, COMPLETED, ERROR}
@@ -49,7 +49,7 @@ data class Timeslot(
         _endHour: String,
         _location: String,
         _category: String,
-        _publisher: Map<String, String>,
+        _publisher: Map<String, Any>,
         _status: Status,
         _chats: MutableList<Chat>,
         _ratings: MutableList<Rating>
@@ -69,9 +69,9 @@ data class Timeslot(
     }
 
     constructor(
-        timeslotMap: HashMap<String, Any>, _publisher: Map<String, String>, _ratings: MutableList<Map<String, Any>>,
-        _chats: List<Map<String, String>>, _clients: List<Map<String, String>>,
-        _messages: List<List<Map<String, String>>>): this(_publisher){
+        timeslotMap: HashMap<String, Any>, _publisher: Map<String, Any>, _ratings: MutableList<Map<String, Any>>,
+        _chats: List<Map<String, Any>>, _clients: List<Map<String, Any>>,
+        _messages: List<List<Map<String, Any>>>): this(_publisher){
         timeslotId = timeslotMap["timeslotId"] as String
         title = timeslotMap["title"] as String
         description = timeslotMap["description"] as String
@@ -124,6 +124,5 @@ data class Timeslot(
         },
         """.replace("\n", "").trimIndent()
     }
-
 
 }

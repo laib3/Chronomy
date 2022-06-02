@@ -56,7 +56,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                 _timeslots.value = tsQuery.mapNotNull { ts ->
 
                                     val timeslot = Utils.toTimeslotMap(ts)!!
-                                    val publisher = ts.get("publisher") as Map<String, String>
+                                    val publisher = ts.get("publisher") as Map<String, Any>
                                     val chatsQuery = ts.reference.collection("chats").get().await()
                                     val chats = getChats(chatsQuery)
                                     val clients = getClients(chatsQuery)
@@ -72,8 +72,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                     Timeslot(
                                         timeslot,
                                         publisher,
-                                        chats,
                                         ratings,
+                                        chats,
                                         clients,
                                         messages
                                     )
@@ -146,7 +146,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id}
                             .apply {
                                 val newMessage = Message(Utils.toMessageMap(m)!!)
-                                val newMessages =
+                                // TODO: val newMessages =
                             }
 
 
@@ -371,9 +371,9 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             .toMutableList()
     }
 
-    fun getClients(chatsQuery: QuerySnapshot): MutableList<Map<String, String>> {
+    fun getClients(chatsQuery: QuerySnapshot): MutableList<Map<String, Any>> {
         return chatsQuery.documents
-            .map { c -> c.get("client")!! as Map<String, String> }
+            .map { c -> c.get("client")!! as Map<String, Any> }
             .toMutableList()
     }
 
@@ -383,9 +383,24 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             .toMutableList()
     }
 
-    fun getRatings(ratingsQuery: QuerySnapshot): MutableList<Map<String, String>> {
+    fun getRatings(ratingsQuery: QuerySnapshot): MutableList<Map<String, Any>> {
         return ratingsQuery.documents
             .map { r -> Utils.toRatingMap(r)!! }
             .toMutableList()
     }
+
+    fun addSnapshotForMessages() {
+        db.collectionGroup("messages").addSnapshotListener { m, error ->
+            if( m == null ) throw Exception("E")
+            viewModelScope.launch {
+                m.forEach { ms ->
+                    val chat = ms.reference.parent.get().await()
+                    val tId = chat.documents.map{ cs -> cs.reference.parent.id }[0]
+                    timeslots.value?.find{ t -> t.timeslotId == tId }.apply{  }
+                    ms.id
+                }
+            }
+        }
+    }
+
 }
