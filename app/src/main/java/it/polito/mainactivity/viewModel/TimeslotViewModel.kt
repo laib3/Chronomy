@@ -122,49 +122,54 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         ?.find { t -> t.timeslotId == c.reference.parent.parent?.id }
                         .apply {
                             val newChat = Chat(Utils.toChatMap(c)!!)
-                            val newChats = this?.chats?.map { oldC ->
-                                if (oldC.chatId == newChat.chatId)
-                                    oldC.apply {
-                                        assigned = newChat.assigned
+                            val newChats: List<Chat> =
+                                this?.chats?.find { c -> c.chatId == newChat.chatId }?.let {
+                                    this.chats.map { oldC ->
+                                        if (oldC.chatId == newChat.chatId)
+                                            oldC.apply {
+                                                assigned = newChat.assigned
+                                            }
+                                        else
+                                            oldC
                                     }
-                                else
-                                    oldC
-                            }
-                            this?.chats = newChats!!.toMutableList()
+                                } ?: let {
+                                    this!!.chats.apply { add(newChat) }
+                                }
+                            this?.chats = newChats.toMutableList()
                         }
                 }
             }
-
-        /*
-        messagesListenerRegistration=
-            db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
-                if (mQuery == null) throw Exception("E")
-                viewModelScope.launch {
-                    mQuery.forEach{ m ->
-                        val chatDoc = m.reference.parent.parent?.get()?.await()
-                        val oldChat = Chat(Utils.toChatMap(chatDoc)!!)
-                        _timeslots.value
-                            // first parent is the collection of messages, second parent is the chat document
-                            // third parent is the collection of chats, fourth is the timeslot document
-                            ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id}
-                            .apply {
-                                val newMessage = Message(Utils.toMessageMap(m)!!)
-                                val newMessages = this?.chats?.find{c -> c.chatId == oldChat.chatId}?.messages.map{ oldMessage ->
-                                    if (oldMessage.messageId == newMessage.messageId)
-                                        oldMessage.apply{
-
-                                        }
-                                }
-                            }
-
-
-
-                    }
-                }
-            }
-
-         */
     }
+
+/*
+messagesListenerRegistration=
+    db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
+        if (mQuery == null) throw Exception("E")
+        viewModelScope.launch {
+            mQuery.forEach{ m ->
+                val chatDoc = m.reference.parent.parent?.get()?.await()
+                val oldChat = Chat(Utils.toChatMap(chatDoc)!!)
+                _timeslots.value
+                    // first parent is the collection of messages, second parent is the chat document
+                    // third parent is the collection of chats, fourth is the timeslot document
+                    ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id}
+                    .apply {
+                        val newMessage = Message(Utils.toMessageMap(m)!!)
+                        val newMessages = this?.chats?.find{c -> c.chatId == oldChat.chatId}?.messages.map{ oldMessage ->
+                            if (oldMessage.messageId == newMessage.messageId)
+                                oldMessage.apply{
+
+                                }
+                        }
+                    }
+
+
+
+            }
+        }
+    }
+
+ */
 
     override fun onCleared() {
         super.onCleared()
@@ -247,7 +252,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     // TODO do not return a value to check if submission correct, but set a vm attribute
-    /* submit current timeslot */
+/* submit current timeslot */
     fun submitTimeslot(): Boolean {
         /* check validity of submit fields */
         if (!checkSubmitValid())
