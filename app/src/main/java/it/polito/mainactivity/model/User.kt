@@ -45,8 +45,8 @@ data class User(
         userMap["location"] as String,
         userMap["phone"] as String,
         skillMap.map{ sm -> Skill(sm) },
-        userMap["balance"] as Int,
-        userMap["profilePictureUrl"] as String
+        (userMap["balance"] as Long).toInt(),
+        userMap["profilePictureUrl"]?.let{ it as String }
     )
 
 }

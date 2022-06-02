@@ -143,7 +143,7 @@ class Utils {
                         "bio" to d.get("bio") as String,
                         "email" to d.get("email") as String,
                         "location" to d.get("location") as String,
-                        "balance" to d.get("balance") as Int,
+                        "balance" to d.get("balance") as Long,
                         "phone" to d.get("phone") as String,
                     )
             } catch (e: Exception) {
