@@ -41,7 +41,7 @@ class ShowProfileDataFragment : Fragment() {
 
         // If show profile of other users
         if (id != null) {
-            val publisherId = vmTimeslots.timeslots.value?.find{ t -> t.timeslotId == id }?.publisher?.get("userId") ?: throw Exception("publisherId shouldn't be null")
+            val publisherId = vmTimeslots.timeslots.value?.find{ t -> t.timeslotId == id }?.publisher?.get("userId") as String
             // get publisher asynchronously and update
             MainScope().launch{
                 val publisher = vmUser.getUserById(publisherId)

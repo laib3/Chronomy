@@ -41,14 +41,14 @@ class ShowProfilePictureFragment : Fragment() {
         // If show profile of other users
         if (id != null) {
             val publisher = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == id }?.publisher ?: throw Exception("ShowProfilePictureFragment: publisher shouldn't be null")
-            nameTextView.text = publisher["name"] ?: "null"
-            surnameTextView.text = publisher["surname"] ?: "null"
+            nameTextView.text = publisher["name"] as String
+            surnameTextView.text = publisher["surname"] as String
             nicknameTextView.text =
                 String.format(
                     getString(R.string.user_profile_nickname_placeholder),
-                    publisher["nickname"]
+                    publisher["nickname"] as String
                 )
-            publisher["profilePictureUrl"].apply { Picasso.get().load(this).into(profilePicture) }
+            (publisher["profilePictureUrl"] as String).apply { Picasso.get().load(this).into(profilePicture) }
 
         } else { // if show profile of the current publisher
             // observe viewModel changes

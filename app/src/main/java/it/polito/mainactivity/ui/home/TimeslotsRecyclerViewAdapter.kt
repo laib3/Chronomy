@@ -55,7 +55,7 @@ class TimeslotsRecyclerViewAdapter(
             )
 
         holder.ivProfilePic.clipToOutline = true
-        ts.publisher["profilePictureURL"]?.apply { Picasso.get().load(this).into(holder.ivProfilePic) }
+        (ts.publisher["profilePictureURL"] as String).apply { Picasso.get().load(this).into(holder.ivProfilePic) }
         val placeholder =
             parentFragment.resources.getString(R.string.user_profile_nickname_placeholder)
         holder.tvNickname.text = String.format(placeholder, ts.publisher["nickname"])

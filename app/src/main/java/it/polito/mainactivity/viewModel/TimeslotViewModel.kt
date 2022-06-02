@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package it.polito.mainactivity.viewModel
 
 import android.app.Application
