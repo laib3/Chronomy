@@ -41,6 +41,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_nav_details_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
 
     <fragment
@@ -114,5 +117,14 @@
         android:id="@+id/nav_requests"
         android:name="it.polito.mainactivity.ui.request.RequestsFragment"
         android:label="Requests"
-        tools:layout="@layout/fragment_requests_list" />
+        tools:layout="@layout/fragment_requests_list" >
+        <action
+            android:id="@+id/action_nav_requests_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="it.polito.mainactivity.ChatFragment"
+        android:label="fragment_chat_list"
+        tools:layout="@layout/fragment_chat_list" />
 </navigation>
