@@ -2,7 +2,7 @@ package it.polito.mainactivity.model
 
 import com.google.firebase.Timestamp
 
-data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, val messages: MutableList<Message>){
+data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, var messages: MutableList<Message>){
 
     fun toMap(): HashMap<String, Any>{
         return hashMapOf(

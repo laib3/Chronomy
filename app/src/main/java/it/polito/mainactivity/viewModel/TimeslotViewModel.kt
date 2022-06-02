@@ -41,7 +41,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private var timeslotsListenerRegistration: ListenerRegistration
     private var ratingsListenerRegistration: ListenerRegistration
     private var chatsListenerRegistration: ListenerRegistration
-    //private var messagesListenerRegistration: ListenerRegistration
+    private var messagesListenerRegistration: ListenerRegistration
 
     init {
 
@@ -139,44 +139,34 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         }
                 }
             }
-    }
 
-/*
-messagesListenerRegistration=
-    db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
-        if (mQuery == null) throw Exception("E")
-        viewModelScope.launch {
-            mQuery.forEach{ m ->
-                val chatDoc = m.reference.parent.parent?.get()?.await()
-                val oldChat = Chat(Utils.toChatMap(chatDoc)!!)
-                _timeslots.value
-                    // first parent is the collection of messages, second parent is the chat document
-                    // third parent is the collection of chats, fourth is the timeslot document
-                    ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id}
-                    .apply {
-                        val newMessage = Message(Utils.toMessageMap(m)!!)
-                        val newMessages = this?.chats?.find{c -> c.chatId == oldChat.chatId}?.messages.map{ oldMessage ->
-                            if (oldMessage.messageId == newMessage.messageId)
-                                oldMessage.apply{
-
-                                }
+        messagesListenerRegistration =
+            db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
+                if (mQuery == null) throw Exception("E")
+                mQuery.forEach { m ->
+                    _timeslots.value
+                        // first parent is the collection of messages, second parent is the chat document
+                        // third parent is the collection of chats, fourth is the timeslot document
+                        ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id }
+                        .apply {
+                            // Add message if it is new
+                            val newMessage = Message(Utils.toMessageMap(m)!!)
+                            this?.chats?.find { c -> c.chatId == m.reference.parent.parent!!.id }?.messages!!.apply {
+                                if (this.find { message -> message.messageId == newMessage.messageId } == null)
+                                    this.apply { add(newMessage) }
+                            }
                         }
-                    }
-
-
-
+                }
             }
-        }
     }
 
- */
 
     override fun onCleared() {
         super.onCleared()
         timeslotsListenerRegistration.remove()
         ratingsListenerRegistration.remove()
         chatsListenerRegistration.remove()
-        //messagesListenerRegistration.remove()
+        messagesListenerRegistration.remove()
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
