@@ -100,28 +100,23 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (rQuery == null)
                     throw Exception("E")
                 if (rQuery.documents.size > 0) {
-                    rQuery.forEach { r ->
-                        _timeslots.value
-                            // first parent is the collection of ratings, second is the timeslot
-                            ?.find { t -> t.timeslotId == r.reference.parent.parent?.id }
-                            .apply {
-                                val newRating = Rating(Utils.toRatingMap(r)!!)
-                                val newRatings: List<Rating> =
-                                    this?.ratings?.find { r -> r.by == newRating.by }?.let {
-                                        this.ratings.map { oldR ->
-                                            if (oldR.by == newRating.by)
-                                                oldR.apply {
-                                                    rating = newRating.rating; comment =
-                                                    newRating.comment
-                                                }
-                                            else
-                                                oldR
-                                        }
-                                    } ?: let {
-                                        this!!.ratings.apply { add(newRating) }
-                                    }
-                                this?.ratings = newRatings.toMutableList()
+                    rQuery.forEach { rs ->
+                        // find timeslot which contains the rating
+                        val timeslot = _timeslots.value?.find{ timeslot -> timeslot.timeslotId == rs.reference.parent.parent?.id }
+                        val timeslotId = timeslot?.timeslotId
+                        if(timeslot != null){
+                            val newRating = Rating(Utils.toRatingMap(rs)!!)
+                            val newRatings = timeslot.ratings
+                            val oldRating = newRatings.find{ rating -> rating.by == newRating.by }
+                            if(oldRating == null){ // add new rating if there wasn't
+                                newRatings.add(newRating)
+                            } else { // update old ratings list
+                                newRatings.apply{ map{ rating -> if(rating.by == newRating.by) newRating else rating } }
                             }
+                            _timeslots.value?.apply{
+                                find{ t -> t.timeslotId == timeslotId }!!.ratings = newRatings
+                            }
+                        }
                     }
                 }
             }
