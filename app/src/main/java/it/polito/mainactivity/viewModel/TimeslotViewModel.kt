@@ -181,7 +181,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         // setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
         // addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
         // addMessage("tKrJLmbb2ATdWm767Smr", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
-        addMessage("tKrJLmbb2ATdWm767Smr", "Giovanni per piacere rispondi!")
+        // addMessage("tKrJLmbb2ATdWm767Smr", "Giovanni per piacere rispondi!")
+        deleteTimeslot("t0p0MSYd0bse7Htnwypv")
     }
 
     override fun onCleared() {
