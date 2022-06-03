@@ -29,6 +29,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
     private lateinit var skillsListenerRegistration: ListenerRegistration
 
     init {
+
         FirebaseAuth.getInstance().addAuthStateListener { fAuth ->
             val userId = fAuth.currentUser?.uid
             if (userId != null) { // log in
@@ -126,7 +127,7 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         } catch(e: FirebaseFirestoreException){
             e.printStackTrace()
             false
-        }
+        } // TODO add catch for generic exception
     }
 
     suspend fun getUserById(id: String): User? {
@@ -164,7 +165,8 @@ class UserProfileViewModel(application: Application) : AndroidViewModel(applicat
         }
         skillsListenerRegistration =
             userRef.collection("skills").addSnapshotListener { skillsCollectionSnapshot, _ ->
-            if(skillsCollectionSnapshot != null){
+                // TODO add isEmpty, not != null
+            if(skillsCollectionSnapshot != null && skillsCollectionSnapshot.documents.size > 0){
                 viewModelScope.launch {
                     if(user.value != null){
                         val updatedSkills = skillsCollectionSnapshot.documents.map{ ss -> Utils.toSkillMap(ss)!! }
