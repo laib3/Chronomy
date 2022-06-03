@@ -170,7 +170,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     }
                 }
             }
-        updateRating("t0p0MSYd0bse7Htnwypv", 5, "Giovanni Balena ottima persona")
+        // updateRating("t0p0MSYd0bse7Htnwypv", 5, "Giovanni Balena ottima persona")
     }
 
     override fun onCleared() {
@@ -386,7 +386,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val chatId = chatRef.id
                 val newChat = Chat(chatId, clientMap, false, mutableListOf())
                 // add chat to db with id chatId
-                db.collection("chats").document(chatId).set(newChat.toMap()).await()
+                chatRef.set(newChat.toMap()).await()
             }
             true
         } catch (e: Exception) {
