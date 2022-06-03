@@ -168,8 +168,9 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     }
                 }
             }
-        updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
-        //addChat("t0p0MSYd0bse7Htnwypv")
+        // updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
+        // addChat("t0p0MSYd0bse7Htnwypv")
+        setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
     }
 
     override fun onCleared() {
@@ -190,21 +191,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     "Firebase",
                     "Timeslot updated successfully"
                 ) //returnValue = true
-                // TODO update requests
-                // update offers of current user
-                db
-                    .collection("users")
-                    .document(FirebaseAuth.getInstance().currentUser?.uid!!)
-                    .collection("offers")
-                    .document(timeslotId)
-                    .update(field, newValue)
-                    .addOnSuccessListener {
-                        // update requests
-                        db.collectionGroup("requests").whereEqualTo("timeslotId", timeslotId).get()
-                            .addOnSuccessListener {
-                                it.documents.forEach { d -> d.reference.update(field, newValue) }
-                            }
-                    }
             }
             .addOnFailureListener {
                 Log.d(
