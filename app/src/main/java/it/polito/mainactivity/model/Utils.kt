@@ -223,7 +223,7 @@ class Utils {
                 hashMapOf(
                     "chatId" to d.get("chatId") as String,
                     "client" to d.get("client") as Map<String, String>,
-                    "assigned" to d.get("assigned") as String
+                    "assigned" to d.get("assigned") as Boolean
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
