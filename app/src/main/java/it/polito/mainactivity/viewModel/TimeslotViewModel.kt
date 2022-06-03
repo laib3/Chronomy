@@ -156,24 +156,32 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     mQuery.forEach { ms ->
                         // first parent is the collection of messages, second parent is the chat document
                         // third parent is the collection of chats, fourth is the timeslot document
-                        _timeslots.value?.find { t -> t.timeslotId == ms.reference.parent.parent!!.parent.parent?.id }
-                            .apply {
-                                // Add message if it is new
-                                val newMessage = Utils.toMessageMap(ms)?.let{ Message(it) } ?: throw Exception("message shouldn't be null")
-                                val msRefId = ms.reference.parent.parent!!.id
-                                val chat = this?.chats?.find { c -> c.chatId == ms.reference.parent.parent!!.id }
-                                chat?.messages?.apply {
-                                    if(this.find{ m -> m.messageId == newMessage.messageId } == null) // if not found
-                                        this.add(newMessage) // add
-                                }
+                        val timeslotId = ms.reference.parent.parent!!.parent.parent!!.id
+                        val chatId = ms.reference.parent.parent!!.id
+                        val timeslot = _timeslots.value?.find { t -> t.timeslotId == timeslotId }
+                        val newMessage = Utils.toMessageMap(ms)?.let{ Message(it) } ?: throw Exception("message shouldn't be null")
+                        if(timeslot != null){
+                            val chats = timeslot.chats
+                            val chat = chats.find{ c -> c.chatId == chatId }
+                            if(chat != null){
+                                val oldMessages = chat.messages
+                                if(oldMessages.find{ m -> m.messageId == newMessage.messageId } == null)
+                                    oldMessages.add(newMessage)
+                                else
+                                    oldMessages.apply{ map{ m -> if(m.messageId == newMessage.messageId) newMessage else m } }
+                                chats.apply{ find{ c -> c.chatId == chatId }?.messages = oldMessages }
+                                _timeslots.value?.apply{ find{ t -> t.timeslotId == timeslotId }?.chats = chats }
                             }
+                        }
                     }
                 }
             }
         // updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
         // addChat("t0p0MSYd0bse7Htnwypv")
         // setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
-        addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
+        // addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
+        // addMessage("tKrJLmbb2ATdWm767Smr", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
+        addMessage("tKrJLmbb2ATdWm767Smr", "Giovanni per piacere rispondi!")
     }
 
     override fun onCleared() {
