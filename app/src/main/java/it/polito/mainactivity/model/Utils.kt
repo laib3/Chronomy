@@ -2,6 +2,7 @@ package it.polito.mainactivity.model
 
 import android.graphics.Color
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import it.polito.mainactivity.R
 import org.json.JSONArray
@@ -131,7 +132,7 @@ class Utils {
                         "email" to d.get("email") as String,
                         "location" to d.get("location") as String,
                         "phone" to d.get("phone") as String,
-                        "balance" to d.get("balance") as Int,
+                        "balance" to d.get("balance") as Long,
                         "profilePictureUrl" to d.get("profilePictureUrl") as String
                     )
                 else
@@ -206,8 +207,8 @@ class Utils {
             return try {
                 hashMapOf(
                     "timeslotId" to d.get("timeslotId") as String,
-                    "sender" to Message.Sender.valueOf(d.get("sender") as String),
-                    "value" to d.get("value").toString(),
+                    "by" to (d.get("by") as String),
+                    "rating" to d.get("rating") as Long,
                     "comment" to d.get("comment") as String
                 )
             } catch (e: Exception) {
@@ -223,7 +224,7 @@ class Utils {
                 hashMapOf(
                     "chatId" to d.get("chatId") as String,
                     "client" to d.get("client") as Map<String, String>,
-                    "assigned" to d.get("assigned") as String
+                    "assigned" to d.get("assigned") as Boolean
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -232,14 +233,14 @@ class Utils {
         }
 
         // TODO check if string
-        fun toMessageMap(d: DocumentSnapshot?): Map<String, String>? {
+        fun toMessageMap(d: DocumentSnapshot?): Map<String, Any>? {
             if (d == null)
                 return null
             return try {
                 hashMapOf(
                     "messageId" to d.get("messageId") as String,
                     "text" to d.get("text") as String,
-                    "assigned" to d.get("assigned") as String,
+                    "timestamp" to d.get("timestamp") as Timestamp,
                     "sender" to d.get("sender") as String
                 )
             } catch (e: Exception) {

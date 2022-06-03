@@ -124,7 +124,11 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="it.polito.mainactivity.ChatFragment"
+        android:name="it.polito.mainactivity.ui.chat.ChatFragment"
         android:label="fragment_chat_list"
-        tools:layout="@layout/fragment_chat_list" />
+        tools:layout="@layout/fragment_chat_list" >
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+    </fragment>
 </navigation>
