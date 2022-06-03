@@ -26,8 +26,8 @@ class ChatFragment : Fragment() {
     private val binding get() = _binding!!
     var adapter: MessageRecyclerViewAdapter? = null
 
-    var ts : Timeslot? = null
-    var chat : Chat? = null
+    var ts: Timeslot? = null
+    var chat: Chat? = null
 
     private val args: ChatFragmentArgs by navArgs()
 
@@ -37,9 +37,9 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
-        val root:View = binding.root
+        val root: View = binding.root
 
-        val rv : RecyclerView = binding.list
+        val rv: RecyclerView = binding.list
         rv.layoutManager = LinearLayoutManager(root.context)
 
         /*
@@ -53,9 +53,45 @@ class ChatFragment : Fragment() {
         }
 
          */
-        val u1 = User("user1", "nome", "cognome", "user1", "bio", "email", "location", "phone", listOf(),5, null)
-        val u2 = User("user2", "nome", "cognome", "user2", "bio", "email", "location", "phone", listOf(),5, null)
-        val u3 = User("user3", "nome", "cognome", "user3", "bio", "email", "location", "phone", listOf(),5, null)
+        val u1 = User(
+            "user1",
+            "nome",
+            "cognome",
+            "user1",
+            "bio",
+            "email",
+            "location",
+            "phone",
+            listOf(),
+            5,
+            null
+        )
+        val u2 = User(
+            "user2",
+            "nome",
+            "cognome",
+            "user2",
+            "bio",
+            "email",
+            "location",
+            "phone",
+            listOf(),
+            5,
+            null
+        )
+        val u3 = User(
+            "user3",
+            "nome",
+            "cognome",
+            "user3",
+            "bio",
+            "email",
+            "location",
+            "phone",
+            listOf(),
+            5,
+            null
+        )
 
         val loadedList = listOf(
             Timeslot(
@@ -65,14 +101,38 @@ class ChatFragment : Fragment() {
                 "Delivery", u1.toMap(),
                 Timeslot.Status.PUBLISHED,
                 mutableListOf<it.polito.mainactivity.model.Chat>(
-                    Chat("chat1", u2.toMap(), false, mutableListOf<Message>(
-                        Message("message1", "ciao da u2", Timestamp(Date()), Message.Sender.CLIENT ),
-                        Message("message2", "cosa vuoi da u1", Timestamp(Date()), Message.Sender.PUBLISHER ),
-                    )),
-                    Chat("chat2", u3.toMap(), false, mutableListOf<Message>(
-                        Message("message3", "ciao da u3", Timestamp(Date()), Message.Sender.CLIENT ),
-                        Message("message4", "cosa vuoi da u1", Timestamp(Date()), Message.Sender.PUBLISHER ),
-                    ))
+                    Chat(
+                        "chat1", u2.toMap(), false, mutableListOf<Message>(
+                            Message(
+                                "message1",
+                                "ciao da u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message2",
+                                "cosa vuoi da u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                        )
+                    ),
+                    Chat(
+                        "chat2", u3.toMap(), false, mutableListOf<Message>(
+                            Message(
+                                "message3",
+                                "ciao da u3",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message4",
+                                "cosa vuoi da u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                        )
+                    )
                 ),
                 mutableListOf<Rating>()
             ),
@@ -83,15 +143,39 @@ class ChatFragment : Fragment() {
                 "Delivery", u2.toMap(),
                 Timeslot.Status.PUBLISHED,
                 mutableListOf<it.polito.mainactivity.model.Chat>(
-                    Chat("chat3", u1.toMap(), false, mutableListOf<Message>(
-                        Message("message5", "ciao da u1", Timestamp(Date()), Message.Sender.CLIENT ),
-                        Message("message6", "cosa vuoi da u2", Timestamp(Date()), Message.Sender.PUBLISHER ),
+                    Chat(
+                        "chat3", u1.toMap(), false, mutableListOf<Message>(
+                            Message(
+                                "message5",
+                                "ciao da u1",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message6",
+                                "cosa vuoi da u2",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
 
-                        )),
-                    Chat("chat4", u3.toMap(), false, mutableListOf<Message>(
-                        Message("message7", "ciao da u1", Timestamp(Date()), Message.Sender.CLIENT ),
-                        Message("message8", "cosa vuoi da u3", Timestamp(Date()), Message.Sender.PUBLISHER ),
-                    ))
+                            )
+                    ),
+                    Chat(
+                        "chat4", u3.toMap(), false, mutableListOf<Message>(
+                            Message(
+                                "message7",
+                                "ciao da u1",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message8",
+                                "cosa vuoi da u3",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                        )
+                    )
                 ), mutableListOf<Rating>()
             )
         )
@@ -104,6 +188,7 @@ class ChatFragment : Fragment() {
         rv.adapter = adapter
         return root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

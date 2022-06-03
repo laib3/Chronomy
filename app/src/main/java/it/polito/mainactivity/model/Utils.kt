@@ -131,7 +131,7 @@ class Utils {
                         "email" to d.get("email") as String,
                         "location" to d.get("location") as String,
                         "phone" to d.get("phone") as String,
-                        "balance" to d.get("balance") as Int,
+                        "balance" to d.get("balance") as Long,
                         "profilePictureUrl" to d.get("profilePictureUrl") as String
                     )
                 else
@@ -206,8 +206,8 @@ class Utils {
             return try {
                 hashMapOf(
                     "timeslotId" to d.get("timeslotId") as String,
-                    "sender" to Message.Sender.valueOf(d.get("sender") as String),
-                    "value" to d.get("value").toString(),
+                    "by" to (d.get("by") as String),
+                    "rating" to d.get("rating") as Long,
                     "comment" to d.get("comment") as String
                 )
             } catch (e: Exception) {

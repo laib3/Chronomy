@@ -82,8 +82,8 @@ data class Timeslot(
         location = timeslotMap["location"] as String
         category = timeslotMap["category"] as String
         timeslotMap["status"]?.let{ Status.valueOf(it as String) } ?: Status.ERROR
-        if(_ratings.size != 2)
-            throw Exception("Error: ratings lenght should be equal to 2")
+        // if(_ratings.size != 2)
+        //     throw Exception("Error: ratings lenght should be equal to 2")
         ratings = _ratings.map{ rm -> Rating(rm) }.toMutableList()
         // perform some checks on lists length
         if(_chats.size != _clients.size || _clients.size != _messages.size || _messages.size != _chats.size)

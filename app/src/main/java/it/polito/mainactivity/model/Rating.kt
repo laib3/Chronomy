@@ -1,8 +1,8 @@
 package it.polito.mainactivity.model
 
-data class Rating(val timeslotId: String, var rating: Int?, var comment: String?, var by: Message.Sender){
+data class Rating(val timeslotId: String, var rating: Int, var comment: String, var by: Message.Sender){
 
-    fun toMap(): Map<String, Any?>{
+    fun toMap(): Map<String, Any>{
         return hashMapOf(
             "timeslotId" to timeslotId,
             "rating" to rating,
@@ -13,7 +13,7 @@ data class Rating(val timeslotId: String, var rating: Int?, var comment: String?
 
     constructor(ratingMap: Map<String, Any>): this(
         ratingMap["timeslotId"] as String,
-        ratingMap["rating"] as Int,
+        (ratingMap["rating"] as Long).toInt(),
         ratingMap["comment"] as String,
         ratingMap["by"]?.let { Message.Sender.valueOf(it as String) } ?: Message.Sender.ERROR
     )
