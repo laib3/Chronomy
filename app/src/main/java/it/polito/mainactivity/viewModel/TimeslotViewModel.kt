@@ -49,7 +49,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private var messagesListenerRegistration: ListenerRegistration
 
     init {
-
         // val uId = FirebaseAuth.getInstance().currentUser!!.uid
         timeslotsListenerRegistration =
             db
@@ -171,8 +170,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     }
                 }
             }
+        updateRating("t0p0MSYd0bse7Htnwypv", 5, "Giovanni Balena ottima persona")
     }
-
 
     override fun onCleared() {
         super.onCleared()
@@ -456,7 +455,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 ratings.documents.forEach { rs ->
                     val ratingMap =
                         Utils.toRatingMap(rs) ?: throw Exception("rating map creation failed")
-                    if (ratingMap["sender"] as Message.Sender == by) {
+                    if (Message.Sender.valueOf(ratingMap["sender"] as String) == by) {
                         rs.reference.update("rating", rating, "comment", comment).await()
                     }
                 }
