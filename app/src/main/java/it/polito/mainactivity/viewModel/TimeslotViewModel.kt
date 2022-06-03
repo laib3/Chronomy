@@ -168,8 +168,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     }
                 }
             }
-        //updateRating("t0p0MSYd0bse7Htnwypv", 5, "Giovanni Balena ottima persona")
-        addChat("t0p0MSYd0bse7Htnwypv")
+        updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
+        //addChat("t0p0MSYd0bse7Htnwypv")
     }
 
     override fun onCleared() {
