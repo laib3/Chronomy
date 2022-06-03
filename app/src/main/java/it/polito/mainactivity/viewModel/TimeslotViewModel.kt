@@ -455,7 +455,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 ratings.documents.forEach { rs ->
                     val ratingMap =
                         Utils.toRatingMap(rs) ?: throw Exception("rating map creation failed")
-                    if (Message.Sender.valueOf(ratingMap["sender"] as String) == by) {
+                    if (Message.Sender.valueOf(ratingMap["by"] as String) == by) {
                         rs.reference.update("rating", rating, "comment", comment).await()
                     }
                 }
