@@ -47,7 +47,7 @@ data class Message(val messageId: String, val text: String, val timestamp: Times
         messageMap["messageId"] as String,
         messageMap["text"] as String,
         // TODO fix - handle String to Timestamp conversion
-        Timestamp.now(),
+        messageMap["timestamp"] as Timestamp,
         messageMap["sender"]?.let{ Sender.valueOf(it as String) } ?: Sender.ERROR
     )
 

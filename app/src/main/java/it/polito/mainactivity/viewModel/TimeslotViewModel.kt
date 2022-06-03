@@ -132,7 +132,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             _timeslots.value?.find { t -> t.timeslotId == cs.reference.parent.parent?.id }
                         val timeslotId = timeslot?.timeslotId
                         if (timeslot != null) {
-                            val newChat = Chat(Utils.toChatMap(cs)!!)
+                            val newChat = Utils.toChatMap(cs)?.let{ Chat(it) } ?: throw Exception("chat shouldn't be null")
                             val newChats = timeslot.chats
                             val oldChat = newChats.find { chat -> chat.chatId == newChat.chatId }
                             if (oldChat == null) { // add new chat if there wasn't
@@ -150,19 +150,21 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
         messagesListenerRegistration =
             db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
-                if (mQuery == null) throw Exception("E")
+                if (mQuery == null)
+                    throw Exception("query result for messages shouldn't be empty")
                 if (mQuery.documents.size > 0) {
-                    mQuery.forEach { m ->
-                        _timeslots.value
-                            // first parent is the collection of messages, second parent is the chat document
-                            // third parent is the collection of chats, fourth is the timeslot document
-                            ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id }
+                    mQuery.forEach { ms ->
+                        // first parent is the collection of messages, second parent is the chat document
+                        // third parent is the collection of chats, fourth is the timeslot document
+                        _timeslots.value?.find { t -> t.timeslotId == ms.reference.parent.parent!!.parent.parent?.id }
                             .apply {
                                 // Add message if it is new
-                                val newMessage = Message(Utils.toMessageMap(m)!!)
-                                this?.chats?.find { c -> c.chatId == m.reference.parent.parent!!.id }?.messages!!.apply {
-                                    if (this.find { message -> message.messageId == newMessage.messageId } == null)
-                                        this.apply { add(newMessage) }
+                                val newMessage = Utils.toMessageMap(ms)?.let{ Message(it) } ?: throw Exception("message shouldn't be null")
+                                val msRefId = ms.reference.parent.parent!!.id
+                                val chat = this?.chats?.find { c -> c.chatId == ms.reference.parent.parent!!.id } ?: throw Exception("Cannot add message to unexisting chat")
+                                chat.messages.apply {
+                                    if(this.find{ m -> m.messageId == newMessage.messageId } == null) // if not found
+                                        this.add(newMessage) // add
                                 }
                             }
                     }
@@ -170,7 +172,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             }
         // updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
         // addChat("t0p0MSYd0bse7Htnwypv")
-        setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
+        // setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
+        addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
     }
 
     override fun onCleared() {
@@ -466,7 +469,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             .toMutableList()
     }
 
-    fun getMessages(messagesQuery: QuerySnapshot): MutableList<Map<String, String>> {
+    fun getMessages(messagesQuery: QuerySnapshot): MutableList<Map<String, Any>> {
         return messagesQuery.documents
             .map { m -> Utils.toMessageMap(m)!! }
             .toMutableList()
