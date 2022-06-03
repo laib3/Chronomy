@@ -32,6 +32,7 @@
     <string name="date_placeholder">dd/mm/yyyy</string>
     <string name="hour_placeholder">hh:mm</string>
     <string name="duration_placeholder">--h --m</string>
+    <string name="message_placeholder">This is my message that will wrap into multiple lines and keep on going</string>
 
     <!-- labels -->
     <string name="user_profile_balance_label">Balance</string>
