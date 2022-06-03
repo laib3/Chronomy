@@ -380,6 +380,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    // TODO: test
     fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
         return try {
             viewModelScope.launch {
@@ -395,6 +396,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    // TODO: test
     fun addMessage(chatId: String, text: String): Boolean {
         return try {
             viewModelScope.launch {
@@ -474,20 +476,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return ratingsQuery.documents
             .map { r -> Utils.toRatingMap(r)!! }
             .toMutableList()
-    }
-
-    fun addSnapshotForMessages() {
-        db.collectionGroup("messages").addSnapshotListener { m, error ->
-            if (m == null) throw Exception("E")
-            viewModelScope.launch {
-                m.forEach { ms ->
-                    val chat = ms.reference.parent.get().await()
-                    val tId = chat.documents.map { cs -> cs.reference.parent.id }[0]
-                    timeslots.value?.find { t -> t.timeslotId == tId }.apply { }
-                    ms.id
-                }
-            }
-        }
     }
 
 }
