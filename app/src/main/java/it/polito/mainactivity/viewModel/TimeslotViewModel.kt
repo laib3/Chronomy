@@ -161,8 +161,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                 // Add message if it is new
                                 val newMessage = Utils.toMessageMap(ms)?.let{ Message(it) } ?: throw Exception("message shouldn't be null")
                                 val msRefId = ms.reference.parent.parent!!.id
-                                val chat = this?.chats?.find { c -> c.chatId == ms.reference.parent.parent!!.id } ?: throw Exception("Cannot add message to unexisting chat")
-                                chat.messages.apply {
+                                val chat = this?.chats?.find { c -> c.chatId == ms.reference.parent.parent!!.id }
+                                chat?.messages?.apply {
                                     if(this.find{ m -> m.messageId == newMessage.messageId } == null) // if not found
                                         this.add(newMessage) // add
                                 }
