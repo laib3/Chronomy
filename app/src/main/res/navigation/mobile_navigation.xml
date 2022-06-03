@@ -43,7 +43,7 @@
             app:popExitAnim="@anim/slide_out" />
         <action
             android:id="@+id/action_nav_details_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/nav_chat" />
     </fragment>
 
     <fragment
@@ -120,15 +120,22 @@
         tools:layout="@layout/fragment_requests_list" >
         <action
             android:id="@+id/action_nav_requests_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/nav_chat" />
     </fragment>
     <fragment
-        android:id="@+id/chatFragment"
+        android:id="@+id/nav_chat"
         android:name="it.polito.mainactivity.ui.chat.ChatFragment"
-        android:label="fragment_chat_list"
+        android:label="@string/nav_chat_label"
         tools:layout="@layout/fragment_chat_list" >
         <argument
             android:name="chatId"
             app:argType="string" />
+        <argument
+            android:name="timeslotId"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Timeslot Title" />
     </fragment>
 </navigation>

@@ -71,7 +71,7 @@ class RequestRecyclerViewAdapter(
             // Pass through bundle the id of the item in the list
             chatCard.setOnClickListener{
                 val action =
-                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId)
+                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId, ts.timeslotId, ts.title)
                     parentFragment.findNavController().navigate(action)
             }
 
