@@ -101,19 +101,20 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (rQuery.documents.size > 0) {
                     rQuery.forEach { rs ->
                         // find timeslot which contains the rating
-                        val timeslot = _timeslots.value?.find{ timeslot -> timeslot.timeslotId == rs.reference.parent.parent?.id }
+                        val timeslot =
+                            _timeslots.value?.find { timeslot -> timeslot.timeslotId == rs.reference.parent.parent?.id }
                         val timeslotId = timeslot?.timeslotId
-                        if(timeslot != null){
+                        if (timeslot != null) {
                             val newRating = Rating(Utils.toRatingMap(rs)!!)
                             val newRatings = timeslot.ratings
-                            val oldRating = newRatings.find{ rating -> rating.by == newRating.by }
-                            if(oldRating == null){ // add new rating if there wasn't
+                            val oldRating = newRatings.find { rating -> rating.by == newRating.by }
+                            if (oldRating == null) { // add new rating if there wasn't
                                 newRatings.add(newRating)
                             } else { // update old ratings list
-                                newRatings.apply{ map{ rating -> if(rating.by == newRating.by) newRating else rating } }
+                                newRatings.apply { map { rating -> if (rating.by == newRating.by) newRating else rating } }
                             }
-                            _timeslots.value?.apply{
-                                find{ t -> t.timeslotId == timeslotId }!!.ratings = newRatings
+                            _timeslots.value?.apply {
+                                find { t -> t.timeslotId == timeslotId }!!.ratings = newRatings
                             }
                         }
                     }
@@ -125,27 +126,24 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (cQuery == null)
                     throw Exception("E")
                 if (cQuery.documents.size > 0) {
-                    cQuery.forEach { c ->
-                        _timeslots.value
-                            // first parent is the collection of chats, second is the timeslot
-                            ?.find { t -> t.timeslotId == c.reference.parent.parent?.id }
-                            .apply {
-                                val newChat = Chat(Utils.toChatMap(c)!!)
-                                val newChats: List<Chat> =
-                                    this?.chats?.find { c -> c.chatId == newChat.chatId }?.let {
-                                        this.chats.map { oldC ->
-                                            if (oldC.chatId == newChat.chatId)
-                                                oldC.apply {
-                                                    assigned = newChat.assigned
-                                                }
-                                            else
-                                                oldC
-                                        }
-                                    } ?: let {
-                                        this!!.chats.apply { add(newChat) }
-                                    }
-                                this?.chats = newChats.toMutableList()
+                    cQuery.forEach { cs ->
+                        // first parent is the collection of chats, second is the timeslot
+                        val timeslot =
+                            _timeslots.value?.find { t -> t.timeslotId == cs.reference.parent.parent?.id }
+                        val timeslotId = timeslot?.timeslotId
+                        if (timeslot != null) {
+                            val newChat = Chat(Utils.toChatMap(cs)!!)
+                            val newChats = timeslot.chats
+                            val oldChat = newChats.find { chat -> chat.chatId == newChat.chatId }
+                            if (oldChat == null) { // add new chat if there wasn't
+                                newChats.add(newChat)
+                            } else { // update old chats list
+                                newChats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
                             }
+                            _timeslots.value?.apply {
+                                find { t -> t.timeslotId == timeslotId }!!.chats = newChats
+                            }
+                        }
                     }
                 }
             }
