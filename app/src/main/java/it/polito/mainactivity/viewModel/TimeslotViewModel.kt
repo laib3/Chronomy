@@ -60,7 +60,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             viewModelScope.launch {
                                 _timeslots.value =
                                     tsQuery.mapNotNull { ts -> // TODO add check if timeslots empty
-                                        val timeslot = Utils.toTimeslotMap(ts)!!
+                                        val timeslotMap = Utils.toTimeslotMap(ts)!!
                                         val publisher = ts.get("publisher") as Map<String, Any>
                                         val chatsQuery =
                                             ts.reference.collection("chats").get().await()
@@ -75,7 +75,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                             ts.reference.collection("ratings").get().await()
                                         val ratings = getRatings(ratingsQuery)
                                         Timeslot(
-                                            timeslot,
+                                            timeslotMap,
                                             publisher,
                                             ratings,
                                             chats,
