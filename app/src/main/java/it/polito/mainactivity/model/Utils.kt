@@ -206,7 +206,7 @@ class Utils {
             return try {
                 hashMapOf(
                     "timeslotId" to d.get("timeslotId") as String,
-                    "by" to Message.Sender.valueOf(d.get("by") as String),
+                    "by" to (d.get("by") as String),
                     "rating" to d.get("rating") as Long,
                     "comment" to d.get("comment") as String
                 )
