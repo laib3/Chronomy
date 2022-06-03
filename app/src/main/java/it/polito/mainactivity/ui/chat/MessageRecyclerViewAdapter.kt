@@ -19,6 +19,7 @@ class MessageRecyclerViewAdapter(
     private val chat: Chat,
     private val timeslot: Timeslot,
     private val parentFragment: Fragment
+
 ) : RecyclerView.Adapter<MessageRecyclerViewAdapter.ViewHolder>() {
 
     private val loggedUserRole = Message.Sender.PUBLISHER
@@ -29,7 +30,7 @@ class MessageRecyclerViewAdapter(
         private val ivProfilePic:ImageView = v.findViewById(R.id.profilePic)
 
         fun bind(message: Message) {
-            val user = if(loggedUserRole == Message.Sender.PUBLISHER){
+            val user = if(message.sender == Message.Sender.PUBLISHER ){
                 timeslot.publisher
             } else {
                 chat.client

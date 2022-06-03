@@ -54,48 +54,21 @@ class ChatFragment : Fragment() {
 
          */
         val u1 = User(
-            "user1",
-            "nome",
-            "cognome",
-            "user1",
-            "bio",
-            "email",
-            "location",
-            "phone",
-            listOf(),
-            5,
-            null
+            "user1","nome","cognome","user1","bio","email",
+            "location","phone",listOf(),5,null
         )
         val u2 = User(
-            "user2",
-            "nome",
-            "cognome",
-            "user2",
-            "bio",
-            "email",
-            "location",
-            "phone",
-            listOf(),
-            5,
-            null
+            "user2","nome","cognome","user2","bio","email",
+            "location","phone",listOf(),5,null
         )
         val u3 = User(
-            "user3",
-            "nome",
-            "cognome",
-            "user3",
-            "bio",
-            "email",
-            "location",
-            "phone",
-            listOf(),
-            5,
-            null
+            "user3","nome","cognome","user3","bio","email",
+            "location","phone",listOf(),5,null
         )
 
         val loadedList = listOf(
             Timeslot(
-                "t1", "prova1", "desc",
+                "t1", "prova: inviato da u1, published", "desc",
                 GregorianCalendar(2022, 2, 3),
                 "18:00", "21:00", "location",
                 "Delivery", u1.toMap(),
@@ -105,13 +78,37 @@ class ChatFragment : Fragment() {
                         "chat1", u2.toMap(), false, mutableListOf<Message>(
                             Message(
                                 "message1",
-                                "ciao da u2",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
                                 Timestamp(Date()),
                                 Message.Sender.CLIENT
                             ),
                             Message(
                                 "message2",
-                                "cosa vuoi da u1",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
                                 Timestamp(Date()),
                                 Message.Sender.PUBLISHER
                             ),
@@ -137,6 +134,105 @@ class ChatFragment : Fragment() {
                 mutableListOf<Rating>()
             ),
             Timeslot(
+                "t10", "prova: inviato da u1, assigned", "desc",
+                GregorianCalendar(2022, 2, 3),
+                "18:00", "21:00", "location",
+                "Delivery", u1.toMap(),
+                Timeslot.Status.ASSIGNED,
+                mutableListOf<it.polito.mainactivity.model.Chat>(
+                    Chat(
+                        "chat1", u2.toMap(), false, mutableListOf<Message>(
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                        )
+                    )
+                ),
+                mutableListOf<Rating>()
+            ),Timeslot(
+                "t11", "prova: inviato da u1, completed", "desc",
+                GregorianCalendar(2022, 2, 3),
+                "18:00", "21:00", "location",
+                "Delivery", u1.toMap(),
+                Timeslot.Status.COMPLETED,
+                mutableListOf<it.polito.mainactivity.model.Chat>(
+                    Chat(
+                        "chat1", u2.toMap(), false, mutableListOf<Message>(
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                            Message(
+                                "message1",
+                                "messaggio da utente u2",
+                                Timestamp(Date()),
+                                Message.Sender.CLIENT
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                            Message(
+                                "message2",
+                                "messaggio da utente u1",
+                                Timestamp(Date()),
+                                Message.Sender.PUBLISHER
+                            ),
+                        )
+                    )
+                ),
+                mutableListOf<Rating>()
+            ),
+            Timeslot(
                 "t2", "prova2", "desc",
                 GregorianCalendar(2022, 2, 3),
                 "18:00", "21:00", "location",
@@ -147,13 +243,13 @@ class ChatFragment : Fragment() {
                         "chat3", u1.toMap(), false, mutableListOf<Message>(
                             Message(
                                 "message5",
-                                "ciao da u1",
+                                "messaggio da u1",
                                 Timestamp(Date()),
                                 Message.Sender.CLIENT
                             ),
                             Message(
                                 "message6",
-                                "cosa vuoi da u2",
+                                "messaggio da u2",
                                 Timestamp(Date()),
                                 Message.Sender.PUBLISHER
                             ),
@@ -186,6 +282,14 @@ class ChatFragment : Fragment() {
             chat!!.messages, chat!!, ts!!, this
         )
         rv.adapter = adapter
+
+        if(ts!!.status == Timeslot.Status.PUBLISHED){
+            binding.btnsManageReq.visibility = View.VISIBLE
+        }else{
+            binding.btnsManageReq.visibility = View.GONE
+        }
+
+
         return root
     }
 

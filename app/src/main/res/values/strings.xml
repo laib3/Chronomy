@@ -68,6 +68,9 @@
     <string name="tab_requests_for_my_timeslots">Requests received</string>
     <string name="tab_requests_i_made">Requests sent</string>
 
+    <string name="btn_accept_request">Accept request</string>
+    <string name="btn_reject_request">Reject request</string>
+
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
     <string name="user_profile_hint_surname">Surname</string>

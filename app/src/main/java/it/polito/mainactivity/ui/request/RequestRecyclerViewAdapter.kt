@@ -80,7 +80,9 @@ class RequestRecyclerViewAdapter(
 
         holder.chipCount.text = holder.hiddenView.childCount.toString()
 
+        //TODO: navigate to timeslot details
         holder.fixedLayout.setOnClickListener { showHiddenLayout(holder)}
+
         holder.btnArrow.setOnClickListener { showHiddenLayout(holder) }
     }
     override fun getItemCount(): Int = values.size

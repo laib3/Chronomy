@@ -1,9 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btns_manage_req"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/outlinedButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_reject_request"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/containedButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/containedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_accept_request"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/outlinedButton"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/textMsg"
@@ -23,24 +54,25 @@
     <ImageButton
         android:id="@+id/btnSendMsg"
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:background="@drawable/ic_send_msg"
         app:layout_constraintBottom_toBottomOf="@+id/textMsg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textMsg" />
+        app:layout_constraintTop_toTopOf="@+id/textMsg"
+        android:contentDescription="btnsend"/>
 
-<androidx.recyclerview.widget.RecyclerView
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="it.polito.mainactivity.ChatFragment"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:background="@color/browser_actions_bg_grey"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.chat.ChatFragment"
-    app:layout_constraintBottom_toTopOf="@+id/textMsg"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="it.polito.mainactivity.ChatFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="@dimen/medium_distance"
+        android:background="@color/browser_actions_bg_grey"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/textMsg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btns_manage_req"
+        tools:context=".ui.chat.ChatFragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
