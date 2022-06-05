@@ -87,7 +87,7 @@
                 android:paddingEnd="@dimen/small_distance"
                 android:text="@string/user_profile_ratings_client_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                app:layout_constraintBottom_toTopOf="@+id/rvAvgRatingClient"
+                app:layout_constraintBottom_toTopOf="@+id/rvCommentsClient"
                 app:layout_constraintEnd_toStartOf="@+id/lAvgRatingClient"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintHorizontal_weight="2"
@@ -124,7 +124,7 @@
                 app:layout_constraintTop_toTopOf="@id/lRatingClient" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvAvgRatingClient"
+                android:id="@+id/rvCommentsClient"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/medium_distance"

@@ -83,6 +83,8 @@
     <string name="user_profile_hint_location">Location</string>
     <string name="user_skill_hint_description">Description</string>
     <string name="sort_by_hint">sortingField</string>
+    <string name="rating_nickname">Nickname</string>
+    <string name="rating_comment">Comment</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>
