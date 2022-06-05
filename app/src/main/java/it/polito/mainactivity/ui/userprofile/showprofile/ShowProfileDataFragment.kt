@@ -20,8 +20,8 @@ import kotlinx.coroutines.*
 
 class ShowProfileDataFragment : Fragment() {
 
-    private val vmUser: UserProfileViewModel by activityViewModels()
-    private val vmTimeslots: TimeslotViewModel by activityViewModels()
+    // private val vmUser: UserProfileViewModel by activityViewModels()
+    // private val vmTimeslots: TimeslotViewModel by activityViewModels()
     private var _binding: FragmentShowProfileDataBinding? = null
     private val binding get() = _binding!!
 

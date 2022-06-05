@@ -1,7 +1,5 @@
 package it.polito.mainactivity.ui.request
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +14,9 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.chip.Chip
-import it.polito.mainactivity.MessageActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
-import it.polito.mainactivity.ui.home.HomeFragmentDirections
 import java.util.*
 
 class RequestRecyclerViewAdapter(
@@ -29,8 +25,8 @@ class RequestRecyclerViewAdapter(
 ) : RecyclerView.Adapter<RequestRecyclerViewAdapter.RequestViewHolder>() {
 
     inner class RequestViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val tvTitle: TextView = v.findViewById(R.id.tvTitle)
-        val ivCategory: ImageView = v.findViewById(R.id.lCategory)
+        val tvTitle: TextView = v.findViewById(R.id.tvUserNickname)
+        val ivCategory: ImageView = v.findViewById(R.id.iUserPic)
         val btnArrow: ImageButton = v.findViewById(R.id.arrow_button)
         val hiddenView: LinearLayout = v.findViewById(R.id.hidden_view)
         val baseCardView: CardView = v.findViewById(R.id.base_cardview)

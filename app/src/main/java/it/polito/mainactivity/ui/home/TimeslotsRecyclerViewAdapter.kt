@@ -22,14 +22,14 @@ class TimeslotsRecyclerViewAdapter(
 ) : RecyclerView.Adapter<TimeslotsRecyclerViewAdapter.TimeslotViewHolder>() {
 
     inner class TimeslotViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val tvTitle: TextView = v.findViewById(R.id.tvTitle)
-        val tvLocation: TextView = v.findViewById(R.id.tvLocation)
+        val tvTitle: TextView = v.findViewById(R.id.tvUserNickname)
+        val tvLocation: TextView = v.findViewById(R.id.tvComment)
         val tvDate: TextView = v.findViewById(R.id.tvDate)
         val tvHour: TextView = v.findViewById(R.id.tvHour)
         val ivProfilePic: ImageView = v.findViewById(R.id.ivProfilePic)
         val tvNickname: TextView = v.findViewById(R.id.nickname)
 
-        val cvTimeslotCard: MaterialCardView = v.findViewById(R.id.cvTimeslotCard)
+        val cvTimeslotCard: MaterialCardView = v.findViewById(R.id.cvRatingCard)
         val clTimeslotInfo: ConstraintLayout = v.findViewById(R.id.clTimeslotInfo)
     }
 
