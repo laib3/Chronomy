@@ -95,9 +95,7 @@
                 android:id="@+id/tvComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
                 android:layout_marginTop="@dimen/medium_distance"
-                android:layout_marginEnd="@dimen/medium_distance"
                 android:layout_marginBottom="@dimen/medium_distance"
                 android:paddingStart="@dimen/small_distance"
                 android:paddingEnd="@dimen/small_distance"
@@ -105,7 +103,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tvUserNickname"
+                app:layout_constraintEnd_toEndOf="@+id/ratingBar"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="@+id/iUserPic"
                 app:layout_constraintTop_toBottomOf="@+id/divider" />
