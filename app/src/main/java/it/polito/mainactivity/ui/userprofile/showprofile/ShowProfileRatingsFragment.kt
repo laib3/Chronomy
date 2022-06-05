@@ -90,10 +90,10 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
             val clientListAdapter = RatingAdapter(ratingsAsClient, this)
             rvClient.adapter = clientListAdapter
 
-            rbAvgRatingPublisher.numStars =
-                ratingsAsPublisher.map { r -> r.rating.rating }.average().roundToInt()
-            rbAvgRatingClient.numStars =
-                ratingsAsClient.map { r -> r.rating.rating }.average().roundToInt()
+            rbAvgRatingPublisher.rating =
+                ratingsAsPublisher.map { r -> r.rating.rating }.average().toFloat()
+            rbAvgRatingClient.rating =
+                ratingsAsClient.map { r -> r.rating.rating }.average().toFloat()
 
         }
         return root
@@ -130,7 +130,7 @@ class RatingAdapter(
 
         holder.tvUserNickname.text = rating.nickname
         holder.tvComment.text = rating.rating.comment
-        holder.ratingBar.numStars = rating.rating.rating
+        holder.ratingBar.rating = rating.rating.rating.toFloat()
         Picasso.get().load(rating.profilePictureUrl).into(holder.userPic)
     }
 
