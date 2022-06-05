@@ -80,6 +80,7 @@
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.3113456464379947" />
         <entry key="app/src/main/res/layout/fragment_show_profile_data.xml" value="0.2718045783765388" />
         <entry key="app/src/main/res/layout/fragment_show_profile_picture.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_ratings.xml" value="0.3009674072265625" />
         <entry key="app/src/main/res/layout/fragment_show_profile_skills.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_details.xml" value="0.3442288049029622" />

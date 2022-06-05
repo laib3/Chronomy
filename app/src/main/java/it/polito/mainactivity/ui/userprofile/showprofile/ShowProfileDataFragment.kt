@@ -46,60 +46,6 @@ class ShowProfileDataFragment : Fragment() {
         TabLayoutMediator(tabLayout,viewPager) {
             tab, position -> tab.text = tabTitles[position]
         }.attach()
-
-
-
-
-
-
-        //val balanceTextView: TextView = binding.textBalance
-        //val bioTextView: TextView = binding.textBio
-        //val phoneTextView: TextView = binding.textPhone
-        //val locationTextView: TextView = binding.textLocation
-        //val emailTextView: TextView = binding.textEmail
-        //val skillsLayout = binding.skillsLayout
-
-        //val id = parentFragment?.arguments?.getString("id")
-
-
-
-        // If show profile of other users
-        //if (id != null) {
-            //val publisherId = vmTimeslots.timeslots.value?.find{ t -> t.timeslotId == id }?.publisher?.get("userId") as String
-            // get publisher asynchronously and update
-            //MainScope().launch{
-                //val publisher = vmUser.getUserById(publisherId)
-                    //?: throw FirebaseFirestoreException("publisher not found", FirebaseFirestoreException.Code.NOT_FOUND)
-                //balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), publisher.balance)
-                //bioTextView.text = String.format(getString(R.string.user_profile_bio_placeholder), publisher.bio)
-                //phoneTextView.text = publisher.phone
-                //locationTextView.text = publisher.location
-                //emailTextView.text = publisher.email
-                //skillsLayout.removeAllViews()
-                //publisher.apply {
-                //    skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
-                //        .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
-                //}
-            //}
-        //} else { // if show profile of the current publisher
-            // observe viewModel changes
-            //vmUser.user.observe(viewLifecycleOwner) {
-            //    balanceTextView.text = String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
-            //    bioTextView.text = String.format(
-            //        getString(R.string.user_profile_bio_placeholder),
-            //        it?.bio ?: "null"
-            //    )
-            //    phoneTextView.text = it?.phone ?: "null"
-            //    locationTextView.text = it?.location ?: "null"
-            //    emailTextView.text = it?.email ?: "null"
-            //    skillsLayout.removeAllViews()
-            //    it?.apply {
-            //        skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
-            //            .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
-            //    }
-            //}
-        //}
-
         return root
     }
 
