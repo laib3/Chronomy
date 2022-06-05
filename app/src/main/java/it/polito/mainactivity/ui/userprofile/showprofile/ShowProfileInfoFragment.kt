@@ -42,7 +42,6 @@ class ShowProfileInfoFragment(val timeslotId: String?) : Fragment() {
         val locationTextView: TextView = binding.textLocation
         val emailTextView: TextView = binding.textEmail
 
-        Log.d("SHOWPROFILE", timeslotId?.toString()?:"null")
         // If show profile of other users
         if (timeslotId != null) {
             val publisherId =
