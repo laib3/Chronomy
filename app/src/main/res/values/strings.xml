@@ -66,6 +66,9 @@
 
     <string name="tab_requests_for_my_timeslots">Requests received</string>
     <string name="tab_requests_i_made">Requests sent</string>
+    <string name="tab_user_info">Info</string>
+    <string name="tab_user_skills">Skills</string>
+    <string name="tab_user_ratings">Ratings</string>
 
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>

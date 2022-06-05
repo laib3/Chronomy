@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,202 +8,36 @@
         android:id="@+id/tlUserData"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/vpUserData"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/svUserData"
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Monday" />
+            android:text="@string/tab_user_info" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tuesday" />
+            android:text="@string/tab_user_skills" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wednesday" />
+            android:text="@string/tab_user_ratings" />
     </com.google.android.material.tabs.TabLayout>
 
-    <ScrollView
-        android:id="@+id/svUserData"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpUserData"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tlUserData">
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/infoAndSkillsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/user_profile_phone_label"
-            android:paddingStart="@dimen/medium_distance"
-            android:paddingTop="@dimen/small_distance"
-            android:paddingEnd="@dimen/medium_distance"
-            android:paddingBottom="@dimen/small_distance"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView">
-
-            <TextView
-                android:id="@+id/textBalanceLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_balance_label"
-                android:textSize="@dimen/profile_text_size_normal"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageViewBalanceIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_balance_label"
-                android:src="@drawable/ic_baseline_timer_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textBalanceLabel" />
-
-            <TextView
-                android:id="@+id/textBalance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:text="@string/user_profile_balance"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewBalanceIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewBalanceIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewBalanceIcon" />
-
-            <TextView
-                android:id="@+id/textUserinfoLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_info_label"
-                android:textSize="@dimen/profile_text_size_normal"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewBalanceIcon" />
-
-            <TextView
-                android:id="@+id/textBio"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_bio"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textUserinfoLabel" />
-
-            <ImageView
-                android:id="@+id/imageViewPhoneIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_phone_label"
-                android:src="@drawable/ic_baseline_local_phone_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textBio" />
-
-            <TextView
-                android:id="@+id/textPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:text="@string/user_profile_phone"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewPhoneIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewPhoneIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewPhoneIcon" />
-
-            <ImageView
-                android:id="@+id/imageViewEmailIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_email_label"
-                android:src="@drawable/ic_baseline_email_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewPhoneIcon" />
-
-            <TextView
-                android:id="@+id/textEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:text="@string/user_profile_email"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewEmailIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewEmailIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewEmailIcon" />
-
-            <ImageView
-                android:id="@+id/imageViewLocationIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:contentDescription="@string/user_profile_location_label"
-                android:src="@drawable/ic_baseline_location_on_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon" />
-
-            <TextView
-                android:id="@+id/textLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/medium_distance"
-                android:text="@string/user_profile_location"
-                android:textSize="@dimen/profile_text_size_small"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewLocationIcon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageViewLocationIcon"
-                app:layout_constraintTop_toTopOf="@+id/imageViewLocationIcon" />
-
-            <TextView
-                android:id="@+id/textSkillsLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_distance"
-                android:text="@string/user_profile_skills_label"
-                android:textSize="@dimen/profile_text_size_normal"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewLocationIcon" />
-
-
-            <LinearLayout
-                android:id="@+id/skillsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textSkillsLabel"></LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/tlUserData" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
