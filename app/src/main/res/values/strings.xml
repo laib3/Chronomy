@@ -43,6 +43,9 @@
     <string name="user_profile_picture_label">Location</string>
     <string name="user_profile_save_label">Save</string>
     <string name="user_profile_active_label">Active</string>
+    <string name="user_profile_ratings_publisher_label">Ratings as Publisher</string>
+    <string name="user_profile_ratings_client_label">Ratings as Client</string>
+    <string name="user_profile_avg_rating_label">Avg. rating</string>
 
     <string name="timeslot_title">Title</string>
     <string name="timeslot_location">Location</string>
