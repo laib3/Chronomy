@@ -13,7 +13,7 @@ import it.polito.mainactivity.databinding.FragmentShowProfileSkillsBinding
 
 import it.polito.mainactivity.model.Utils
 
-class ShowProfileSkillsFragment : Fragment() {
+class ShowProfileSkillsFragment(val timeslotId: String?) : Fragment() {
     private var _binding: FragmentShowProfileSkillsBinding? = null
     private val binding get() = _binding!!
 
