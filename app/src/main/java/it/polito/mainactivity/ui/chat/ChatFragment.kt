@@ -78,37 +78,37 @@ class ChatFragment : Fragment() {
                         "chat1", u2.toMap(), false, mutableListOf<Message>(
                             Message(
                                 "message1",
-                                "messaggio da utente u2",
+                                "1 messaggio da utente u2",
                                 Timestamp(Date()),
                                 Message.Sender.CLIENT
                             ),
                             Message(
                                 "message1",
-                                "messaggio da utente u2",
+                                "2 messaggio da utente u2",
                                 Timestamp(Date()),
                                 Message.Sender.CLIENT
                             ),
                             Message(
                                 "message2",
-                                "messaggio da utente u1",
+                                "3 messaggio da utente u1",
                                 Timestamp(Date()),
                                 Message.Sender.PUBLISHER
                             ),
                             Message(
                                 "message1",
-                                "messaggio da utente u2",
+                                "4 messaggio da utente u2",
                                 Timestamp(Date()),
                                 Message.Sender.CLIENT
                             ),
                             Message(
                                 "message2",
-                                "messaggio da utente u1",
+                                "5 messaggio da utente u1",
                                 Timestamp(Date()),
                                 Message.Sender.PUBLISHER
                             ),
                             Message(
                                 "message2",
-                                "messaggio da utente u1",
+                                "6 messaggio da utente u1",
                                 Timestamp(Date()),
                                 Message.Sender.PUBLISHER
                             ),
@@ -285,10 +285,17 @@ class ChatFragment : Fragment() {
 
         if(ts!!.status == Timeslot.Status.PUBLISHED){
             binding.btnsManageReq.visibility = View.VISIBLE
-        }else{
+            binding.ratingZone.visibility = View.GONE
+        }else if(ts!!.status == Timeslot.Status.COMPLETED){
+            binding.ratingZone.visibility = View.VISIBLE
             binding.btnsManageReq.visibility = View.GONE
         }
+        else if(ts!!.status == Timeslot.Status.ASSIGNED){
+            binding.btnsManageReq.visibility = View.GONE
+            binding.ratingZone.visibility = View.GONE
+        }
 
+        rv.scrollToPosition(chat!!.messages.size - 1);
 
         return root
     }

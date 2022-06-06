@@ -71,6 +71,9 @@
     <string name="btn_accept_request">Accept request</string>
     <string name="btn_reject_request">Reject request</string>
 
+    <string name="leave_feedback">Please, leave a feedback!</string>
+    <string name="send_feedback">Send</string>
+
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
     <string name="user_profile_hint_surname">Surname</string>
@@ -81,6 +84,8 @@
     <string name="user_profile_hint_location">Location</string>
     <string name="user_skill_hint_description">Description</string>
     <string name="sort_by_hint">sortingField</string>
+
+    <string name="rating_hint">Leave a comment</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>
