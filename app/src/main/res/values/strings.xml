@@ -95,7 +95,7 @@
     <string name="rating_nickname">Nickname</string>
     <string name="rating_comment">Comment</string>
 
-    <string name="rating_hint">Leave a comment</string>
+    <string name="rating_hint">Leave a comment (optional)</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>

@@ -288,6 +288,8 @@ class ChatFragment : Fragment() {
             binding.ratingZone.visibility = View.GONE
         }else if(ts!!.status == Timeslot.Status.COMPLETED){
             binding.ratingZone.visibility = View.VISIBLE
+            binding.textMsg.visibility = View.GONE
+            binding.btnSendMsg.visibility = View.GONE
             binding.btnsManageReq.visibility = View.GONE
         }
         else if(ts!!.status == Timeslot.Status.ASSIGNED){
