@@ -193,14 +193,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     _timeslots.value = tmpTimeslots
                 }
             }
-        // updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
-        // addChat("t0p0MSYd0bse7Htnwypv")
-        // setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
-        // addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
-        // addMessage("tKrJLmbb2ATdWm767Smr", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
-        // addMessage("tKrJLmbb2ATdWm767Smr", "Giovanni per piacere rispondi!")
-        // deleteTimeslot("t0p0MSYd0bse7Htnwypv")
-        // updateRating("zfWcNIHdb4ekj0waVSON", 4, "Servizio top, peccato per l'aggressività dell'istruttore")
     }
 
     override fun onCleared() {
@@ -388,30 +380,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     /**
      * Add chat between the owner of the timeslot (PUBLISHER) with the given id and the current user (CLIENT)
      **/
-
-    /*
-    fun addChat(timeslotId: String) {
-         try {
-            viewModelScope.launch {
-                val userRef = db.collection("users").document(auth.currentUser!!.uid)
-                val clientMap = userRef.get().await().let { Utils.toUserMap(it) }
-                    ?: throw Exception("clientMap shouldn't be null")
-                val chatRef =
-                    db.collection("timeslots").document(timeslotId).collection("chats").document()
-                val chatId = chatRef.id
-                val newChat = Chat(chatId, clientMap, false, mutableListOf())
-                _timeslots.value?.apply {
-                    find { t -> t.timeslotId == timeslotId }!!.chats.add(newChat)
-                }
-                // add chat to db with id chatId
-                chatRef.set(newChat.toMap()).await()
-                return@launch
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-    */
     fun addChat(timeslotId: String): Boolean{
         return try {
             viewModelScope.launch {
