@@ -16,7 +16,6 @@ import it.polito.mainactivity.model.*
 
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.viewModel.UserProfileViewModel
-import kotlin.math.roundToInt
 
 class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
     private var _binding: FragmentShowProfileRatingsBinding? = null
@@ -33,24 +32,22 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
         _binding = FragmentShowProfileRatingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         // If show profile of other users
-        var currentUserId: String? = null
-        var currentUserNickname: String? = null
-        var currentUserProfilePictureUrl: String? = null
+        var selectedUserId: String? = null
+        var selectedUserNickname: String? = null
+        var selectedUserProfilePictureUrl: String? = null
         if (timeslotId!= null) {
             vmTimeslots.timeslots.value?.find { t -> t.timeslotId == timeslotId }
                 ?.also {
-                    currentUserId = it.publisher["userId"] as String
-                    currentUserNickname = it.publisher["nickname"] as String
-                    currentUserProfilePictureUrl = it.publisher["profilePictureUrl"] as String
+                    selectedUserId = it.publisher["userId"] as String
+                    selectedUserNickname = it.publisher["nickname"] as String
+                    selectedUserProfilePictureUrl = it.publisher["profilePictureUrl"] as String
                 }
         } else { // if show profile of the current publisher
-            currentUserId = vmUser.user.value?.userId!!
-            currentUserNickname = vmUser.user.value?.nickname!!
-            currentUserProfilePictureUrl = vmUser.user.value?.profilePictureUrl!!
+            selectedUserId = vmUser.user.value?.userId!!
+            selectedUserNickname = vmUser.user.value?.nickname!!
+            selectedUserProfilePictureUrl = vmUser.user.value?.profilePictureUrl!!
         }
-
 
         val rbAvgRatingPublisher: RatingBar = binding.rbAvgRatingPublisher
         val rbAvgRatingClient: RatingBar = binding.rbAvgRatingClient
@@ -61,32 +58,33 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
 
         vmTimeslots.timeslots.observe(viewLifecycleOwner) {
 
-            val ratingsAsPublisher: MutableList<RatingWithUserInfo> = mutableListOf()
+            val ratingsAsPublisher: MutableList<RatingWithUserInfo> =
             it.filter { timeslot ->
-                (timeslot.publisher["userId"] == currentUserId) &&
+                (timeslot.publisher["userId"] == selectedUserId) &&
                         (timeslot.status == Timeslot.Status.COMPLETED) &&
                         (timeslot.ratings.find { rating -> rating.by == Message.Sender.CLIENT }?.rating != -1)
             }
-                .map { timeslot ->
-                    RatingWithUserInfo(timeslot.ratings.filter { rating -> rating.by == Message.Sender.CLIENT }
-                        .first(), currentUserNickname, currentUserProfilePictureUrl)
-                }
+            .map { timeslot ->
+                RatingWithUserInfo(timeslot.ratings.first { rating -> rating.by == Message.Sender.CLIENT },
+                    timeslot.chats.first{ c -> c.assigned }.client["nickname"] as String,
+                    timeslot.chats.first{ c -> c.assigned }.client["profilePictureUrl"] as String)
+            }.toMutableList()
 
-            val ratingsAsClient: MutableList<RatingWithUserInfo> = mutableListOf()
+            val ratingsAsClient: MutableList<RatingWithUserInfo> =
             it.filter { timeslot ->
-                timeslot.publisher["userId"] != currentUserId &&
+                timeslot.publisher["userId"] != selectedUserId &&
                         timeslot.chats.filter { chat -> chat.assigned }
-                            .map { chat -> chat.client["userId"] }.firstOrNull() == currentUserId &&
+                            .map { chat -> chat.client["userId"] }.firstOrNull() == selectedUserId &&
                         timeslot.status == Timeslot.Status.COMPLETED &&
                         timeslot.ratings.find { rating -> rating.by == Message.Sender.PUBLISHER }?.rating != -1
             }
                 .map { timeslot ->
                     RatingWithUserInfo(
                         timeslot.ratings.first { rating -> rating.by == Message.Sender.PUBLISHER },
-                        currentUserNickname,
-                        currentUserProfilePictureUrl
+                        timeslot.publisher["nickname"] as String,
+                        timeslot.publisher["profilePictureUrl"] as String
                     )
-                }
+                }.toMutableList()
 
             val publisherListAdapter = RatingAdapter(ratingsAsPublisher, this)
             rvPublisher.adapter = publisherListAdapter
@@ -116,26 +114,26 @@ class RatingAdapter(
     RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {
 
     class RatingViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val tvUserNickname: TextView = v.findViewById(R.id.tvUserNickname)
-        val tvComment: TextView = v.findViewById(R.id.tvComment)
-        val ratingBar: RatingBar = v.findViewById(R.id.rbRating)
-        val userPic: ImageView = v.findViewById(R.id.iUserPic)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingViewHolder {
         val vg = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.timeslot_item, parent, false)
+            .inflate(R.layout.rating_item, parent, false)
         return RatingViewHolder(vg)
     }
 
     override fun onBindViewHolder(holder: RatingViewHolder, position: Int) {
         val rating = ratingsList[position]
 
-        holder.tvUserNickname.text = rating.nickname
-        holder.tvComment.text = rating.rating.comment
-        holder.ratingBar.rating = rating.rating.rating.toFloat()
-        Picasso.get().load(rating.profilePictureUrl).into(holder.userPic)
+        val tvUserNickname: TextView = holder.itemView.findViewById(R.id.tvUserNickname)
+        val tvComment: TextView = holder.itemView.findViewById(R.id.tvComment)
+        val ratingBar: RatingBar = holder.itemView.findViewById(R.id.rbRating)
+        val userPic: ImageView = holder.itemView.findViewById(R.id.iUserPic)
+        tvUserNickname.text = rating.nickname
+        tvComment.text = rating.rating.comment
+        ratingBar.rating = rating.rating.rating.toFloat()
+        Picasso.get().load(rating.profilePictureUrl).into(userPic)
     }
 
     override fun getItemCount(): Int = ratingsList.size

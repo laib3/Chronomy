@@ -110,6 +110,7 @@ class Utils {
                     "endHour" to d.get("endHour") as String,
                     "location" to d.get("location") as String,
                     "category" to d.get("category") as String,
+                    "status" to d.get("status") as String,
                     "publisher" to d.get("publisher") as Map<String, String>
                 )
             } catch (e: Exception) {
