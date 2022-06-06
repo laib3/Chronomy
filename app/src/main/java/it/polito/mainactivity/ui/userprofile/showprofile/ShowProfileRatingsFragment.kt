@@ -134,6 +134,7 @@ class RatingAdapter(
         tvComment.text = rating.rating.comment
         ratingBar.rating = rating.rating.rating.toFloat()
         Picasso.get().load(rating.profilePictureUrl).into(userPic)
+        userPic.clipToOutline = true
     }
 
     override fun getItemCount(): Int = ratingsList.size
