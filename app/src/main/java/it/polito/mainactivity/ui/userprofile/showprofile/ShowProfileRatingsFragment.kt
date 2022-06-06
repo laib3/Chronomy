@@ -22,7 +22,6 @@ class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
     private var _binding: FragmentShowProfileRatingsBinding? = null
     private val binding get() = _binding!!
     private val vmTimeslots: TimeslotViewModel by activityViewModels()
-    //private val vmUser: UserProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +32,7 @@ class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
         _binding = FragmentShowProfileRatingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // If userId is passed as parameter (other user's profile), otherwise current user's
+        // If userId is passed as parameter (other user's profile), otherwise current user
         val selectedUserId = userId ?:   FirebaseAuth.getInstance().currentUser!!.uid
 
         val rbAvgRatingPublisher: RatingBar = binding.rbAvgRatingPublisher
