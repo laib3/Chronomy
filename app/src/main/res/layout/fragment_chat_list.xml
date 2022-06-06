@@ -14,26 +14,26 @@
         android:background="@android:color/white">
 
         <Button
-            android:id="@+id/outlinedButton"
+            android:id="@+id/rejectRequestBtn"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_reject_request"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/containedButton"
+            app:layout_constraintEnd_toStartOf="@+id/acceptRequestBtn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/containedButton"
+            android:id="@+id/acceptRequestBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_accept_request"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/outlinedButton"
+            app:layout_constraintStart_toEndOf="@+id/rejectRequestBtn"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

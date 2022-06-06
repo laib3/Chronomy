@@ -80,6 +80,17 @@ class ChatFragment : Fragment() {
             binding.textMsg.setText("")
         }
 
+        binding.rejectRequestBtn.setOnClickListener{
+            vm.setChatAssigned(chat!!.chatId, false)
+        }
+        binding.acceptRequestBtn.setOnClickListener {
+            vm.setChatAssigned(chat!!.chatId, true)
+        }
+
+        binding.btnSendFeedback.setOnClickListener {
+            vm.updateRating(ts!!.timeslotId, binding.ratingBar.rating.toInt(), binding.textInputComment.editText?.text.toString())
+        }
+
         return root
     }
 
