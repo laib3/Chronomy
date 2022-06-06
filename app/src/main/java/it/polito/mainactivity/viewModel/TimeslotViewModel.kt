@@ -485,7 +485,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val status = Timeslot.Status.valueOf(tsMap["status"] as String)
                 if (status != Timeslot.Status.COMPLETED)
                     throw Exception("timeslot must be completed!")
-                val publisherId = (tsMap["publisher"] as Map<String, Any>)["userId"] as String
+                val publisherId = (ts["publisher"] as Map<String, Any>)["userId"] as String
                 val by = when (publisherId) {
                     userId -> Message.Sender.PUBLISHER
                     else -> Message.Sender.CLIENT
