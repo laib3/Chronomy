@@ -67,7 +67,7 @@ class RequestRecyclerViewAdapter(
             // Pass through bundle the id of the item in the list
             chatCard.setOnClickListener{
                 val action =
-                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId)
+                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId, ts.timeslotId, ts.title)
                     parentFragment.findNavController().navigate(action)
             }
 
@@ -76,7 +76,9 @@ class RequestRecyclerViewAdapter(
 
         holder.chipCount.text = holder.hiddenView.childCount.toString()
 
+        //TODO: navigate to timeslot details
         holder.fixedLayout.setOnClickListener { showHiddenLayout(holder)}
+
         holder.btnArrow.setOnClickListener { showHiddenLayout(holder) }
     }
     override fun getItemCount(): Int = values.size

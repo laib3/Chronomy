@@ -50,4 +50,10 @@
         </item>
     </style>
 
+    <!-- rating start -->
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/light_grey</item>
+        <item name="colorControlActivated">@color/duskYellow</item>
+    </style>
+
 </resources>

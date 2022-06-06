@@ -32,7 +32,9 @@
     <string name="date_placeholder">dd/mm/yyyy</string>
     <string name="hour_placeholder">hh:mm</string>
     <string name="duration_placeholder">--h --m</string>
+    <string name="message_placeholder">This is my message that will wrap into multiple lines and keep on going</string>
     <string name="rating_comment_placeholder">«%1$s»</string>
+
 
     <!-- labels -->
     <string name="user_profile_balance_label">Balance</string>
@@ -74,6 +76,12 @@
     <string name="tab_user_skills">Skills</string>
     <string name="tab_user_ratings">Ratings</string>
 
+    <string name="btn_accept_request">Accept request</string>
+    <string name="btn_reject_request">Reject request</string>
+
+    <string name="leave_feedback">Please, leave a feedback!</string>
+    <string name="send_feedback">Send</string>
+
     <!-- hints -->
     <string name="user_profile_hint_name">Name</string>
     <string name="user_profile_hint_surname">Surname</string>
@@ -86,6 +94,8 @@
     <string name="sort_by_hint">sortingField</string>
     <string name="rating_nickname">Nickname</string>
     <string name="rating_comment">Comment</string>
+
+    <string name="rating_hint">Leave a comment</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>
@@ -110,5 +120,9 @@
 
     <!-- category in filtered list -->
     <string name="nav_filtered_label">Browsing: {category}</string>
+
+    <!-- title in chat fragment -->
+    <string name="nav_chat_label">{title}</string>
+
 
 </resources>
