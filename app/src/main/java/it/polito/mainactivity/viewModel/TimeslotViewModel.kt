@@ -58,7 +58,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         if (tsQuery != null && tsQuery.documents.size > 0) {
                             viewModelScope.launch {
                                 _timeslots.value =
-                                    tsQuery.mapNotNull { ts -> // TODO add check if timeslots empty
+                                    tsQuery.filterNotNull().map{ ts ->
                                         val timeslotMap = Utils.toTimeslotMap(ts)!!
                                         val publisher = ts.get("publisher") as Map<String, Any>
                                         val chatsQuery =
@@ -73,6 +73,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                         val ratingsQuery =
                                             ts.reference.collection("ratings").get().await()
                                         val ratings = getRatings(ratingsQuery)
+                                        val t =
                                         Timeslot(
                                             timeslotMap,
                                             publisher,
@@ -81,6 +82,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                             clients,
                                             messages
                                         )
+                                        t
                                     }
                             }
                             Log.d("TimeslotViewModel", "fetching timeslots from db")
@@ -182,7 +184,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         // addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
         // addMessage("tKrJLmbb2ATdWm767Smr", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
         // addMessage("tKrJLmbb2ATdWm767Smr", "Giovanni per piacere rispondi!")
-        deleteTimeslot("t0p0MSYd0bse7Htnwypv")
+        // deleteTimeslot("t0p0MSYd0bse7Htnwypv")
+        // updateRating("zfWcNIHdb4ekj0waVSON", 4, "Servizio top, peccato per l'aggressività dell'istruttore")
     }
 
     override fun onCleared() {
@@ -266,7 +269,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     // TODO: check how the enum is saved on the db, if badly, replace it with string
     private fun createSubmitTimeslotMap(t: Timeslot, date: Calendar, id: String): Map<String, Any> =
         hashMapOf(
-            "timeslotId" to id,
+            "userId" to id,
             "publisher" to t.publisher,
             "title" to t.title,
             "description" to t.description,
@@ -297,10 +300,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     val timeslotId = db.collection("timeslots").document().id
                     createSubmitTimeslotMap(t, date, timeslotId)
                 }.forEach { tMap ->
-                    val tsRef = db.collection("timeslots").document(tMap["timeslotId"] as String)
+                    val tsRef = db.collection("timeslots").document(tMap["userId"] as String)
                     tsRef.set(tMap).await()
                     // update blank ratings
-                    createBlankRatings(tMap["timeslotId"] as String).forEach { r ->
+                    createBlankRatings(tMap["userId"] as String).forEach { r ->
                         tsRef.collection("ratings").document().set(r.toMap()).await()
                     }
                 }
@@ -392,7 +395,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    // TODO: test
     fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
         return try {
             viewModelScope.launch {
@@ -446,6 +448,9 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     throw Exception("timeslot must contain exactly two ratings (${ratings.documents.size} found)")
                 val tsMap =
                     Utils.toTimeslotMap(ts) ?: throw Exception("timeslot map creation failed")
+                val status = Timeslot.Status.valueOf(tsMap["status"] as String)
+                if(status != Timeslot.Status.COMPLETED)
+                    throw Exception("timeslot must be completed!")
                 val publisherId = (tsMap["publisher"] as Map<String, Any>)["userId"] as String
                 val by = when (publisherId) {
                     userId -> Message.Sender.PUBLISHER

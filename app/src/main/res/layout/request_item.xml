@@ -50,13 +50,13 @@
                     android:layout_marginTop="@dimen/medium_distance"
                     android:layout_marginBottom="@dimen/medium_distance"
                     android:layout_marginStart="@dimen/big_distance"
-                    android:id="@+id/lCategory"
+                    android:id="@+id/iUserPic"
                     android:layout_width="@dimen/skill_icon_size"
                     android:layout_height="@dimen/skill_icon_size"
                     android:contentDescription="Category"
                     android:src="@drawable/ic_skill_gardening"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitle"
+                    app:layout_constraintEnd_toStartOf="@+id/tvUserNickname"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
 
 
                 <TextView
-                    android:id="@+id/tvTitle"
+                    android:id="@+id/tvUserNickname"
                     android:layout_marginStart="@dimen/small_distance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -74,11 +74,11 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/lCategory"
+                    app:layout_constraintBottom_toBottomOf="@+id/iUserPic"
                     app:layout_constraintEnd_toStartOf="@+id/chip"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/lCategory"
-                    app:layout_constraintTop_toTopOf="@+id/lCategory" />
+                    app:layout_constraintStart_toEndOf="@+id/iUserPic"
+                    app:layout_constraintTop_toTopOf="@+id/iUserPic" />
 
                 <!--This is ImageButton for the expansion icon.-->
                 <ImageButton
@@ -102,11 +102,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvUserNickname"
                     app:layout_constraintEnd_toStartOf="@+id/arrow_button"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/tvTitle"
-                    app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+                    app:layout_constraintStart_toEndOf="@+id/tvUserNickname"
+                    app:layout_constraintTop_toTopOf="@+id/tvUserNickname" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
