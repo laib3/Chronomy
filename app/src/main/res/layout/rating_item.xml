@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvRatingCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
-        android:padding="@dimen/medium_distance"
+        android:padding="@dimen/tiny_distance"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
@@ -37,11 +35,8 @@
                 android:layout_marginStart="@dimen/medium_distance"
                 android:layout_marginTop="@dimen/medium_distance"
                 android:layout_marginBottom="@dimen/medium_distance"
-                android:contentDescription="User profile picture"
-                android:paddingStart="@dimen/small_distance"
-                android:paddingEnd="@dimen/small_distance"
-                android:src="@drawable/ic_skill_gardening"
                 android:background="@drawable/white_circle_bg"
+                android:contentDescription="User profile picture"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintEnd_toStartOf="@+id/tvUserNickname"

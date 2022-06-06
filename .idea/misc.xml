@@ -37,7 +37,11 @@
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/showprofile_menu.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Asus/Documents/Universita/Magistrale/secondo anno/Mobile application development/MAD22/app/src/main/res/menu/timeslot_details_menu.xml" value="0.27447916666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.3565" />
+        <entry key="app/src/main/res/drawable/ic_baseline_article_24.xml" value="0.3495" />
+        <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.3495" />
         <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.356" />
+        <entry key="app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.3495" />
+        <entry key="app/src/main/res/drawable/ic_baseline_logout_24.xml" value="0.3495" />
         <entry key="app/src/main/res/drawable/ic_baseline_report_problem_24.xml" value="0.144" />
         <entry key="app/src/main/res/drawable/ic_baseline_view_list_24.xml" value="0.3565" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.1325" />
@@ -79,10 +83,10 @@
         <entry key="app/src/main/res/layout/fragment_requests_list.xml" value="0.24479166666666666" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.3113456464379947" />
         <entry key="app/src/main/res/layout/fragment_show_profile_data.xml" value="0.2718045783765388" />
-        <entry key="app/src/main/res/layout/fragment_show_profile_info.xml" value="0.24479166666666666" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_info.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_show_profile_picture.xml" value="0.35104166666666664" />
-        <entry key="app/src/main/res/layout/fragment_show_profile_ratings.xml" value="0.3314605712890625" />
-        <entry key="app/src/main/res/layout/fragment_show_profile_skills.xml" value="0.29154663085937504" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_ratings.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_show_profile_skills.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_details.xml" value="0.3442288049029622" />
         <entry key="app/src/main/res/layout/fragment_timeslot_edit.xml" value="0.33" />
