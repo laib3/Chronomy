@@ -1,23 +1,20 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_details
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.*
-import androidx.core.text.bold
 import androidx.core.text.italic
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.MainActivity
-import it.polito.mainactivity.MessageActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
-import it.polito.mainactivity.model.Utils
 import it.polito.mainactivity.viewModel.TimeslotViewModel
-import java.util.*
+import it.polito.mainactivity.model.*
 
 class TimeslotDetailsFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
@@ -30,9 +27,11 @@ class TimeslotDetailsFragment : Fragment() {
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: TextInputLayout? = null
 
-    private var startChat:Boolean = false
+    private var startChat: Boolean = false
 
     private val binding get() = _binding!!
+
+    private var ts: Timeslot? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,17 +47,17 @@ class TimeslotDetailsFragment : Fragment() {
         val showOnly: Boolean = arguments?.getBoolean("showOnly") ?: false
         setHasOptionsMenu(!showOnly)
 
-        startChat = arguments?.getBoolean("startChat") ?:false
+        startChat = arguments?.getBoolean("startChat") ?: false
 
-        if(startChat){
+        if (startChat) {
             binding.extendedFab.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.extendedFab.visibility = View.INVISIBLE
         }
 
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            val ts = it.find { t -> t.timeslotId == id }
+            ts = it.find { t -> t.timeslotId == id }
 
             tiTitle?.editText?.setText(ts?.title)
             tiDescription?.editText?.setText(ts?.description)
@@ -67,25 +66,33 @@ class TimeslotDetailsFragment : Fragment() {
 
             if (ts != null) {
                 dateString
-                    .italic { append(Utils.formatDateToString(ts.date)) }
+                    .italic { append(Utils.formatDateToString(ts!!.date)) }
                     .append("\nfrom ")
-                    .italic { append(ts.startHour) }
+                    .italic { append(ts!!.startHour) }
                     .append(" to ")
-                    .italic { append(ts.endHour) }
-                    .append("  (%s)".format(Utils.getDuration(ts.startHour, ts.endHour)))
+                    .italic { append(ts!!.endHour) }
+                    .append("  (%s)".format(Utils.getDuration(ts!!.startHour, ts!!.endHour)))
                 tiAvailability?.editText?.text = dateString
-                tiLocation?.editText?.setText(ts.location)
-                tiCategory?.editText?.setText(ts.category)
+                tiLocation?.editText?.setText(ts!!.location)
+                tiCategory?.editText?.setText(ts!!.category)
             }
         }
 
-        binding.extendedFab.setOnClickListener{
-            activity?.let{
-                val intent = Intent (it, MessageActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
+        binding.extendedFab.setOnClickListener {
+            //create new chat, navigate to chat fragment
+            vm.addChat(ts!!.timeslotId)
 
+            val chat = ts!!.chats.filter { chat-> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid}
+            val chatId = chat[0].chatId
+
+            val action =
+                TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
+                    chatId,
+                    ts!!.timeslotId,
+                    ts!!.title
+                )
+            parentFragment?.findNavController()?.navigate(action)
+        }
         return root
     }
 

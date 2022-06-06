@@ -385,6 +385,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     db.collection("timeslots").document(timeslotId).collection("chats").document()
                 val chatId = chatRef.id
                 val newChat = Chat(chatId, clientMap, false, mutableListOf())
+                val timeslot = timeslots.value!!.filter { t-> t.timeslotId == timeslotId }[0]
+                timeslot.chats.add(newChat)
                 // add chat to db with id chatId
                 chatRef.set(newChat.toMap()).await()
             }
