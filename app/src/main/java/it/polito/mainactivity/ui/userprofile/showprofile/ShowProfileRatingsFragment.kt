@@ -33,11 +33,12 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
         _binding = FragmentShowProfileRatingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
         // If show profile of other users
         var currentUserId: String? = null
         var currentUserNickname: String? = null
         var currentUserProfilePictureUrl: String? = null
-        if (timeslotId != null) {
+        if (timeslotId!= null) {
             vmTimeslots.timeslots.value?.find { t -> t.timeslotId == timeslotId }
                 ?.also {
                     currentUserId = it.publisher["userId"] as String
@@ -75,13 +76,16 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
             it.filter { timeslot ->
                 timeslot.publisher["userId"] != currentUserId &&
                         timeslot.chats.filter { chat -> chat.assigned }
-                            .map { chat -> chat.client["userId"] }[0] == currentUserId &&
+                            .map { chat -> chat.client["userId"] }.firstOrNull() == currentUserId &&
                         timeslot.status == Timeslot.Status.COMPLETED &&
                         timeslot.ratings.find { rating -> rating.by == Message.Sender.PUBLISHER }?.rating != -1
             }
                 .map { timeslot ->
-                    RatingWithUserInfo(timeslot.ratings.filter { rating -> rating.by == Message.Sender.PUBLISHER }
-                        .first(), currentUserNickname, currentUserProfilePictureUrl)
+                    RatingWithUserInfo(
+                        timeslot.ratings.first { rating -> rating.by == Message.Sender.PUBLISHER },
+                        currentUserNickname,
+                        currentUserProfilePictureUrl
+                    )
                 }
 
             val publisherListAdapter = RatingAdapter(ratingsAsPublisher, this)
