@@ -49,7 +49,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     private var messagesListenerRegistration: ListenerRegistration
 
     init {
-
         // val uId = FirebaseAuth.getInstance().currentUser!!.uid
         timeslotsListenerRegistration =
             db
@@ -59,7 +58,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         if (tsQuery != null && tsQuery.documents.size > 0) {
                             viewModelScope.launch {
                                 _timeslots.value =
-                                    tsQuery.mapNotNull { ts -> // TODO add check if timeslots empty
+                                    tsQuery.filterNotNull().map{ ts ->
                                         val timeslotMap = Utils.toTimeslotMap(ts)!!
                                         val publisher = ts.get("publisher") as Map<String, Any>
                                         val chatsQuery =
@@ -74,6 +73,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                         val ratingsQuery =
                                             ts.reference.collection("ratings").get().await()
                                         val ratings = getRatings(ratingsQuery)
+                                        val t =
                                         Timeslot(
                                             timeslotMap,
                                             publisher,
@@ -82,6 +82,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                             clients,
                                             messages
                                         )
+                                        t
                                     }
                             }
                             Log.d("TimeslotViewModel", "fetching timeslots from db")
@@ -100,28 +101,24 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (rQuery == null)
                     throw Exception("E")
                 if (rQuery.documents.size > 0) {
-                    rQuery.forEach { r ->
-                        _timeslots.value
-                            // first parent is the collection of ratings, second is the timeslot
-                            ?.find { t -> t.timeslotId == r.reference.parent.parent?.id }
-                            .apply {
-                                val newRating = Rating(Utils.toRatingMap(r)!!)
-                                val newRatings: List<Rating> =
-                                    this?.ratings?.find { r -> r.by == newRating.by }?.let {
-                                        this.ratings.map { oldR ->
-                                            if (oldR.by == newRating.by)
-                                                oldR.apply {
-                                                    rating = newRating.rating; comment =
-                                                    newRating.comment
-                                                }
-                                            else
-                                                oldR
-                                        }
-                                    } ?: let {
-                                        this!!.ratings.apply { add(newRating) }
-                                    }
-                                this?.ratings = newRatings.toMutableList()
+                    rQuery.forEach { rs ->
+                        // find timeslot which contains the rating
+                        val timeslot =
+                            _timeslots.value?.find { timeslot -> timeslot.timeslotId == rs.reference.parent.parent?.id }
+                        val timeslotId = timeslot?.timeslotId
+                        if (timeslot != null) {
+                            val newRating = Rating(Utils.toRatingMap(rs)!!)
+                            val newRatings = timeslot.ratings
+                            val oldRating = newRatings.find { rating -> rating.by == newRating.by }
+                            if (oldRating == null) { // add new rating if there wasn't
+                                newRatings.add(newRating)
+                            } else { // update old ratings list
+                                newRatings.apply { map { rating -> if (rating.by == newRating.by) newRating else rating } }
                             }
+                            _timeslots.value?.apply {
+                                find { t -> t.timeslotId == timeslotId }!!.ratings = newRatings
+                            }
+                        }
                     }
                 }
             }
@@ -131,53 +128,65 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (cQuery == null)
                     throw Exception("E")
                 if (cQuery.documents.size > 0) {
-                    cQuery.forEach { c ->
-                        _timeslots.value
-                            // first parent is the collection of chats, second is the timeslot
-                            ?.find { t -> t.timeslotId == c.reference.parent.parent?.id }
-                            .apply {
-                                val newChat = Chat(Utils.toChatMap(c)!!)
-                                val newChats: List<Chat> =
-                                    this?.chats?.find { c -> c.chatId == newChat.chatId }?.let {
-                                        this.chats.map { oldC ->
-                                            if (oldC.chatId == newChat.chatId)
-                                                oldC.apply {
-                                                    assigned = newChat.assigned
-                                                }
-                                            else
-                                                oldC
-                                        }
-                                    } ?: let {
-                                        this!!.chats.apply { add(newChat) }
-                                    }
-                                this?.chats = newChats.toMutableList()
+                    cQuery.forEach { cs ->
+                        // first parent is the collection of chats, second is the timeslot
+                        val timeslot =
+                            _timeslots.value?.find { t -> t.timeslotId == cs.reference.parent.parent?.id }
+                        val timeslotId = timeslot?.timeslotId
+                        if (timeslot != null) {
+                            val newChat = Utils.toChatMap(cs)?.let{ Chat(it) } ?: throw Exception("chat shouldn't be null")
+                            val newChats = timeslot.chats
+                            val oldChat = newChats.find { chat -> chat.chatId == newChat.chatId }
+                            if (oldChat == null) { // add new chat if there wasn't
+                                newChats.add(newChat)
+                            } else { // update old chats list
+                                newChats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
                             }
+                            _timeslots.value?.apply {
+                                find { t -> t.timeslotId == timeslotId }!!.chats = newChats
+                            }
+                        }
                     }
                 }
             }
 
         messagesListenerRegistration =
             db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
-                if (mQuery == null) throw Exception("E")
+                if (mQuery == null)
+                    throw Exception("query result for messages shouldn't be empty")
                 if (mQuery.documents.size > 0) {
-                    mQuery.forEach { m ->
-                        _timeslots.value
-                            // first parent is the collection of messages, second parent is the chat document
-                            // third parent is the collection of chats, fourth is the timeslot document
-                            ?.find { t -> t.timeslotId == m.reference.parent.parent!!.parent.parent?.id }
-                            .apply {
-                                // Add message if it is new
-                                val newMessage = Message(Utils.toMessageMap(m)!!)
-                                this?.chats?.find { c -> c.chatId == m.reference.parent.parent!!.id }?.messages!!.apply {
-                                    if (this.find { message -> message.messageId == newMessage.messageId } == null)
-                                        this.apply { add(newMessage) }
-                                }
+                    mQuery.forEach { ms ->
+                        // first parent is the collection of messages, second parent is the chat document
+                        // third parent is the collection of chats, fourth is the timeslot document
+                        val timeslotId = ms.reference.parent.parent!!.parent.parent!!.id
+                        val chatId = ms.reference.parent.parent!!.id
+                        val timeslot = _timeslots.value?.find { t -> t.timeslotId == timeslotId }
+                        val newMessage = Utils.toMessageMap(ms)?.let{ Message(it) } ?: throw Exception("message shouldn't be null")
+                        if(timeslot != null){
+                            val chats = timeslot.chats
+                            val chat = chats.find{ c -> c.chatId == chatId }
+                            if(chat != null){
+                                val oldMessages = chat.messages
+                                if(oldMessages.find{ m -> m.messageId == newMessage.messageId } == null)
+                                    oldMessages.add(newMessage)
+                                else
+                                    oldMessages.apply{ map{ m -> if(m.messageId == newMessage.messageId) newMessage else m } }
+                                chats.apply{ find{ c -> c.chatId == chatId }?.messages = oldMessages }
+                                _timeslots.value?.apply{ find{ t -> t.timeslotId == timeslotId }?.chats = chats }
                             }
+                        }
                     }
                 }
             }
+        // updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
+        // addChat("t0p0MSYd0bse7Htnwypv")
+        // setChatAssigned("b5P7Kd1M323Bk07r0L15", true)
+        // addMessage("RDmsEyhq9yMvIcjcCVOS", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
+        // addMessage("tKrJLmbb2ATdWm767Smr", "Ciao Giovanni, so che stavi per contattarmi, ti anticipo")
+        // addMessage("tKrJLmbb2ATdWm767Smr", "Giovanni per piacere rispondi!")
+        // deleteTimeslot("t0p0MSYd0bse7Htnwypv")
+        // updateRating("zfWcNIHdb4ekj0waVSON", 4, "Servizio top, peccato per l'aggressività dell'istruttore")
     }
-
 
     override fun onCleared() {
         super.onCleared()
@@ -197,21 +206,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     "Firebase",
                     "Timeslot updated successfully"
                 ) //returnValue = true
-                // TODO update requests
-                // update offers of current user
-                db
-                    .collection("users")
-                    .document(FirebaseAuth.getInstance().currentUser?.uid!!)
-                    .collection("offers")
-                    .document(timeslotId)
-                    .update(field, newValue)
-                    .addOnSuccessListener {
-                        // update requests
-                        db.collectionGroup("requests").whereEqualTo("timeslotId", timeslotId).get()
-                            .addOnSuccessListener {
-                                it.documents.forEach { d -> d.reference.update(field, newValue) }
-                            }
-                    }
             }
             .addOnFailureListener {
                 Log.d(
@@ -275,7 +269,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     // TODO: check how the enum is saved on the db, if badly, replace it with string
     private fun createSubmitTimeslotMap(t: Timeslot, date: Calendar, id: String): Map<String, Any> =
         hashMapOf(
-            "timeslotId" to id,
+            "userId" to id,
             "publisher" to t.publisher,
             "title" to t.title,
             "description" to t.description,
@@ -306,10 +300,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     val timeslotId = db.collection("timeslots").document().id
                     createSubmitTimeslotMap(t, date, timeslotId)
                 }.forEach { tMap ->
-                    val tsRef = db.collection("timeslots").document(tMap["timeslotId"] as String)
+                    val tsRef = db.collection("timeslots").document(tMap["userId"] as String)
                     tsRef.set(tMap).await()
                     // update blank ratings
-                    createBlankRatings(tMap["timeslotId"] as String).forEach { r ->
+                    createBlankRatings(tMap["userId"] as String).forEach { r ->
                         tsRef.collection("ratings").document().set(r.toMap()).await()
                     }
                 }
@@ -392,7 +386,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val chatId = chatRef.id
                 val newChat = Chat(chatId, clientMap, false, mutableListOf())
                 // add chat to db with id chatId
-                db.collection("chats").document(chatId).set(newChat.toMap()).await()
+                chatRef.set(newChat.toMap()).await()
             }
             true
         } catch (e: Exception) {
@@ -416,6 +410,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    // TODO: test
     fun addMessage(chatId: String, text: String): Boolean {
         return try {
             viewModelScope.launch {
@@ -453,6 +448,9 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     throw Exception("timeslot must contain exactly two ratings (${ratings.documents.size} found)")
                 val tsMap =
                     Utils.toTimeslotMap(ts) ?: throw Exception("timeslot map creation failed")
+                val status = Timeslot.Status.valueOf(tsMap["status"] as String)
+                if(status != Timeslot.Status.COMPLETED)
+                    throw Exception("timeslot must be completed!")
                 val publisherId = (tsMap["publisher"] as Map<String, Any>)["userId"] as String
                 val by = when (publisherId) {
                     userId -> Message.Sender.PUBLISHER
@@ -461,7 +459,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 ratings.documents.forEach { rs ->
                     val ratingMap =
                         Utils.toRatingMap(rs) ?: throw Exception("rating map creation failed")
-                    if (ratingMap["sender"] as Message.Sender == by) {
+                    if (Message.Sender.valueOf(ratingMap["by"] as String) == by) {
                         rs.reference.update("rating", rating, "comment", comment).await()
                     }
                 }
@@ -485,7 +483,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             .toMutableList()
     }
 
-    fun getMessages(messagesQuery: QuerySnapshot): MutableList<Map<String, String>> {
+    fun getMessages(messagesQuery: QuerySnapshot): MutableList<Map<String, Any>> {
         return messagesQuery.documents
             .map { m -> Utils.toMessageMap(m)!! }
             .toMutableList()
@@ -495,20 +493,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return ratingsQuery.documents
             .map { r -> Utils.toRatingMap(r)!! }
             .toMutableList()
-    }
-
-    fun addSnapshotForMessages() {
-        db.collectionGroup("messages").addSnapshotListener { m, error ->
-            if (m == null) throw Exception("E")
-            viewModelScope.launch {
-                m.forEach { ms ->
-                    val chat = ms.reference.parent.get().await()
-                    val tId = chat.documents.map { cs -> cs.reference.parent.id }[0]
-                    timeslots.value?.find { t -> t.timeslotId == tId }.apply { }
-                    ms.id
-                }
-            }
-        }
     }
 
 }

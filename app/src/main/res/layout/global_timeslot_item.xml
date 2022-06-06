@@ -9,7 +9,7 @@
     android:paddingEnd="8dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cvTimeslotCard"
+        android:id="@+id/cvRatingCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/tvTitle"
+                    android:id="@+id/tvUserNickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/big_distance"
@@ -54,7 +54,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/tvLocation"
+                    app:layout_constraintBottom_toTopOf="@+id/tvComment"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
                 <TextView
-                    android:id="@+id/tvLocation"
+                    android:id="@+id/tvComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/big_distance"
@@ -91,7 +91,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvUserNickname" />
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -107,7 +107,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvComment" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View

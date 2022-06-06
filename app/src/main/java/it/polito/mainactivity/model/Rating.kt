@@ -1,8 +1,13 @@
 package it.polito.mainactivity.model
 
-data class Rating(val timeslotId: String, var rating: Int, var comment: String, var by: Message.Sender){
+data class Rating(
+    val timeslotId: String,
+    var rating: Int,
+    var comment: String,
+    var by: Message.Sender
+) {
 
-    fun toMap(): Map<String, Any>{
+    fun toMap(): Map<String, Any> {
         return hashMapOf(
             "timeslotId" to timeslotId,
             "rating" to rating,
@@ -11,7 +16,7 @@ data class Rating(val timeslotId: String, var rating: Int, var comment: String, 
         )
     }
 
-    constructor(ratingMap: Map<String, Any>): this(
+    constructor(ratingMap: Map<String, Any>) : this(
         ratingMap["timeslotId"] as String,
         (ratingMap["rating"] as Long).toInt(),
         ratingMap["comment"] as String,
@@ -20,9 +25,17 @@ data class Rating(val timeslotId: String, var rating: Int, var comment: String, 
 
 }
 
-fun createBlankRatings(timeslotId: String): List<Rating>{
+fun createBlankRatings(timeslotId: String): List<Rating> {
     return listOf(
         Rating(timeslotId, -1, "", Message.Sender.PUBLISHER),
         Rating(timeslotId, -1, "", Message.Sender.CLIENT)
     )
+}
+
+data class RatingWithUserInfo(
+    val rating: Rating,
+    val nickname: String?,
+    val profilePictureUrl: String?
+) {
+
 }

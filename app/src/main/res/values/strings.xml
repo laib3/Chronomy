@@ -33,6 +33,8 @@
     <string name="hour_placeholder">hh:mm</string>
     <string name="duration_placeholder">--h --m</string>
     <string name="message_placeholder">This is my message that will wrap into multiple lines and keep on going</string>
+    <string name="rating_comment_placeholder">«%1$s»</string>
+
 
     <!-- labels -->
     <string name="user_profile_balance_label">Balance</string>
@@ -44,6 +46,9 @@
     <string name="user_profile_picture_label">Location</string>
     <string name="user_profile_save_label">Save</string>
     <string name="user_profile_active_label">Active</string>
+    <string name="user_profile_ratings_publisher_label">As Publisher:</string>
+    <string name="user_profile_ratings_client_label">As Client:</string>
+    <string name="user_profile_avg_rating_label">Avg. rating</string>
 
     <string name="timeslot_title">Title</string>
     <string name="timeslot_location">Location</string>
@@ -67,6 +72,9 @@
 
     <string name="tab_requests_for_my_timeslots">Requests received</string>
     <string name="tab_requests_i_made">Requests sent</string>
+    <string name="tab_user_info">Info</string>
+    <string name="tab_user_skills">Skills</string>
+    <string name="tab_user_ratings">Ratings</string>
 
     <string name="btn_accept_request">Accept request</string>
     <string name="btn_reject_request">Reject request</string>
@@ -84,6 +92,8 @@
     <string name="user_profile_hint_location">Location</string>
     <string name="user_skill_hint_description">Description</string>
     <string name="sort_by_hint">sortingField</string>
+    <string name="rating_nickname">Nickname</string>
+    <string name="rating_comment">Comment</string>
 
     <string name="rating_hint">Leave a comment</string>
 

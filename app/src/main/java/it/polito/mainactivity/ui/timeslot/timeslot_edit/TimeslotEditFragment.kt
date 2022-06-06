@@ -350,7 +350,7 @@ class TimeslotEditFragment : Fragment() {
         }
 
         binding.swRepetition.setOnClickListener {
-            if (timeslotId != null) { // timeslotId is null if new timeslot
+            if (timeslotId != null) { // userId is null if new timeslot
                 // if the switch is checked, set repetition to weekly
                 val repetition = if (binding.swRepetition.isChecked) "Weekly" else null
                 timeslotVM.timeslots.value!!.find { t -> t.timeslotId == timeslotId }?.apply {

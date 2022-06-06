@@ -425,7 +425,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tilLocation">
 
                 <TextView
-                    android:id="@+id/lCategory"
+                    android:id="@+id/iUserPic"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/big_distance"
@@ -446,12 +446,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/big_distance"
                     android:layout_marginBottom="@dimen/small_distance"
-                    app:layout_constraintBottom_toBottomOf="@+id/lCategory"
+                    app:layout_constraintBottom_toBottomOf="@+id/iUserPic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_weight="2"
-                    app:layout_constraintStart_toEndOf="@+id/lCategory"
-                    app:layout_constraintTop_toTopOf="@+id/lCategory">
+                    app:layout_constraintStart_toEndOf="@+id/iUserPic"
+                    app:layout_constraintTop_toTopOf="@+id/iUserPic">
 
                     <AutoCompleteTextView
                         android:id="@+id/tvCategory"

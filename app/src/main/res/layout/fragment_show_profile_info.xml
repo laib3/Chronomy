@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/medium_distance"
+    android:paddingEnd="@dimen/medium_distance">
+
+    <ScrollView
+        android:id="@+id/svUserData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lSkills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/user_profile_phone_label"
+            android:paddingStart="@dimen/medium_distance"
+            android:paddingTop="@dimen/small_distance"
+            android:paddingEnd="@dimen/medium_distance"
+            android:paddingBottom="@dimen/small_distance">
+
+            <TextView
+                android:id="@+id/textBalanceLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_distance"
+                android:text="@string/user_profile_balance_label"
+                android:textSize="@dimen/profile_text_size_normal"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewBalanceIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewLocationIcon" />
+
+            <ImageView
+                android:id="@+id/imageViewBalanceIcon"
+                android:layout_width="@dimen/profile_icon_size"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:layout_marginBottom="@dimen/big_distance"
+                android:contentDescription="@string/user_profile_balance_label"
+                android:src="@drawable/ic_baseline_timer_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textBalanceLabel"
+                app:tint="@color/dark_slate_blue" />
+
+            <TextView
+                android:id="@+id/textBalance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
+                android:text="@string/user_profile_balance"
+                android:textSize="@dimen/profile_text_size_small"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewBalanceIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewBalanceIcon"
+                app:layout_constraintTop_toTopOf="@+id/imageViewBalanceIcon" />
+
+            <ImageView
+                android:id="@+id/imageViewPhoneIcon"
+                android:layout_width="@dimen/profile_icon_size"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:contentDescription="@string/user_profile_phone_label"
+                android:src="@drawable/ic_baseline_local_phone_24"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewLocationIcon"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewEmailIcon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/imageViewEmailIcon"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewEmailIcon"
+                app:tint="@color/dark_slate_blue" />
+
+            <TextView
+                android:id="@+id/textPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
+                android:text="@string/user_profile_phone"
+                android:textSize="@dimen/profile_text_size_small"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewPhoneIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewPhoneIcon"
+                app:layout_constraintTop_toTopOf="@+id/imageViewPhoneIcon" />
+
+            <ImageView
+                android:id="@+id/imageViewEmailIcon"
+                android:layout_width="@dimen/profile_icon_size"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:contentDescription="@string/user_profile_email_label"
+                android:src="@drawable/ic_baseline_email_24"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewPhoneIcon"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:tint="@color/dark_slate_blue" />
+
+            <TextView
+                android:id="@+id/textEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
+                android:text="@string/user_profile_email"
+                android:textSize="@dimen/profile_text_size_small"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewEmailIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewEmailIcon"
+                app:layout_constraintTop_toTopOf="@+id/imageViewEmailIcon" />
+
+            <ImageView
+                android:id="@+id/imageViewLocationIcon"
+                android:layout_width="@dimen/profile_icon_size"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_distance"
+                android:contentDescription="@string/user_profile_location_label"
+                android:src="@drawable/ic_baseline_location_on_24"
+                app:layout_constraintBottom_toTopOf="@+id/textBalanceLabel"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewPhoneIcon"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/imageViewPhoneIcon"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewPhoneIcon"
+                app:tint="@color/dark_slate_blue" />
+
+            <TextView
+                android:id="@+id/textLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
+                android:text="@string/user_profile_location"
+                android:textSize="@dimen/profile_text_size_small"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewLocationIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewLocationIcon"
+                app:layout_constraintTop_toTopOf="@+id/imageViewLocationIcon" />
+
+            <TextView
+                android:id="@+id/textBio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_distance"
+                android:text="@string/user_profile_bio"
+                android:textSize="@dimen/profile_text_size_small"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/profile_icon_size"
+                android:layout_height="@dimen/profile_icon_size"
+                android:layout_marginTop="@dimen/big_distance"
+                android:contentDescription="icon_bio"
+                app:layout_constraintBottom_toTopOf="@+id/imageViewEmailIcon"
+                app:layout_constraintEnd_toStartOf="@+id/textBio"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_article_24"
+                app:tint="@color/dark_slate_blue" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
