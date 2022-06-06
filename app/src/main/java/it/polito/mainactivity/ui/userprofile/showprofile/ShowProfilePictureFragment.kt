@@ -48,7 +48,7 @@ class ShowProfilePictureFragment : Fragment() {
                     getString(R.string.user_profile_nickname_placeholder),
                     publisher["nickname"] as String
                 )
-            (publisher["profilePictureUrl"] as String).apply { Picasso.get().load(this).into(profilePicture) }
+            publisher["profilePictureUrl"]?.also{(publisher["profilePictureUrl"] as String).apply { Picasso.get().load(this).into(profilePicture) }}
 
         } else { // if show profile of the current publisher
             // observe viewModel changes
