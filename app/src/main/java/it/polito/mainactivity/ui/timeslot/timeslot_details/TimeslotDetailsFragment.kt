@@ -6,6 +6,7 @@ import android.view.*
 import androidx.core.text.italic
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -15,6 +16,7 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.model.*
+import kotlinx.coroutines.launch
 
 class TimeslotDetailsFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
@@ -82,17 +84,19 @@ class TimeslotDetailsFragment : Fragment() {
             //create new chat, navigate to chat fragment
             vm.addChat(ts!!.timeslotId)
 
-            val chat = ts!!.chats.filter { chat-> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid}
-            val chatId = chat[0].chatId
+            val chat =
+                ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
 
             val action =
                 TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
-                    chatId,
+                    chat!!.chatId,
                     ts!!.timeslotId,
                     ts!!.title
                 )
             parentFragment?.findNavController()?.navigate(action)
         }
+
+
         return root
     }
 

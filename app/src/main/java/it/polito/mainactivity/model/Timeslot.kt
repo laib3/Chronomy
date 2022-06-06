@@ -125,5 +125,4 @@ data class Timeslot(
         },
         """.replace("\n", "").trimIndent()
     }
-
 }

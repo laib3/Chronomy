@@ -3,6 +3,7 @@ package it.polito.mainactivity.model
 import android.graphics.Color
 import android.util.Log
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import it.polito.mainactivity.R
 import org.json.JSONArray
@@ -122,7 +123,7 @@ class Utils {
             if (d == null)
                 return null
             return try {
-                if(d.get("profilePictureUrl") != null)
+                if (d.get("profilePictureUrl") != null)
                     hashMapOf(
                         "userId" to d.get("userId") as String,
                         "name" to d.get("name") as String,
@@ -246,6 +247,17 @@ class Utils {
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
+            }
+        }
+
+        fun getUserRole(t: Timeslot, c: Chat): Message.Sender {
+            val publisherId = t.publisher["userId"]
+            val clientId = c.client["userId"]
+            val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
+            return when (currentUserId){
+                publisherId -> Message.Sender.PUBLISHER
+                clientId -> Message.Sender.CLIENT
+                else -> Message.Sender.ERROR
             }
         }
     }

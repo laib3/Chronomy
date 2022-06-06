@@ -8,6 +8,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.tasks.Tasks.await
 import com.google.firebase.FirebaseException
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -58,7 +61,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         if (tsQuery != null && tsQuery.documents.size > 0) {
                             viewModelScope.launch {
                                 _timeslots.value =
-                                    tsQuery.filterNotNull().map{ ts ->
+                                    tsQuery.filterNotNull().map { ts ->
                                         val timeslotMap = Utils.toTimeslotMap(ts)!!
                                         val publisher = ts.get("publisher") as Map<String, Any>
                                         val chatsQuery =
@@ -74,14 +77,14 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                             ts.reference.collection("ratings").get().await()
                                         val ratings = getRatings(ratingsQuery)
                                         val t =
-                                        Timeslot(
-                                            timeslotMap,
-                                            publisher,
-                                            ratings,
-                                            chats,
-                                            clients,
-                                            messages
-                                        )
+                                            Timeslot(
+                                                timeslotMap,
+                                                publisher,
+                                                ratings,
+                                                chats,
+                                                clients,
+                                                messages
+                                            )
                                         t
                                     }
                             }
@@ -134,7 +137,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             _timeslots.value?.find { t -> t.timeslotId == cs.reference.parent.parent?.id }
                         val timeslotId = timeslot?.timeslotId
                         if (timeslot != null) {
-                            val newChat = Utils.toChatMap(cs)?.let{ Chat(it) } ?: throw Exception("chat shouldn't be null")
+                            val newChat = Utils.toChatMap(cs)?.let { Chat(it) }
+                                ?: throw Exception("chat shouldn't be null")
                             val newChats = timeslot.chats
                             val oldChat = newChats.find { chat -> chat.chatId == newChat.chatId }
                             if (oldChat == null) { // add new chat if there wasn't
@@ -161,18 +165,23 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         val timeslotId = ms.reference.parent.parent!!.parent.parent!!.id
                         val chatId = ms.reference.parent.parent!!.id
                         val timeslot = _timeslots.value?.find { t -> t.timeslotId == timeslotId }
-                        val newMessage = Utils.toMessageMap(ms)?.let{ Message(it) } ?: throw Exception("message shouldn't be null")
-                        if(timeslot != null){
+                        val newMessage = Utils.toMessageMap(ms)?.let { Message(it) }
+                            ?: throw Exception("message shouldn't be null")
+                        if (timeslot != null) {
                             val chats = timeslot.chats
-                            val chat = chats.find{ c -> c.chatId == chatId }
-                            if(chat != null){
+                            val chat = chats.find { c -> c.chatId == chatId }
+                            if (chat != null) {
                                 val oldMessages = chat.messages
-                                if(oldMessages.find{ m -> m.messageId == newMessage.messageId } == null)
+                                if (oldMessages.find { m -> m.messageId == newMessage.messageId } == null)
                                     oldMessages.add(newMessage)
                                 else
-                                    oldMessages.apply{ map{ m -> if(m.messageId == newMessage.messageId) newMessage else m } }
-                                chats.apply{ find{ c -> c.chatId == chatId }?.messages = oldMessages }
-                                _timeslots.value?.apply{ find{ t -> t.timeslotId == timeslotId }?.chats = chats }
+                                    oldMessages.apply { map { m -> if (m.messageId == newMessage.messageId) newMessage else m } }
+                                chats.apply {
+                                    find { c -> c.chatId == chatId }?.messages = oldMessages
+                                }
+                                _timeslots.value?.apply {
+                                    find { t -> t.timeslotId == timeslotId }?.chats = chats
+                                }
                             }
                         }
                     }
@@ -375,8 +384,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     /**
      * Add chat between the owner of the timeslot (PUBLISHER) with the given id and the current user (CLIENT)
      **/
-    fun addChat(timeslotId: String): Boolean {
-        return try {
+    fun addChat(timeslotId: String) {
+         try {
             viewModelScope.launch {
                 val userRef = db.collection("users").document(auth.currentUser!!.uid)
                 val clientMap = userRef.get().await().let { Utils.toUserMap(it) }
@@ -385,15 +394,15 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     db.collection("timeslots").document(timeslotId).collection("chats").document()
                 val chatId = chatRef.id
                 val newChat = Chat(chatId, clientMap, false, mutableListOf())
-                val timeslot = timeslots.value!!.filter { t-> t.timeslotId == timeslotId }[0]
-                timeslot.chats.add(newChat)
+                _timeslots.value?.apply {
+                    find { t -> t.timeslotId == timeslotId }!!.chats.add(newChat)
+                }
                 // add chat to db with id chatId
                 chatRef.set(newChat.toMap()).await()
+                return@launch
             }
-            true
         } catch (e: Exception) {
             e.printStackTrace()
-            false
         }
     }
 
@@ -451,7 +460,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val tsMap =
                     Utils.toTimeslotMap(ts) ?: throw Exception("timeslot map creation failed")
                 val status = Timeslot.Status.valueOf(tsMap["status"] as String)
-                if(status != Timeslot.Status.COMPLETED)
+                if (status != Timeslot.Status.COMPLETED)
                     throw Exception("timeslot must be completed!")
                 val publisherId = (tsMap["publisher"] as Map<String, Any>)["userId"] as String
                 val by = when (publisherId) {

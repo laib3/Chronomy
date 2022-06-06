@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentChatListBinding
 import it.polito.mainactivity.databinding.FragmentRequestsListBinding
@@ -43,9 +44,11 @@ class ChatFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
 
-        vm.timeslots.observe(viewLifecycleOwner){
-            ts =vm.timeslots.value?.find { it.timeslotId == args.timeslotId }
-            chat = ts?.chats?.find { it.chatId == args.chatId }
+        vm.timeslots.observe(viewLifecycleOwner) {
+            ts = vm.timeslots.value?.find { it.timeslotId == args.timeslotId }
+            chat =
+                if (args.chatId != "new") ts?.chats?.find { it.chatId == args.chatId }
+                else ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
             adapter = MessageRecyclerViewAdapter(
                 chat!!.messages, chat!!, ts!!, this
             )
@@ -69,6 +72,13 @@ class ChatFragment : Fragment() {
                 }
                 else -> {}
             }
+            if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.PUBLISHER)
+                binding.btnsManageReq.visibility = View.GONE
+        }
+
+        binding.btnSendMsg.setOnClickListener {
+            vm.addMessage(args.chatId, binding.textMsg.text.toString())
+            binding.textMsg.setText("")
         }
 
         return root
