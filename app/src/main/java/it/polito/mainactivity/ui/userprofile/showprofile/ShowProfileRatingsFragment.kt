@@ -16,13 +16,11 @@ import it.polito.mainactivity.databinding.FragmentShowProfileRatingsBinding
 import it.polito.mainactivity.model.*
 
 import it.polito.mainactivity.viewModel.TimeslotViewModel
-import it.polito.mainactivity.viewModel.UserProfileViewModel
 
-class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
+class ShowProfileRatingsFragment : Fragment() {
     private var _binding: FragmentShowProfileRatingsBinding? = null
     private val binding get() = _binding!!
     private val vmTimeslots: TimeslotViewModel by activityViewModels()
-    //private val vmUser: UserProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +31,9 @@ class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
         _binding = FragmentShowProfileRatingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // If userId is passed as parameter (other user's profile), otherwise current user's
-        val selectedUserId = userId ?:   FirebaseAuth.getInstance().currentUser!!.uid
+        val userId = arguments?.getString("publisherId")
+        // If userId is passed as parameter (other user's profile), otherwise current user
+        val selectedUserId = userId ?: FirebaseAuth.getInstance().currentUser!!.uid
 
         val rbAvgRatingPublisher: RatingBar = binding.rbAvgRatingPublisher
         val rbAvgRatingClient: RatingBar = binding.rbAvgRatingClient
@@ -49,10 +48,12 @@ class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
                 it.filter { timeslot ->
                     (timeslot.publisher["userId"] == selectedUserId) &&
                             (timeslot.status == Timeslot.Status.COMPLETED) &&
-                            (timeslot.ratings.find { rating -> rating.by == Message.Sender.CLIENT }?.rating != -1)
+                            ((timeslot.ratings.find { rating -> rating.by == Message.Sender.CLIENT }?.rating
+                                ?: -1) != -1)
                 }
                     .map { timeslot ->
-                        RatingWithUserInfo(timeslot.ratings.first { rating -> rating.by == Message.Sender.CLIENT },
+                        RatingWithUserInfo(
+                            timeslot.ratings.first { rating -> rating.by == Message.Sender.CLIENT },
                             timeslot.chats.first { c -> c.assigned }.client["nickname"] as String,
                             timeslot.chats.first { c -> c.assigned }.client["profilePictureUrl"] as String
                         )
@@ -102,8 +103,8 @@ class RatingAdapter(
 ) :
     RecyclerView.Adapter<RatingAdapter.RatingViewHolder>() {
 
-    class RatingViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-    }
+    class RatingViewHolder(v: View) : RecyclerView.ViewHolder(v)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingViewHolder {
         val vg = LayoutInflater

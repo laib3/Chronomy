@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestoreException
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileInfoBinding
@@ -14,7 +15,7 @@ import it.polito.mainactivity.viewModel.UserProfileViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class ShowProfileInfoFragment(val userId: String?) : Fragment() {
+class ShowProfileInfoFragment() : Fragment() {
     private var _binding: FragmentShowProfileInfoBinding? = null
     private val binding get() = _binding!!
     private val vmUser: UserProfileViewModel by activityViewModels()
@@ -35,6 +36,9 @@ class ShowProfileInfoFragment(val userId: String?) : Fragment() {
         val phoneTextView: TextView = binding.textPhone
         val locationTextView: TextView = binding.textLocation
         val emailTextView: TextView = binding.textEmail
+
+
+        val userId = arguments?.getString("publisherId")
 
         // If show profile of other users
         if (userId != null) {
