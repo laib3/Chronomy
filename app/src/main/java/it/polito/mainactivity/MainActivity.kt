@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
             navHeaderSurname.text = it?.surname ?: "null"
             navHeaderBalance.text =
                 String.format(getString(R.string.user_profile_balance_placeholder), it?.balance)
-            // TODO error
             it?.profilePictureUrl?.apply { Picasso.get().load(this).into(navProfilePicture) }
         }
 
