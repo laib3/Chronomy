@@ -1,25 +1,24 @@
 package it.polito.mainactivity.ui.chat
 
+import android.app.Activity
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.Timestamp
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentChatListBinding
-import it.polito.mainactivity.databinding.FragmentRequestsListBinding
 import it.polito.mainactivity.model.*
-import it.polito.mainactivity.placeholder.PlaceholderContent
-import it.polito.mainactivity.ui.home.FilteredTimeslotListFragmentArgs
 import it.polito.mainactivity.viewModel.TimeslotViewModel
-import java.util.*
+
 
 class ChatFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
@@ -47,8 +46,8 @@ class ChatFragment : Fragment() {
         vm.timeslots.observe(viewLifecycleOwner) {
             ts = vm.timeslots.value?.find { it.timeslotId == args.timeslotId }
             chat =
-                if (args.chatId != "new") ts?.chats?.find { it.chatId == args.chatId }
-                else ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
+                if(args.chatId != "new" ) ts?.chats?.find { it.chatId == args.chatId }
+            else ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
             adapter = MessageRecyclerViewAdapter(
                 chat!!.messages, chat!!, ts!!, this
             )
@@ -72,7 +71,7 @@ class ChatFragment : Fragment() {
                 }
                 else -> {}
             }
-            if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.PUBLISHER)
+            if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT)
                 binding.btnsManageReq.visibility = View.GONE
         }
 
@@ -88,5 +87,6 @@ class ChatFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
 }

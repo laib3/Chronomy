@@ -149,7 +149,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/huge_distance"
         android:contentDescription="startChatBtn"
-        android:text="Start Chat"
+        android:text="Send request"
         android:textColor="@color/white"
         app:iconTint="@color/white"
         app:icon="@drawable/ic_chat"

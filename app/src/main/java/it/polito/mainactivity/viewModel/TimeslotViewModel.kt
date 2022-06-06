@@ -406,6 +406,31 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    /*
+    fun addChat(timeslotId: String):Boolean{
+        return try {
+            viewModelScope.launch {
+                val userRef = db.collection("users").document(auth.currentUser!!.uid)
+                val clientMap = userRef.get().await().let { Utils.toUserMap(it) }
+                    ?: throw Exception("clientMap shouldn't be null")
+                val chatRef =
+                    db.collection("timeslots").document(timeslotId).collection("chats").document()
+                val chatId = chatRef.id
+                val newChat = Chat(chatId, clientMap, false, mutableListOf())
+                _timeslots.value?.apply {
+                    find { t -> t.timeslotId == timeslotId }!!.chats.add(newChat)
+                }
+                // add chat to db with id chatId
+                chatRef.set(newChat.toMap()).await()
+            }
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+    */
+
     fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
         return try {
             viewModelScope.launch {

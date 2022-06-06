@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.timeslot.timeslot_details
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.*
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -78,25 +80,37 @@ class TimeslotDetailsFragment : Fragment() {
                 tiLocation?.editText?.setText(ts!!.location)
                 tiCategory?.editText?.setText(ts!!.category)
             }
+
+            if (ts!!.chats.any { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }) {
+                disableFab(binding.extendedFab)
+            }
         }
 
         binding.extendedFab.setOnClickListener {
-            //create new chat, navigate to chat fragment
+            //create new chat
             vm.addChat(ts!!.timeslotId)
+            //show snackbar
+            Snackbar.make(binding.root, "Your request has been added!", Snackbar.LENGTH_SHORT)
+                .setTextColor(Utils.getSnackbarColor("Your request has been added!"))
+                .show()
+            disableFab(binding.extendedFab)
 
+            /*
             val chat =
                 ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
 
+            val chatId =
+                chat?.chatId ?: "new"
+
             val action =
                 TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
-                    chat!!.chatId,
+                    chatId,
                     ts!!.timeslotId,
                     ts!!.title
                 )
             parentFragment?.findNavController()?.navigate(action)
+            */
         }
-
-
         return root
     }
 
@@ -138,5 +152,11 @@ class TimeslotDetailsFragment : Fragment() {
                 .show()
             (activity as MainActivity).snackBarMessage = null
         }
+    }
+
+    private fun disableFab(f: ExtendedFloatingActionButton) {
+        f.isEnabled = false
+        f.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.dark_grey))
+        f.text = "Request sent"
     }
 }

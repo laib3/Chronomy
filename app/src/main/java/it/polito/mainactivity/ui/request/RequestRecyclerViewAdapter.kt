@@ -14,7 +14,9 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.chip.Chip
+import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
+import it.polito.mainactivity.model.Message
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
 import java.util.*
@@ -31,7 +33,7 @@ class RequestRecyclerViewAdapter(
         val hiddenView: LinearLayout = v.findViewById(R.id.hidden_view)
         val baseCardView: CardView = v.findViewById(R.id.base_cardview)
         val chipCount: Chip = v.findViewById(R.id.chip)
-        val fixedLayout:ConstraintLayout = v.findViewById(R.id.fixed_layout)
+        val fixedLayout: ConstraintLayout = v.findViewById(R.id.fixed_layout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
@@ -54,21 +56,46 @@ class RequestRecyclerViewAdapter(
             chat.messages.sortBy { msg -> msg.timestamp }
             val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
             chatCard.findViewById<TextView>(R.id.tvNickname).apply {
-                this.text = chat.client["nickname"].toString()
+                if(chat.messages.isNotEmpty()){
+                   if(chat.messages[0].sender == Message.Sender.CLIENT){
+                       this.text = chat.client["nickname"].toString()
+                   }else if (chat.messages[0].sender == Message.Sender.PUBLISHER){
+                       ts.publisher["nickname"]
+                   }
+                }else{
+                    this.text = chat.client["nickname"].toString()
+                }
             }
             chatCard.findViewById<TextView>(R.id.tvDate).apply {
                 val c = Calendar.getInstance()
-                c.time= chat.messages[0].timestamp.toDate()
-                this.text = Utils.formatDateToString(c)
+                if (chat.messages.isNotEmpty()) {
+                    c.time = chat.messages[0].timestamp.toDate()
+                    this.text = Utils.formatDateToString(c)
+                } else{
+                    this.visibility = View.INVISIBLE
+                }
             }
             chatCard.findViewById<TextView>(R.id.tvMsg).apply {
-                this.text = chat.messages[0].text
+                this.text =
+                    if (chat.messages.isNotEmpty()) chat.messages[0].text
+                    else "This chat is still empty"
             }
+
+            chatCard.findViewById<ImageView>(R.id.ivProfilePic).apply{
+                if(chat.client["profilePictureUrl"]!= null){
+                    Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
+                }
+            }
+
             // Pass through bundle the id of the item in the list
-            chatCard.setOnClickListener{
+            chatCard.setOnClickListener {
                 val action =
-                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId, ts.timeslotId, ts.title)
-                    parentFragment.findNavController().navigate(action)
+                    RequestsFragmentDirections.actionNavRequestsToChatFragment(
+                        chat.chatId,
+                        ts.timeslotId,
+                        ts.title
+                    )
+                parentFragment.findNavController().navigate(action)
             }
 
             holder.hiddenView.addView(chatCard)
@@ -77,10 +104,11 @@ class RequestRecyclerViewAdapter(
         holder.chipCount.text = holder.hiddenView.childCount.toString()
 
         //TODO: navigate to timeslot details
-        holder.fixedLayout.setOnClickListener { showHiddenLayout(holder)}
+        holder.fixedLayout.setOnClickListener { showHiddenLayout(holder) }
 
         holder.btnArrow.setOnClickListener { showHiddenLayout(holder) }
     }
+
     override fun getItemCount(): Int = values.size
 
     fun filterList(filteredList: List<Timeslot>) {
@@ -91,7 +119,7 @@ class RequestRecyclerViewAdapter(
 
     }
 
-    fun showHiddenLayout(holder : RequestViewHolder){
+    fun showHiddenLayout(holder: RequestViewHolder) {
 
         // If the CardView is already expanded, set its visibility
         //  to gone and change the expand less icon to expand more.
