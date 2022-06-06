@@ -19,6 +19,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.*
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -29,6 +31,9 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     private val _timeslots = MutableLiveData<List<Timeslot>>()
     val timeslots: LiveData<List<Timeslot>> = _timeslots
+
+    private val _newChatId = MutableLiveData<String?>()
+    val newChatId: LiveData<String?> = _newChatId
 
     /* following attributes are meaningful only if a new timeslot is being created */
     private val _submitTimeslot: MutableLiveData<Timeslot> = MutableLiveData<Timeslot>()
@@ -382,6 +387,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     /**
      * Add chat between the owner of the timeslot (PUBLISHER) with the given id and the current user (CLIENT)
      **/
+
+    /*
     fun addChat(timeslotId: String) {
          try {
             viewModelScope.launch {
@@ -403,8 +410,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             e.printStackTrace()
         }
     }
-
-    /*
+    */
     fun addChat(timeslotId: String):Boolean{
         return try {
             viewModelScope.launch {
@@ -420,6 +426,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 }
                 // add chat to db with id chatId
                 chatRef.set(newChat.toMap()).await()
+                _newChatId.value = chatId
             }
             true
         } catch (e: Exception) {
@@ -427,7 +434,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             false
         }
     }
-    */
+
 
     fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
         return try {
@@ -527,6 +534,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         return ratingsQuery.documents
             .map { r -> Utils.toRatingMap(r)!! }
             .toMutableList()
+    }
+
+    fun resetNewChatId() {
+        _newChatId.value = null
     }
 
 }

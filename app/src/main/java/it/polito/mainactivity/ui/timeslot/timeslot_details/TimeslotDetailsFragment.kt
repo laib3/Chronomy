@@ -86,30 +86,22 @@ class TimeslotDetailsFragment : Fragment() {
             }
         }
 
+        vm.newChatId.observe(viewLifecycleOwner) {
+           if (it!= null) {
+               val action =
+                   TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
+                       it,
+                       ts!!.timeslotId,
+                       ts!!.title
+                   )
+               vm.resetNewChatId()
+               parentFragment?.findNavController()?.navigate(action)
+           }
+        }
+
         binding.extendedFab.setOnClickListener {
             //create new chat
             vm.addChat(ts!!.timeslotId)
-            //show snackbar
-            Snackbar.make(binding.root, "Your request has been added!", Snackbar.LENGTH_SHORT)
-                .setTextColor(Utils.getSnackbarColor("Your request has been added!"))
-                .show()
-            disableFab(binding.extendedFab)
-
-            /*
-            val chat =
-                ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
-
-            val chatId =
-                chat?.chatId ?: "new"
-
-            val action =
-                TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
-                    chatId,
-                    ts!!.timeslotId,
-                    ts!!.title
-                )
-            parentFragment?.findNavController()?.navigate(action)
-            */
         }
         return root
     }
