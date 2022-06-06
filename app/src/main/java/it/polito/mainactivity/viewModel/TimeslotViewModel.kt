@@ -164,6 +164,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (mQuery == null)
                     throw Exception("query result for messages shouldn't be empty")
                 if (mQuery.documents.size > 0) {
+                    val tmpTimeslots: MutableList<Timeslot> = mutableListOf()
                     mQuery.forEach { ms ->
                         // first parent is the collection of messages, second parent is the chat document
                         // third parent is the collection of chats, fourth is the timeslot document
@@ -184,10 +185,12 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                 chats.apply {
                                     find { c -> c.chatId == chatId }?.messages = oldMessages
                                 }
-                                _timeslots.value = _timeslots.value?.map{ t -> if(t.timeslotId == timeslotId) t.copy().apply{ this.chats = chats } else t }
+                                tmpTimeslots.add(timeslot.apply{this.chats = chats})
+                                // _timeslots.value = _timeslots.value?.map{ t -> if(t.timeslotId == timeslotId) t.copy().apply{ this.chats = chats } else t }
                             }
                         }
                     }
+                    _timeslots.value = tmpTimeslots
                 }
             }
         // updateRating("t0p0MSYd0bse7Htnwypv", 2, "Servizio molto scadente, però c'è di peggio...")
@@ -409,7 +412,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
     */
-    fun addChat(timeslotId: String):Boolean{
+    fun addChat(timeslotId: String): Boolean{
         return try {
             viewModelScope.launch {
                 val userRef = db.collection("users").document(auth.currentUser!!.uid)
@@ -419,9 +422,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     db.collection("timeslots").document(timeslotId).collection("chats").document()
                 val chatId = chatRef.id
                 val newChat = Chat(chatId, clientMap, false, mutableListOf())
-                _timeslots.value?.apply {
-                    find { t -> t.timeslotId == timeslotId }!!.chats.add(newChat)
-                }
                 // add chat to db with id chatId
                 chatRef.set(newChat.toMap()).await()
                 _newChatId.value = chatId

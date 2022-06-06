@@ -42,12 +42,19 @@ class ChatFragment : Fragment() {
         val rv: RecyclerView = binding.list
         rv.layoutManager = LinearLayoutManager(root.context)
 
-
-        vm.timeslots.observe(viewLifecycleOwner) {
-            ts = vm.timeslots.value?.find { it.timeslotId == args.timeslotId }
-            chat = ts?.chats?.firstOrNull { it.chatId == args.chatId }
+        vm.timeslots.observe(viewLifecycleOwner) { timeslots ->
+            val cId = args.chatId
+            val tId = args.timeslotId
+            val t = timeslots?.firstOrNull { it.timeslotId == args.timeslotId }
+            ts = t
+            val c = ts?.chats?.firstOrNull { it.chatId == args.chatId }
+            chat = c
+            if(chat == null)
+                throw Exception("Chat shouldn't be null")
+            if(ts == null)
+                throw Exception("Timeslot shouldn't be null")
             adapter = MessageRecyclerViewAdapter(
-                chat!!.messages, chat!!, ts!!, this
+                chat!!, ts!!, this
             )
             rv.adapter = adapter
             rv.scrollToPosition(chat!!.messages.size - 1);
