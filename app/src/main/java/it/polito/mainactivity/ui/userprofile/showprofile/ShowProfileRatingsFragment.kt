@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileRatingsBinding
@@ -17,11 +18,11 @@ import it.polito.mainactivity.model.*
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.viewModel.UserProfileViewModel
 
-class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
+class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
     private var _binding: FragmentShowProfileRatingsBinding? = null
     private val binding get() = _binding!!
     private val vmTimeslots: TimeslotViewModel by activityViewModels()
-    private val vmUser: UserProfileViewModel by activityViewModels()
+    //private val vmUser: UserProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,22 +33,8 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
         _binding = FragmentShowProfileRatingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // If show profile of other users
-        var selectedUserId: String? = null
-        var selectedUserNickname: String? = null
-        var selectedUserProfilePictureUrl: String? = null
-        if (timeslotId != null) {
-            vmTimeslots.timeslots.value?.find { t -> t.timeslotId == timeslotId }
-                ?.also {
-                    selectedUserId = it.publisher["userId"] as String
-                    selectedUserNickname = it.publisher["nickname"] as String
-                    selectedUserProfilePictureUrl = it.publisher["profilePictureUrl"] as String
-                }
-        } else { // if show profile of the current publisher
-            selectedUserId = vmUser.user.value?.userId!!
-            selectedUserNickname = vmUser.user.value?.nickname!!
-            selectedUserProfilePictureUrl = vmUser.user.value?.profilePictureUrl!!
-        }
+        // If userId is passed as parameter (other user's profile), otherwise current user's
+        val selectedUserId = userId ?:   FirebaseAuth.getInstance().currentUser!!.uid
 
         val rbAvgRatingPublisher: RatingBar = binding.rbAvgRatingPublisher
         val rbAvgRatingClient: RatingBar = binding.rbAvgRatingClient
@@ -59,32 +46,34 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
         vmTimeslots.timeslots.observe(viewLifecycleOwner) {
 
             val ratingsAsPublisher: MutableList<RatingWithUserInfo> =
-            it.filter { timeslot ->
-                (timeslot.publisher["userId"] == selectedUserId) &&
-                        (timeslot.status == Timeslot.Status.COMPLETED) &&
-                        (timeslot.ratings.find { rating -> rating.by == Message.Sender.CLIENT }?.rating != -1)
-            }
-            .map { timeslot ->
-                RatingWithUserInfo(timeslot.ratings.first { rating -> rating.by == Message.Sender.CLIENT },
-                    timeslot.chats.first{ c -> c.assigned }.client["nickname"] as String,
-                    timeslot.chats.first{ c -> c.assigned }.client["profilePictureUrl"] as String)
-            }.toMutableList()
+                it.filter { timeslot ->
+                    (timeslot.publisher["userId"] == selectedUserId) &&
+                            (timeslot.status == Timeslot.Status.COMPLETED) &&
+                            (timeslot.ratings.find { rating -> rating.by == Message.Sender.CLIENT }?.rating != -1)
+                }
+                    .map { timeslot ->
+                        RatingWithUserInfo(timeslot.ratings.first { rating -> rating.by == Message.Sender.CLIENT },
+                            timeslot.chats.first { c -> c.assigned }.client["nickname"] as String,
+                            timeslot.chats.first { c -> c.assigned }.client["profilePictureUrl"] as String
+                        )
+                    }.toMutableList()
 
             val ratingsAsClient: MutableList<RatingWithUserInfo> =
-            it.filter { timeslot ->
-                timeslot.publisher["userId"] != selectedUserId &&
-                        timeslot.chats.filter { chat -> chat.assigned }
-                            .map { chat -> chat.client["userId"] }.firstOrNull() == selectedUserId &&
-                        timeslot.status == Timeslot.Status.COMPLETED &&
-                        timeslot.ratings.find { rating -> rating.by == Message.Sender.PUBLISHER }?.rating != -1
-            }
-                .map { timeslot ->
-                    RatingWithUserInfo(
-                        timeslot.ratings.first { rating -> rating.by == Message.Sender.PUBLISHER },
-                        timeslot.publisher["nickname"] as String,
-                        timeslot.publisher["profilePictureUrl"] as String
-                    )
-                }.toMutableList()
+                it.filter { timeslot ->
+                    timeslot.publisher["userId"] != selectedUserId &&
+                            timeslot.chats.filter { chat -> chat.assigned }
+                                .map { chat -> chat.client["userId"] }
+                                .firstOrNull() == selectedUserId &&
+                            timeslot.status == Timeslot.Status.COMPLETED &&
+                            timeslot.ratings.find { rating -> rating.by == Message.Sender.PUBLISHER }?.rating != -1
+                }
+                    .map { timeslot ->
+                        RatingWithUserInfo(
+                            timeslot.ratings.first { rating -> rating.by == Message.Sender.PUBLISHER },
+                            timeslot.publisher["nickname"] as String,
+                            timeslot.publisher["profilePictureUrl"] as String
+                        )
+                    }.toMutableList()
 
             val publisherListAdapter = RatingAdapter(ratingsAsPublisher, this)
             rvPublisher.adapter = publisherListAdapter
@@ -130,13 +119,18 @@ class RatingAdapter(
         val tvComment: TextView = holder.itemView.findViewById(R.id.tvComment)
         val ratingBar: RatingBar = holder.itemView.findViewById(R.id.rbRating)
         val userPic: ImageView = holder.itemView.findViewById(R.id.iUserPic)
-        tvUserNickname.text = String.format(parentFragment.requireActivity().getString(R.string.user_profile_nickname_placeholder), rating.nickname)
-        if(rating.rating.comment.isBlank()) {
+        tvUserNickname.text = String.format(
+            parentFragment.requireActivity().getString(R.string.user_profile_nickname_placeholder),
+            rating.nickname
+        )
+        if (rating.rating.comment.isBlank()) {
             tvComment.visibility = View.GONE
             holder.itemView.findViewById<View>(R.id.divider).visibility = View.GONE
-        }
-        else {
-            tvComment.text = String.format(parentFragment.requireActivity().getString(R.string.rating_comment_placeholder), rating.rating.comment)
+        } else {
+            tvComment.text = String.format(
+                parentFragment.requireActivity().getString(R.string.rating_comment_placeholder),
+                rating.rating.comment
+            )
         }
         ratingBar.rating = rating.rating.rating.toFloat()
         Picasso.get().load(rating.profilePictureUrl).into(userPic)

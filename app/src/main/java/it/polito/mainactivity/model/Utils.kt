@@ -102,7 +102,7 @@ class Utils {
                 return null
             return try {
                 hashMapOf(
-                    "timeslotId" to d.get("timeslotId") as String,
+                    "timeslotId" to d.id,
                     "title" to d.get("title") as String,
                     "description" to d.get("description") as String,
                     "date" to d.get("date") as String,

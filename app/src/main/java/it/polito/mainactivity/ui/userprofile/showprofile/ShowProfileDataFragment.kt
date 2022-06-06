@@ -35,12 +35,11 @@ class ShowProfileDataFragment : Fragment() {
         _binding = FragmentShowProfileDataBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val timeslotId = parentFragment?.arguments?.getString("id")
         val publisherId = parentFragment?.arguments?.getString("publisherId")
 
         val tabLayout = binding.tlUserData
         val viewPager = binding.vpUserData
-        val adapter = ShowProfileAdapter(requireActivity(), timeslotId, publisherId)
+        val adapter = ShowProfileAdapter(requireActivity(), publisherId)
 
         val tabTitles = listOf("info","skills","ratings")
 
@@ -53,14 +52,14 @@ class ShowProfileDataFragment : Fragment() {
 
 
 }
-class ShowProfileAdapter(fa: FragmentActivity, val timeslotId: String?, val userId: String?) : FragmentStateAdapter(fa) {
+class ShowProfileAdapter(fa: FragmentActivity, val userId: String?) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> ShowProfileInfoFragment(userId)
             1 -> ShowProfileSkillsFragment(userId)
-            2 -> ShowProfileRatingsFragment(timeslotId)
+            2 -> ShowProfileRatingsFragment(userId)
             else -> ShowProfileInfoFragment(userId)
         }
     }
