@@ -4,20 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestoreException
-import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
-import it.polito.mainactivity.viewModel.TimeslotViewModel
-import it.polito.mainactivity.ui.userprofile.SkillCard
-import it.polito.mainactivity.viewModel.UserProfileViewModel
-import kotlinx.coroutines.*
 
 class ShowProfileDataFragment : Fragment() {
 
@@ -39,6 +30,8 @@ class ShowProfileDataFragment : Fragment() {
 
         val tabLayout = binding.tlUserData
         val viewPager = binding.vpUserData
+
+        // pas publisherId through bundle
         val adapter = ShowProfileAdapter(requireActivity(), publisherId)
 
         val tabTitles = listOf("info","skills","ratings")
@@ -52,15 +45,17 @@ class ShowProfileDataFragment : Fragment() {
 
 
 }
-class ShowProfileAdapter(fa: FragmentActivity, val userId: String?) : FragmentStateAdapter(fa) {
+class ShowProfileAdapter(fa: FragmentActivity, private val publisherId: String?) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
+        val args = Bundle()
+        args.putString("publisherId", publisherId)
         return when(position) {
-            0 -> ShowProfileInfoFragment(userId)
-            1 -> ShowProfileSkillsFragment(userId)
-            2 -> ShowProfileRatingsFragment(userId)
-            else -> ShowProfileInfoFragment(userId)
+            0 -> ShowProfileInfoFragment().also{it.arguments = args}
+            1 -> ShowProfileSkillsFragment().also{it.arguments = args}
+            2 -> ShowProfileRatingsFragment().also{it.arguments = args}
+            else -> ShowProfileInfoFragment().also{it.arguments = args}
         }
     }
 }

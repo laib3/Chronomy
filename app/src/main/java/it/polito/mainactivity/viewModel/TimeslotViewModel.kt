@@ -265,8 +265,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         _submitTimeslot.value = sTs!!
     }
 
-    // TODO: check if lists and maps are correctly saved on the db
-    // TODO: check how the enum is saved on the db, if badly, replace it with string
     private fun createSubmitTimeslotMap(t: Timeslot, date: Calendar, id: String): Map<String, Any> =
         hashMapOf(
             "userId" to id,
