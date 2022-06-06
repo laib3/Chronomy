@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileRatingsBinding
@@ -17,11 +18,11 @@ import it.polito.mainactivity.model.*
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.viewModel.UserProfileViewModel
 
-class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
+class ShowProfileRatingsFragment(val userId: String?) : Fragment() {
     private var _binding: FragmentShowProfileRatingsBinding? = null
     private val binding get() = _binding!!
     private val vmTimeslots: TimeslotViewModel by activityViewModels()
-    private val vmUser: UserProfileViewModel by activityViewModels()
+    //private val vmUser: UserProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,13 +33,8 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
         _binding = FragmentShowProfileRatingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // If show profile of other users
-        val selectedUserId = if (timeslotId != null) {
-            val ts = vmTimeslots.timeslots.value?.find { t -> t.timeslotId == timeslotId }
-            ts?.publisher?.get("userId") as String
-        } else { // if show profile of the current publisher
-            vmUser.user.value?.userId!!
-        }
+        // If userId is passed as parameter (other user's profile), otherwise current user's
+        val selectedUserId = userId ?:   FirebaseAuth.getInstance().currentUser!!.uid
 
         val rbAvgRatingPublisher: RatingBar = binding.rbAvgRatingPublisher
         val rbAvgRatingClient: RatingBar = binding.rbAvgRatingClient
