@@ -130,8 +130,14 @@ class RatingAdapter(
         val tvComment: TextView = holder.itemView.findViewById(R.id.tvComment)
         val ratingBar: RatingBar = holder.itemView.findViewById(R.id.rbRating)
         val userPic: ImageView = holder.itemView.findViewById(R.id.iUserPic)
-        tvUserNickname.text = rating.nickname
-        tvComment.text = rating.rating.comment
+        tvUserNickname.text = String.format(parentFragment.requireActivity().getString(R.string.user_profile_nickname_placeholder), rating.nickname)
+        if(rating.rating.comment.isBlank()) {
+            tvComment.visibility = View.GONE
+            holder.itemView.findViewById<View>(R.id.divider).visibility = View.GONE
+        }
+        else {
+            tvComment.text = String.format(parentFragment.requireActivity().getString(R.string.rating_comment_placeholder), rating.rating.comment)
+        }
         ratingBar.rating = rating.rating.rating.toFloat()
         Picasso.get().load(rating.profilePictureUrl).into(userPic)
         userPic.clipToOutline = true
