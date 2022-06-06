@@ -42,6 +42,8 @@ class MessageRecyclerViewAdapter(
             if(user["profilePictureUrl"]!= null){
                 Picasso.get().load(user["profilePictureUrl"] as String).into(ivProfilePic)
             }
+            ivProfilePic.clipToOutline = true
+
         }
     }
 
@@ -54,6 +56,7 @@ class MessageRecyclerViewAdapter(
         val view = LayoutInflater
             .from(parent.context)
             .inflate(layout, parent, false)
+
 
         return ViewHolder(view)
 

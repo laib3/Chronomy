@@ -81,7 +81,9 @@ class RequestRecyclerViewAdapter(
                     else "This chat is still empty"
             }
 
-            chatCard.findViewById<ImageView>(R.id.ivProfilePic).apply{
+            val ivProfilePic = chatCard.findViewById<ImageView>(R.id.ivProfilePic)
+            ivProfilePic.apply{
+                this.clipToOutline = true
                 if(chat.client["profilePictureUrl"]!= null){
                     Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
                 }
