@@ -63,6 +63,7 @@ class TimeslotsRecyclerViewAdapter(
         // Pass through bundle the id of the timeslot in the list
         val bundle = Bundle()
         bundle.putString("id", ts.timeslotId)
+        bundle.putString("publisherId", ts.publisher["userId"] as String)
         bundle.putBoolean("showOnly", true)
         bundle.putBoolean("startChat", true)
 

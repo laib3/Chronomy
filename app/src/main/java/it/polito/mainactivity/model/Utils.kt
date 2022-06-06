@@ -111,7 +111,6 @@ class Utils {
                     "location" to d.get("location") as String,
                     "category" to d.get("category") as String,
                     "status" to d.get("status") as String,
-                    "publisher" to d.get("publisher") as Map<String, String>
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -207,7 +206,7 @@ class Utils {
                 return null
             return try {
                 hashMapOf(
-                    "timeslotId" to d.get("timeslotId") as String,
+                    "timeslotId" to (d.get("timeslotId") as String),
                     "by" to (d.get("by") as String),
                     "rating" to d.get("rating") as Long,
                     "comment" to d.get("comment") as String

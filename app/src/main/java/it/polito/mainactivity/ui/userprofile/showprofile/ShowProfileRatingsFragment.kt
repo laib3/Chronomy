@@ -36,7 +36,7 @@ class ShowProfileRatingsFragment(val timeslotId: String?) : Fragment() {
         var selectedUserId: String? = null
         var selectedUserNickname: String? = null
         var selectedUserProfilePictureUrl: String? = null
-        if (timeslotId!= null) {
+        if (timeslotId != null) {
             vmTimeslots.timeslots.value?.find { t -> t.timeslotId == timeslotId }
                 ?.also {
                     selectedUserId = it.publisher["userId"] as String

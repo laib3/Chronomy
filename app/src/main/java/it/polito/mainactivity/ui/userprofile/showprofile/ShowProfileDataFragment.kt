@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestoreException
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentShowProfileDataBinding
@@ -35,10 +36,11 @@ class ShowProfileDataFragment : Fragment() {
         val root: View = binding.root
 
         val timeslotId = parentFragment?.arguments?.getString("id")
+        val publisherId = parentFragment?.arguments?.getString("publisherId")
 
         val tabLayout = binding.tlUserData
         val viewPager = binding.vpUserData
-        val adapter = ShowProfileAdapter(requireActivity(), timeslotId)
+        val adapter = ShowProfileAdapter(requireActivity(), timeslotId, publisherId)
 
         val tabTitles = listOf("info","skills","ratings")
 
@@ -51,15 +53,15 @@ class ShowProfileDataFragment : Fragment() {
 
 
 }
-class ShowProfileAdapter(fa: FragmentActivity, val timeslotId: String?) : FragmentStateAdapter(fa) {
+class ShowProfileAdapter(fa: FragmentActivity, val timeslotId: String?, val userId: String?) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> ShowProfileInfoFragment(timeslotId)
-            1 -> ShowProfileSkillsFragment(timeslotId)
+            0 -> ShowProfileInfoFragment(userId)
+            1 -> ShowProfileSkillsFragment(userId)
             2 -> ShowProfileRatingsFragment(timeslotId)
-            else -> ShowProfileInfoFragment(timeslotId)
+            else -> ShowProfileInfoFragment(userId)
         }
     }
 }

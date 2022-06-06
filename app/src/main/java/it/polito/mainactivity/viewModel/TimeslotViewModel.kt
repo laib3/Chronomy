@@ -269,7 +269,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     // TODO: check how the enum is saved on the db, if badly, replace it with string
     private fun createSubmitTimeslotMap(t: Timeslot, date: Calendar, id: String): Map<String, Any> =
         hashMapOf(
-            "timeslotId" to id,
+            "userId" to id,
             "publisher" to t.publisher,
             "title" to t.title,
             "description" to t.description,
@@ -300,10 +300,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     val timeslotId = db.collection("timeslots").document().id
                     createSubmitTimeslotMap(t, date, timeslotId)
                 }.forEach { tMap ->
-                    val tsRef = db.collection("timeslots").document(tMap["timeslotId"] as String)
+                    val tsRef = db.collection("timeslots").document(tMap["userId"] as String)
                     tsRef.set(tMap).await()
                     // update blank ratings
-                    createBlankRatings(tMap["timeslotId"] as String).forEach { r ->
+                    createBlankRatings(tMap["userId"] as String).forEach { r ->
                         tsRef.collection("ratings").document().set(r.toMap()).await()
                     }
                 }
