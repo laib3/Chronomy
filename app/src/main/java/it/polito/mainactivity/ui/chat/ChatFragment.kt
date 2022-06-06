@@ -45,9 +45,7 @@ class ChatFragment : Fragment() {
 
         vm.timeslots.observe(viewLifecycleOwner) {
             ts = vm.timeslots.value?.find { it.timeslotId == args.timeslotId }
-            chat =
-                if(args.chatId != "new" ) ts?.chats?.find { it.chatId == args.chatId }
-            else ts!!.chats.firstOrNull { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }
+            chat = ts?.chats?.firstOrNull { it.chatId == args.chatId }
             adapter = MessageRecyclerViewAdapter(
                 chat!!.messages, chat!!, ts!!, this
             )

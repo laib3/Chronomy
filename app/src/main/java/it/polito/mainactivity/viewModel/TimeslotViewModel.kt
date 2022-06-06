@@ -184,9 +184,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                 chats.apply {
                                     find { c -> c.chatId == chatId }?.messages = oldMessages
                                 }
-                                _timeslots.value?.apply {
-                                    find { t -> t.timeslotId == timeslotId }?.chats = chats
-                                }
+                                _timeslots.value = _timeslots.value?.map{ t -> if(t.timeslotId == timeslotId) t.copy().apply{ this.chats = chats } else t }
                             }
                         }
                     }
