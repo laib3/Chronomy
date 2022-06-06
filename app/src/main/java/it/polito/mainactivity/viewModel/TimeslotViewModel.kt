@@ -109,6 +109,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (rQuery == null)
                     throw Exception("E")
                 if (rQuery.documents.size > 0) {
+                    val tmpTimeslots: MutableList<Timeslot> = mutableListOf()
                     rQuery.forEach { rs ->
                         // find timeslot which contains the rating
                         val timeslot =
@@ -123,11 +124,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             } else { // update old ratings list
                                 newRatings.apply { map { rating -> if (rating.by == newRating.by) newRating else rating } }
                             }
-                            _timeslots.value?.apply {
-                                find { t -> t.timeslotId == timeslotId }!!.ratings = newRatings
-                            }
+                            tmpTimeslots.add(timeslot.apply{ ratings = newRatings })
                         }
                     }
+                    _timeslots.value = tmpTimeslots
                 }
             }
 
@@ -136,6 +136,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (cQuery == null)
                     throw Exception("E")
                 if (cQuery.documents.size > 0) {
+                    val tmpTimeslots: MutableList<Timeslot> = mutableListOf()
                     cQuery.forEach { cs ->
                         // first parent is the collection of chats, second is the timeslot
                         val timeslot =
@@ -151,11 +152,10 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             } else { // update old chats list
                                 newChats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
                             }
-                            _timeslots.value?.apply {
-                                find { t -> t.timeslotId == timeslotId }!!.chats = newChats
-                            }
+                            tmpTimeslots.add(timeslot.apply{ chats = newChats })
                         }
                     }
+                    _timeslots.value = tmpTimeslots
                 }
             }
 
