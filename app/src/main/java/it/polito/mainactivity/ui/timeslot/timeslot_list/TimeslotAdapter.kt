@@ -26,7 +26,7 @@ class TimeslotAdapter(
 
     class TimeslotViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val tvTitle: TextView = v.findViewById(R.id.tvUserNickname)
-        val tvLocation: TextView = v.findViewById(R.id.tvComment)
+        val tvLocation: TextView = v.findViewById(R.id.tvLocation)
         val tvDate: TextView = v.findViewById(R.id.tvDate)
         val tvHour: TextView = v.findViewById(R.id.tvHour)
         val ivCategory: ImageView = v.findViewById(R.id.iUserPic)

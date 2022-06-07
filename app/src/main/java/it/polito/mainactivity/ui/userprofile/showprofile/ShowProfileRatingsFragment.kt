@@ -117,7 +117,7 @@ class RatingAdapter(
         val rating = ratingsList[position]
 
         val tvUserNickname: TextView = holder.itemView.findViewById(R.id.tvUserNickname)
-        val tvComment: TextView = holder.itemView.findViewById(R.id.tvComment)
+        val tvComment: TextView = holder.itemView.findViewById(R.id.tvLocation)
         val ratingBar: RatingBar = holder.itemView.findViewById(R.id.rbRating)
         val userPic: ImageView = holder.itemView.findViewById(R.id.iUserPic)
         tvUserNickname.text = String.format(
