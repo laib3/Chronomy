@@ -325,8 +325,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             val newTimeslots = _timeslots.value?.toMutableList()
             if(newTimeslots != null){
                 timeslotMaps.forEach{ tm ->
-                    val t = Timeslot(tm, t.publisher, t.ratings.map{r -> r.toMap()}.toMutableList(), t.chats.map{c -> c.toMap()}, t.chats.map{c -> c.client}, t.chats.map{ c -> c.messages.map{m -> m.toMap()} })
-                    newTimeslots.add(t)
+                    val tmp = Timeslot(tm, t.publisher, t.ratings.map{r -> r.toMap()}.toMutableList(), t.chats.map{c -> c.toMap()}, t.chats.map{c -> c.client}, t.chats.map{ c -> c.messages.map{m -> m.toMap()} })
+                    newTimeslots.add(tmp)
                 }
                 _timeslots.value = newTimeslots!!
             }

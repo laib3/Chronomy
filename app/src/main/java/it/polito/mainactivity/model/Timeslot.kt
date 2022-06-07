@@ -81,7 +81,13 @@ data class Timeslot(
         endHour = timeslotMap["endHour"] as String
         location = timeslotMap["location"] as String
         category = timeslotMap["category"] as String
-        status = timeslotMap["status"]?.let{ Status.valueOf(it as String) } ?: Status.ERROR
+        if(timeslotMap["status"] is String){
+            status = timeslotMap["status"]?.let{ Status.valueOf(it as String) } ?: Status.ERROR
+        }
+        else if(timeslotMap["status"] is Status){
+            status = timeslotMap["status"] as Status
+        }
+
         // if(_ratings.size != 2)
         //     throw Exception("Error: ratings lenght should be equal to 2")
         ratings = _ratings.map{ rm -> Rating(rm) }.toMutableList()
