@@ -275,7 +275,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     private fun createSubmitTimeslotMap(t: Timeslot, date: Calendar, id: String): Map<String, Any> =
         hashMapOf(
-            "userId" to id,
+            "timeslotId" to id,
             "publisher" to t.publisher,
             "title" to t.title,
             "description" to t.description,
@@ -300,23 +300,35 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 submitEndRepetitionDate.value!!,
                 submitDaysOfWeek.value!!
             )
-            viewModelScope.launch {
-                // create one timeslot for each date
+            val timeslotMaps: List<Map<String, Any>>  =
                 dates.map { date ->
                     val timeslotId = db.collection("timeslots").document().id
                     createSubmitTimeslotMap(t, date, timeslotId)
-                }.forEach { tMap ->
-                    val tsRef = db.collection("timeslots").document(tMap["userId"] as String)
-                    db.runBatch{ batch ->
-                        // update timeslot
-                        batch.set(tsRef, tMap)
-                        // update ratings
-                        createBlankRatings(tMap["userId"] as String).forEach{ r ->
-                            val rRef = tsRef.collection("ratings").document()
-                            batch.set(rRef, r.toMap())
-                        }
-                    }.await()
                 }
+            val listOfTimeslotIds = timeslotMaps.map{ tm -> tm["timeslotId"] as String }
+            viewModelScope.launch {
+                // create one timeslot for each date
+                timeslotMaps
+                    .forEach { tMap ->
+                        val tsRef = db.collection("timeslots").document(tMap["timeslotId"] as String)
+                        db.runBatch{ batch ->
+                            // update timeslot
+                            batch.set(tsRef, tMap)
+                            // update ratings
+                            createBlankRatings(tMap["timeslotId"] as String).forEach{ r ->
+                                val rRef = tsRef.collection("ratings").document()
+                                batch.set(rRef, r.toMap())
+                            }
+                        }.await()
+                    }
+            }
+            val newTimeslots = _timeslots.value?.toMutableList()
+            if(newTimeslots != null){
+                timeslotMaps.forEach{ tm ->
+                    val t = Timeslot(tm, t.publisher, t.ratings.map{r -> r.toMap()}.toMutableList(), t.chats.map{c -> c.toMap()}, t.chats.map{c -> c.client}, t.chats.map{ c -> c.messages.map{m -> m.toMap()} })
+                    newTimeslots.add(t)
+                }
+                _timeslots.value = newTimeslots!!
             }
             true
         } catch (fe: FirebaseException) {

@@ -70,7 +70,7 @@ data class Timeslot(
 
     /* 3rd constructor */
     constructor(
-        timeslotMap: HashMap<String, Any>, _publisher: Map<String, Any>, _ratings: MutableList<Map<String, Any>>,
+        timeslotMap: Map<String, Any>, _publisher: Map<String, Any>, _ratings: MutableList<Map<String, Any>>,
         _chats: List<Map<String, Any>>, _clients: List<Map<String, Any>>,
         _messages: List<List<Map<String, Any>>>): this(_publisher){
         timeslotId = timeslotMap["timeslotId"] as String
