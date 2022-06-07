@@ -39,7 +39,7 @@ data class Message(val messageId: String, val text: String, val timestamp: Times
         return hashMapOf(
             "messageId" to messageId,
             "text" to text,
-            "timestamp" to timestamp as ServerTimestamp,
+            "timestamp" to timestamp,
             "sender" to sender
         )
     }

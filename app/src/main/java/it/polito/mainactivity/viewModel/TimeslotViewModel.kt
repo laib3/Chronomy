@@ -454,6 +454,8 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val msgRef = chat.reference.collection("messages")
                 val msgId = msgRef.document().id
                 val newMessage = Message(msgId, text, ts, sender)
+                val mMap = newMessage.toMap()
+                mMap["timestamp"] = FieldValue.serverTimestamp()
                 msgRef.document(msgId).set(newMessage.toMap()).await()
             }
             true
