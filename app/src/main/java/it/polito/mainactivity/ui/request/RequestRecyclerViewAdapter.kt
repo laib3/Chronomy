@@ -54,13 +54,13 @@ class RequestRecyclerViewAdapter(
 
         for (chat: it.polito.mainactivity.model.Chat in ts.chats) {
             if(!chat.client.isNullOrEmpty()){
-                chat.messages.sortByDescending { msg -> msg.timestamp }
+                chat.messages.sortBy{ msg -> msg.timestamp }
                 val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
                 chatCard.findViewById<TextView>(R.id.tvNickname).apply {
                     if(chat.messages.isNotEmpty()){
-                        if(chat.messages[0].sender == Message.Sender.CLIENT){
+                        if(chat.messages.last().sender == Message.Sender.CLIENT){
                             this.text = chat.client["nickname"].toString()
-                        } else if (chat.messages[0].sender == Message.Sender.PUBLISHER){
+                        } else if (chat.messages.last().sender == Message.Sender.PUBLISHER){
                             ts.publisher["nickname"]
                         }
                     } else {
@@ -70,7 +70,7 @@ class RequestRecyclerViewAdapter(
                 chatCard.findViewById<TextView>(R.id.tvDate).apply {
                     val c = Calendar.getInstance()
                     if (chat.messages.isNotEmpty()) {
-                        c.time = chat.messages[0].timestamp.toDate()
+                        c.time = chat.messages.last().timestamp.toDate()
                         this.text = Utils.formatDateToString(c)
                     } else{
                         this.visibility = View.INVISIBLE
@@ -78,7 +78,7 @@ class RequestRecyclerViewAdapter(
                 }
                 chatCard.findViewById<TextView>(R.id.tvMsg).apply {
                     this.text =
-                        if (chat.messages.isNotEmpty()) chat.messages[0].text
+                        if (chat.messages.isNotEmpty()) chat.messages.last().text
                         else "This chat is still empty"
                 }
 
