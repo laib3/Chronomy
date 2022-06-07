@@ -13,13 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        app:cardCornerRadius="@dimen/big_distance"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021"
-        app:cardCornerRadius="@dimen/big_distance">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!--This is a ConstraintLayout for the entire CardView
                    including the expandable portion-->
@@ -47,18 +45,15 @@
                 app:layout_constraintVertical_bias="0.0">
 
                 <ImageView
-                    android:layout_marginTop="@dimen/medium_distance"
-                    android:layout_marginBottom="@dimen/medium_distance"
-                    android:layout_marginStart="@dimen/big_distance"
                     android:id="@+id/iUserPic"
                     android:layout_width="@dimen/skill_icon_size"
                     android:layout_height="@dimen/skill_icon_size"
+                    android:layout_margin="@dimen/big_distance"
                     android:contentDescription="Category"
                     android:src="@drawable/ic_skill_gardening"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tvUserNickname"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="spread"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_skill_gardening" />
@@ -66,47 +61,61 @@
 
                 <TextView
                     android:id="@+id/tvUserNickname"
-                    android:layout_marginStart="@dimen/small_distance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="Title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/profile_text_size_normal"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/iUserPic"
+                    app:layout_constraintBottom_toTopOf="@+id/tvRequestTimeslotDate"
                     app:layout_constraintEnd_toStartOf="@+id/chip"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/iUserPic"
-                    app:layout_constraintTop_toTopOf="@+id/iUserPic" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
                 <!--This is ImageButton for the expansion icon.-->
                 <ImageButton
                     android:id="@+id/arrow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/big_distance"
                     android:background="@color/fui_transparent"
                     android:contentDescription="Arrow down"
-                    android:layout_marginEnd="@dimen/medium_distance"
                     android:minWidth="48dp"
                     android:minHeight="48dp"
                     android:src="@drawable/ic_arrow_down"
-                    app:layout_constraintBottom_toBottomOf="@+id/chip"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/chip"
-                    app:layout_constraintTop_toTopOf="@+id/chip" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/big_distance"
                     android:text="0"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvUserNickname"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/arrow_button"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/tvUserNickname"
-                    app:layout_constraintTop_toTopOf="@+id/tvUserNickname" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvRequestTimeslotDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="date"
+                    android:textSize="@dimen/profile_text_size_tiny"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvUserNickname"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tvUserNickname"
+                    app:layout_constraintTop_toBottomOf="@+id/tvUserNickname" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -118,13 +127,13 @@
                 android:id="@+id/hidden_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/big_distance"
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fixed_layout"
-                android:layout_margin="@dimen/big_distance"/>
+                app:layout_constraintTop_toBottomOf="@+id/fixed_layout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

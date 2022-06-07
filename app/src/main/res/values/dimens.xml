@@ -21,6 +21,7 @@
     <dimen name="eye_slashed_icon_size">20dp</dimen>
     <dimen name="add_button_size">32dp</dimen>
     <dimen name="profile_icon_size">32dp</dimen>
+    <dimen name="request_profile_icon_size">40dp</dimen>
 
     <!-- text size in show profile -->
     <dimen name="profile_text_size_tiny">12sp</dimen>

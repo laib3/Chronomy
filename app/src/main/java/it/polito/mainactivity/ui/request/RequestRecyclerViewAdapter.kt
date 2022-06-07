@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.request
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,13 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.chip.Chip
+import com.google.firebase.database.collection.LLRBNode
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Message
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
+import java.text.SimpleDateFormat
 import java.util.*
 
 class RequestRecyclerViewAdapter(
@@ -33,6 +36,7 @@ class RequestRecyclerViewAdapter(
         val hiddenView: LinearLayout = v.findViewById(R.id.hidden_view)
         val baseCardView: CardView = v.findViewById(R.id.base_cardview)
         val chipCount: Chip = v.findViewById(R.id.chip)
+        val tvDate: TextView = v.findViewById(R.id.tvRequestTimeslotDate)
         val fixedLayout: ConstraintLayout = v.findViewById(R.id.fixed_layout)
     }
 
@@ -71,7 +75,7 @@ class RequestRecyclerViewAdapter(
                     val c = Calendar.getInstance()
                     if (chat.messages.isNotEmpty()) {
                         c.time = chat.messages.last().timestamp.toDate()
-                        this.text = Utils.formatDateToString(c)
+                        this.text = SimpleDateFormat("dd/MM/yy - HH:mm", Locale.ITALY).format(c.time)
                     } else{
                         this.visibility = View.INVISIBLE
                     }
@@ -81,12 +85,25 @@ class RequestRecyclerViewAdapter(
                         if (chat.messages.isNotEmpty()) chat.messages.last().text
                         else "This chat is still empty"
                 }
-
                 val ivProfilePic = chatCard.findViewById<ImageView>(R.id.ivProfilePic)
                 ivProfilePic.apply{
                     this.clipToOutline = true
                     if(chat.client["profilePictureUrl"]!= null){
                         Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
+                    }
+                }
+                chatCard.findViewById<TextView>(R.id.tvStatus).apply{
+                    if(chat.assigned){
+                        if(ts.status == Timeslot.Status.COMPLETED){
+                            this.text = "Completed"
+                            this.setTextColor(ColorStateList.valueOf(parentFragment.resources.getColor(R.color.purple_500)))
+                        } else if(ts.status == Timeslot.Status.ASSIGNED) {
+                            this.text = "Assigned"
+                            this.setTextColor(ColorStateList.valueOf(parentFragment.resources.getColor(R.color.dark_green)))
+                        }
+                    } else {
+                        this.text = "Not assigned"
+                        this.setTextColor(ColorStateList.valueOf(parentFragment.resources.getColor(R.color.medium_grey)))
                     }
                 }
 
@@ -106,6 +123,14 @@ class RequestRecyclerViewAdapter(
         }
 
         holder.chipCount.text = holder.hiddenView.childCount.toString()
+        holder.chipCount.chipBackgroundColor =
+            when(ts.status){
+                Timeslot.Status.ASSIGNED -> ColorStateList.valueOf(parentFragment.resources.getColor(R.color.light_green))
+                Timeslot.Status.COMPLETED -> ColorStateList.valueOf(parentFragment.resources.getColor(R.color.purple_200))
+                else -> ColorStateList.valueOf(parentFragment.resources.getColor(R.color.light_grey))
+            }
+
+        holder.tvDate.text = Utils.formatDateToString(ts.date)
 
         //TODO: navigate to timeslot details
         holder.fixedLayout.setOnClickListener { showHiddenLayout(holder) }

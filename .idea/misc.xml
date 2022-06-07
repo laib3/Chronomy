@@ -65,7 +65,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.35" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.35104166666666664" />
-        <entry key="app/src/main/res/layout/chat_card.xml" value="0.9841269841269841" />
+        <entry key="app/src/main/res/layout/chat_card.xml" value="1.0" />
         <entry key="app/src/main/res/layout/collapse_date_inside.xml" value="0.42294791892722805" />
         <entry key="app/src/main/res/layout/collapse_duration.xml" value="0.10925925925925926" />
         <entry key="app/src/main/res/layout/collapse_duration_inside.xml" value="0.43003104881004056" />
@@ -83,7 +83,7 @@
         <entry key="app/src/main/res/layout/fragment_message_received.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_message_sent.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/fragment_requests.xml" value="0.35104166666666664" />
-        <entry key="app/src/main/res/layout/fragment_requests_list.xml" value="0.35104166666666664" />
+        <entry key="app/src/main/res/layout/fragment_requests_list.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_show_profile.xml" value="0.3113456464379947" />
         <entry key="app/src/main/res/layout/fragment_show_profile_data.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_show_profile_picture.xml" value="0.35104166666666664" />
@@ -95,6 +95,7 @@
         <entry key="app/src/main/res/layout/list_item.xml" value="0.15185185185185185" />
         <entry key="app/src/main/res/layout/modal_repetition.xml" value="0.33" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/request_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/skill_card.xml" value="0.35104166666666664" />
         <entry key="app/src/main/res/layout/skill_edit_modal.xml" value="0.33" />
         <entry key="app/src/main/res/layout/skill_home_button.xml" value="0.33" />

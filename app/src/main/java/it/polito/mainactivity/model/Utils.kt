@@ -35,6 +35,12 @@ class Utils {
             return dateFormat.format(date.time)
         }
 
+        fun formatDateToTime(date: Calendar?): String {
+            if(date == null)
+                return ""
+            return date.time.time.toString()
+        }
+
         fun formatYearMonthDayToString(year: Int, month: Int, day: Int): String {
             val date = GregorianCalendar(year, month, day)
             return formatDateToString(date)

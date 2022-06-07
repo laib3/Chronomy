@@ -4,54 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/big_distance">
+    android:layout_marginBottom="@dimen/big_distance"
+    android:padding="@dimen/medium_distance">
 
     <ImageView
         android:id="@+id/ivProfilePic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/request_profile_icon_size"
+        android:layout_height="@dimen/request_profile_icon_size"
+        android:layout_marginEnd="@dimen/medium_distance"
         android:background="@drawable/white_circle_bg"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/tvMsg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvNickname"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/profile_pic_1" />
 
     <TextView
         android:id="@+id/tvNickname"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_distance"
         android:text="@string/user_profile_nickname"
         android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvMsg"
+        app:layout_constraintEnd_toStartOf="@+id/tvStatus"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ivProfilePic"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="@dimen/small_distance"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDate"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_distance"
         android:text="@string/date_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/profile_text_size_tiny"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMsg"
+        app:layout_constraintEnd_toEndOf="@+id/tvStatus"
+        app:layout_constraintStart_toEndOf="@+id/tvMsg"
+        app:layout_constraintTop_toTopOf="@+id/tvMsg" />
 
     <TextView
         android:id="@+id/tvMsg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_distance"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/black"
         android:text="@string/empty_timeslot_list_message"
-        android:textSize="16sp"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/profile_text_size_tiny"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvDate"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/tvNickname"
-        app:layout_constraintTop_toBottomOf="@+id/tvNickname"
-        android:layout_marginBottom="@dimen/big_distance"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvNickname" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_distance"
+        android:text="status"
+        android:textColor="@color/keppel"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvNickname"
+        app:layout_constraintTop_toTopOf="@+id/tvNickname" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
