@@ -34,6 +34,8 @@ class TimeslotDetailsFragment : Fragment() {
     private var tiAvailability: TextInputLayout? = null
     private var tiLocation: TextInputLayout? = null
     private var tiCategory: TextInputLayout? = null
+    private var tiCost: TextInputLayout? = null
+    private var tiStatus: TextInputLayout? = null
 
     private var startChat: Boolean = false
 
@@ -66,8 +68,10 @@ class TimeslotDetailsFragment : Fragment() {
             ts = it.find { t -> t.timeslotId == id }
 
             // check if timeslot is published or not - if yes enable button
-            if(ts?.status == Timeslot.Status.PUBLISHED){
+            if (ts?.status == Timeslot.Status.PUBLISHED) {
                 setFab(binding.bSendRequest, true)
+            } else {
+                setFab(binding.bSendRequest, false)
             }
 
             tiTitle?.editText?.setText(ts?.title)
@@ -86,6 +90,17 @@ class TimeslotDetailsFragment : Fragment() {
                 tiAvailability?.editText?.text = dateString
                 tiLocation?.editText?.setText(ts!!.location)
                 tiCategory?.editText?.setText(ts!!.category)
+                tiStatus?.editText?.setText(ts!!.status.toString())
+                tiCost?.editText?.setText(
+                    String.format(
+                        getString(R.string.user_profile_balance_placeholder),
+                        Utils.tcuFromStartEndHour(
+                            ts!!.startHour,
+                            ts!!.endHour
+                        ).toString()
+                    )
+                )
+
             }
 
             // if I am client of one of the chat of the timeslot disable button
@@ -95,16 +110,16 @@ class TimeslotDetailsFragment : Fragment() {
         }
 
         vm.newChatId.observe(viewLifecycleOwner) {
-           if (it!= null) {
-               val action =
-                   TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
-                       it,
-                       ts!!.timeslotId,
-                       ts!!.title
-                   )
-               vm.resetNewChatId()
-               parentFragment?.findNavController()?.navigate(action)
-           }
+            if (it != null) {
+                val action =
+                    TimeslotDetailsFragmentDirections.actionNavDetailsToChatFragment(
+                        it,
+                        ts!!.timeslotId,
+                        ts!!.title
+                    )
+                vm.resetNewChatId()
+                parentFragment?.findNavController()?.navigate(action)
+            }
         }
 
         binding.bSendRequest.setOnClickListener {
@@ -121,6 +136,8 @@ class TimeslotDetailsFragment : Fragment() {
         tiAvailability = view.findViewById(R.id.AvailabilityTextField)
         tiLocation = view.findViewById(R.id.tilLocation)
         tiCategory = view.findViewById(R.id.CategoryTextField)
+        tiStatus = view.findViewById(R.id.tilStatus)
+        tiCost = view.findViewById(R.id.tilCost)
     }
 
     override fun onDestroyView() {
@@ -155,12 +172,11 @@ class TimeslotDetailsFragment : Fragment() {
     }
 
     private fun setFab(f: ExtendedFloatingActionButton, enabled: Boolean) {
-        if(enabled){
+        if (enabled) {
             f.isEnabled = true
             f.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.purple_500))
             f.text = "Send request"
-        }
-        else {
+        } else {
             f.isEnabled = false
             f.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.dark_grey))
             f.text = "Request sent"
