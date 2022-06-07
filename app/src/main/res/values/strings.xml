@@ -34,6 +34,7 @@
     <string name="duration_placeholder">--h --m</string>
     <string name="message_placeholder">This is my message that will wrap into multiple lines and keep on going</string>
     <string name="rating_comment_placeholder">«%1$s»</string>
+    <string name="cost_placeholder">%1$s TCU</string>
 
 
     <!-- labels -->

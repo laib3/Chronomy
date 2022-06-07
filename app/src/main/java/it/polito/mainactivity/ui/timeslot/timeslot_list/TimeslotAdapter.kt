@@ -33,6 +33,7 @@ class TimeslotAdapter(
         val cvTimeslotCard: MaterialCardView = v.findViewById(R.id.cvRatingCard)
         val ibEdit: ImageButton = v.findViewById(R.id.ibEdit)
         val ibDelete: ImageButton = v.findViewById(R.id.ibDelete)
+        val tvCost: TextView = v.findViewById(R.id.tvCost)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeslotViewHolder {
@@ -47,7 +48,7 @@ class TimeslotAdapter(
         holder.tvTitle.text = ts.title
         holder.tvLocation.text = ts.location
         holder.tvDate.text = Utils.formatDateToString(ts.date)
-
+        holder.tvCost.text = String.format(parentFragment.resources.getString(R.string.cost_placeholder), Utils.tcuFromStartEndHour(ts.startHour, ts.endHour).toString())
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,
