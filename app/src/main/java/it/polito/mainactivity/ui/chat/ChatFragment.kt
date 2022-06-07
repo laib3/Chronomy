@@ -49,16 +49,12 @@ class ChatFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(root.context)
 
         vm.timeslots.observe(viewLifecycleOwner) { timeslots ->
-            val cId = args.chatId
-            val tId = args.timeslotId
-            val t = timeslots?.firstOrNull { it.timeslotId == args.timeslotId }
-            ts = t
-            val c = ts?.chats?.firstOrNull { it.chatId == args.chatId }
-            chat = c
+            ts = timeslots?.firstOrNull { it.timeslotId == args.timeslotId }
+            chat = ts?.chats?.firstOrNull { it.chatId == args.chatId }
             if(chat == null)
-                throw Exception("Chat shouldn't be null")
+                findNavController().navigateUp()
             if(ts == null)
-                throw Exception("Timeslot shouldn't be null")
+                findNavController().navigateUp()
             adapter = MessageRecyclerViewAdapter(
                 chat!!, ts!!, this
             )
