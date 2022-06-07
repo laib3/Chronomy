@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Tasks.await
 import com.google.firebase.FirebaseException
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
@@ -306,11 +307,15 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     createSubmitTimeslotMap(t, date, timeslotId)
                 }.forEach { tMap ->
                     val tsRef = db.collection("timeslots").document(tMap["userId"] as String)
-                    tsRef.set(tMap).await()
-                    // update blank ratings
-                    createBlankRatings(tMap["userId"] as String).forEach { r ->
-                        tsRef.collection("ratings").document().set(r.toMap()).await()
-                    }
+                    db.runBatch{ batch ->
+                        // update timeslot
+                        batch.set(tsRef, tMap)
+                        // update ratings
+                        createBlankRatings(tMap["userId"] as String).forEach{ r ->
+                            val rRef = tsRef.collection("ratings").document()
+                            batch.set(rRef, r.toMap())
+                        }
+                    }.await()
                 }
             }
             true
@@ -335,7 +340,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 t.category in app.resources.getStringArray(R.array.skills_array)
     }
 
-    fun checkSubmitValid(): Boolean {
+    private fun checkSubmitValid(): Boolean {
         val app = getApplication<Application>()
         return submitTimeslot.value!!.title.isNotBlank() &&
                 submitTimeslot.value!!.location.isNotBlank() &&
@@ -356,20 +361,28 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         try {
             viewModelScope.launch {
                 val tsRef = db.collection("timeslots").document(timeslotId)
-                // delete ratings
-                tsRef.collection("ratings").get()
-                    .await().documents.forEach { r -> r.reference.delete().await() }
-                val chatRefs = tsRef.collection("chats")
-                chatRefs.get().await().documents.forEach { cs ->
+                val ratingsRefs = tsRef.collection("ratings").get()
+                        .await()
+                val chatsMessages = hashMapOf<DocumentSnapshot, MutableList<DocumentSnapshot>>()
+                val chatsRefs = tsRef.collection("chats").get().await()
+                chatsRefs.documents.forEach{ cs ->
                     val messages = cs.reference.collection("messages").get().await()
-                    // delete messages
-                    messages.forEach { m -> m.reference.delete().await() } // delete messages
-                    // delete chats
-                    cs.reference.delete().await() // delete chats
+                    chatsMessages.put(cs, messages.documents.toMutableList())
                 }
-                // delete timeslot
-                tsRef.delete().await()
+                db.runTransaction { transaction ->
+                    // delete ratings
+                    ratingsRefs.documents.forEach { r -> transaction.delete(r.reference) }
+                    chatsMessages.entries.forEach{ entry ->
+                        // delete messages
+                        entry.value.forEach{ ms -> transaction.delete(ms.reference) }
+                        // delete chat
+                        transaction.delete(entry.key.reference)
+                    }
+                    transaction.delete(tsRef)
+                }.await()
             }
+            // update live viewmodel
+            _timeslots.value = _timeslots.value?.filter{ t -> t.timeslotId != timeslotId }
             return true
         } catch (e: Exception) {
             e.printStackTrace()
