@@ -18,10 +18,12 @@ import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
 import it.polito.mainactivity.viewModel.TimeslotViewModel
 import it.polito.mainactivity.model.*
+import it.polito.mainactivity.viewModel.UserProfileViewModel
 import kotlinx.coroutines.launch
 
 class TimeslotDetailsFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
+    private val userVm: UserProfileViewModel by activityViewModels()
 
     private var _binding: FragmentTimeslotDetailsBinding? = null
 
@@ -101,7 +103,7 @@ class TimeslotDetailsFragment : Fragment() {
 
         binding.extendedFab.setOnClickListener {
             //create new chat
-            vm.addChat(ts!!.timeslotId)
+            vm.addChat(ts!!.timeslotId, userVm.user.value!!)
         }
         return root
     }

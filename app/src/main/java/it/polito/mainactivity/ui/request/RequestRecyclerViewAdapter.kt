@@ -53,54 +53,56 @@ class RequestRecyclerViewAdapter(
         val inflater = LayoutInflater.from(parentFragment.context)
 
         for (chat: it.polito.mainactivity.model.Chat in ts.chats) {
-            chat.messages.sortBy { msg -> msg.timestamp }
-            val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
-            chatCard.findViewById<TextView>(R.id.tvNickname).apply {
-                if(chat.messages.isNotEmpty()){
-                   if(chat.messages[0].sender == Message.Sender.CLIENT){
-                       this.text = chat.client["nickname"].toString()
-                   }else if (chat.messages[0].sender == Message.Sender.PUBLISHER){
-                       ts.publisher["nickname"]
-                   }
-                }else{
-                    this.text = chat.client["nickname"].toString()
+            if(!chat.client.isNullOrEmpty()){
+                chat.messages.sortByDescending { msg -> msg.timestamp }
+                val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
+                chatCard.findViewById<TextView>(R.id.tvNickname).apply {
+                    if(chat.messages.isNotEmpty()){
+                        if(chat.messages[0].sender == Message.Sender.CLIENT){
+                            this.text = chat.client["nickname"].toString()
+                        } else if (chat.messages[0].sender == Message.Sender.PUBLISHER){
+                            ts.publisher["nickname"]
+                        }
+                    } else {
+                        this.text = chat.client["nickname"].toString()
+                    }
                 }
-            }
-            chatCard.findViewById<TextView>(R.id.tvDate).apply {
-                val c = Calendar.getInstance()
-                if (chat.messages.isNotEmpty()) {
-                    c.time = chat.messages[0].timestamp.toDate()
-                    this.text = Utils.formatDateToString(c)
-                } else{
-                    this.visibility = View.INVISIBLE
+                chatCard.findViewById<TextView>(R.id.tvDate).apply {
+                    val c = Calendar.getInstance()
+                    if (chat.messages.isNotEmpty()) {
+                        c.time = chat.messages[0].timestamp.toDate()
+                        this.text = Utils.formatDateToString(c)
+                    } else{
+                        this.visibility = View.INVISIBLE
+                    }
                 }
-            }
-            chatCard.findViewById<TextView>(R.id.tvMsg).apply {
-                this.text =
-                    if (chat.messages.isNotEmpty()) chat.messages[0].text
-                    else "This chat is still empty"
-            }
-
-            val ivProfilePic = chatCard.findViewById<ImageView>(R.id.ivProfilePic)
-            ivProfilePic.apply{
-                this.clipToOutline = true
-                if(chat.client["profilePictureUrl"]!= null){
-                    Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
+                chatCard.findViewById<TextView>(R.id.tvMsg).apply {
+                    this.text =
+                        if (chat.messages.isNotEmpty()) chat.messages[0].text
+                        else "This chat is still empty"
                 }
-            }
 
-            // Pass through bundle the id of the item in the list
-            chatCard.setOnClickListener {
-                val action =
-                    RequestsFragmentDirections.actionNavRequestsToChatFragment(
-                        chat.chatId,
-                        ts.timeslotId,
-                        ts.title
-                    )
-                parentFragment.findNavController().navigate(action)
-            }
+                val ivProfilePic = chatCard.findViewById<ImageView>(R.id.ivProfilePic)
+                ivProfilePic.apply{
+                    this.clipToOutline = true
+                    if(chat.client["profilePictureUrl"]!= null){
+                        Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
+                    }
+                }
 
-            holder.hiddenView.addView(chatCard)
+                // Pass through bundle the id of the item in the list
+                chatCard.setOnClickListener {
+                    val action =
+                        RequestsFragmentDirections.actionNavRequestsToChatFragment(
+                            chat.chatId,
+                            ts.timeslotId,
+                            ts.title
+                        )
+                    parentFragment.findNavController().navigate(action)
+                }
+
+                holder.hiddenView.addView(chatCard)
+            }
         }
 
         holder.chipCount.text = holder.hiddenView.childCount.toString()
@@ -113,8 +115,8 @@ class RequestRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    fun filterList(filteredList: List<Timeslot>?) {
-        if(filteredList.isNullOrEmpty())
+    fun filterList(filteredList: List<Timeslot>) {
+        if(filteredList == null)
             return
         val diffUtil = RequestDiffUtil(values, filteredList)
         val diffResult = calculateDiff(diffUtil)

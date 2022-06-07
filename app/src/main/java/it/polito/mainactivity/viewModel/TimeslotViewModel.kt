@@ -146,16 +146,17 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             _timeslots.value?.find { t -> t.timeslotId == cs.reference.parent.parent?.id }
                         val timeslotId = timeslot?.timeslotId
                         if (timeslot != null) {
-                            val newChat = Utils.toChatMap(cs)?.let { Chat(it) }
-                                ?: throw Exception("chat shouldn't be null")
                             val newChats = timeslot.chats
-                            val oldChat = newChats.find { chat -> chat.chatId == newChat.chatId }
-                            if (oldChat == null) { // add new chat if there wasn't
+                            val chatMap = Utils.toChatMap(cs)
+                            val oldChat = newChats.find { chat -> chat.chatId == chatMap?.get("chatId") as String }
+                            val messages = oldChat?.messages ?: listOf()
+                            val newChat = chatMap?.let { Chat(chatMap, messages.map{m -> m.toMap()}, chatMap["client"] as Map<String, Any>) }
+                            if (oldChat == null && newChat != null) { // add new chat if there wasn't
                                 newChats.add(newChat)
-                            } else { // update old chats list
+                            } else if(newChat != null){ // update old chats list
                                 newChats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
                             }
-                            tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = chats } else t }
+                            tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = newChats } else t }
                         }
                     }
                     if(tmpTimeslots != null){
@@ -410,27 +411,24 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     /**
      * Add chat between the owner of the timeslot (PUBLISHER) with the given id and the current user (CLIENT)
      **/
-    fun addChat(timeslotId: String): Boolean{
+    fun addChat(timeslotId: String, client: User): Boolean {
         return try {
+            val clientMap = client.toMap()
+            val chatRef = db.collection("timeslots").document(timeslotId).collection("chats").document()
+            val chatId = chatRef.id
+            val newChat = Chat(chatId, clientMap, false, mutableListOf())
             viewModelScope.launch {
-                val userRef = db.collection("users").document(auth.currentUser!!.uid)
-                val clientMap = userRef.get().await().let { Utils.toUserMap(it) }
-                    ?: throw Exception("clientMap shouldn't be null")
-                val chatRef =
-                    db.collection("timeslots").document(timeslotId).collection("chats").document()
-                val chatId = chatRef.id
-                val newChat = Chat(chatId, clientMap, false, mutableListOf())
                 // add chat to db with id chatId
                 chatRef.set(newChat.toMap()).await()
                 _newChatId.value = chatId
             }
             true
+
         } catch (e: Exception) {
             e.printStackTrace()
             false
         }
     }
-
 
     fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
         return try {

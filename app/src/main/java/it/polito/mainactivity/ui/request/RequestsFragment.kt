@@ -39,8 +39,7 @@ class RequestsFragment : Fragment() {
         val tabLayout: TabLayout = binding.tabLayout
 
         vm.timeslots.observe(viewLifecycleOwner) {
-            loadedList = vm.timeslots.value!!
-
+            loadedList = it
             //selected tab is "request received"
             shownList = if (tabLayout.getTabAt(0)!!.isSelected) {
                 loadedList!!.filter { t -> t.publisher["userId"] == auth.currentUser!!.uid && t.chats.size > 0 }
@@ -66,7 +65,7 @@ class RequestsFragment : Fragment() {
                         // show current user's requests made to other users
                         loadedList?.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
                     }
-                adapter?.filterList(shownList)
+                adapter?.filterList(shownList ?: emptyList())
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}
