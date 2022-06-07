@@ -456,7 +456,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val newMessage = Message(msgId, text, ts, sender)
                 val mMap = newMessage.toMap()
                 mMap["timestamp"] = FieldValue.serverTimestamp()
-                msgRef.document(msgId).set(newMessage.toMap()).await()
+                msgRef.document(msgId).set(mMap).await()
             }
             true
         } catch (e: Exception) {
