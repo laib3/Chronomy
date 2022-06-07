@@ -1,6 +1,7 @@
 package it.polito.mainactivity.model
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ServerTimestamp
 
 data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, var messages: MutableList<Message>){
 
@@ -38,7 +39,7 @@ data class Message(val messageId: String, val text: String, val timestamp: Times
         return hashMapOf(
             "messageId" to messageId,
             "text" to text,
-            "timestamp" to timestamp,
+            "timestamp" to timestamp as ServerTimestamp,
             "sender" to sender
         )
     }

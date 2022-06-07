@@ -53,7 +53,7 @@ class RequestRecyclerViewAdapter(
         val inflater = LayoutInflater.from(parentFragment.context)
 
         for (chat: it.polito.mainactivity.model.Chat in ts.chats) {
-            if(!chat.client.isNullOrEmpty()){
+            if(chat.client.isNotEmpty()){
                 chat.messages.sortBy{ msg -> msg.timestamp }
                 val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
                 chatCard.findViewById<TextView>(R.id.tvNickname).apply {

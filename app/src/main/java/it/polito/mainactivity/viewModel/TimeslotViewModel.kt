@@ -8,20 +8,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import com.google.android.gms.tasks.Tasks.await
 import com.google.firebase.FirebaseException
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.*
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
@@ -462,7 +454,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 val msgRef = chat.reference.collection("messages")
                 val msgId = msgRef.document().id
                 val newMessage = Message(msgId, text, ts, sender)
-                msgRef.document(msgId).set(newMessage).await()
+                msgRef.document(msgId).set(newMessage.toMap()).await()
             }
             true
         } catch (e: Exception) {
