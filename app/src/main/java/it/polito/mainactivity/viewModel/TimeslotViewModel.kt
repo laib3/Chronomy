@@ -445,10 +445,25 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                     ?: throw Exception("chatId ($chatId) not found")
                 if (chat.documents.size != 1) throw Exception("chatId ($chatId) should be unique")
                 chat.first().reference.update("assigned", assigned).await()
-                if(assigned)
-                    chat.first().reference.parent.parent!!.update("status", Timeslot.Status.ASSIGNED).await()
-                else
+                val timeslot = chat.first().reference.parent.parent!!.get().await()
+                val cost = timeslot.let{ Utils.tcuFromStartEndHour(it["startHour"] as String, it["endHour"] as String) }
+                val clientId = ((chat.first().reference.get().await()["client"] as Map<String, Any>)["userId"] as String)
+                val clientRef = db.collection("users").document(clientId)
+                val clientBalance = (clientRef.get().await().get("balance") as Long).toInt()
+                val publisherId = (timeslot.get("publisher") as Map<String, Any>)["userId"] as String
+                val publisherRef = db.collection("users").document(publisherId)
+                if(assigned && clientBalance >= cost){
+                    db.runTransaction { transaction ->
+                        val publisherBalance = (transaction.get(publisherRef).get("balance") as Long).toInt()
+                        transaction.update(publisherRef, "balance", publisherBalance + cost)
+                        transaction.update(clientRef, "balance", clientBalance - cost)
+                        chat.first().reference.parent.parent!!.update("status", Timeslot.Status.ASSIGNED)
+                    }.await()
+                }
+                else {
                     chat.first().reference.parent.parent!!.update("status", Timeslot.Status.PUBLISHED).await()
+                    reject(chatId)
+                }
             }
             true
         } catch (e: Exception) {

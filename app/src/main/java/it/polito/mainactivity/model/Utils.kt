@@ -266,5 +266,11 @@ class Utils {
                 else -> Message.Sender.ERROR
             }
         }
+
+        fun tcuFromStartEndHour(startHour: String, endHour: String): Int{
+            val duration = durationInMinutes(getDuration(startHour, endHour))
+            return (duration / 30) + ( if((duration % 30) >= 1) 1 else 0 )
+        }
+
     }
 }

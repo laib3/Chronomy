@@ -15,6 +15,7 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.chip.Chip
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.collection.LLRBNode
 import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
@@ -40,6 +41,8 @@ class RequestRecyclerViewAdapter(
         val fixedLayout: ConstraintLayout = v.findViewById(R.id.fixed_layout)
     }
 
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         val vg = LayoutInflater
             .from(parent.context)
@@ -60,8 +63,26 @@ class RequestRecyclerViewAdapter(
             if(chat.client.isNotEmpty()){
                 chat.messages.sortBy{ msg -> msg.timestamp }
                 val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
-                chatCard.findViewById<TextView>(R.id.tvNickname).apply {
-                    this.text = chat.client["nickname"] as String
+                if(chat.client["userId"] is String && chat.client["userId"] as String == auth.currentUser!!.uid){
+                    chatCard.findViewById<TextView>(R.id.tvNickname).apply { // show publisher nickname
+                        this.text = ts.publisher["nickname"] as String
+                    }
+                    chatCard.findViewById<ImageView>(R.id.ivProfilePic).apply { // show client profile pic
+                        if(ts.publisher["profilePictureUrl"] != null){
+                            Picasso.get().load(ts.publisher["profilePictureUrl"] as String).into(this)
+                        }
+                        this.clipToOutline = true
+                    }
+                } else {
+                    chatCard.findViewById<TextView>(R.id.tvNickname).apply { // show client nickname
+                        this.text = chat.client["nickname"] as String
+                    }
+                    chatCard.findViewById<ImageView>(R.id.ivProfilePic).apply { // show client profile pic
+                        if(chat.client["profilePictureUrl"] != null){
+                            Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
+                        }
+                        this.clipToOutline = true
+                    }
                 }
                 chatCard.findViewById<TextView>(R.id.tvDate).apply {
                     val c = Calendar.getInstance()
@@ -77,13 +98,6 @@ class RequestRecyclerViewAdapter(
                         if (chat.messages.isNotEmpty()) chat.messages.last().text
                     else
                         ""
-                }
-                val ivProfilePic = chatCard.findViewById<ImageView>(R.id.ivProfilePic)
-                ivProfilePic.apply{
-                    this.clipToOutline = true
-                    if(chat.client["profilePictureUrl"]!= null){
-                        Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
-                    }
                 }
                 chatCard.findViewById<TextView>(R.id.tvStatus).apply{
                     if(chat.assigned){
