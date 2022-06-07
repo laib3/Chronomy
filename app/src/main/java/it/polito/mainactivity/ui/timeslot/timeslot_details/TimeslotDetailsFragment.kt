@@ -70,8 +70,10 @@ class TimeslotDetailsFragment : Fragment() {
             // check if timeslot is published or not - if yes enable button
             if (ts?.status == Timeslot.Status.PUBLISHED) {
                 setFab(binding.bSendRequest, true)
+                binding.bSendRequest.visibility = View.VISIBLE
             } else {
                 setFab(binding.bSendRequest, false)
+                binding.bSendRequest.visibility = View.INVISIBLE
             }
 
             tiTitle?.editText?.setText(ts?.title)
@@ -106,6 +108,7 @@ class TimeslotDetailsFragment : Fragment() {
             // if I am client of one of the chat of the timeslot disable button
             if (ts!!.chats.any { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }) {
                 setFab(binding.bSendRequest, false)
+                binding.bSendRequest.visibility = View.VISIBLE
             }
         }
 
