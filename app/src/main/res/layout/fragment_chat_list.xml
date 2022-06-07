@@ -10,57 +10,35 @@
         android:id="@+id/btns_manage_req"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@android:color/white">
+        app:layout_constraintVertical_chainStyle="spread_inside">
 
         <Button
-            android:id="@+id/outlinedButton"
+            android:id="@+id/bReject"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_reject_request"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/containedButton"
+            app:layout_constraintEnd_toStartOf="@+id/bAccept"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/containedButton"
+            android:id="@+id/bAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/btn_accept_request"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/outlinedButton"
+            app:layout_constraintStart_toEndOf="@+id/bReject"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <EditText
-        android:id="@+id/textMsg"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/white"
-        android:ems="10"
-        android:hint="Enter Message"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnSendMsg"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageButton
-        android:id="@+id/btnSendMsg"
-        android:layout_width="40dp"
-        android:layout_height="48dp"
-        android:background="@drawable/ic_send_msg"
-        app:layout_constraintBottom_toBottomOf="@+id/textMsg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textMsg"
-        android:contentDescription="btnsend"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
@@ -70,28 +48,105 @@
         android:background="@color/browser_actions_bg_grey"
         android:paddingTop="@dimen/medium_distance"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/ratingZone"
+        app:layout_constraintBottom_toTopOf="@+id/cvAlreadyAssigned"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btns_manage_req"
-        app:layout_constraintVertical_bias="0.0"
         app:reverseLayout="false"
-        tools:context=".ui.chat.ChatFragment" />
+        tools:context=".ui.chat.ChatFragment">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/ratingZone"
-        android:visibility="gone"
-        android:layout_width="match_parent"
+        android:id="@+id/cvAlreadyAssigned"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/medium_distance"
+        android:layout_margin="@dimen/big_distance"
+        android:visibility="gone"
+        app:cardBackgroundColor="#ffffcccc"
+        app:cardCornerRadius="@dimen/big_distance"
+        app:contentPadding="@dimen/big_distance"
         app:layout_constraintBottom_toTopOf="@+id/textMsg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list"
+        app:layout_constraintTop_toBottomOf="@+id/list">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvAlreadyAssignedTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_distance"
+                android:text="@string/already_assigned_title"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="@dimen/profile_text_size_medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvAlreadyAssignedMessage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvAlreadyAssignedMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/already_assigned_message"
+                app:layout_constraintBottom_toTopOf="@+id/tvAlreadyAssignedTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAlreadyAssignedTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <EditText
+        android:id="@+id/textMsg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_distance"
+        android:background="@drawable/outside_shape"
+        android:ems="10"
+        android:hint="Enter Message"
+        android:inputType="textPersonName"
+        android:padding="@dimen/big_distance"
+        app:layout_constraintBottom_toTopOf="@+id/ratingZone"
+        app:layout_constraintEnd_toStartOf="@+id/bSendMsg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvAlreadyAssigned" />
+
+    <ImageButton
+        android:id="@+id/bSendMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/big_distance"
+        android:background="@drawable/circle"
+        android:backgroundTint="#FFCAC1EA"
+        android:contentDescription="bSendMsg"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textMsg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textMsg"
+        app:layout_constraintTop_toTopOf="@+id/textMsg"
+        app:srcCompat="@drawable/ic_send_msg"
+        app:tint="@color/purple_500" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ratingZone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_distance"
+        android:layout_marginHorizontal="@dimen/medium_distance"
         android:background="@drawable/message_background"
-        android:layout_marginBottom="@dimen/big_distance"
-        >
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMsg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -101,14 +156,14 @@
                 android:id="@+id/feedbackMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/medium_distance"
                 android:text="@string/leave_feedback"
                 android:textColor="@color/not_so_black"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/ratingBar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginVertical="@dimen/medium_distance"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -131,14 +186,13 @@
                 app:layout_constraintBottom_toTopOf="@+id/btnSendFeedback"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/ratingBar">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextSkillDescription"
-                    android:layout_marginHorizontal="@dimen/medium_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/medium_distance"
                     android:hint="@string/rating_hint"
                     android:inputType="textMultiLine"
                     android:maxLength="@integer/maxDescriptionLength" />
@@ -150,12 +204,12 @@
                 style="@style/ModalSaveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/medium_distance"
                 android:text="@string/send_feedback"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputComment"
-                android:layout_marginBottom="@dimen/medium_distance"/>
+                app:layout_constraintTop_toBottomOf="@+id/textInputComment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvRatingCard"
@@ -27,132 +26,155 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iUserPic"
-                android:layout_width="@dimen/skill_icon_size"
-                android:layout_height="@dimen/skill_icon_size"
-                android:layout_marginStart="@dimen/big_distance"
-                android:layout_marginTop="@dimen/medium_distance"
-                android:layout_marginEnd="@dimen/big_distance"
-                android:layout_marginBottom="@dimen/medium_distance"
-                android:contentDescription="Category"
-                android:src="@drawable/ic_skill_gardening"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clTop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/big_distance"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
-                app:layout_constraintEnd_toStartOf="@+id/tvUserNickname"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_skill_gardening" />
-
-            <TextView
-                android:id="@+id/tvUserNickname"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/big_distance"
-                android:gravity="center_vertical"
-                android:text="Title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/iUserPic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iUserPic"
-                app:layout_constraintTop_toTopOf="@+id/iUserPic" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iUserPic"
+                    android:layout_width="@dimen/skill_icon_size"
+                    android:layout_height="@dimen/skill_icon_size"
+                    android:layout_marginEnd="@dimen/medium_distance"
+                    android:contentDescription="Category"
+                    android:src="@drawable/ic_skill_gardening"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvUserNickname"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_skill_gardening" />
+
+                <TextView
+                    android:id="@+id/tvCost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="tvCost"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvUserNickname"
+                    app:layout_constraintStart_toStartOf="@+id/tvUserNickname"
+                    app:layout_constraintTop_toBottomOf="@+id/tvUserNickname" />
+
+                <TextView
+                    android:id="@+id/tvUserNickname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/small_distance"
+                    android:gravity="center_vertical"
+                    android:text="Title"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/tvCost"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/iUserPic"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/divider"
-                android:layout_width="0dp"
+                android:layout_width="403dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/tvComment"
+                app:layout_constraintBottom_toTopOf="@+id/clBottom"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iUserPic" />
+                app:layout_constraintTop_toBottomOf="@+id/clTop" />
 
-            <TextView
-                android:id="@+id/tvComment"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBottom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_distance"
-                android:layout_marginEnd="@dimen/medium_distance"
-                android:text="Location"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/tvDate"
-                app:layout_constraintEnd_toStartOf="@+id/ibEdit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="@+id/iUserPic"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-            <TextView
-                android:id="@+id/tvHour"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/medium_distance"
-                android:text="Hour"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
+                android:padding="@dimen/medium_distance"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tvComment"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tvComment"
-                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/tvHour"
-                app:layout_constraintEnd_toEndOf="@+id/tvComment"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tvComment"
-                app:layout_constraintTop_toBottomOf="@+id/tvComment" />
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/tvLocation"
+                    app:layout_constraintEnd_toStartOf="@+id/ibDelete"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/ibEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_distance"
-                android:layout_marginBottom="@dimen/big_distance"
-                android:background="@drawable/circle"
-                android:backgroundTint="#FFCAC1EA"
-                android:contentDescription="editButton"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tvUserNickname"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tvComment"
-                app:layout_constraintTop_toBottomOf="@+id/ibDelete"
-                app:srcCompat="@drawable/ic_menu_edit"
-                app:tint="@color/purple_500" />
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/tvHour"
+                    app:layout_constraintEnd_toEndOf="@+id/tvDate"
+                    app:layout_constraintStart_toStartOf="@+id/tvDate"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
-            <ImageButton
-                android:id="@+id/ibDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_distance"
-                android:layout_marginBottom="@dimen/medium_distance"
-                android:background="@drawable/circle"
-                android:backgroundTint="#FFCAC1EA"
-                android:contentDescription="deleteButton"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                app:layout_constraintBottom_toTopOf="@+id/ibEdit"
-                app:layout_constraintEnd_toEndOf="@+id/ibEdit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/ibEdit"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                app:layout_constraintVertical_chainStyle="spread"
-                app:srcCompat="@drawable/ic_baseline_delete_24"
-                app:tint="@color/purple_500" />
+                <TextView
+                    android:id="@+id/tvHour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Hour"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvDate"
+                    app:layout_constraintStart_toStartOf="@+id/tvDate"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+
+                <ImageButton
+                    android:id="@+id/ibDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/big_distance"
+                    android:layout_marginEnd="@dimen/medium_distance"
+                    android:layout_marginBottom="@dimen/medium_distance"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="#FFCAC1EA"
+                    android:contentDescription="deleteButton"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    app:layout_constraintBottom_toTopOf="@+id/ibEdit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tvDate"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_delete_24"
+                    app:tint="@color/purple_500" />
+
+                <ImageButton
+                    android:id="@+id/ibEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/medium_distance"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="#FFCAC1EA"
+                    android:contentDescription="editButton"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/ibDelete"
+                    app:layout_constraintStart_toStartOf="@+id/ibDelete"
+                    app:layout_constraintTop_toBottomOf="@+id/ibDelete"
+                    app:srcCompat="@drawable/ic_menu_edit"
+                    app:tint="@color/purple_500" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

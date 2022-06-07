@@ -1,5 +1,6 @@
 package it.polito.mainactivity.ui.request
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,14 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.chip.Chip
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.collection.LLRBNode
+import com.squareup.picasso.Picasso
 import it.polito.mainactivity.R
+import it.polito.mainactivity.model.Message
 import it.polito.mainactivity.model.Timeslot
 import it.polito.mainactivity.model.Utils
+import java.text.SimpleDateFormat
 import java.util.*
 
 class RequestRecyclerViewAdapter(
@@ -31,8 +37,11 @@ class RequestRecyclerViewAdapter(
         val hiddenView: LinearLayout = v.findViewById(R.id.hidden_view)
         val baseCardView: CardView = v.findViewById(R.id.base_cardview)
         val chipCount: Chip = v.findViewById(R.id.chip)
-        val fixedLayout:ConstraintLayout = v.findViewById(R.id.fixed_layout)
+        val tvDate: TextView = v.findViewById(R.id.tvRequestTimeslotDate)
+        val fixedLayout: ConstraintLayout = v.findViewById(R.id.fixed_layout)
     }
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestViewHolder {
         val vg = LayoutInflater
@@ -51,47 +60,103 @@ class RequestRecyclerViewAdapter(
         val inflater = LayoutInflater.from(parentFragment.context)
 
         for (chat: it.polito.mainactivity.model.Chat in ts.chats) {
-            chat.messages.sortBy { msg -> msg.timestamp }
-            val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
-            chatCard.findViewById<TextView>(R.id.tvNickname).apply {
-                this.text = chat.client["nickname"].toString()
-            }
-            chatCard.findViewById<TextView>(R.id.tvDate).apply {
-                val c = Calendar.getInstance()
-                c.time= chat.messages[0].timestamp.toDate()
-                this.text = Utils.formatDateToString(c)
-            }
-            chatCard.findViewById<TextView>(R.id.tvMsg).apply {
-                this.text = chat.messages[0].text
-            }
-            // Pass through bundle the id of the item in the list
-            chatCard.setOnClickListener{
-                val action =
-                    RequestsFragmentDirections.actionNavRequestsToChatFragment(chat.chatId, ts.timeslotId, ts.title)
-                    parentFragment.findNavController().navigate(action)
-            }
+            if(chat.client.isNotEmpty()){
+                chat.messages.sortBy{ msg -> msg.timestamp }
+                val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
+                if(chat.client["userId"] is String && chat.client["userId"] as String == auth.currentUser!!.uid){
+                    chatCard.findViewById<TextView>(R.id.tvNickname).apply { // show publisher nickname
+                        this.text = ts.publisher["nickname"] as String
+                    }
+                    chatCard.findViewById<ImageView>(R.id.ivProfilePic).apply { // show client profile pic
+                        if(ts.publisher["profilePictureUrl"] != null){
+                            Picasso.get().load(ts.publisher["profilePictureUrl"] as String).into(this)
+                        }
+                        this.clipToOutline = true
+                    }
+                } else {
+                    chatCard.findViewById<TextView>(R.id.tvNickname).apply { // show client nickname
+                        this.text = chat.client["nickname"] as String
+                    }
+                    chatCard.findViewById<ImageView>(R.id.ivProfilePic).apply { // show client profile pic
+                        if(chat.client["profilePictureUrl"] != null){
+                            Picasso.get().load(chat.client["profilePictureUrl"] as String).into(this)
+                        }
+                        this.clipToOutline = true
+                    }
+                }
+                chatCard.findViewById<TextView>(R.id.tvDate).apply {
+                    val c = Calendar.getInstance()
+                    if (chat.messages.isNotEmpty()) {
+                        c.time = chat.messages.last().timestamp.toDate()
+                        this.text = SimpleDateFormat("dd/MM/yy - HH:mm", Locale.ITALY).format(c.time)
+                    } else{
+                        this.visibility = View.INVISIBLE
+                    }
+                }
+                chatCard.findViewById<TextView>(R.id.tvMsg).apply {
+                    this.text =
+                        if (chat.messages.isNotEmpty()) chat.messages.last().text
+                    else
+                        ""
+                }
+                chatCard.findViewById<TextView>(R.id.tvStatus).apply{
+                    if(chat.assigned){
+                        if(ts.status == Timeslot.Status.COMPLETED){
+                            this.text = "Completed"
+                            this.setTextColor(ColorStateList.valueOf(parentFragment.resources.getColor(R.color.purple_500)))
+                        } else if(ts.status == Timeslot.Status.ASSIGNED) {
+                            this.text = "Assigned"
+                            this.setTextColor(ColorStateList.valueOf(parentFragment.resources.getColor(R.color.dark_green)))
+                        }
+                    } else {
+                        this.text = "Not assigned"
+                        this.setTextColor(ColorStateList.valueOf(parentFragment.resources.getColor(R.color.medium_grey)))
+                    }
+                }
 
-            holder.hiddenView.addView(chatCard)
+                // Pass through bundle the id of the item in the list
+                chatCard.setOnClickListener {
+                    val action =
+                        RequestsFragmentDirections.actionNavRequestsToChatFragment(
+                            chat.chatId,
+                            ts.timeslotId,
+                            ts.title
+                        )
+                    parentFragment.findNavController().navigate(action)
+                }
+
+                holder.hiddenView.addView(chatCard)
+            }
         }
 
         holder.chipCount.text = holder.hiddenView.childCount.toString()
+        holder.chipCount.chipBackgroundColor =
+            when(ts.status){
+                Timeslot.Status.ASSIGNED -> ColorStateList.valueOf(parentFragment.resources.getColor(R.color.light_green))
+                Timeslot.Status.COMPLETED -> ColorStateList.valueOf(parentFragment.resources.getColor(R.color.purple_200))
+                else -> ColorStateList.valueOf(parentFragment.resources.getColor(R.color.light_grey))
+            }
+
+        holder.tvDate.text = Utils.formatDateToString(ts.date)
 
         //TODO: navigate to timeslot details
-        holder.fixedLayout.setOnClickListener { showHiddenLayout(holder)}
+        holder.fixedLayout.setOnClickListener { showHiddenLayout(holder) }
 
         holder.btnArrow.setOnClickListener { showHiddenLayout(holder) }
     }
+
     override fun getItemCount(): Int = values.size
 
     fun filterList(filteredList: List<Timeslot>) {
+        if(filteredList == null)
+            return
         val diffUtil = RequestDiffUtil(values, filteredList)
         val diffResult = calculateDiff(diffUtil)
         values = filteredList
         diffResult.dispatchUpdatesTo(this)
-
     }
 
-    fun showHiddenLayout(holder : RequestViewHolder){
+    fun showHiddenLayout(holder: RequestViewHolder) {
 
         // If the CardView is already expanded, set its visibility
         //  to gone and change the expand less icon to expand more.

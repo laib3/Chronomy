@@ -23,11 +23,12 @@ class TimeslotsRecyclerViewAdapter(
 
     inner class TimeslotViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val tvTitle: TextView = v.findViewById(R.id.tvUserNickname)
-        val tvLocation: TextView = v.findViewById(R.id.tvComment)
+        val tvLocation: TextView = v.findViewById(R.id.tvLocation)
         val tvDate: TextView = v.findViewById(R.id.tvDate)
         val tvHour: TextView = v.findViewById(R.id.tvHour)
         val ivProfilePic: ImageView = v.findViewById(R.id.ivProfilePic)
         val tvNickname: TextView = v.findViewById(R.id.nickname)
+        val tvCost: TextView = v.findViewById(R.id.tvGlobalCost)
 
         val cvTimeslotCard: MaterialCardView = v.findViewById(R.id.cvRatingCard)
         val clTimeslotInfo: ConstraintLayout = v.findViewById(R.id.clTimeslotInfo)
@@ -46,6 +47,7 @@ class TimeslotsRecyclerViewAdapter(
         holder.tvTitle.text = ts.title
         holder.tvLocation.text = ts.location
         holder.tvDate.text = Utils.formatDateToString(ts.date)
+        holder.tvCost.text = String.format(parentFragment.getString(R.string.cost_placeholder), Utils.tcuFromStartEndHour(ts.startHour, ts.endHour).toString())
         holder.tvHour.text =
             parentFragment.activity?.getString(
                 R.string.starting_hour_dash_ending_hour,

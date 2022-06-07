@@ -28,6 +28,7 @@ class LoginFragment : Fragment() {
     private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val signInIntent = AuthUI.getInstance().createSignInIntentBuilder()
         .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         .build()
@@ -36,7 +37,6 @@ class LoginFragment : Fragment() {
             onSignInResult(res)
         }
 
-
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
@@ -44,7 +44,7 @@ class LoginFragment : Fragment() {
         } else {
             Log.d("LoginFragment", "sign in failed")
             if (response == null)
-                Log.d("LoginFragment", "canceled by publisher")
+                Log.d("LoginFragment", "canceled by user")
             else
                 Log.d("LoginFragment", "error:" + response.error?.errorCode)
         }
@@ -59,6 +59,15 @@ class LoginFragment : Fragment() {
         // super.onCreateView(inflater, container, savedInstanceState)
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        if(auth.currentUser?.uid != null){
+            binding.pbLogin.visibility = View.VISIBLE
+            binding.bSignIn.visibility = View.GONE
+        }
+        else {
+            binding.pbLogin.visibility = View.GONE
+            binding.bSignIn.visibility = View.VISIBLE
+        }
 
         // if back pressed on login screen exit the application
         (activity as MainActivity).onBackPressedDispatcher.addCallback(this) {
@@ -84,6 +93,8 @@ class LoginFragment : Fragment() {
         val bSignIn = binding.bSignIn
         bSignIn.setOnClickListener {
             login()
+            binding.pbLogin.visibility = View.GONE
+            binding.bSignIn.visibility = View.GONE
         }
 
         return root

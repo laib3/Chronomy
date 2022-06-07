@@ -1,6 +1,7 @@
 package it.polito.mainactivity.model
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ServerTimestamp
 
 data class Chat(val chatId: String, val client: Map<String, Any>, var assigned: Boolean, var messages: MutableList<Message>){
 
@@ -48,7 +49,11 @@ data class Message(val messageId: String, val text: String, val timestamp: Times
         messageMap["text"] as String,
         // TODO fix - handle String to Timestamp conversion
         messageMap["timestamp"] as Timestamp,
-        messageMap["sender"]?.let{ Sender.valueOf(it as String) } ?: Sender.ERROR
+        when(messageMap["sender"]) {
+            is String -> messageMap["sender"].let{ Sender.valueOf(it as String) }
+            is Sender -> messageMap["sender"] as Sender
+            else -> Sender.ERROR
+        }
     )
 
 }

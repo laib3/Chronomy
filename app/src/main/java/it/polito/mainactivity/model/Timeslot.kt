@@ -7,7 +7,7 @@ data class Timeslot(
     var publisher: Map<String, Any>
 ) {
 
-    enum class Status {PUBLISHED, ASSIGNED, COMPLETED, ERROR}
+    enum class Status { PUBLISHED, ASSIGNED, COMPLETED, ERROR }
 
     var timeslotId: String
     var title: String
@@ -70,7 +70,7 @@ data class Timeslot(
 
     /* 3rd constructor */
     constructor(
-        timeslotMap: HashMap<String, Any>, _publisher: Map<String, Any>, _ratings: MutableList<Map<String, Any>>,
+        timeslotMap: Map<String, Any>, _publisher: Map<String, Any>, _ratings: MutableList<Map<String, Any>>,
         _chats: List<Map<String, Any>>, _clients: List<Map<String, Any>>,
         _messages: List<List<Map<String, Any>>>): this(_publisher){
         timeslotId = timeslotMap["timeslotId"] as String
@@ -81,7 +81,13 @@ data class Timeslot(
         endHour = timeslotMap["endHour"] as String
         location = timeslotMap["location"] as String
         category = timeslotMap["category"] as String
-        status = timeslotMap["status"]?.let{ Status.valueOf(it as String) } ?: Status.ERROR
+        if(timeslotMap["status"] is String){
+            status = timeslotMap["status"]?.let{ Status.valueOf(it as String) } ?: Status.ERROR
+        }
+        else if(timeslotMap["status"] is Status){
+            status = timeslotMap["status"] as Status
+        }
+
         // if(_ratings.size != 2)
         //     throw Exception("Error: ratings lenght should be equal to 2")
         ratings = _ratings.map{ rm -> Rating(rm) }.toMutableList()
@@ -125,5 +131,4 @@ data class Timeslot(
         },
         """.replace("\n", "").trimIndent()
     }
-
 }

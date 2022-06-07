@@ -34,6 +34,7 @@
     <string name="duration_placeholder">--h --m</string>
     <string name="message_placeholder">This is my message that will wrap into multiple lines and keep on going</string>
     <string name="rating_comment_placeholder">«%1$s»</string>
+    <string name="cost_placeholder">%1$s TCU</string>
 
 
     <!-- labels -->
@@ -95,7 +96,7 @@
     <string name="rating_nickname">Nickname</string>
     <string name="rating_comment">Comment</string>
 
-    <string name="rating_hint">Leave a comment</string>
+    <string name="rating_hint">Leave a comment (optional)</string>
 
     <!-- paths and directories -->
     <string name="shared_preferences">sharedpreferences</string>
@@ -114,9 +115,11 @@
     <!-- messages -->
     <string name="welcome_string1">Hello!</string>
     <string name="welcome_string2">What do you need today?</string>
+    <string name="already_assigned_title">Already assigned</string>
+    <string name="already_assigned_message">The publisher of this offer assigned it to another user. You can try to explore the home and see if there are other offers, though! :)</string>
 
     <string name="empty_timeslot_list_message">The list of your timeslots is empty, press the button below to add one.</string>
-    <string name="empty_category_map_message">There are no timeslot from other users yet. </string>
+    <string name="empty_category_map_message">There are no timeslot from other users yet.</string>
 
     <!-- category in filtered list -->
     <string name="nav_filtered_label">Browsing: {category}</string>

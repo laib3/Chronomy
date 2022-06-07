@@ -15,7 +15,6 @@ import it.polito.mainactivity.model.Message
 import it.polito.mainactivity.model.Timeslot
 
 class MessageRecyclerViewAdapter(
-    private val values: List<Message>,
     private val chat: Chat,
     private val timeslot: Timeslot,
     private val parentFragment: Fragment
@@ -23,6 +22,8 @@ class MessageRecyclerViewAdapter(
 ) : RecyclerView.Adapter<MessageRecyclerViewAdapter.ViewHolder>() {
 
     private val loggedUserRole = Message.Sender.PUBLISHER
+
+    private val messages = chat.messages
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val tvNickname:TextView = v.findViewById(R.id.nickname)
@@ -36,11 +37,17 @@ class MessageRecyclerViewAdapter(
                 chat.client
             }
 
-            tvNickname.text = user["nickname"].toString()
+            if(user["nickname"] != null){
+                tvNickname.text = user["nickname"] as String
+            }
+            else
+                tvNickname.text = ""
             tvMessage.text = message.text
             if(user["profilePictureUrl"]!= null){
                 Picasso.get().load(user["profilePictureUrl"] as String).into(ivProfilePic)
             }
+            ivProfilePic.clipToOutline = true
+
         }
     }
 
@@ -54,22 +61,23 @@ class MessageRecyclerViewAdapter(
             .from(parent.context)
             .inflate(layout, parent, false)
 
+
         return ViewHolder(view)
 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(values[position])
+        holder.bind(messages[position])
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = messages.size
 
 
     override fun getItemViewType(position: Int): Int {
-        if(values[position].sender == loggedUserRole ){
+        if(messages[position].sender == loggedUserRole ){
             return TYPE_SENT
         }
-        else if (values[position].sender != loggedUserRole){
+        else if (messages[position].sender != loggedUserRole){
             return TYPE_RECEIVED
         }
         return TYPE_ERROR
