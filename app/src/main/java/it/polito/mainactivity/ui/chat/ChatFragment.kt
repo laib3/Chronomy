@@ -99,9 +99,13 @@ class ChatFragment : Fragment() {
                         }
                         else -> {}
                     }
-                    if (Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT)
+                    if (Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT){
                         binding.btnsManageReq.visibility = View.GONE
                         binding.clCompleted.visibility = View.GONE
+                    }
+                    else {
+                        binding.clCompleted.visibility = View.VISIBLE
+                    }
                 }
 
                 binding.bSendMsg.setOnClickListener {
