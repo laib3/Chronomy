@@ -170,20 +170,21 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         val chatId = ms.reference.parent.parent!!.id
                         val timeslot = _timeslots.value?.find { t -> t.timeslotId == timeslotId }
                         val newMessage = Utils.toMessageMap(ms)?.let { Message(it) }
-                            ?: throw Exception("message shouldn't be null")
-                        if (timeslot != null) {
-                            val chats = timeslot.chats
-                            val chat = chats.find { c -> c.chatId == chatId }
-                            if (chat != null) {
-                                val oldMessages = chat.messages
-                                if (oldMessages.find { m -> m.messageId == newMessage.messageId } == null)
-                                    oldMessages.add(newMessage)
-                                else
-                                    oldMessages.apply { map { m -> if (m.messageId == newMessage.messageId) newMessage else m } }
-                                chats.apply {
-                                    find { c -> c.chatId == chatId }?.messages = oldMessages
+                        if(newMessage != null){
+                            if (timeslot != null) {
+                                val chats = timeslot.chats
+                                val chat = chats.find { c -> c.chatId == chatId }
+                                if (chat != null) {
+                                    val oldMessages = chat.messages
+                                    if (oldMessages.find { m -> m.messageId == newMessage.messageId } == null)
+                                        oldMessages.add(newMessage)
+                                    else
+                                        oldMessages.apply { map { m -> if (m.messageId == newMessage.messageId) newMessage else m } }
+                                    chats.apply {
+                                        find { c -> c.chatId == chatId }?.messages = oldMessages
+                                    }
+                                    tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = chats } else t }
                                 }
-                                tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = chats } else t }
                             }
                         }
                     }
