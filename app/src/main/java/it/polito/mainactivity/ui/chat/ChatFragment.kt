@@ -90,7 +90,7 @@ class ChatFragment : Fragment() {
                     }
                     if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT)
                         binding.btnsManageReq.visibility = View.GONE
-                        binding.clCompleted.visibility = View.GONE
+                        //binding.clCompleted.visibility = View.GONE
                 }
 
                 binding.bSendMsg.setOnClickListener {
@@ -107,7 +107,7 @@ class ChatFragment : Fragment() {
                     vm.setChatAssigned(chat!!.chatId, true)
                 }
 
-                binding.clCompleted.setOnClickListener{
+                binding.bCompleted.setOnClickListener{
                     vm.updateTimeslotField(ts!!.timeslotId, "status", Timeslot.Status.COMPLETED )
                 }
 
