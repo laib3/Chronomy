@@ -67,15 +67,18 @@ class ChatFragment : Fragment() {
                         Timeslot.Status.PUBLISHED -> {
                             binding.btnsManageReq.visibility = View.VISIBLE
                             binding.ratingZone.visibility = View.GONE
+                            binding.clCompleted.visibility = View.GONE
                         }
                         Timeslot.Status.COMPLETED -> {
                             binding.ratingZone.visibility = View.VISIBLE
                             binding.textMsg.visibility = View.GONE
                             binding.bSendMsg.visibility = View.GONE
                             binding.btnsManageReq.visibility = View.GONE
+                            binding.clCompleted.visibility = View.GONE
                         }
                         Timeslot.Status.ASSIGNED -> {
                             binding.btnsManageReq.visibility = View.GONE
+                            binding.clCompleted.visibility = View.VISIBLE
                             binding.ratingZone.visibility = View.GONE
                             if(!(chat!!.assigned)){ // timeslot has been assigned to someone else
                                 binding.cvAlreadyAssigned.visibility = View.VISIBLE
@@ -87,6 +90,7 @@ class ChatFragment : Fragment() {
                     }
                     if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT)
                         binding.btnsManageReq.visibility = View.GONE
+                        binding.clCompleted.visibility = View.GONE
                 }
 
                 binding.bSendMsg.setOnClickListener {
@@ -98,8 +102,14 @@ class ChatFragment : Fragment() {
                     vm.reject(chat?.chatId)
                     findNavController().navigateUp()
                 }
+
                 binding.bAccept.setOnClickListener {
                     vm.setChatAssigned(chat!!.chatId, true)
+                }
+
+                binding.clCompleted.setOnClickListener{
+                    vm.updateTimeslotField(ts!!.timeslotId, "status", Timeslot.Status.COMPLETED )
+
                 }
 
                 binding.btnSendFeedback.setOnClickListener {
