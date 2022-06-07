@@ -120,7 +120,11 @@
         tools:layout="@layout/fragment_requests_list" >
         <action
             android:id="@+id/action_nav_requests_to_chatFragment"
-            app:destination="@id/nav_chat" />
+            app:destination="@id/nav_chat"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/nav_chat"

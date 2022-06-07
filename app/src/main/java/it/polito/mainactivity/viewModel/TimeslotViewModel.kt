@@ -56,6 +56,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 .collection("timeslots")
                 .addSnapshotListener { tsQuery, error ->
                     if (error == null) {
+                        // TODO consider also timeslot delete
                         if (tsQuery != null && tsQuery.documents.size > 0) {
                             viewModelScope.launch {
                                 _timeslots.value =
@@ -128,7 +129,24 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
             db.collectionGroup("chats").addSnapshotListener { cQuery, error ->
                 if (cQuery == null)
                     throw Exception("E")
-                if (cQuery.documents.size > 0) {
+                // updated value of chats
+                val chatsMaps = cQuery.documents.map{ c -> Utils.toChatMap(c) }
+                val chatIds = chatsMaps.map{ c -> c?.get("chatId") as String }
+                if(cQuery.documents.size == 0){ // chat may have been deleted
+                    // keep only chats which are in the snapshot
+                    val ts = _timeslots.value
+                    if(ts != null) {
+                        _timeslots.value = ts
+                            .map { t ->
+                                t.apply {
+                                    this.chats =
+                                        this.chats.filter { c -> c.chatId in chatIds }
+                                            .toMutableList()
+                                }
+                            }
+                    }
+                }
+                else if (cQuery.documents.size > 0) { // also here...
                     val tmpTimeslots: MutableList<Timeslot>? = _timeslots.value?.toMutableList()
                     cQuery.forEach { cs ->
                         // first parent is the collection of chats, second is the timeslot
@@ -136,22 +154,24 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             _timeslots.value?.find { t -> t.timeslotId == cs.reference.parent.parent?.id }
                         val timeslotId = timeslot?.timeslotId
                         if (timeslot != null) {
-                            val newChats = timeslot.chats
-                            val chatMap = Utils.toChatMap(cs)
-                            val oldChat = newChats.find { chat -> chat.chatId == chatMap?.get("chatId") as String }
+                            val chatMap = Utils.toChatMap(cs) // chat being examinated
+                            val chats = timeslot.chats
+                            // val chatMap = Utils.toChatMap(cs)
+                            val oldChat = chats.find { chat -> chat.chatId == chatMap?.get("chatId") as String }
                             val messages = oldChat?.messages ?: listOf()
                             val newChat = chatMap?.let { Chat(chatMap, messages.map{m -> m.toMap()}, chatMap["client"] as Map<String, Any>) }
                             if (oldChat == null && newChat != null) { // add new chat if there wasn't
-                                newChats.add(newChat)
+                                chats.add(newChat)
                             } else if(newChat != null){ // update old chats list
-                                newChats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
+                                chats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
                             }
-                            tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = newChats } else t }
+                            tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = chats } else t }
                         }
                     }
-                    tmpTimeslots?.let{ _timeslots.value = it }
+                    tmpTimeslots?.let{ _timeslots.value = it.map{ t -> t.apply{this.chats = this.chats.filter{ c -> c.chatId in chatIds }.toMutableList() } }
                 }
             }
+        }
 
         messagesListenerRegistration =
             db.collectionGroup("messages").addSnapshotListener { mQuery, error ->
@@ -452,6 +472,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                         chat.reference.delete()
                     }.await()
                 }
+                // TODO also update live viewmodel
             }
         } catch(e: Exception){
             e.printStackTrace()

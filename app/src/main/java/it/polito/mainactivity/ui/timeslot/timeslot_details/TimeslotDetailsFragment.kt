@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import it.polito.mainactivity.MainActivity
 import it.polito.mainactivity.R
 import it.polito.mainactivity.databinding.FragmentTimeslotDetailsBinding
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 class TimeslotDetailsFragment : Fragment() {
     private val vm: TimeslotViewModel by activityViewModels()
     private val userVm: UserProfileViewModel by activityViewModels()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private var _binding: FragmentTimeslotDetailsBinding? = null
 
@@ -45,7 +47,6 @@ class TimeslotDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         _binding = FragmentTimeslotDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -56,14 +57,18 @@ class TimeslotDetailsFragment : Fragment() {
         startChat = arguments?.getBoolean("startChat") ?: false
 
         if (startChat) {
-            binding.extendedFab.visibility = View.VISIBLE
+            binding.bSendRequest.visibility = View.VISIBLE
         } else {
-            binding.extendedFab.visibility = View.INVISIBLE
+            binding.bSendRequest.visibility = View.INVISIBLE
         }
-
 
         vm.timeslots.observe(viewLifecycleOwner) {
             ts = it.find { t -> t.timeslotId == id }
+
+            // check if timeslot is published or not - if yes enable button
+            if(ts?.status == Timeslot.Status.PUBLISHED){
+                setFab(binding.bSendRequest, true)
+            }
 
             tiTitle?.editText?.setText(ts?.title)
             tiDescription?.editText?.setText(ts?.description)
@@ -83,8 +88,9 @@ class TimeslotDetailsFragment : Fragment() {
                 tiCategory?.editText?.setText(ts!!.category)
             }
 
+            // if I am client of one of the chat of the timeslot disable button
             if (ts!!.chats.any { chat -> chat.client["userId"] == FirebaseAuth.getInstance().currentUser!!.uid }) {
-                disableFab(binding.extendedFab)
+                setFab(binding.bSendRequest, false)
             }
         }
 
@@ -101,7 +107,7 @@ class TimeslotDetailsFragment : Fragment() {
            }
         }
 
-        binding.extendedFab.setOnClickListener {
+        binding.bSendRequest.setOnClickListener {
             //create new chat
             vm.addChat(ts!!.timeslotId, userVm.user.value!!)
         }
@@ -148,9 +154,16 @@ class TimeslotDetailsFragment : Fragment() {
         }
     }
 
-    private fun disableFab(f: ExtendedFloatingActionButton) {
-        f.isEnabled = false
-        f.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.dark_grey))
-        f.text = "Request sent"
+    private fun setFab(f: ExtendedFloatingActionButton, enabled: Boolean) {
+        if(enabled){
+            f.isEnabled = true
+            f.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.purple_500))
+            f.text = "Send request"
+        }
+        else {
+            f.isEnabled = false
+            f.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.dark_grey))
+            f.text = "Request sent"
+        }
     }
 }
