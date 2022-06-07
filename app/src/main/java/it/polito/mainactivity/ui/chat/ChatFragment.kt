@@ -103,9 +103,6 @@ class ChatFragment : Fragment() {
                         binding.btnsManageReq.visibility = View.GONE
                         binding.clCompleted.visibility = View.GONE
                     }
-                    else {
-                        binding.clCompleted.visibility = View.VISIBLE
-                    }
                 }
 
                 binding.bSendMsg.setOnClickListener {
