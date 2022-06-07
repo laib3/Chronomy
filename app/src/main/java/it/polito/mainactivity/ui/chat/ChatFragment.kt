@@ -109,7 +109,6 @@ class ChatFragment : Fragment() {
 
                 binding.clCompleted.setOnClickListener{
                     vm.updateTimeslotField(ts!!.timeslotId, "status", Timeslot.Status.COMPLETED )
-
                 }
 
                 binding.btnSendFeedback.setOnClickListener {
