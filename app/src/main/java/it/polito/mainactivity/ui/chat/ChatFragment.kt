@@ -70,18 +70,8 @@ class ChatFragment : Fragment() {
                     val userRating = ts!!.ratings.find { r -> r.by == userRole }?.rating
                     val userRatingComment = ts!!.ratings.find { r -> r.by == userRole }?.comment
                     if (userRating != null && userRating != -1) {
-                        binding.ratingBar.rating = userRating.toFloat()
-                        binding.ratingBar.isEnabled = false
-                        binding.textInputEditTextSkillDescription.setText(userRatingComment)
-                        binding.textInputEditTextSkillDescription.isEnabled = false
-                        binding.btnSendFeedback.isEnabled = false
-                        binding.btnSendFeedback.text = "Feedback sent"
-                        binding.btnSendFeedback.setBackgroundColor(resources.getColor(R.color.dark_grey))
-                        binding.btnSendFeedback.setTextColor(
-                            ColorStateList.valueOf(
-                                requireParentFragment().resources.getColor(R.color.white)
-                            )
-                        )
+                        disableRatingArea(userRating, userRatingComment)
+
                     }
 
                     when (ts!!.status) {
@@ -133,6 +123,10 @@ class ChatFragment : Fragment() {
                 }
 
                 binding.btnSendFeedback.setOnClickListener {
+                    val userRole = Utils.getUserRole(ts!!, chat!!)
+                    val userRating = ts!!.ratings.find { r -> r.by == userRole }?.rating
+                    val userRatingComment = ts!!.ratings.find { r -> r.by == userRole }?.comment
+                    disableRatingArea(userRating!!,userRatingComment)
                     vm.updateRating(
                         ts!!.timeslotId,
                         binding.ratingBar.rating.toInt(),
@@ -145,6 +139,20 @@ class ChatFragment : Fragment() {
         return root
     }
 
+    fun disableRatingArea(userRating: Int, userRatingComment: String?) {
+        binding.ratingBar.rating = userRating.toFloat()
+        binding.ratingBar.isEnabled = false
+        userRatingComment?.let{binding.textInputEditTextSkillDescription.setText(userRatingComment)}
+        binding.textInputEditTextSkillDescription.isEnabled = false
+        binding.btnSendFeedback.isEnabled = false
+        binding.btnSendFeedback.text = "Feedback sent"
+        binding.btnSendFeedback.setBackgroundColor(resources.getColor(R.color.dark_grey))
+        binding.btnSendFeedback.setTextColor(
+            ColorStateList.valueOf(
+                requireParentFragment().resources.getColor(R.color.white)
+            )
+        )
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
