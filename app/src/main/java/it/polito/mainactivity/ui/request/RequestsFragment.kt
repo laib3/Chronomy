@@ -29,7 +29,7 @@ class RequestsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRequestsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -49,7 +49,6 @@ class RequestsFragment : Fragment() {
                 loadedList!!.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
                     // remove chats in which I am not the client
                     .map{ t -> t.apply{ chats = chats.filter{ c -> c.client["userId"] == auth.currentUser!!.uid }.toMutableList() } }
-
             }
 
             adapter = RequestRecyclerViewAdapter(

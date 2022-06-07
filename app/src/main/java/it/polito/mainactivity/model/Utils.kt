@@ -235,7 +235,7 @@ class Utils {
 
         // TODO check if string
         fun toMessageMap(d: DocumentSnapshot?): Map<String, Any>? {
-            if (d == null)
+            if (d == null || d.get("timestamp") == null)
                 return null
             return try {
                 hashMapOf(

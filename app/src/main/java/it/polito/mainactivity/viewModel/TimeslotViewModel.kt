@@ -120,9 +120,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{this.ratings = newRatings} else t}
                         }
                     }
-                    if(tmpTimeslots != null){
-                        _timeslots.value = tmpTimeslots
-                    }
+                    tmpTimeslots?.let{ _timeslots.value = it }
                 }
             }
 
@@ -151,9 +149,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = newChats } else t }
                         }
                     }
-                    if(tmpTimeslots != null){
-                        _timeslots.value = tmpTimeslots
-                    }
+                    tmpTimeslots?.let{ _timeslots.value = it }
                 }
             }
 
@@ -188,9 +184,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             }
                         }
                     }
-                    if(tmpTimeslots != null){
-                        _timeslots.value = tmpTimeslots
-                    }
+                    tmpTimeslots?.let{ _timeslots.value = it }
                 }
             }
     }
@@ -425,16 +419,42 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
 
     fun setChatAssigned(chatId: String, assigned: Boolean): Boolean {
         return try {
+            val chatRef = db.collectionGroup("chats").whereEqualTo("chatId", chatId)
             viewModelScope.launch {
-                val chat = db.collectionGroup("chats").whereEqualTo("chatId", chatId).get().await()
+                val chat = chatRef.get().await()
                     ?: throw Exception("chatId ($chatId) not found")
                 if (chat.documents.size != 1) throw Exception("chatId ($chatId) should be unique")
-                chat.documents[0].reference.update("assigned", assigned).await()
+                chat.first().reference.update("assigned", assigned).await()
+                if(assigned)
+                    chat.first().reference.parent.parent!!.update("status", Timeslot.Status.ASSIGNED).await()
+                else
+                    chat.first().reference.parent.parent!!.update("status", Timeslot.Status.PUBLISHED).await()
             }
             true
         } catch (e: Exception) {
             e.printStackTrace()
             false
+        }
+    }
+
+    fun reject(chatId: String?){
+        if(chatId == null)
+            return
+        try {
+            viewModelScope.launch {
+                val chatQuery = db.collectionGroup("chats").whereEqualTo("chatId", chatId)
+                val chats = chatQuery.get().await().documents
+                if(chats.isNotEmpty()){
+                    val chat = chats.first()
+                    val messagesRef = chat.reference.collection("messages").get().await()
+                    db.runTransaction { transaction ->
+                        messagesRef.documents.forEach{ ms -> transaction.delete(ms.reference) }
+                        chat.reference.delete()
+                    }.await()
+                }
+            }
+        } catch(e: Exception){
+            e.printStackTrace()
         }
     }
 

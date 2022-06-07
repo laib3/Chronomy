@@ -7,7 +7,7 @@ data class Timeslot(
     var publisher: Map<String, Any>
 ) {
 
-    enum class Status {PUBLISHED, ASSIGNED, COMPLETED, ERROR}
+    enum class Status { PUBLISHED, ASSIGNED, COMPLETED, ERROR }
 
     var timeslotId: String
     var title: String

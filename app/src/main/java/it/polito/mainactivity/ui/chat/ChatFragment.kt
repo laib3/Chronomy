@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,7 @@ class ChatFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -85,10 +86,11 @@ class ChatFragment : Fragment() {
             binding.textMsg.setText("")
         }
 
-        binding.rejectRequestBtn.setOnClickListener{
-            vm.setChatAssigned(chat!!.chatId, false)
+        binding.bReject.setOnClickListener{
+            vm.reject(chat?.chatId)
+            findNavController().navigateUp()
         }
-        binding.acceptRequestBtn.setOnClickListener {
+        binding.bAccept.setOnClickListener {
             vm.setChatAssigned(chat!!.chatId, true)
         }
 
