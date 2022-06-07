@@ -55,19 +55,18 @@ class RequestsFragment : Fragment() {
             rv.adapter = adapter
         }
 
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 shownList =
                     if (tab?.position == 0) {
                         // show current user's timeslot received requests
-                        loadedList!!.filter { t -> t.publisher["userId"] == auth.currentUser!!.uid && t.chats.size > 0 }
+                        loadedList?.filter { t -> t.publisher["userId"] == auth.currentUser!!.uid && t.chats.size > 0 }
                     } else {
                         // show current user's requests made to other users
-                        loadedList!!.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
+                        loadedList?.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
                     }
-                adapter?.filterList(shownList!!)
+                adapter?.filterList(shownList)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {}

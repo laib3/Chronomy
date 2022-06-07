@@ -113,12 +113,13 @@ class RequestRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    fun filterList(filteredList: List<Timeslot>) {
+    fun filterList(filteredList: List<Timeslot>?) {
+        if(filteredList.isNullOrEmpty())
+            return
         val diffUtil = RequestDiffUtil(values, filteredList)
         val diffResult = calculateDiff(diffUtil)
         values = filteredList
         diffResult.dispatchUpdatesTo(this)
-
     }
 
     fun showHiddenLayout(holder: RequestViewHolder) {

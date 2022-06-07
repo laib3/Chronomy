@@ -110,7 +110,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (rQuery == null)
                     throw Exception("E")
                 if (rQuery.documents.size > 0) {
-                    val tmpTimeslots: MutableList<Timeslot> = mutableListOf()
+                    val tmpTimeslots: MutableList<Timeslot>? = _timeslots.value?.toMutableList()
                     rQuery.forEach { rs ->
                         // find timeslot which contains the rating
                         val timeslot =
@@ -125,10 +125,12 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             } else { // update old ratings list
                                 newRatings.apply { map { rating -> if (rating.by == newRating.by) newRating else rating } }
                             }
-                            tmpTimeslots.add(timeslot.apply{ ratings = newRatings })
+                            tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{this.ratings = newRatings} else t}
                         }
                     }
-                    _timeslots.value = tmpTimeslots
+                    if(tmpTimeslots != null){
+                        _timeslots.value = tmpTimeslots
+                    }
                 }
             }
 
@@ -137,7 +139,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (cQuery == null)
                     throw Exception("E")
                 if (cQuery.documents.size > 0) {
-                    val tmpTimeslots: MutableList<Timeslot> = mutableListOf()
+                    val tmpTimeslots: MutableList<Timeslot>? = _timeslots.value?.toMutableList()
                     cQuery.forEach { cs ->
                         // first parent is the collection of chats, second is the timeslot
                         val timeslot =
@@ -153,10 +155,12 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                             } else { // update old chats list
                                 newChats.apply { map { chat -> if (chat.chatId == newChat.chatId) newChat else chat } }
                             }
-                            tmpTimeslots.add(timeslot.apply{ chats = newChats })
+                            tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = chats } else t }
                         }
                     }
-                    _timeslots.value = tmpTimeslots
+                    if(tmpTimeslots != null){
+                        _timeslots.value = tmpTimeslots
+                    }
                 }
             }
 
@@ -165,7 +169,7 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                 if (mQuery == null)
                     throw Exception("query result for messages shouldn't be empty")
                 if (mQuery.documents.size > 0) {
-                    val tmpTimeslots: MutableList<Timeslot> = mutableListOf()
+                    val tmpTimeslots: MutableList<Timeslot>? = _timeslots.value?.toMutableList()
                     mQuery.forEach { ms ->
                         // first parent is the collection of messages, second parent is the chat document
                         // third parent is the collection of chats, fourth is the timeslot document
@@ -186,12 +190,13 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
                                 chats.apply {
                                     find { c -> c.chatId == chatId }?.messages = oldMessages
                                 }
-                                tmpTimeslots.add(timeslot.apply{this.chats = chats})
-                                // _timeslots.value = _timeslots.value?.map{ t -> if(t.timeslotId == timeslotId) t.copy().apply{ this.chats = chats } else t }
+                                tmpTimeslots?.map{ t -> if(t.timeslotId == timeslotId) t.apply{ this.chats = chats } else t }
                             }
                         }
                     }
-                    _timeslots.value = tmpTimeslots
+                    if(tmpTimeslots != null){
+                        _timeslots.value = tmpTimeslots
+                    }
                 }
             }
     }
@@ -442,7 +447,6 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    // TODO: test
     fun addMessage(chatId: String, text: String): Boolean {
         return try {
             viewModelScope.launch {
