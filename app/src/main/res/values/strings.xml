@@ -114,9 +114,11 @@
     <!-- messages -->
     <string name="welcome_string1">Hello!</string>
     <string name="welcome_string2">What do you need today?</string>
+    <string name="already_assigned_title">Already assigned</string>
+    <string name="already_assigned_message">The publisher of this offer assigned it to another user. You can try to explore the home and see if there are other offers, though! :)</string>
 
     <string name="empty_timeslot_list_message">The list of your timeslots is empty, press the button below to add one.</string>
-    <string name="empty_category_map_message">There are no timeslot from other users yet. </string>
+    <string name="empty_category_map_message">There are no timeslot from other users yet.</string>
 
     <!-- category in filtered list -->
     <string name="nav_filtered_label">Browsing: {category}</string>

@@ -53,52 +53,61 @@ class ChatFragment : Fragment() {
             chat = ts?.chats?.firstOrNull { it.chatId == args.chatId }
             if(chat == null)
                 findNavController().navigateUp()
-            if(ts == null)
-                findNavController().navigateUp()
-            adapter = MessageRecyclerViewAdapter(
-                chat!!, ts!!, this
-            )
-            rv.adapter = adapter
-            rv.scrollToPosition(chat!!.messages.size - 1);
+            else {
+                if(ts == null)
+                    findNavController().navigateUp()
+                else {
+                    adapter = MessageRecyclerViewAdapter(
+                        chat!!, ts!!, this
+                    )
+                    rv.adapter = adapter
+                    rv.scrollToPosition(chat!!.messages.size - 1);
 
-            when (ts!!.status) {
-                Timeslot.Status.PUBLISHED -> {
-                    binding.btnsManageReq.visibility = View.VISIBLE
-                    binding.ratingZone.visibility = View.GONE
+                    when (ts!!.status) {
+                        Timeslot.Status.PUBLISHED -> {
+                            binding.btnsManageReq.visibility = View.VISIBLE
+                            binding.ratingZone.visibility = View.GONE
+                        }
+                        Timeslot.Status.COMPLETED -> {
+                            binding.ratingZone.visibility = View.VISIBLE
+                            binding.textMsg.visibility = View.GONE
+                            binding.bSendMsg.visibility = View.GONE
+                            binding.btnsManageReq.visibility = View.GONE
+                        }
+                        Timeslot.Status.ASSIGNED -> {
+                            binding.btnsManageReq.visibility = View.GONE
+                            binding.ratingZone.visibility = View.GONE
+                            if(!(chat!!.assigned)){ // timeslot has been assigned to someone else
+                                binding.cvAlreadyAssigned.visibility = View.VISIBLE
+                                binding.textMsg.visibility = View.GONE
+                                binding.bSendMsg.visibility = View.GONE
+                            }
+                        }
+                        else -> {}
+                    }
+                    if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT)
+                        binding.btnsManageReq.visibility = View.GONE
                 }
-                Timeslot.Status.COMPLETED -> {
-                    binding.ratingZone.visibility = View.VISIBLE
-                    binding.textMsg.visibility = View.GONE
-                    binding.btnSendMsg.visibility = View.GONE
-                    binding.btnsManageReq.visibility = View.GONE
+
+                binding.bSendMsg.setOnClickListener {
+                    vm.addMessage(args.chatId, binding.textMsg.text.toString())
+                    binding.textMsg.setText("")
                 }
-                Timeslot.Status.ASSIGNED -> {
-                    binding.btnsManageReq.visibility = View.GONE
-                    binding.ratingZone.visibility = View.GONE
+
+                binding.bReject.setOnClickListener{
+                    vm.reject(chat?.chatId)
+                    findNavController().navigateUp()
                 }
-                else -> {}
+                binding.bAccept.setOnClickListener {
+                    vm.setChatAssigned(chat!!.chatId, true)
+                }
+
+                binding.btnSendFeedback.setOnClickListener {
+                    vm.updateRating(ts!!.timeslotId, binding.ratingBar.rating.toInt(), binding.textInputComment.editText?.text.toString())
+                }
+
+                }
             }
-            if(Utils.getUserRole(ts!!, chat!!) == Message.Sender.CLIENT)
-                binding.btnsManageReq.visibility = View.GONE
-        }
-
-        binding.btnSendMsg.setOnClickListener {
-            vm.addMessage(args.chatId, binding.textMsg.text.toString())
-            binding.textMsg.setText("")
-        }
-
-        binding.bReject.setOnClickListener{
-            vm.reject(chat?.chatId)
-            findNavController().navigateUp()
-        }
-        binding.bAccept.setOnClickListener {
-            vm.setChatAssigned(chat!!.chatId, true)
-        }
-
-        binding.btnSendFeedback.setOnClickListener {
-            vm.updateRating(ts!!.timeslotId, binding.ratingBar.rating.toInt(), binding.textInputComment.editText?.text.toString())
-        }
-
         return root
     }
 
