@@ -41,6 +41,8 @@
         android:contentDescription="addTimeslotButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/purple_500"
+        app:tint="@color/white"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
