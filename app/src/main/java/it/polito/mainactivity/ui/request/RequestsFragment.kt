@@ -42,9 +42,14 @@ class RequestsFragment : Fragment() {
             loadedList = it
             //selected tab is "request received"
             shownList = if (tabLayout.getTabAt(0)!!.isSelected) {
+                //
                 loadedList!!.filter { t -> t.publisher["userId"] == auth.currentUser!!.uid && t.chats.size > 0 }
             } else {
+                // take timeslots with chats which were not published by current user and for which I am client
                 loadedList!!.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
+                    // remove chats in which I am not the client
+                    .map{ t -> t.apply{ chats = chats.filter{ c -> c.client["userId"] == auth.currentUser!!.uid }.toMutableList() } }
+
             }
 
             adapter = RequestRecyclerViewAdapter(
@@ -64,6 +69,8 @@ class RequestsFragment : Fragment() {
                     } else {
                         // show current user's requests made to other users
                         loadedList?.filter { t -> t.publisher["userId"] != auth.currentUser!!.uid && t.chats.any { c -> c.client["userId"] == auth.currentUser!!.uid } }
+                            // remove chats in which I am not the client
+                            ?.map{ t -> t.apply{ chats = chats.filter{ c -> c.client["userId"] == auth.currentUser!!.uid }.toMutableList() } }
                     }
                 adapter?.filterList(shownList ?: emptyList())
             }
