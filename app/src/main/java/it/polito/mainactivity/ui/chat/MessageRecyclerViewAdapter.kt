@@ -37,7 +37,11 @@ class MessageRecyclerViewAdapter(
                 chat.client
             }
 
-            tvNickname.text = user["nickname"].toString()
+            if(user["nickname"] != null){
+                tvNickname.text = user["nickname"] as String
+            }
+            else
+                tvNickname.text = ""
             tvMessage.text = message.text
             if(user["profilePictureUrl"]!= null){
                 Picasso.get().load(user["profilePictureUrl"] as String).into(ivProfilePic)

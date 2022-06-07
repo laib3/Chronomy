@@ -61,15 +61,7 @@ class RequestRecyclerViewAdapter(
                 chat.messages.sortBy{ msg -> msg.timestamp }
                 val chatCard = inflater.inflate(R.layout.chat_card, null, false) as ConstraintLayout
                 chatCard.findViewById<TextView>(R.id.tvNickname).apply {
-                    if(chat.messages.isNotEmpty()){
-                        if(chat.messages.last().sender == Message.Sender.CLIENT){
-                            this.text = chat.client["nickname"].toString()
-                        } else if (chat.messages.last().sender == Message.Sender.PUBLISHER){
-                            ts.publisher["nickname"]
-                        }
-                    } else {
-                        this.text = chat.client["nickname"].toString()
-                    }
+                    this.text = chat.client["nickname"] as String
                 }
                 chatCard.findViewById<TextView>(R.id.tvDate).apply {
                     val c = Calendar.getInstance()
@@ -83,7 +75,8 @@ class RequestRecyclerViewAdapter(
                 chatCard.findViewById<TextView>(R.id.tvMsg).apply {
                     this.text =
                         if (chat.messages.isNotEmpty()) chat.messages.last().text
-                        else "This chat is still empty"
+                    else
+                        ""
                 }
                 val ivProfilePic = chatCard.findViewById<ImageView>(R.id.ivProfilePic)
                 ivProfilePic.apply{
