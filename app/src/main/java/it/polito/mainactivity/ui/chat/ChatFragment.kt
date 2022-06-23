@@ -50,6 +50,8 @@ class ChatFragment : Fragment() {
         val rv: RecyclerView = binding.list
         rv.layoutManager = LinearLayoutManager(root.context)
 
+        binding.ratingBar.stepSize = (1).toFloat()
+
         vm.timeslots.observe(viewLifecycleOwner) { timeslots ->
             ts = timeslots?.firstOrNull { it.timeslotId == args.timeslotId }
             chat = ts?.chats?.firstOrNull { it.chatId == args.chatId }
@@ -124,15 +126,14 @@ class ChatFragment : Fragment() {
                 }
 
                 binding.btnSendFeedback.setOnClickListener {
-                    val userRole = Utils.getUserRole(ts!!, chat!!)
-                    val userRating = ts!!.ratings.find { r -> r.by == userRole }?.rating
-                    val userRatingComment = ts!!.ratings.find { r -> r.by == userRole }?.comment
-                    disableRatingArea(userRating!!,userRatingComment)
+                    val userRating = binding.ratingBar.rating.toInt()
+                    val userRatingComment = binding.textInputComment.editText?.text.toString()
                     vm.updateRating(
                         ts!!.timeslotId,
-                        binding.ratingBar.rating.toInt(),
-                        binding.textInputComment.editText?.text.toString()
+                        userRating,
+                        userRatingComment
                     )
+                    disableRatingArea(userRating,userRatingComment)
                 }
 
             }
