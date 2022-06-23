@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import it.polito.mainactivity.databinding.FragmentEditProfileFieldsBinding
@@ -14,6 +15,7 @@ class EditProfileFieldsFragment : Fragment() {
     private val vm: UserProfileViewModel by activityViewModels()
     private var _binding: FragmentEditProfileFieldsBinding? = null
     private val binding get() = _binding!!
+    val editTextChildren = mutableListOf<EditText>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,6 +28,17 @@ class EditProfileFieldsFragment : Fragment() {
 
         addFocusChangeListeners()
 
+        editTextChildren.addAll(
+            listOf(
+                binding.textInputEditTextName,
+                binding.textInputEditTextSurname,
+                binding.textInputEditTextNickname,
+                binding.textInputEditTextBio,
+                binding.textInputEditTextPhone,
+                binding.textInputEditTextEmail,
+                binding.textInputEditTextLocation,
+            )
+        )
         // if updated changes, update the whole list
         vm.user.observe(viewLifecycleOwner) { u ->
             //val skills = vm.skills.value
@@ -50,8 +63,8 @@ class EditProfileFieldsFragment : Fragment() {
             binding.editableSkillsLayout.removeAllViews()
             u?.apply {
                 skills
-                    .sortedByDescending { it.active }
-                    .map { s -> SkillCard(requireContext(), s, vm, true) }
+                    .sortedWith(compareBy({ !it.active }, { it.category }))
+                    .map { s -> SkillCard(requireContext(), s, vm, true, editTextChildren) }
                     .forEach { sc: SkillCard -> binding.editableSkillsLayout.addView(sc) }
             }
             // TODO: message when skill changed, see above in the comment

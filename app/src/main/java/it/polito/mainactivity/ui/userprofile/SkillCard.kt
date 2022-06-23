@@ -1,8 +1,11 @@
 package it.polito.mainactivity.ui.userprofile
 
 import android.content.Context
+import android.view.FocusFinder
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
@@ -12,13 +15,15 @@ import com.google.android.material.textfield.TextInputEditText
 import it.polito.mainactivity.R
 import it.polito.mainactivity.model.Skill
 import it.polito.mainactivity.model.Utils
+import it.polito.mainactivity.ui.userprofile.editprofile.EditProfileFieldsFragment
 import it.polito.mainactivity.viewModel.UserProfileViewModel
 
 class SkillCard(
     private val c: Context,
     private val skill: Skill,
     val vm: UserProfileViewModel,
-    private val editable: Boolean
+    private val editable: Boolean,
+    private val editTextList: MutableList<EditText>
 ) : CardView(c) {
 
     init {
@@ -61,6 +66,9 @@ class SkillCard(
             val alertDialog = mBuilder.show()
             val closeButton = modalView.findViewById<ImageView>(R.id.modalCloseButton)
             val saveButton = modalView.findViewById<Button>(R.id.btnApplyFilters)
+
+
+            editTextList.forEach { if (it.isFocused) it.clearFocus() }
             // populate fields
             modalTitle.text = skill.category
             modalDescription.setText(skill.description)

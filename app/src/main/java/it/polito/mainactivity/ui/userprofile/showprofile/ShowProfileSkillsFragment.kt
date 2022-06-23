@@ -44,7 +44,9 @@ class ShowProfileSkillsFragment() : Fragment() {
                 )
                 skillsLayout.removeAllViews()
                 publisher.apply {
-                    skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
+                    skills
+                        .sortedWith(compareBy({ !it.active }, { it.category }))
+                        .map { s -> SkillCard(requireContext(), s, vmUser, false, mutableListOf()) }
                         .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
                 }
             }
@@ -53,7 +55,9 @@ class ShowProfileSkillsFragment() : Fragment() {
             vmUser.user.observe(viewLifecycleOwner) {
                 skillsLayout.removeAllViews()
                 it?.apply {
-                    skills.map { s -> SkillCard(requireContext(), s, vmUser, false) }
+                    skills
+                        .sortedWith(compareBy({ !it.active }, { it.category }))
+                        .map { s -> SkillCard(requireContext(), s, vmUser, false, mutableListOf())}
                         .forEach { sc: SkillCard -> skillsLayout.addView(sc) }
                 }
             }
