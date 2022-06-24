@@ -218,6 +218,23 @@ class TimeslotViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun updateTimeslotField(timeslotId: String, field: String, newValue: Any?): Boolean {
+        // immediate feedback: update local ViewModel before getting updates from the db
+        this._timeslots.value = this._timeslots.value?.map{ t ->
+            if(t.timeslotId != timeslotId)
+                t
+            else
+                when(field){
+                    "title" -> t.apply{title = newValue as String}
+                    "description" -> t.apply{description = newValue as String}
+                    "date" -> t.apply { date = newValue as Calendar }
+                    "startHour" -> t.apply { startHour = newValue as String }
+                    "endHour" -> t.apply{ endHour = newValue as String }
+                    "location" -> t.apply { location = newValue as String }
+                    "category" -> t.apply { category = newValue as String }
+                    else -> t
+                }
+        }
+        // update the db
         db
             .collection("timeslots")
             .document(timeslotId)
