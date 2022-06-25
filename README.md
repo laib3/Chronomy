@@ -1,4 +1,4 @@
-# MAD22 project
+# Chronomy
 
 This timebanking Android app was created as project for the Mobile Application Development course at Polito, A.Y. 2022.
 
